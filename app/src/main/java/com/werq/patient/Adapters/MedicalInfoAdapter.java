@@ -18,6 +18,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Activities.FunctionalActivity;
+import com.werq.patient.Activities.ImmunizationResultsActivity;
 import com.werq.patient.Activities.SummaryCareActivity;
 import com.werq.patient.R;
 
@@ -51,25 +53,25 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
         holder.tvTitle.setText(result);
 
-        /*holder.tvNextArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (result.equals("Summery Of Care")) {
-
-                    Intent intent1 = new Intent(context, SummaryCareActivity.class);
-                    context.startActivity(intent1);
-                }
-            }
-        });*/
         holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
                 title=titleList.get(position);
-                Log.e( "onClick: ", "title");
+                Log.e( "onClick: ", title);
                 if (title.equals("Summery Of Care")) {
                     Intent intent1 = new Intent(context, SummaryCareActivity.class);
+                    context.startActivityForResult(intent1, 2);
+                }
+
+                if (title.equals("Immunization And Results")) {
+                    Intent intent1 = new Intent(context, ImmunizationResultsActivity.class);
+                    context.startActivityForResult(intent1, 2);
+                }
+
+                if (title.equals("Functional And Cognitive Status")) {
+                    Intent intent1 = new Intent(context, FunctionalActivity.class);
                     context.startActivityForResult(intent1, 2);
                 }
             }
@@ -101,7 +103,6 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
                     Log.e( "onClick: ", "setOnClickListener");
                 }
             });
-            tvNextArrow.setOnClickListener(this);
         }
 
         @Override

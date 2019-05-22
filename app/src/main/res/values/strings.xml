@@ -5,7 +5,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="medical_info">Medical Info</string>
-    <string name="insurance">Insurance</string>
-    <string name="medications">Medications</string>
+    <string name="medical_info">MEDICAL INFO</string>
+    <string name="insurance">INSURANCE</string>
+    <string name="medications">MEDICATIONS</string>
 </resources>

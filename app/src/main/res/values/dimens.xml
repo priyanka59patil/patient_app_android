@@ -15,4 +15,14 @@
     <dimen name="constraint_layout_margin_left_summery_care">10dp</dimen>
     <dimen name="summery_care_Heding_text_size">16dp</dimen>
     <dimen name="summery_care_SubHeding_margin_top">5dp</dimen>
+
+    <dimen name="constraint_layout_padding_immunization">10dp</dimen>
+    <dimen name="constraint_layout_margin_left_immunization">10dp</dimen>
+    <dimen name="immunization_Heding_text_size">16dp</dimen>
+    <dimen name="immunization_SubHeding_margin_top">5dp</dimen>
+
+    <dimen name="constraint_layout_padding_functionality">10dp</dimen>
+    <dimen name="constraint_layout_margin_left_functionality">10dp</dimen>
+    <dimen name="functionality_Heding_text_size">16dp</dimen>
+    <dimen name="functionality_SubHeding_margin_top">5dp</dimen>
 </resources>

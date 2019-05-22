@@ -44,6 +44,8 @@ public class MedicalInfoFragment extends Fragment {
 
         ArrayList<String> titleList=new ArrayList<>();
         titleList.add("Summery Of Care");
+        titleList.add("Immunization And Results");
+        titleList.add("Functional And Cognitive Status");
         titleList.add("Vital sign");
         titleList.add("Problem list");
 
