@@ -7,6 +7,8 @@ import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.werq.patient.Activities.LoginActivity;
 import com.werq.patient.R;
 
 import butterknife.BindView;

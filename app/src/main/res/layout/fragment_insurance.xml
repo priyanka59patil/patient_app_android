@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.InsuranceFragment"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/conMain"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conLayoutInsurance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="15dp"
+                android:background="@color/colorLightGreyBackground">
+
+                <TextView
+                    android:id="@+id/lblInsuranceCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Insurance Card"
+                    android:textSize="@dimen/insurance_Heding_text_size"
+                    android:textColor="@color/color_heading"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Upload New"
+                    android:textColor="@color/color_btn_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/lblInsuranceCard"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="51dp"
+                app:layout_constraintTop_toBottomOf="@id/conLayoutInsurance"/>
+
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/imageViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline1"
+                app:layout_constraintVertical_bias="0.031"
+                tools:layout_editor_absoluteX="0dp" />
+
+            <LinearLayout
+                android:id="@+id/SliderDots"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewPager"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conLayoutProvider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/SliderDots"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="20dp"
+                android:background="@color/colorLightGreyBackground">
+
+                <TextView
+                    android:id="@+id/lblInsuranceProvider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Insurance Provider"
+                    android:textSize="@dimen/insurance_Heding_text_size"
+                    android:textColor="@color/color_heading"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInsuType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conLayoutProvider">
+
+                <TextView
+                    android:id="@+id/lblInsuranceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Helth Insurance Type"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValInsuranceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medicaid"
+                    android:textColor="@color/color_text"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInsuranceType"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuType"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInsuAddr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuType">
+
+                <TextView
+                    android:id="@+id/lblInsuranceAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Helth Plan Insurance Address"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValInsuranceAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInsuranceAddr"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuAddr"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInsuPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuAddr">
+
+                <TextView
+                    android:id="@+id/lblInsurancePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Helth Plan Insurance Phone"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValInsurancePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInsurancePhone"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuPhone"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInsuName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuPhone">
+
+                <TextView
+                    android:id="@+id/lblInsuranceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Helth Plan Insurance Name"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValInsuranceName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medicaid"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInsuranceName"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuName"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conCoverageDates"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conInsuName">
+
+                <TextView
+                    android:id="@+id/lblCoverageDates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Helth Plan Coverage Dates"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValCoverageDates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblCoverageDates"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conCoverageDates"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conMemId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conCoverageDates">
+
+                <TextView
+                    android:id="@+id/lblMemId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Member Id"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValMemId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblMemId"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conMemId"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conRelation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conMemId">
+
+                <TextView
+                    android:id="@+id/lblRelation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Relationship To Subscriber"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValRelation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Self"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblRelation"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conRelation"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conPatAddr"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conRelation">
+
+                <TextView
+                    android:id="@+id/lblPatAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Address"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatAddr"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conPatAddr"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conPatPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conPatAddr">
+
+                <TextView
+                    android:id="@+id/lblPatPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Phone"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Self"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatPhone"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conPatPhone"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conPatName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conPatPhone">
+
+                <TextView
+                    android:id="@+id/lblPatName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Name"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatName"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conPatName"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conPatDob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conPatName">
+
+                <TextView
+                    android:id="@+id/lblPatDob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient Date Of Birth"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatDob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatDob"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conPatDob"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conSubsId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conPatDob">
+
+                <TextView
+                    android:id="@+id/lblPatSubsId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subscriber Id"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatSubsId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    android:textAllCaps="true"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatSubsId"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view12"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsId"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conSubsName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsId">
+
+                <TextView
+                    android:id="@+id/lblPatSubsName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subscriber Name"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatSubsName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatSubsName"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view13"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsName"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conSubsDob"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsName">
+
+                <TextView
+                    android:id="@+id/lblPatSubsDob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Subscriber Date Of Birth"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValPatSubsDob"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblPatSubsDob"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view14"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsDob"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conGroupNo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+                android:padding="@dimen/constraint_layout_padding_insurance"
+                app:layout_constraintTop_toBottomOf="@+id/conSubsDob"
+                >
+
+                <TextView
+                    android:id="@+id/lblGroupNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Group No"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/insurance_SubHeding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValGroupNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/insurance_text_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblGroupNo"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

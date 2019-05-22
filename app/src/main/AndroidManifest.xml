@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".Activities.SummaryCareActivity"></activity>
+        <activity android:name=".Activities.ProfileActivity">
+
+        </activity>
         <activity
             android:name=".Activities.CreateAccountActivity"
             android:label="@string/title_activity_create_account"
@@ -32,6 +36,7 @@
             android:name=".Activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

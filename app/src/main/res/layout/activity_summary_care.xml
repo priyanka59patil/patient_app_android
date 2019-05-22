@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SummaryCareActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/conMain"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conMedication1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_summery_care"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_summery_care"
+                app:layout_constraintTop_toBottomOf="@+id/conLayoutProvider">
+
+                <TextView
+                    android:id="@+id/lblMedication1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Race"
+                    android:textSize="@dimen/summery_care_Heding_text_size"
+                    android:textColor="@color/sub_heding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValMedication1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="White"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblMedication1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conMedication1"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInstruction1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_summery_care"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_summery_care"
+                app:layout_constraintTop_toBottomOf="@+id/conMedication1">
+
+                <TextView
+                    android:id="@+id/lblInstruction1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sex"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/summery_care_Heding_text_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvValInstruction"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInstruction1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInstruction1"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conDosage1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_summery_care"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_summery_care"
+                app:layout_constraintTop_toBottomOf="@+id/conInstruction1">
+
+                <TextView
+                    android:id="@+id/lblDosage1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No Hispanic or Latino"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/summery_care_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValDosage1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblDosage1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conDosage1"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conEffectiveDate1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_summery_care"
+                android:padding="@dimen/constraint_layout_padding_summery_care"
+                app:layout_constraintTop_toBottomOf="@+id/conDosage1">
+
+                <TextView
+                    android:id="@+id/lblEffectiveDate1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Patient ID"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/summery_care_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValEffectiveDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="345464646463"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblEffectiveDate1"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conEffectiveDate1"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

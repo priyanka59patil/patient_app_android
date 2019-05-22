@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         mContext=this;
     }
 
-    @OnClick({R.id.tvForgotPassword, R.id.tvSignUp})
+    @OnClick({R.id.tvForgotPassword, R.id.tvSignUp,R.id.btLogin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvForgotPassword:
@@ -70,6 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                 break;
             case R.id.tvSignUp:
                 startActivity(new Intent(mContext,SignUpActivity.class));
+                break;
+            case R.id.btLogin:
+                startActivity(new Intent(mContext,BottomTabActivity.class));
+                finish();
                 break;
         }
     }
