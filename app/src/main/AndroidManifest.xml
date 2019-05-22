@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SummaryCareActivity"></activity>
+        <activity android:name=".Activities.FunctionalActivity"></activity>
+        <activity android:name=".Activities.ImmunizationResultsActivity" />
+        <activity android:name=".Activities.SummaryCareActivity" />
         <activity android:name=".Activities.ProfileActivity">
 
         </activity>

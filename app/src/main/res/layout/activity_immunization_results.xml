@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.ImmunizationResultsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/conMain"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conVaccine"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conLayoutProvider">
+
+                <TextView
+                    android:id="@+id/lblVaccine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Vaccine"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    android:textColor="@color/sub_heding"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValVaccine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="White"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblVaccine"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conVaccine"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conLotNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conVaccine">
+
+                <TextView
+                    android:id="@+id/lblLotNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lot Number"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvValLotNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblLotNumber"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conLotNumber"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conDate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conLotNumber">
+
+                <TextView
+                    android:id="@+id/lblDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="8,15,2012"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblDate"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conDate"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conStatus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conDate">
+
+                <TextView
+                    android:id="@+id/lblStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="345464646463"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblStatus"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conStatus"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conResult"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conStatus">
+
+                <TextView
+                    android:id="@+id/lblResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Result"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="co2"
+                    android:textColor="@color/color_text"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblResult"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conResult"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conResult">
+
+                <TextView
+                    android:id="@+id/lblValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Value"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="27"
+                    android:textColor="@color/color_text"
+                    android:textAllCaps="true"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblValue"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conValue"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conUnits"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conValue">
+
+                <TextView
+                    android:id="@+id/lblUnits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Units"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValUnits"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="mmol/L"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblUnits"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conUnits"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conRange"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conUnits">
+
+                <TextView
+                    android:id="@+id/lblRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Range"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="20-29 mmol/L"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblRange"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conRange"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/conInterpretation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/constraint_layout_padding_immunization"
+                android:layout_marginLeft="@dimen/constraint_layout_margin_left_immunization"
+                app:layout_constraintTop_toBottomOf="@+id/conRange">
+
+                <TextView
+                    android:id="@+id/lblInterpretation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Interpretation"
+                    android:textColor="@color/sub_heding"
+                    android:textSize="@dimen/immunization_Heding_text_size"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tvValInterpretation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Normal"
+                    android:textColor="@color/color_text"
+                    android:layout_marginTop="@dimen/summery_care_SubHeding_margin_top"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lblInterpretation"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_insurance"
+                android:background="@android:color/black"
+                app:layout_constraintTop_toBottomOf="@+id/conInterpretation"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
