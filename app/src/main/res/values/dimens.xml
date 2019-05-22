@@ -1,3 +1,18 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="view_height_insurance">0.3dp</dimen>
+    <dimen name="constraint_layout_padding_insurance">10dp</dimen>
+    <dimen name="constraint_layout_margin_left_insurance">10dp</dimen>
+    <dimen name="insurance_Heding_text_size">16dp</dimen>
+    <dimen name="insurance_SubHeding_text_size">16dp</dimen>
+    <dimen name="insurance_text_margin_top">5dp</dimen>
+
+    <dimen name="constraint_layout_padding_medication">10dp</dimen>
+    <dimen name="mediation_Heding_text_size">16dp</dimen>
+    <dimen name="mediation_SubHeding_margin_top">5dp</dimen>
+
+    <dimen name="constraint_layout_padding_summery_care">10dp</dimen>
+    <dimen name="constraint_layout_margin_left_summery_care">10dp</dimen>
+    <dimen name="summery_care_Heding_text_size">16dp</dimen>
+    <dimen name="summery_care_SubHeding_margin_top">5dp</dimen>
 </resources>

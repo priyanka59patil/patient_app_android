@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
-import com.werq.patient.Activities.Fragments.MedicalInfoFragment;
-import com.werq.patient.Activities.Fragments.ProfileFragment;
+
+import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.R;
 
 public class ProfileActivity extends AppCompatActivity {

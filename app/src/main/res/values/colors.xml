@@ -4,5 +4,10 @@
     <color name="colorPrimaryDark">#3187D8</color>
     <color name="colorAccent">#52ABFF</color>
 
-    <color name="colorLightGreyBackground">#ECEFF1</color>
+    <color name="colorLightGreyBackground">#eceff1</color>
+    <color name="color_btn_text">#3897f0</color>
+    <color name="color_heading">#030303</color>
+    <color name="sub_heding">#212121</color>
+    <color name="color_text">#747474</color>
+
 </resources>

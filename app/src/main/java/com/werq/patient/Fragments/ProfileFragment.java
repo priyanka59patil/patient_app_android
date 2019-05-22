@@ -1,4 +1,4 @@
-package com.werq.patient.Activities.Fragments;
+package com.werq.patient.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -63,8 +63,8 @@ public class ProfileFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getChildFragmentManager());
         adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
-        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.insurance) );
-        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medications) );
+        adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
+        adapter.addFragment(new MedicationsFragment(), getString(R.string.medications) );
         viewpager.setAdapter(adapter);
 
 

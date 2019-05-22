@@ -1,4 +1,4 @@
-package com.werq.patient.Activities.Fragments;
+package com.werq.patient.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.werq.patient.Activities.Adapters.MedicalInfoAdapter;
+import com.werq.patient.Adapters.MedicalInfoAdapter;
 import com.werq.patient.R;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class MedicalInfoFragment extends Fragment {
         titleList.add("Vital sign");
         titleList.add("Problem list");
 
-        adapter=new MedicalInfoAdapter(getContext(),titleList);
+        adapter=new MedicalInfoAdapter(getActivity(),titleList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         rvMedicalInfo.setLayoutManager(linearLayoutManager);
         rvMedicalInfo.setHasFixedSize(true);
