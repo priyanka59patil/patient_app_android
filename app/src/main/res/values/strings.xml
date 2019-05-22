@@ -2,4 +2,12 @@
     <string name="app_name">Patient App</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="title_activity_bottom_tab">BottomTabActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_verify_identity">VerifyIdentity</string>
+    <string name="title_activity_create_account">CreateAccountActivity</string>
 </resources>
