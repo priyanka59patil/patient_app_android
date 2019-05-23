@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.werq.patient.R;
+import com.werq.patient.Utils.EditTextUtils;
 import com.werq.patient.Utils.Helper;
 
 import butterknife.BindView;
@@ -54,31 +55,45 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         intilizevariables();
-        Helper.setToolbar(getSupportActionBar(),"Log In");
+        Helper.setToolbar(getSupportActionBar(), "Log In");
 
     }
 
     private void intilizevariables() {
-        mContext=this;
+        mContext = this;
     }
 
-    @OnClick({R.id.tvForgotPassword, R.id.tvSignUp,R.id.btLogin})
+    @OnClick({R.id.tvForgotPassword, R.id.tvSignUp, R.id.btLogin})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvForgotPassword:
-                startActivity(new Intent(mContext,ForgotPasswordActivity.class));
+                startActivity(new Intent(mContext, ForgotPasswordActivity.class));
                 break;
+
+
             case R.id.tvSignUp:
-                startActivity(new Intent(mContext,SignUpActivity.class));
+                startActivity(new Intent(mContext, SignUpActivity.class));
                 break;
+
+
             case R.id.btLogin:
-                startActivity(new Intent(mContext,BottomTabActivity.class));
-                finish();
+                if (!validation()) {
+                    startActivity(new Intent(mContext, BottomTabActivity.class));
+                    finish();
+                }
                 break;
         }
     }
 
+    private boolean validation() {
+        boolean isvalid = false;
 
+        isvalid = EditTextUtils.isEmpty(etUsername, getResources().getString(R.string.error_email));
+
+        isvalid = EditTextUtils.isEmpty(etPassword, getResources().getString(R.string.error_password));
+
+        return isvalid;
+    }
 
 
 }

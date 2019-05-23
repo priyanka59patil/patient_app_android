@@ -1,6 +1,9 @@
 package com.werq.patient.Activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -27,7 +30,7 @@ public class BottomTabActivity extends AppCompatActivity {
     @BindView(R.id.container)
     ConstraintLayout container;
     private TextView mTextMessage;
-
+    Context mContext;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -62,13 +65,35 @@ public class BottomTabActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bottom_activity, menu);
+    return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                startActivity(new Intent(mContext, SettingActivity.class));
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_tab);
         ButterKnife.bind(this);
+        initializeVariables();
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
          navView.setSelectedItemId(R.id.profile);
         Helper.setToolbar(getSupportActionBar(), "Home");
+    }
+
+    private void initializeVariables() {
+        mContext=this;
     }
 
 }

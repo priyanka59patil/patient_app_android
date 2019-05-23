@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.werq.patient.R;
+import com.werq.patient.Utils.EditTextUtils;
 import com.werq.patient.Utils.Helper;
 
 import butterknife.BindView;
@@ -68,13 +69,30 @@ public class SignUpActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btNext:
-                startActivity(new Intent(mContext, VerifyIdentity.class));
+                if (!validation())
+                    startActivity(new Intent(mContext, VerifyIdentity.class));
                 break;
+
             case R.id.tvLogin:
-                startActivity(new Intent(mContext,LoginActivity.class));
+                startActivity(new Intent(mContext, LoginActivity.class));
                 finish();
                 break;
         }
+    }
+
+    private boolean validation() {
+        boolean isInValid = false;
+
+        isInValid = EditTextUtils.isEmpty(etPin1, getResources().getString(R.string.please_enter_pin));
+
+        isInValid = EditTextUtils.isEmpty(etPin2, getResources().getString(R.string.please_enter_pin));
+
+        isInValid = EditTextUtils.isEmpty(etPin3, getResources().getString(R.string.please_enter_pin));
+
+        isInValid = EditTextUtils.isEmpty(etPin4, getResources().getString(R.string.please_enter_pin));
+
+        return isInValid;
+
     }
 
 
