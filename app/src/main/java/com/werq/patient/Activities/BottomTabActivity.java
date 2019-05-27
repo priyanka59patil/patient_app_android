@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.werq.patient.Fragments.AppointmentFragment;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.R;
+import com.werq.patient.Utils.BottomNavigationViewHelper;
 import com.werq.patient.Utils.Helper;
 
 import butterknife.BindView;
@@ -28,7 +31,7 @@ public class BottomTabActivity extends AppCompatActivity {
     @BindView(R.id.nav_view)
     BottomNavigationView navView;
     @BindView(R.id.container)
-    ConstraintLayout container;
+    RelativeLayout container;
     private TextView mTextMessage;
     Context mContext;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -38,7 +41,8 @@ public class BottomTabActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
+                    AppointmentFragment  appointmentFragment = new AppointmentFragment();
+                    addFragment(appointmentFragment);
                     return true;
                 case R.id.navigation_dashboard:
 
@@ -87,8 +91,12 @@ public class BottomTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_tab);
         ButterKnife.bind(this);
         initializeVariables();
+        BottomNavigationViewHelper.disableShiftMode(navView);
+
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
          navView.setSelectedItemId(R.id.profile);
+
+
         Helper.setToolbar(getSupportActionBar(), "Home");
     }
 

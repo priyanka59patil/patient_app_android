@@ -1,12 +1,16 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="main_layout_padding">16dp</dimen>
+    <dimen name="button_confirm_margin">16dp</dimen>
+    <dimen name="main_layout_padding">8dp</dimen>
+    <dimen name="main_adapter_padding">8dp</dimen>
     <dimen name="textSize_title">18dp</dimen>
+    <dimen name="textSize_note_size">25dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="pin_view_padding">5dp</dimen>
     <dimen name="pin_code_padding">4dp</dimen>
+    <dimen name="tvStatusSize">12dp</dimen>
     <dimen name="view_height_insurance">0.3dp</dimen>
     <dimen name="constraint_layout_padding_insurance">10dp</dimen>
     <dimen name="constraint_layout_margin_left_insurance">10dp</dimen>
@@ -34,4 +38,6 @@
     <dimen name="functionality_SubHeding_margin_top">5dp</dimen>
     <dimen name="button_yes_width">120dp</dimen>
     <dimen name="button_yes_height">35dp</dimen>
+    <dimen name="img_padding_for_img_bgcolor">12dp</dimen>
+    <dimen name="text_img_margintop">4dp</dimen>
 </resources>

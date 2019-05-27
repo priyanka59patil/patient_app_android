@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Activities.DemoActivity;
 import com.werq.patient.Activities.FunctionalActivity;
 import com.werq.patient.Activities.ImmunizationResultsActivity;
 import com.werq.patient.Activities.SummaryCareActivity;
@@ -61,7 +62,7 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
                 title=titleList.get(position);
                 Log.e( "onClick: ", title);
                 if (title.equals("Summery Of Care")) {
-                    Intent intent1 = new Intent(context, SummaryCareActivity.class);
+                    Intent intent1 = new Intent(context, DemoActivity.class);
                     context.startActivityForResult(intent1, 2);
                 }
 

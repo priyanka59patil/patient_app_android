@@ -86,9 +86,7 @@ public class SettingActivity extends AppCompatActivity {
             case R.id.tvPassword:
                 break;
             case R.id.tvChangePassword:
-                Intent changePasswordIntent=new Intent(mContext,ForgotPasswordActivity.class);
-                changePasswordIntent.putExtra(getResources().getString(R.string.intent_change_password),true);
-                startActivity(changePasswordIntent);
+
                 break;
         }
     }

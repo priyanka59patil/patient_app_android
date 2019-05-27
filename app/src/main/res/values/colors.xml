@@ -12,4 +12,9 @@
     <color name="sub_heding">#212121</color>
     <color name="color_text">#747474</color>
     <color name="red">#ff0000</color>
+    <color name="buttonred">#ff5a00</color>
+    <color name="buttongreen">#83cc55</color>
+
+    <color name="orange"> #FFA500</color>
+
 </resources>

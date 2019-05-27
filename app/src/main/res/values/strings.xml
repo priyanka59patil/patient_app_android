@@ -31,4 +31,17 @@
     <string name="please_enter_pin">Please Enter Pin</string>
     <string name="empty_dob">Please Select Dob</string>
     <string name="select_email">Email</string>
+    <string name="label_status_confirmed">Confirmed</string>
+    <string name="label_status_missed">Missed</string>
+    <string name="label_status_visited">Visited</string>
+    <string name="title_activity_schedule_details">ScheduleDetailsActivity</string>
+    <string name="label_schedule">Schedule</string>
+    <string name="label_reschedule">Reschedule</string>
+    <string name="label_askQuestion">Ask a Question</string>
+    <string name="label_confirm">Confirm</string>
+    <string name="label_note">Note</string>
+    <string name="text_note">Preparation for Blood Test You can have water and your usual medicines.</string>
+    <string name="label_attached_files">Attached Files</string>
+    <string name="label_location">Location</string>
+    <string name="address">558,Clayton St,San Francisco,CA 94117,Usa</string>
 </resources>
