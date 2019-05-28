@@ -5,11 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 
 import java.util.ArrayList;
@@ -17,10 +20,12 @@ import java.util.ArrayList;
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
     Context mContext;
     boolean isFromUpcoming;
+    RecyclerViewClickListerner listerner;
 
-    public AppointmentAdapter(Context mContext,boolean isFromUpcoming) {
+    public AppointmentAdapter(Context mContext, boolean isFromUpcoming, RecyclerViewClickListerner listerner) {
         this.mContext = mContext;
         this.isFromUpcoming=isFromUpcoming;
+        this.listerner=listerner;
     }
 
     @NonNull
@@ -52,6 +57,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                 holder.tvstatus.setText(mContext.getResources().getString(R.string.label_status_visited));
             }
         }
+
     }
 
 
@@ -60,12 +66,25 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         return 6;
     }
 
-    public class AppointmentViewHolder extends RecyclerView.ViewHolder {
+    public class AppointmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvstatus;
+        RelativeLayout appointment;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
             tvstatus = (TextView) itemView.findViewById(R.id.tvstatus);
+            appointment=(RelativeLayout)itemView.findViewById(R.id.appointment);
+            appointment.setOnClickListener(this::onClick);
+        }
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.appointment:
+                    listerner.onclick(getAdapterPosition());
+                    break;
+            }
+
         }
     }
 }

@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/appointment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_schedule_view"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/schedule_layout_width"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +21,7 @@
             android:layout_marginTop="8dp"
             android:text="21"
             android:textColor="@color/black"
-            android:textSize="@dimen/textSize_title"
+            android:textSize="@dimen/textSize_tvday"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="08.30 am"
+            android:textSize="@dimen/textsize_time"
             app:layout_constraintStart_toStartOf="@+id/tvstatus"
             app:layout_constraintTop_toBottomOf="@+id/tvMonth" />
 
@@ -51,6 +53,7 @@
             android:background="@drawable/orange_button"
             android:padding="3dp"
            android:textSize="@dimen/tvStatusSize"
+            android:gravity="center"
             android:text="To Confirmed"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"

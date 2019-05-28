@@ -1,4 +1,8 @@
 <resources>
+    <!-- google_places_api_key-->
+    <string name="google_places_api_key">AIzaSyDPRoIOi6XF3mShV-wsIfH71FIs7324Wp8</string>
+
+
     <string name="app_name">Patient App</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -44,4 +48,7 @@
     <string name="label_attached_files">Attached Files</string>
     <string name="label_location">Location</string>
     <string name="address">558,Clayton St,San Francisco,CA 94117,Usa</string>
+    <string name="value_username">Jeffery S. Cripping</string>
+    <string name="value_time">Yesterday 02:12:32 PM</string>
+    <string name="intent_is_from_upcoming">IsFromUpcoming</string>
 </resources>

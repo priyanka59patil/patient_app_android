@@ -40,11 +40,11 @@ public class BottomTabActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.calendar:
                     AppointmentFragment  appointmentFragment = new AppointmentFragment();
                     addFragment(appointmentFragment);
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.messages:
 
                     return true;
                 case R.id.people:

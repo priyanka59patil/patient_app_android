@@ -4,13 +4,13 @@
     <dimen name="main_layout_padding">8dp</dimen>
     <dimen name="main_adapter_padding">8dp</dimen>
     <dimen name="textSize_title">18dp</dimen>
-    <dimen name="textSize_note_size">25dp</dimen>
+    <dimen name="textSize_note_size">18dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="pin_view_padding">5dp</dimen>
     <dimen name="pin_code_padding">4dp</dimen>
-    <dimen name="tvStatusSize">12dp</dimen>
+    <dimen name="tvStatusSize">10dp</dimen>
     <dimen name="view_height_insurance">0.3dp</dimen>
     <dimen name="constraint_layout_padding_insurance">10dp</dimen>
     <dimen name="constraint_layout_margin_left_insurance">10dp</dimen>
@@ -40,4 +40,14 @@
     <dimen name="button_yes_height">35dp</dimen>
     <dimen name="img_padding_for_img_bgcolor">12dp</dimen>
     <dimen name="text_img_margintop">4dp</dimen>
+    <dimen name="margin_top_fileview">8dp</dimen>
+    <dimen name="margin_left_fileview">8dp</dimen>
+    <dimen name="file_view_height_width">80dp</dimen>
+    <dimen name="user_view_height_width">20dp</dimen>
+    <dimen name="margin_left_tvprefix">4dp</dimen>
+    <dimen name="cardview_padding">5dp</dimen>
+    <dimen name="schedule_layout_width">70dp</dimen>
+    <dimen name="textsize_time">12sp</dimen>
+    <dimen name="textSize_tvday">25sp</dimen>
+    <dimen name="bt_confirm_height">40dp</dimen>
 </resources>

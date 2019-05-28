@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appointment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorLightGreyBackground"
@@ -14,7 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="277dp"
-        tools:layout_editor_absoluteY="36dp">
+        tools:layout_editor_absoluteY="36dp"
+        android:scrollbars="none">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -167,7 +169,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:background="@drawable/rounded_button"
                                 android:padding="@dimen/img_padding_for_img_bgcolor"
-                                android:src="@drawable/ic_chat_bubble_white_24dp"
+                                android:src="@drawable/message_white"
 
                                 />
 
@@ -221,8 +223,9 @@
                         android:background="@color/colorLightGreyBackground" />
 
                     <Button
+                        android:id="@+id/btConfirm"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                       android:layout_height="@dimen/bt_confirm_height"
                         android:layout_below="@+id/line"
                         android:layout_margin="@dimen/button_confirm_margin"
                         android:background="@color/colorPrimary"
@@ -248,7 +251,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:layout_margin="@dimen/main_layout_padding"
+                android:layout_marginLeft="@dimen/main_layout_padding"
+                android:layout_marginTop="@dimen/main_layout_padding"
+                android:layout_marginBottom="@dimen/main_layout_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTextNote">
@@ -276,9 +281,9 @@
                 android:id="@+id/rvFiles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp"
-                android:background="@color/white"
+                android:layout_marginLeft="@dimen/main_layout_padding"
+                android:layout_marginTop="@dimen/main_layout_padding"
+                android:layout_marginBottom="@dimen/main_layout_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
 
@@ -290,6 +295,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/label_location"
+                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize_note_size"
                 app:layout_constraintStart_toStartOf="parent"
@@ -298,6 +304,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/main_layout_padding"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLocation" >
                <TextView
@@ -306,6 +313,12 @@
                    android:text="@string/address"
                    android:layout_margin="@dimen/main_layout_padding"/>
 
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.google.android.gms.maps.MapView>
             </androidx.cardview.widget.CardView>
 
 
