@@ -51,4 +51,5 @@
     <string name="value_username">Jeffery S. Cripping</string>
     <string name="value_time">Yesterday 02:12:32 PM</string>
     <string name="intent_is_from_upcoming">IsFromUpcoming</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
 </resources>

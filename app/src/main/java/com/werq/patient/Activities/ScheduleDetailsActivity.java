@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.werq.patient.Adapters.FilesAdapter;
@@ -38,7 +39,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ScheduleDetailsActivity extends AppCompatActivity {
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
+public class ScheduleDetailsActivity extends AppCompatActivity  {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
     @BindView(R.id.toolbar)
@@ -89,9 +92,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
     TextView tvLocation;
     @BindView(R.id.appointment)
     ConstraintLayout appointment;
-    @BindView(R.id.map)
-    MapView map;
-    GoogleMap googleMap;
+
 
     //context
     Context mContext;
@@ -163,29 +164,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void setMap() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        MapsInitializer.initialize(this);
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(new LatLng(55.854049, 13.661331));
-        LatLngBounds bounds = builder.build();
-        int padding = 0;
-        // Updates the location and zoom of the MapView
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-        googleMap.moveCamera(cameraUpdate);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -194,7 +172,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
             case MY_PERMISSIONS_REQUEST:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setMap();
+
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -207,4 +185,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity {
         mContext = this;
         intent = getIntent();
     }
+
+
 }

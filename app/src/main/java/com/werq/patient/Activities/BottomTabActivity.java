@@ -93,8 +93,8 @@ public class BottomTabActivity extends AppCompatActivity {
         initializeVariables();
         BottomNavigationViewHelper.disableShiftMode(navView);
 
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-         navView.setSelectedItemId(R.id.profile);
+         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+         navView.setSelectedItemId(R.id.calendar);
 
 
         Helper.setToolbar(getSupportActionBar(), "Home");

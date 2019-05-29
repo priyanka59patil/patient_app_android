@@ -43,6 +43,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Forgot Password");
         initializeVariables();
         getIntentData();
         setView();

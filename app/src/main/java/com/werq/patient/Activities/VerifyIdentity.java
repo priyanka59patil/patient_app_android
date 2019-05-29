@@ -44,6 +44,7 @@ public class VerifyIdentity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initlizeVariables();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Verify Identity");
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

@@ -53,7 +53,8 @@ public class SignUpActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initilizevariables();
-        Helper.setToolbar(getSupportActionBar(), "SignUp");
+        Helper.setToolbar(getSupportActionBar(), "Sign Up");
+
         etPin1.addTextChangedListener(new GenericTextWatcher(etPin1));
         etPin2.addTextChangedListener(new GenericTextWatcher(etPin2));
         etPin3.addTextChangedListener(new GenericTextWatcher(etPin3));

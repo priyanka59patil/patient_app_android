@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.werq.patient.Fragments.ChangePasswordFragment;
 import com.werq.patient.R;
 
 import butterknife.BindView;
@@ -66,7 +67,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void initializevariable() {
-        mContext=this;
+        mContext = this;
 
     }
 
@@ -86,7 +87,7 @@ public class SettingActivity extends AppCompatActivity {
             case R.id.tvPassword:
                 break;
             case R.id.tvChangePassword:
-
+                startActivity(new Intent(mContext, ChangePasswordActivity.class));
                 break;
         }
     }

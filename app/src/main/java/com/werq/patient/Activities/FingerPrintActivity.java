@@ -38,6 +38,8 @@ public class FingerPrintActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initializeVariables();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Fingerprint Login");
 
     }
 
