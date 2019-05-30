@@ -26,7 +26,6 @@
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/main_layout_padding"
                 android:layout_marginTop="@dimen/main_layout_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -39,7 +38,8 @@
                         android:id="@+id/layout_schedule_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="@dimen/main_layout_padding"
+                        android:layout_marginEnd="@dimen/main_layout_padding"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -238,7 +238,6 @@
                 android:id="@+id/tvTextNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/label_note"
                 android:textColor="@color/black"
@@ -251,10 +250,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/white"
-                android:layout_marginLeft="@dimen/main_layout_padding"
+
                 android:layout_marginTop="@dimen/main_layout_padding"
                 android:layout_marginBottom="@dimen/main_layout_padding"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTextNote">
 
@@ -269,7 +267,6 @@
                 android:id="@+id/tvTextAttachedFiles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/label_attached_files"
                 android:textColor="@color/black"
@@ -281,9 +278,6 @@
                 android:id="@+id/rvFiles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/main_layout_padding"
-                android:layout_marginTop="@dimen/main_layout_padding"
-                android:layout_marginBottom="@dimen/main_layout_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
 
@@ -292,10 +286,8 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/label_location"
-                android:visibility="gone"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize_note_size"
                 app:layout_constraintStart_toStartOf="parent"
@@ -303,22 +295,27 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/main_layout_padding"
-                android:visibility="gone"
+               android:layout_marginTop="@dimen/main_layout_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvLocation" >
-               <TextView
+               <RelativeLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvAddressonMap"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="@string/address"
                    android:layout_margin="@dimen/main_layout_padding"/>
-
-                <com.google.android.gms.maps.MapView
+                <ImageView
                     android:id="@+id/map"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_below="@+id/tvAddressonMap"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/mapview"
+                    />
+               </RelativeLayout>
 
-                </com.google.android.gms.maps.MapView>
             </androidx.cardview.widget.CardView>
 
 

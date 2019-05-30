@@ -15,7 +15,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    private Integer [] images = {R.drawable.ic_launcher_background,R.drawable.ic_launcher_background,R.drawable.ic_launcher_background};
+    private Integer [] images = {R.drawable.insurancecard,R.drawable.insurancecardback,R.drawable.insurancecard};
 
     public ImagePagerAdapter(Context context) {
         this.context = context;

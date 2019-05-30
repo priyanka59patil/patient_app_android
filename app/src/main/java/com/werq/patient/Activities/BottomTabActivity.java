@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.werq.patient.Fragments.AppointmentFragment;
+import com.werq.patient.Fragments.DoctorTeamFragment;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.R;
 import com.werq.patient.Utils.BottomNavigationViewHelper;
@@ -48,7 +49,8 @@ public class BottomTabActivity extends AppCompatActivity {
 
                     return true;
                 case R.id.people:
-
+                    DoctorTeamFragment doctorTeamFragment=new DoctorTeamFragment();
+                    addFragment(doctorTeamFragment);
                     return true;
                 case R.id.profile:
                     ProfileFragment profileFragment = new ProfileFragment();
@@ -91,7 +93,7 @@ public class BottomTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom_tab);
         ButterKnife.bind(this);
         initializeVariables();
-        BottomNavigationViewHelper.disableShiftMode(navView);
+
 
          navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
          navView.setSelectedItemId(R.id.calendar);

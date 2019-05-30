@@ -50,4 +50,8 @@
     <dimen name="textsize_time">12sp</dimen>
     <dimen name="textSize_tvday">25sp</dimen>
     <dimen name="bt_confirm_height">40dp</dimen>
+    <dimen name="diolog_height">180dp</dimen>
+    <dimen name="diolog_layout_height">60dp</dimen>
+    <dimen name="stackImage_height_width">50dp</dimen>
+    <dimen name="margin_left_stackImage">-5dp</dimen>
 </resources>
