@@ -18,9 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.SearchByNameActivity"
+            android:label="@string/title_activity_search_by_name"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activities.AddDoctorTeamActivity"
+            android:label="@string/title_activity_add_doctor_team"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Activities.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

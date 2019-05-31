@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/main_layout_padding"
-    android:background="@color/white"
+    android:background="@color/colorLightGreyBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context=".Fragments.DoctorTeamFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUserProfiles"
+        android:id="@+id/rvDoctorTeam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,5 +18,7 @@
 
 
     </androidx.recyclerview.widget.RecyclerView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/main_layout_padding"
+    android:layout_marginTop="@dimen/main_layout_padding"
+    android:layout_marginRight="@dimen/main_layout_padding">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/main_adapter_padding"
+        android:paddingTop="@dimen/main_adapter_padding"
+        android:paddingRight="@dimen/main_adapter_padding"
+        android:paddingBottom="@dimen/main_adapter_padding">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUserProfiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tvTeamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvUserProfiles"
+            android:layout_marginTop="@dimen/margin_top_doctorname"
+            android:text="Ida Fox Team"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize_title" />
+
+        <TextView
+            android:id="@+id/tvPracticeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTeamName"
+            android:layout_marginTop="@dimen/margin_top_doctorname"
+            android:text="Guha Dentistry practice" />
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvPracticeName"
+            android:layout_marginTop="@dimen/margin_top_doctorname"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/btAdd"
+            android:drawableLeft="@drawable/ic_location_on_blue_24dp"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:text="219 Spring Street,New York,Ny" />
+
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvAddress"
+            android:layout_marginTop="@dimen/margin_top_doctorname"
+            android:drawableLeft="@drawable/ic_call_blue_24dp"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:text="6565656565"
+            android:tint="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/btAdd"
+            android:layout_width="@dimen/btadd_width_add"
+            android:layout_height="@dimen/btadd_height_add"
+            android:layout_alignParentRight="true"
+          android:layout_alignBaseline="@+id/tvPhoneNumber"
+            android:background="@drawable/blue_button"
+            android:text="@string/label_add"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

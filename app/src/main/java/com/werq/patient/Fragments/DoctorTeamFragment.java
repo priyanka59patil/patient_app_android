@@ -10,25 +10,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Adapters.DoctorTeamAdapter;
 import com.werq.patient.Adapters.StackImagesAdapter;
 import com.werq.patient.R;
-import com.werq.patient.Utils.OverlapDecoration;
 
-import java.util.ArrayList;
-
-import app.com.stackimageview.customviews.StackImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class DoctorTeamFragment extends Fragment {
 
+    @BindView(R.id.rvDoctorTeam)
+    RecyclerView rvDoctorTeam;
 
-    @BindView(R.id.rvUserProfiles)
-    RecyclerView rvUserProfiles;
-    StackImagesAdapter stackImageView;
     //Context
     Context mContext;
+    //adapter
+    DoctorTeamAdapter doctorTeamAdapter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,29 +41,18 @@ public class DoctorTeamFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctor_team, container, false);
         ButterKnife.bind(this, view);
-         intializeVariables();
-        stackImageView=new StackImagesAdapter(mContext,setImageResources());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.HORIZONTAL,false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        rvUserProfiles.addItemDecoration(new OverlapDecoration());
-        rvUserProfiles.setLayoutManager(layoutManager);
-        rvUserProfiles.setHasFixedSize(true);
-        rvUserProfiles.setAdapter(stackImageView);
+        intializeVariables();
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false);
+        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
+        rvDoctorTeam.setHasFixedSize(true);
+        rvDoctorTeam.setAdapter(doctorTeamAdapter);
+
         return view;
     }
 
     private void intializeVariables() {
-        mContext=getActivity();
+        mContext = getActivity();
     }
 
-    private ArrayList<Integer> setImageResources() {
-        ArrayList<Integer> imageLists = new ArrayList<>();
-        imageLists.add(R.drawable.imageone);
-        imageLists.add(R.drawable.imagetwo);
-        imageLists.add(R.drawable.imagetwo);
-        imageLists.add(R.drawable.imageone);
-        return imageLists;
-    }
 
 }

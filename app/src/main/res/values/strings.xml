@@ -54,4 +54,12 @@
     <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="label_camera">Take New Photo</string>
     <string name="label_choose_from_gallary">Choose from gallery</string>
+    <string name="label_invitationcode">Enter Invitation Code</string>
+    <string name="label_search_doctor_base">Search Doctor Base</string>
+    <string name="title_activity_add_doctor_team">AddDoctorTeamActivity</string>
+    <string name="title_add_doctor_team">Add Doctor Team</string>
+    <string name="add_doctor_name_static">Please enter the code you received from your doctor</string>
+    <string name="msg_new_doctor_added">New doctor team added to your list!</string>
+    <string name="title_activity_search_by_name">SearchByNameActivity</string>
+    <string name="label_add">Add</string>
 </resources>

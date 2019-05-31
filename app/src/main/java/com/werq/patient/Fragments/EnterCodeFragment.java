@@ -1,31 +1,31 @@
-package com.werq.patient.Activities;
+package com.werq.patient.Fragments;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.werq.patient.R;
-import com.werq.patient.Utils.EditTextUtils;
-import com.werq.patient.Utils.Helper;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SignUpActivity extends AppCompatActivity {
+public class EnterCodeFragment extends Fragment {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+
     @BindView(R.id.textSignUp)
     TextView textSignUp;
     @BindView(R.id.etPin1)
@@ -42,62 +42,56 @@ public class SignUpActivity extends AppCompatActivity {
     Button btNext;
     @BindView(R.id.Tv_already_have_account)
     TextView TvAlreadyHaveAccount;
-    Context mContext;
     @BindView(R.id.tvLogin)
     TextView tvLogin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        initilizevariables();
-        Helper.setToolbar(getSupportActionBar(), "Sign Up");
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.content_sign_up, container, false);
+        ButterKnife.bind(this, view);
+        TvAlreadyHaveAccount.setVisibility(View.GONE);
+        tvLogin.setVisibility(View.GONE);
+        btNext.setText(getResources().getString(R.string.label_confirm));
+        textSignUp.setText(getResources().getString(R.string.add_doctor_name_static));
         etPin1.addTextChangedListener(new GenericTextWatcher(etPin1));
         etPin2.addTextChangedListener(new GenericTextWatcher(etPin2));
         etPin3.addTextChangedListener(new GenericTextWatcher(etPin3));
         etPin4.addTextChangedListener(new GenericTextWatcher(etPin4));
+        return view;
     }
 
-    private void initilizevariables() {
-        mContext = this;
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
-    @OnClick({R.id.btNext, R.id.tvLogin})
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(String action) {
+
+    }
+
+    @OnClick({R.id.btNext})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btNext:
-                if (!validation())
-                    startActivity(new Intent(mContext, VerifyIdentity.class));
-                break;
-
-            case R.id.tvLogin:
-                startActivity(new Intent(mContext, LoginActivity.class));
-                finish();
+              EventBus.getDefault().post("new_doctor_team");
                 break;
         }
     }
 
-    private boolean validation() {
-        boolean isInValid = false;
-
-        isInValid = EditTextUtils.isEmpty(etPin1, getResources().getString(R.string.please_enter_pin));
-
-        isInValid = EditTextUtils.isEmpty(etPin2, getResources().getString(R.string.please_enter_pin));
-
-        isInValid = EditTextUtils.isEmpty(etPin3, getResources().getString(R.string.please_enter_pin));
-
-        isInValid = EditTextUtils.isEmpty(etPin4, getResources().getString(R.string.please_enter_pin));
-
-        return isInValid;
-
-    }
+    ;
 
 
-   private class GenericTextWatcher implements TextWatcher {
+    private class GenericTextWatcher implements TextWatcher {
         private View view;
 
         private GenericTextWatcher(View view) {
@@ -143,4 +137,5 @@ public class SignUpActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
         }
     }
+
 }

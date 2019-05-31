@@ -2,7 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="button_confirm_margin">16dp</dimen>
     <dimen name="main_layout_padding">8dp</dimen>
-    <dimen name="main_adapter_padding">8dp</dimen>
+    <dimen name="main_adapter_padding">16dp</dimen>
     <dimen name="textSize_title">18dp</dimen>
     <dimen name="textSize_note_size">18dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
@@ -54,4 +54,8 @@
     <dimen name="diolog_layout_height">60dp</dimen>
     <dimen name="stackImage_height_width">50dp</dimen>
     <dimen name="margin_left_stackImage">-5dp</dimen>
+    <dimen name="margin_top_doctorname">4dp</dimen>
+    <dimen name="drawable_padding">4dp</dimen>
+    <dimen name="btadd_width_add">100dp</dimen>
+    <dimen name="btadd_height_add">40dp</dimen>
 </resources>
