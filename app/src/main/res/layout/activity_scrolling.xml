@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".Activities.ScrollingActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/white"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:toolbarId="@+id/toolbar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@color/colorPrimary">
+
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+
+                android:layout_marginTop="?attr/actionBarSize">
+
+                <RelativeLayout
+                    android:id="@+id/collasbale_view"
+                    android:layout_width="wrap_content"
+                    android:paddingTop="20dp"
+                    android:padding="20dp"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivUserProfile"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@drawable/user_image_placeholder" />
+
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_userProfile"
+                        android:layout_marginTop="15dp"
+                        android:layout_toRightOf="@+id/ivUserProfile"
+                        android:text="@string/value_username"
+                        android:textSize="@dimen/textSize_title" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvUsername"
+                        android:layout_marginLeft="@dimen/margin_userProfile"
+                        android:layout_marginTop="@dimen/margin_userProfile"
+                        android:layout_toRightOf="@+id/ivUserProfile"
+                        android:text="@string/value_speciality" />
+
+                    <TextView
+                        android:id="@+id/tvAbout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivUserProfile"
+                        android:layout_marginTop="@dimen/margin_userProfile"
+                        android:text="@string/value_abouts"
+                         />
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="@color/cardview_light_background"
+                        android:layout_below="@+id/tvAbout"
+                        android:layout_marginTop="@dimen/margin_top_tvAbout"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_image_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/view"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/main_layout_padding"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageButton
+                                android:id="@+id/btcall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/rounded_button"
+                                android:tint="@color/white"
+                                android:padding="@dimen/img_padding_for_img_bgcolor"
+                                android:src="@drawable/ic_call_blue_24dp"
+
+                                />
+
+                            <TextView
+                                android:id="@+id/tvcall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btcall"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/text_img_margintop"
+                                android:text="@string/label_call"
+                                android:textColor="@color/colorPrimary" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageButton
+                                android:id="@+id/btChat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/rounded_button"
+                                android:padding="@dimen/img_padding_for_img_bgcolor"
+                                android:src="@drawable/message_white"
+
+                                />
+
+                            <TextView
+                                android:id="@+id/tvChat"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/btChat"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/text_img_margintop"
+                                android:text="@string/label_chat"
+                                android:textColor="@color/colorPrimary" />
+
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/view1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="@color/cardview_light_background"
+                        android:layout_below="@+id/layout_image_button"
+                        android:layout_marginBottom="@dimen/margin_layout_image_button"
+                        android:layout_marginTop="@dimen/margin_layout_image_button"/>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:background="@color/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/tbuserimageview"
+                    android:layout_width="@dimen/toolbar_image_height_width"
+                    android:layout_height="@dimen/toolbar_image_height_width"
+                    android:src="@drawable/user_image_placeholder" />
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <include layout="@layout/content_scrolling" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

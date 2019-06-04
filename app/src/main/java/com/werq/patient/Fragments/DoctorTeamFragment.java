@@ -1,6 +1,7 @@
 package com.werq.patient.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Activities.ProfileDoctorActivity;
+import com.werq.patient.Activities.ScrollingActivity;
 import com.werq.patient.Adapters.DoctorTeamAdapter;
-import com.werq.patient.Adapters.StackImagesAdapter;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class DoctorTeamFragment extends Fragment {
+public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickListerner {
 
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
@@ -27,6 +30,9 @@ public class DoctorTeamFragment extends Fragment {
     Context mContext;
     //adapter
     DoctorTeamAdapter doctorTeamAdapter;
+
+    //recyclerviewonclick
+    RecyclerViewClickListerner recyclerViewClickListerner;
 
 
     @Override
@@ -42,7 +48,7 @@ public class DoctorTeamFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_doctor_team, container, false);
         ButterKnife.bind(this, view);
         intializeVariables();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false);
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner);
         rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
         rvDoctorTeam.setHasFixedSize(true);
         rvDoctorTeam.setAdapter(doctorTeamAdapter);
@@ -52,7 +58,13 @@ public class DoctorTeamFragment extends Fragment {
 
     private void intializeVariables() {
         mContext = getActivity();
+        recyclerViewClickListerner=this;
     }
 
 
+    @Override
+    public void onclick(int position) {
+        startActivity(new Intent(mContext, ProfileDoctorActivity.class));
+
+    }
 }

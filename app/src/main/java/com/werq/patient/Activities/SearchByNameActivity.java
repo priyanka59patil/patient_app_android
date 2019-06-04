@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.DoctorTeamAdapter;
 import com.werq.patient.Adapters.StackImagesAdapter;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.OverlapDecoration;
@@ -27,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SearchByNameActivity extends AppCompatActivity {
+public class SearchByNameActivity extends AppCompatActivity implements RecyclerViewClickListerner {
 
 
     @BindView(R.id.toolbar)
@@ -39,6 +40,7 @@ public class SearchByNameActivity extends AppCompatActivity {
     private DoctorTeamAdapter doctorTeamAdapter;
     private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
+    RecyclerViewClickListerner recyclerViewClickListerner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,7 @@ public class SearchByNameActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Doctor Name");
         inilizevariables();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,true);
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,true,recyclerViewClickListerner);
         rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
         rvDoctorTeam.setHasFixedSize(true);
         rvDoctorTeam.setAdapter(doctorTeamAdapter);
@@ -120,6 +122,7 @@ public class SearchByNameActivity extends AppCompatActivity {
 
     private void inilizevariables() {
         mContext = this;
+        recyclerViewClickListerner=this;
     }
 
 
@@ -134,4 +137,8 @@ public class SearchByNameActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onclick(int position) {
+
+    }
 }

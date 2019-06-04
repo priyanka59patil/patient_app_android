@@ -42,6 +42,7 @@ public class AppointmentFragment extends Fragment {
         setupViewPager(viewpager);
         tabs.setupWithViewPager(viewpager);
 
+
         return view;
     }
 

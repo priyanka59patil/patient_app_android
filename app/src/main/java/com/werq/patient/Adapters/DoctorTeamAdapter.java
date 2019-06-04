@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
 
@@ -19,10 +21,12 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
     private StackImagesAdapter stackImageView;
     Context mContext;
     boolean fromSearchName;
+    RecyclerViewClickListerner recyclerViewClickListerner;
 
-    public DoctorTeamAdapter(Context mContext,boolean fromSearchName) {
+    public DoctorTeamAdapter(Context mContext, boolean fromSearchName, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
         this.fromSearchName=fromSearchName;
+        this.recyclerViewClickListerner=recyclerViewClickListerner;
     }
 
     @NonNull
@@ -47,6 +51,7 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
             holder.btAdd.setVisibility(View.VISIBLE);
         else
             holder.btAdd.setVisibility(View.GONE);
+
     }
     private ArrayList<Integer> setImageResources() {
         ArrayList<Integer> imageLists = new ArrayList<>();
@@ -62,13 +67,21 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
         return 5;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
          RecyclerView rvUserProfiles;
         Button btAdd;
+        RelativeLayout layout_mainlayout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rvUserProfiles=(RecyclerView)itemView.findViewById(R.id.rvUserProfiles);
             btAdd=(Button)itemView.findViewById(R.id.btAdd);
+            layout_mainlayout=(RelativeLayout)itemView.findViewById(R.id.layout_mainlayout);
+            layout_mainlayout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            recyclerViewClickListerner.onclick(getAdapterPosition());
         }
     }
 }

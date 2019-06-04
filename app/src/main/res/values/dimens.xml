@@ -58,4 +58,11 @@
     <dimen name="drawable_padding">4dp</dimen>
     <dimen name="btadd_width_add">100dp</dimen>
     <dimen name="btadd_height_add">40dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="margin_userProfile">8dp</dimen>
+    <dimen name="toolbar_image_height_width">40dp</dimen>
+    <dimen name="margin_top_tvAbout">8dp</dimen>
+    <dimen name="margin_top_layout_image_button">4dp</dimen>
+    <dimen name="margin_layout_image_button">4dp</dimen>
 </resources>

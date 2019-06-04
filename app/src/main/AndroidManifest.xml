@@ -18,9 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Activities.ProfileDoctorActivity"
+            android:label="@string/title_activity_profile_doctor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Activities.SearchByNameActivity"
             android:label="@string/title_activity_search_by_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.AddDoctorTeamActivity"
             android:label="@string/title_activity_add_doctor_team"
