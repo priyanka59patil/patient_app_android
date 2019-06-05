@@ -19,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Fragments.AppointmentFragment;
+import com.werq.patient.Fragments.ChatFragments;
 import com.werq.patient.Fragments.DoctorTeamFragment;
+import com.werq.patient.Fragments.PracticeFragment;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -38,6 +40,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     private TextView mTextMessage;
     Context mContext;
     BottomSheetDialog mBottomSheetDialog;
+    String title;
 
 
     LinearLayout layoutNewInvitation;
@@ -52,21 +55,25 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     AppointmentFragment appointmentFragment = new AppointmentFragment();
                     addFragment(appointmentFragment);
                     if (add != null && setting != null) {
-                        Helper.setToolbar(getSupportActionBar(), "AppointMent");
+                        Helper.setToolbar(getSupportActionBar(), "Appointment");
                         add.setVisible(false);
                         setting.setVisible(true);
                     }
 
                     return true;
                 case R.id.messages:
-
+                    title="Chat";
+                    setToolbarForbottom(title,true,false);
+                    ChatFragments chatFragments=new ChatFragments();
+                    addFragment(chatFragments);
                     return true;
                 case R.id.people:
+
+                    title="Doctor Name";
+                    setToolbarForbottom(title,true,false);
                     DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
                     addFragment(doctorTeamFragment);
-                    Helper.setToolbar(getSupportActionBar(), "Doctor Name");
-                    add.setVisible(true);
-                    setting.setVisible(false);
+
                     return true;
                 case R.id.profile:
                     ProfileFragment profileFragment = new ProfileFragment();
@@ -76,7 +83,8 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     setting.setVisible(true);
                     return true;
                 case R.id.folder:
-
+                    PracticeFragment practiceFragment=new PracticeFragment();
+                    addFragment(practiceFragment);
                     return true;
             }
             return false;
@@ -90,6 +98,11 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.mainLayout, fragment);
         transaction.commitNow();
+    }
+    private void setToolbarForbottom(String title,boolean isaddVisiable,boolean isSettingvisible){
+        Helper.setToolbar(getSupportActionBar(), title);
+        add.setVisible(true);
+        setting.setVisible(false);
     }
 
     @Override
@@ -109,7 +122,16 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 startActivity(new Intent(mContext, SettingActivity.class));
                 break;
             case R.id.action_Doctor_name:
-                mBottomSheetDialog.show();
+                switch (title){
+                    case "Doctor Name":
+                        mBottomSheetDialog.show();
+                        break;
+                    case "Chat":
+                        startActivity(new Intent(mContext,NewChatActivity.class));
+                     break;
+                }
+
+
                 break;
         }
 

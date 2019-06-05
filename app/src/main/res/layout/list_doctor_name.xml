@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rvUserProfiles"
             android:layout_marginTop="@dimen/margin_top_doctorname"
-            android:text="Ida Fox Team"
+            android:text="@string/value_doctor_name"
             android:textColor="@color/black"
             android:textSize="@dimen/textSize_title" />
 

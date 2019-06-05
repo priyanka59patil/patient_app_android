@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:background="@color/colorLightGreyBackground"
+    tools:context=".Activities.NewChatActivity"
+    tools:showIn="@layout/activity_new_chat">
+
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:padding="@dimen/activity_horizontal_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/et_Search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:drawableLeft="@drawable/ic_search_grey_600_24dp"
+            android:drawablePadding="22dp"
+            android:gravity="left|center"
+            android:hint="Search People by Name"
+            android:lines="1"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray" />
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="@dimen/main_layout_padding"
+        android:layout_marginLeft="@dimen/main_layout_padding"
+        android:text="@string/static_string_start_chat"
+        android:textSize="@dimen/textSize_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_layout" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="@dimen/main_layout_padding"
+        android:layout_marginLeft="@dimen/main_layout_padding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

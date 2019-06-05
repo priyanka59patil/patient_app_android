@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/main_layout_padding">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tvTime"></androidx.recyclerview.widget.RecyclerView>
+
+        <View
+            android:id="@+id/online"
+            android:layout_width="@dimen/online_view_height_width"
+            android:layout_height="@dimen/online_view_height_width"
+            android:layout_below="@+id/rvUsers"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/online_view" />
+
+        <TextView
+            android:id="@+id/tvDoctorTeamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvUsers"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/margin_top_rvuser"
+            android:layout_marginLeft="@dimen/margin_left_from_online"
+            android:layout_toRightOf="@+id/online"
+            android:text="@string/value_doctor_name" />
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDoctorTeamName"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/margintop_from_doctor_team"
+            android:text="@string/value_message" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin_left_rvUser"
+            android:text="@string/last_message_date" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorLightGreyBackground"
+            android:layout_below="@+id/tvMessage"
+            android:layout_marginTop="@dimen/margintop_from_doctor_team"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

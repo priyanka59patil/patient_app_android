@@ -161,4 +161,19 @@
     <string name="label_practice">Practice</string>
     <string name="label_doctorname">Doctor Name</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="value_message">Ok,we made reschedule</string>
+    <string name="value_doctor_name">Ida Fox Team</string>
+    <string name="last_message_date">Jun 28</string>
+    <string name="title_activity_new_chat">NewChatActivity</string>
+    <string name="static_string_start_chat">Select Team To Start a Chat</string>
+    <string name="title_activity_chat_room">ChatRoomActivity</string>
+    <string name="value_practice_name">Guha Dentistry practice</string>
+    <string name="value_practice_about">Soho Pediatric Group is dedicated to the care health and development of children and their families</string>
+    <string name="value_practice_Location">Practice Location</string>
+    <string name="value_hospital_affairs">Hospital Affiliates</string>
+    <string name="value_website">www.sohopediatriciangroup.com</string>
+    <string name="label_website">Website</string>
+    <string name="value_phone_number">9858877747</string>
+    <string name="value_hospital">St. luke\'s hospital</string>
+    <string name="value_referral_coorinate">Referral Cooridinate</string>
 </resources>

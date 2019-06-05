@@ -7,40 +7,36 @@
     android:overScrollMode="never"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activities.ProfileDoctorActivity"
-    tools:showIn="@layout/activity_profile_doctor">
+    tools:showIn="@layout/activity_profile_doctor"
+    android:fillViewport="true">
 
-<RelativeLayout
-    android:id="@+id/relTablayouts"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-   >
+    <RelativeLayout
+        android:id="@+id/relTablayouts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/white"
-            app:tabTextColor="@color/colorPrimary"
-            app:tabIndicatorColor="@color/colorPrimary"
             android:elevation="2dp"
-            app:tabIndicatorHeight="1dp"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
             app:tabGravity="fill"
-            app:tabMode="fixed" />
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorHeight="1dp"
+            app:tabMode="fixed"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            app:tabTextColor="@color/colorPrimary" />
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/tabs"
-          />
+            android:layout_below="@+id/tabs" />
 
 
-</RelativeLayout>
-
-
-
+    </RelativeLayout>
 
 
 </androidx.core.widget.NestedScrollView>

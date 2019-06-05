@@ -65,4 +65,12 @@
     <dimen name="margin_top_tvAbout">8dp</dimen>
     <dimen name="margin_top_layout_image_button">4dp</dimen>
     <dimen name="margin_layout_image_button">4dp</dimen>
+    <dimen name="online_view_height_width">10dp</dimen>
+    <dimen name="margin_top_rvuser">8dp</dimen>
+    <dimen name="margin_right_from_online">8dp</dimen>
+    <dimen name="margin_left_from_online">8dp</dimen>
+    <dimen name="margintop_from_doctor_team">8dp</dimen>
+    <dimen name="margin_left_rvUser">4dp</dimen>
+    <dimen name="padding_textview_practice">8dp</dimen>
+    <dimen name="doctor_height_width">50dp</dimen>
 </resources>
