@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/cvMainLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -22,7 +23,7 @@
             android:layout_width="@dimen/online_view_height_width"
             android:layout_height="@dimen/online_view_height_width"
             android:layout_below="@+id/rvUsers"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/online_view" />
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_below="@+id/rvUsers"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/margin_top_rvuser"
+            android:textSize="@dimen/textSize_title"
             android:layout_marginLeft="@dimen/margin_left_from_online"
             android:layout_toRightOf="@+id/online"
             android:text="@string/value_doctor_name" />
@@ -41,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDoctorTeamName"
-            android:textStyle="bold"
             android:layout_marginTop="@dimen/margintop_from_doctor_team"
             android:text="@string/value_message" />
 

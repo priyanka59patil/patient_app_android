@@ -1,6 +1,7 @@
 package com.werq.patient.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,20 +11,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Activities.ChatRoomActivity;
+import com.werq.patient.Activities.NewChatActivity;
 import com.werq.patient.Adapters.ChatAdapters;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ChatFragments extends Fragment {
+public class ChatFragments extends Fragment implements RecyclerViewClickListerner {
 
 
     @BindView(R.id.rv_chats)
     RecyclerView rvChats;
   ChatAdapters chatAdapters;
   Context mContext;
+    RecyclerViewClickListerner recyclerViewClickListerner;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,7 +36,7 @@ public class ChatFragments extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         ButterKnife.bind(this,view);
        inilizeVariables();
-        chatAdapters=new ChatAdapters(mContext,false);
+        chatAdapters=new ChatAdapters(mContext,true,recyclerViewClickListerner);
         rvChats.setLayoutManager(new LinearLayoutManager(mContext));
         rvChats.setHasFixedSize(true);
         rvChats.setAdapter(chatAdapters);
@@ -40,7 +45,13 @@ public class ChatFragments extends Fragment {
 
     private void inilizeVariables() {
         mContext=getActivity();
+        recyclerViewClickListerner=this;
     }
 
 
+    @Override
+    public void onclick(int position) {
+        startActivity(new Intent(mContext, ChatRoomActivity.class));
+
+    }
 }

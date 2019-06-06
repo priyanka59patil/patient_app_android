@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
 
@@ -19,10 +21,12 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
     Context mContext;
     private StackImagesAdapter stackImageView;
     boolean isFromRecentChat;
+    RecyclerViewClickListerner recyclerViewClickListerner;
 
-    public ChatAdapters(Context mContext,boolean isFromRecentChat) {
+    public ChatAdapters(Context mContext,boolean isFromRecentChat, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
         this.isFromRecentChat=isFromRecentChat;
+        this.recyclerViewClickListerner=recyclerViewClickListerner;
     }
 
     @NonNull
@@ -66,14 +70,22 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
         return 5;
     }
 
-    public class ViewHolders extends RecyclerView.ViewHolder {
+    public class ViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView rvUsers;
         TextView tvMessage,tvTime;
+        CardView cvMainLayout;
         public ViewHolders(@NonNull View itemView) {
             super(itemView);
             rvUsers=(RecyclerView)itemView.findViewById(R.id.rvUsers);
             tvMessage=(TextView)itemView.findViewById(R.id.tvMessage);
             tvTime=(TextView)itemView.findViewById(R.id.tvTime);
+            cvMainLayout =(CardView)itemView.findViewById(R.id.cvMainLayout);
+            cvMainLayout.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            recyclerViewClickListerner.onclick(getAdapterPosition());
         }
     }
 }

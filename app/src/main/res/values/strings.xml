@@ -176,4 +176,13 @@
     <string name="value_phone_number">9858877747</string>
     <string name="value_hospital">St. luke\'s hospital</string>
     <string name="value_referral_coorinate">Referral Cooridinate</string>
+    <string name="value_start_conversation">Start  Conversation</string>
+    <string name="value_start_new_conversation">Start New Conversation</string>
+    <string name="hint_choose_topic">Please choose the topic</string>
+    <string name="label_send">Send</string>
+    <string name="title_activity_chat_topics">ChatTopicsActivity</string>
+    <string name="value_topics">topics</string>
+    <string name="title_activity_chat_info">ChatInfoActivity</string>
+    <string name="label_doctor">Doctor</string>
+    <string name="label_shared_media">Shared Media</string>
 </resources>

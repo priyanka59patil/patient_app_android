@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/main_layout_padding">
+    <TextView
+        android:id="@+id/tvtitle_new_conversation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/value_start_new_conversation"
+        android:textSize="@dimen/textSize_title"
+        android:textColor="@color/black"/>
+        <EditText
+            android:id="@+id/etChooseTopic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_fromconversation_title"
+            android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:layout_below="@+id/tvtitle_new_conversation"
+            android:hint="@string/hint_choose_topic"
+
+
+            />
+
+        <EditText
+            android:id="@+id/etAskQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top_ask_question"
+            android:layout_below="@+id/etChooseTopic"
+            android:hint="@string/label_askQuestion"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:layout_below="@+id/etAskQuestion"
+            android:layout_marginTop="@dimen/margintop_etAskQuestion"
+            android:textColor="@color/white"
+            android:text="@string/label_send"/>
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

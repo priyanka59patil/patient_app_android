@@ -34,7 +34,7 @@ public class DoctorsListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctors_list, container, false);
         ButterKnife.bind(this,view);
-         doctorUserList=new DoctorUserList(getActivity());
+         doctorUserList=new DoctorUserList(getActivity(),15);
         rvDoctorTeam.setHasFixedSize(false);
         rvDoctorTeam.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvDoctorTeam.setAdapter(doctorUserList);

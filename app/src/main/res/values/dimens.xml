@@ -15,7 +15,7 @@
     <dimen name="constraint_layout_padding_insurance">10dp</dimen>
     <dimen name="constraint_layout_margin_left_insurance">10dp</dimen>
     <dimen name="insurance_Heding_text_size">16dp</dimen>
-    <dimen name="insurance_SubHeding_text_size">16dp</dimen>
+    <dimen name="insurance_SubHeding_text_size">18sp</dimen>
     <dimen name="insurance_text_margin_top">5dp</dimen>
 
     <dimen name="constraint_layout_padding_medication">10dp</dimen>
@@ -73,4 +73,7 @@
     <dimen name="margin_left_rvUser">4dp</dimen>
     <dimen name="padding_textview_practice">8dp</dimen>
     <dimen name="doctor_height_width">50dp</dimen>
+    <dimen name="margin_top_fromconversation_title">16dp</dimen>
+    <dimen name="margin_top_ask_question">16dp</dimen>
+    <dimen name="margintop_etAskQuestion">8dp</dimen>
 </resources>
