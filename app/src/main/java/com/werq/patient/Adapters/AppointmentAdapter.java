@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -68,12 +69,12 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
     public class AppointmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvstatus;
-        RelativeLayout appointment;
+        LinearLayout appointment;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
             tvstatus = (TextView) itemView.findViewById(R.id.tvstatus);
-            appointment=(RelativeLayout)itemView.findViewById(R.id.appointment);
+            appointment=(LinearLayout)itemView.findViewById(R.id.appointment);
             appointment.setOnClickListener(this::onClick);
         }
 

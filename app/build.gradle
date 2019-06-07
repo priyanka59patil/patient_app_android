@@ -64,5 +64,9 @@ dependencies {
     //read more
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
+//Matrial Design
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
+//Toggle button
 
+    compile 'com.github.luongvo:iOS-SwitchView:1.0.0'
 }

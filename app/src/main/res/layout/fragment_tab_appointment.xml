@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingRight="@dimen/main_layout_padding"
-    android:paddingLeft="@dimen/main_layout_padding"
+
     tools:context=".Fragments.TabAppointmentFragment">
 
   <androidx.recyclerview.widget.RecyclerView

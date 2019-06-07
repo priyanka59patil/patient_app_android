@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/main_layout_padding"
+    android:layout_marginLeft="@dimen/layout16dp"
+    android:layout_marginRight="@dimen/layout16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Activities.SignUpActivity"
     tools:showIn="@layout/activity_sign_up">
@@ -15,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+
         android:text="Please Enter the code You received from your doctor "
         android:textSize="@dimen/textSize_title"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,6 +44,7 @@
             android:ems="10"
             android:gravity="center"
             android:inputType="number"
+            android:maxLength="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +55,7 @@
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
             android:ems="10"
+            android:maxLength="1"
             android:gravity="center"
             android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/etPin1"
@@ -63,6 +68,7 @@
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
             android:ems="10"
+            android:maxLength="1"
             android:gravity="center"
             android:inputType="number"
             app:layout_constraintStart_toEndOf="@+id/etPin2"
@@ -74,6 +80,7 @@
             android:layout_height="46dp"
             android:layout_marginStart="8dp"
             android:ems="10"
+            android:maxLength="1"
             android:gravity="center"
             android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/etPin3"

@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingBottom="4dp"
+    android:paddingRight="4dp"
+    android:background="@color/backgroundgrey"
+
     android:id="@+id/appointment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_schedule_view"
-        android:layout_width="@dimen/schedule_layout_width"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:paddingBottom="8dp"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -22,6 +29,8 @@
             android:text="21"
             android:textColor="@color/black"
             android:textSize="@dimen/textSize_tvday"
+            android:layout_marginStart="@dimen/layout16dp"
+
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -29,23 +38,32 @@
         <TextView
             android:id="@+id/tvMonth"
             android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/layout16dp"
             android:layout_height="wrap_content"
             android:text="Aug"
+            android:textSize="@dimen/textheader15dp"
+
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvday" />
 
         <TextView
             android:id="@+id/tvTime"
+            android:layout_marginStart="@dimen/layout16dp"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+
             android:text="08.30 am"
             android:textSize="@dimen/textsize_time"
-            app:layout_constraintStart_toStartOf="@+id/tvstatus"
+            android:textColor="@color/color_text"
             app:layout_constraintTop_toBottomOf="@+id/tvMonth" />
 
         <TextView
+            android:layout_marginStart="@dimen/layout16dp"
+
             android:id="@+id/tvstatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,8 +72,10 @@
             android:padding="3dp"
            android:textSize="@dimen/tvStatusSize"
             android:gravity="center"
-            android:text="To Confirmed"
+            android:text="To Confirm"
             android:textColor="@color/white"
+            android:textAllCaps="true"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTime" />
 
@@ -64,10 +84,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="8dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:background="@color/white"
         android:layout_toRightOf="@+id/layout_schedule_view">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -97,6 +117,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:text="Otorhinolaryngology"
+            android:textSize="@dimen/textnormal12dp"
+            android:textColor="@color/color_text"
             android:layout_below="@+id/tvUseFullName"
             android:layout_toRightOf="@+id/ivUseImage"
              />
@@ -106,12 +128,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
-            android:textSize="12dp"
+            android:textSize="@dimen/textnormal12dp"
+            android:textColor="@color/color_text"
             android:text="3874 Masthead St NE #4479 Albuquerque"
             android:layout_below="@+id/ivUseImage" />
 
     </RelativeLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -120,4 +142,4 @@
         android:layout_marginTop="8dp"
         android:background="@color/colorLightGreyBackground" />
 
-</RelativeLayout>
+</LinearLayout>

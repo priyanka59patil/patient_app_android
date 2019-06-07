@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/margin_top_doctorname"
             android:text="@string/value_doctor_name"
             android:textColor="@color/black"
-            android:textSize="@dimen/textSize_title" />
+            android:textSize="@dimen/textheader15dp" />
 
         <TextView
             android:id="@+id/tvPracticeName"
@@ -38,6 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvTeamName"
             android:layout_marginTop="@dimen/margin_top_doctorname"
+            android:textSize="@dimen/textnormal12dp"
+            android:textColor="@color/color_text"
             android:text="Guha Dentistry practice" />
 
         <TextView
@@ -50,6 +52,9 @@
             android:layout_toLeftOf="@+id/btAdd"
             android:drawableLeft="@drawable/ic_location_on_blue_24dp"
             android:drawablePadding="@dimen/drawable_padding"
+            android:textSize="@dimen/textnormal12dp"
+
+            android:textColor="@color/colorPrimary"
             android:text="219 Spring Street,New York,Ny" />
 
         <TextView
@@ -60,7 +65,10 @@
             android:layout_marginTop="@dimen/margin_top_doctorname"
             android:drawableLeft="@drawable/ic_call_blue_24dp"
             android:drawablePadding="@dimen/drawable_padding"
+            android:textColor="@color/colorPrimary"
             android:text="6565656565"
+            android:textSize="@dimen/textnormal12dp"
+
             android:tint="@color/colorPrimary" />
 
         <Button

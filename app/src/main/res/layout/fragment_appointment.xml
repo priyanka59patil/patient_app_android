@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundgrey"
+
     tools:context=".Fragments.AppointmentFragment">
 
     <com.google.android.material.tabs.TabLayout

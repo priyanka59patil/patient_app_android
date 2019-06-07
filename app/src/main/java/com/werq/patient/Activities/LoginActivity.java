@@ -20,6 +20,7 @@ import com.werq.patient.Utils.Helper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import vn.luongvo.widget.iosswitchview.SwitchView;
 
 ;
 
@@ -33,9 +34,9 @@ public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.etPassword)
     EditText etPassword;
     @BindView(R.id.swRememberMe)
-    Switch swRememberMe;
+    SwitchView swRememberMe;
     @BindView(R.id.swTouchId)
-    Switch swTouchId;
+    SwitchView swTouchId;
     @BindView(R.id.btLogin)
     Button btLogin;
     @BindView(R.id.tvtextSignUp)

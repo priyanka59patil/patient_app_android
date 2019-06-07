@@ -16,5 +16,6 @@
     <color name="buttongreen">#83cc55</color>
 
     <color name="orange"> #FFA500</color>
+    <color name="backgroundgrey">#ECEFF1</color>
 
 </resources>

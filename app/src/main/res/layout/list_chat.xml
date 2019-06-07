@@ -33,7 +33,7 @@
             android:layout_below="@+id/rvUsers"
             android:textColor="@color/black"
             android:layout_marginTop="@dimen/margin_top_rvuser"
-            android:textSize="@dimen/textSize_title"
+            android:textSize="@dimen/textheader15dp"
             android:layout_marginLeft="@dimen/margin_left_from_online"
             android:layout_toRightOf="@+id/online"
             android:text="@string/value_doctor_name" />
@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDoctorTeamName"
             android:layout_marginTop="@dimen/margintop_from_doctor_team"
+            android:textSize="@dimen/textnormal12dp"
             android:text="@string/value_message" />
 
         <TextView
