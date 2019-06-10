@@ -21,6 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Fragments.AppointmentFragment;
 import com.werq.patient.Fragments.ChatFragments;
 import com.werq.patient.Fragments.DoctorTeamFragment;
+import com.werq.patient.Fragments.FilesFragment;
 import com.werq.patient.Fragments.PracticeFragment;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.R;
@@ -58,6 +59,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                         Helper.setToolbar(getSupportActionBar(), "Appointment");
                         add.setVisible(false);
                         setting.setVisible(true);
+                        search.setVisible(false);
                     }
 
                     return true;
@@ -81,10 +83,15 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     Helper.setToolbar(getSupportActionBar(), "Profile");
                     add.setVisible(false);
                     setting.setVisible(true);
+                    search.setVisible(false);
                     return true;
                 case R.id.folder:
-                    PracticeFragment practiceFragment=new PracticeFragment();
-                    addFragment(practiceFragment);
+                    Helper.setToolbar(getSupportActionBar(), "Files");
+                    FilesFragment filesFragment=new FilesFragment();
+                    addFragment(filesFragment);
+                    add.setVisible(false);
+                    setting.setVisible(false);
+                    search.setVisible(true);
                     return true;
             }
             return false;
@@ -92,6 +99,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     };
     private MenuItem setting;
     private MenuItem add;
+    private MenuItem search;
 
 
     private void addFragment(Fragment fragment) {
@@ -110,8 +118,10 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         getMenuInflater().inflate(R.menu.menu_bottom_activity, menu);
         setting = menu.findItem(R.id.action_settings);
         add = menu.findItem(R.id.action_Doctor_name);
+        search = menu.findItem(R.id.action_Search);
         add.setVisible(false);
         setting.setVisible(true);
+        search.setVisible(false);
         return true;
     }
 

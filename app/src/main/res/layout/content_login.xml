@@ -13,7 +13,7 @@
         android:id="@+id/txtInputUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="User Name"
+        android:hint="UserName"
         app:boxStrokeColor="@android:color/holo_blue_dark"
         android:layout_marginTop="25dp"
         app:errorEnabled="true"

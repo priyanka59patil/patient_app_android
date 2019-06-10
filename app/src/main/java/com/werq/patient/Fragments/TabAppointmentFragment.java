@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -60,6 +62,9 @@ public class TabAppointmentFragment extends Fragment implements RecyclerViewClic
 
 
         adapter = new AppointmentAdapter(getActivity(),true,listerner);
+        int resId = R.anim.layout_animatin_from_right;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(mContext, resId);
+        rvAppointmentList.setLayoutAnimation(animation);
         rvAppointmentList.setLayoutManager(new LinearLayoutManager(getActivity()));
         rvAppointmentList.setAdapter(adapter);
 

@@ -1,7 +1,9 @@
 package com.werq.patient.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import com.werq.patient.Adapters.DoctorUserList;
 import com.werq.patient.Adapters.FilesAdapter;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 
 import java.util.ArrayList;
 
@@ -52,6 +55,7 @@ public class ChatInfoActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initializeVariables();
         setSupportActionBar(toolbar);
+        Helper.setToolbarwithBack(getSupportActionBar(),"Chat Info");
         doctorUserList = new DoctorUserList(this, 1);
         rvDoctor.setLayoutManager(new LinearLayoutManager(mContext));
         rvDoctor.setHasFixedSize(false);
@@ -67,6 +71,15 @@ public class ChatInfoActivity extends AppCompatActivity {
         rvSharedMedia.setLayoutManager(new LinearLayoutManager(mContext));
         rvSharedMedia.setAdapter(filesAdapter);
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
     private ArrayList<Files> getFilesData() {
         ArrayList<Files> files = new ArrayList<>();
