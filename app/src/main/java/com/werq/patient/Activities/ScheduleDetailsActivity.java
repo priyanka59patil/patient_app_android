@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.werq.patient.Adapters.FilesAdapter;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
 
@@ -35,7 +36,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
-public class ScheduleDetailsActivity extends AppCompatActivity  {
+public class ScheduleDetailsActivity extends AppCompatActivity implements RecyclerViewClickListerner {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
     @BindView(R.id.toolbar)
@@ -103,7 +104,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity  {
     boolean isFromUpcoming;
     @BindView(R.id.btConfirm)
     Button btConfirm;
-
+    RecyclerViewClickListerner recyclerViewClickListerner;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity  {
         setStatusButton();
 
         allFiles = getFilesData();
-        filesAdapter = new FilesAdapter(mContext, allFiles);
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
         rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
         rvFiles.setAdapter(filesAdapter);
 
@@ -186,7 +187,12 @@ public class ScheduleDetailsActivity extends AppCompatActivity  {
     private void initializeVariables() {
         mContext = this;
         intent = getIntent();
+        recyclerViewClickListerner=this::onclick;
     }
 
 
+    @Override
+    public void onclick(int position) {
+
+    }
 }

@@ -185,4 +185,10 @@
     <string name="title_activity_chat_info">ChatInfoActivity</string>
     <string name="label_doctor">Doctor</string>
     <string name="label_shared_media">Shared Media</string>
+    <string name="title_activity_filter_doctor_list">Filter by Doctors</string>
+    <string name="label_all_doctors">All Doctors</string>
+    <string name="label_all">All</string>
+    <string name="label_received">Received</string>
+    <string name="label_sent">Sent</string>
+    <string name="title_activity_view_visit_note">ViewVisitNoteActivity</string>
 </resources>

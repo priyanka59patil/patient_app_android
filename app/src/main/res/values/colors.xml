@@ -17,5 +17,6 @@
 
     <color name="orange"> #FFA500</color>
     <color name="backgroundgrey">#ECEFF1</color>
+    <color name="gray_text_color">#9B9B9B</color>
 
 </resources>

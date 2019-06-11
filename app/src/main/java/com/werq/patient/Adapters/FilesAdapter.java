@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
 
@@ -20,17 +22,31 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterViewHolder> {
    Context mContext;
     ArrayList<Files> allFiles;
+    RecyclerViewClickListerner recyclerViewClickListerner;
+    boolean fileTab=false;
 
-    public FilesAdapter(Context mContext, ArrayList<Files> allFiles) {
+    public FilesAdapter(Context mContext, ArrayList<Files> allFiles,RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
         this.allFiles = allFiles;
+        this.recyclerViewClickListerner=recyclerViewClickListerner;
+    }
+    public FilesAdapter(Context mContext, ArrayList<Files> allFiles,RecyclerViewClickListerner recyclerViewClickListerner,boolean fileTab) {
+        this.mContext = mContext;
+        this.allFiles = allFiles;
+        this.recyclerViewClickListerner=recyclerViewClickListerner;
+        this.fileTab=fileTab;
     }
 
     @NonNull
     @Override
     public FileadapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(fileTab){
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.swipe_list_files, parent, false);
+            return new FileadapterViewHolder(itemView);
+        }
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_files, parent, false);
         return new FileadapterViewHolder(itemView);
+
     }
 
     @Override
@@ -50,6 +66,9 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             case "pdf":
                 holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pdf));
                 break;
+            case "visitNote":
+                holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.visitnote));
+                break;
         }
 
         holder.tvUsername.setText(file.getUserName());
@@ -61,10 +80,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
         return allFiles.size();
     }
 
-    public class FileadapterViewHolder extends RecyclerView.ViewHolder {
+    public class FileadapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView file_view;
         TextView tvFileName,tvprefix,tvUsername,tvTime;
         CircleImageView ivUserView;
+        CardView cvMainlayout;
         public FileadapterViewHolder(@NonNull View itemView) {
             super(itemView);
             file_view=(ImageView) itemView.findViewById(R.id.file_view);
@@ -73,6 +93,14 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             ivUserView=(CircleImageView)itemView.findViewById(R.id.ivUserView);
             tvUsername=(TextView)itemView.findViewById(R.id.tvUsername);
             tvTime=(TextView)itemView.findViewById(R.id.tvTime);
+            cvMainlayout=(CardView)itemView.findViewById(R.id.cvMainlayout);
+            cvMainlayout.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            recyclerViewClickListerner.onclick(getAdapterPosition());
 
         }
     }

@@ -72,4 +72,12 @@ dependencies {
 
 //Toggle button
     implementation 'com.github.luongvo:iOS-SwitchView:1.0.0'
+
+    //checkbox
+    implementation 'net.igenius:customcheckbox:1.3'
+
+    //swipelayout
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
+
+
 }

@@ -19,45 +19,38 @@ import net.igenius.customcheckbox.CustomCheckBox;
 
 import java.util.ArrayList;
 
-public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders> {
+public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapter.ViewHolder> {
     Context mContext;
-    private StackImagesAdapter stackImageView;
-    boolean isFromRecentChat;
     RecyclerViewClickListerner recyclerViewClickListerner;
+    private StackImagesAdapter stackImageView;
 
-    public ChatAdapters(Context mContext,boolean isFromRecentChat, RecyclerViewClickListerner recyclerViewClickListerner) {
+    public FilterDoctorAdapter(Context mContext, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
-        this.isFromRecentChat=isFromRecentChat;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
     }
 
     @NonNull
     @Override
-    public ViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_chat,parent, false);
-    return new ViewHolders(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_chat,parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolders holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        holder.cbFilter.setVisibility(View.GONE);
-        holder.tvTime.setVisibility(View.VISIBLE);
         holder.rvUsers.addItemDecoration(new OverlapDecoration());
         holder.rvUsers.setLayoutManager(layoutManager);
         holder.rvUsers.setHasFixedSize(true);
         holder.rvUsers.setAdapter(stackImageView);
-        if(isFromRecentChat){
-            holder.tvTime.setVisibility(View.VISIBLE);
-        }
-        else {
-            holder.tvTime.setVisibility(View.GONE);
-        }
+        holder.cbFilter.setVisibility(View.VISIBLE);
+        holder.tvTime.setVisibility(View.GONE);
 
     }
+
     private ArrayList<Integer> setImageResources() {
         ArrayList<Integer> imageLists = new ArrayList<>();
         imageLists.add(R.drawable.imageone);
@@ -67,30 +60,23 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
         return imageLists;
     }
 
-
     @Override
     public int getItemCount() {
-        return 5;
+        return 3;
     }
 
-    public class ViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder  extends RecyclerView.ViewHolder{
         RecyclerView rvUsers;
         TextView tvMessage,tvTime;
         CardView cvMainLayout;
         CustomCheckBox cbFilter;
-        public ViewHolders(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rvUsers=(RecyclerView)itemView.findViewById(R.id.rvUsers);
             tvMessage=(TextView)itemView.findViewById(R.id.tvMessage);
             tvTime=(TextView)itemView.findViewById(R.id.tvTime);
             cvMainLayout =(CardView)itemView.findViewById(R.id.cvMainLayout);
             cbFilter=(CustomCheckBox)itemView.findViewById(R.id.cbFilter);
-            cvMainLayout.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            recyclerViewClickListerner.onclick(getAdapterPosition());
         }
     }
 }

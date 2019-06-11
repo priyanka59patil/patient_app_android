@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/cvMainLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvMainLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/main_layout_padding">
+        android:paddingRight="@dimen/main_layout_padding"
+        android:paddingTop="@dimen/main_layout_padding"
+        android:paddingLeft="@dimen/main_layout_padding">
+
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvUsers"
@@ -44,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDoctorTeamName"
             android:layout_marginTop="@dimen/margintop_from_doctor_team"
+            android:textColor="@color/gray_text_color"
             android:textSize="@dimen/textnormal12dp"
             android:text="@string/value_message" />
 
@@ -54,10 +59,22 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/margin_left_rvUser"
             android:text="@string/last_message_date" />
+        <net.igenius.customcheckbox.CustomCheckBox
+            android:id="@+id/cbFilter"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/margin_left_rvUser"
+            app:color_checked="@color/colorPrimary"
+            app:color_tick="@color/white"
+            app:color_unchecked_stroke="@color/colorAccent"
+            app:small_tick="false"
+            />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorLightGreyBackground"
+            android:layout_alignParentBottom="true"
             android:layout_below="@+id/tvMessage"
             android:layout_marginTop="@dimen/margintop_from_doctor_team"
             />

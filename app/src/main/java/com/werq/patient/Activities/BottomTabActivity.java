@@ -71,7 +71,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     return true;
                 case R.id.people:
 
-                    title="Doctor Name";
+                    title="My Doctor Teams";
                     setToolbarForbottom(title,true,false);
                     DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
                     addFragment(doctorTeamFragment);
