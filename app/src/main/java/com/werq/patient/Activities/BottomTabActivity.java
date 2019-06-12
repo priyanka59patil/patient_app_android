@@ -80,7 +80,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 case R.id.profile:
                     ProfileFragment profileFragment = new ProfileFragment();
                     addFragment(profileFragment);
-                    Helper.setToolbar(getSupportActionBar(), "Profile");
+                    Helper.setToolbar(getSupportActionBar(), "My Profile");
                     add.setVisible(false);
                     setting.setVisible(true);
                     search.setVisible(false);
@@ -156,7 +156,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         initializeVariables();
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setSelectedItemId(R.id.calendar);
-        Helper.setToolbar(getSupportActionBar(), "Home");
+        Helper.setToolbar(getSupportActionBar(), "Appointment");
     }
 
     private void initializeVariables() {

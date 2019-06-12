@@ -1,18 +1,18 @@
 package com.werq.patient.Activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
 import com.werq.patient.Utils.Helper;
@@ -45,9 +45,18 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvForgotPassword;
     @BindView(R.id.tvSignUp)
     TextView tvSignUp;
+    @BindView(R.id.txtInputUserName)
+    TextInputLayout txtInputUserName;
+    @BindView(R.id.txtInputPassword)
+    TextInputLayout txtInputPassword;
+    @BindView(R.id.tvremember)
+    TextView tvremember;
+    @BindView(R.id.layout_signup)
+    LinearLayout layoutSignup;
 
     //context
     Context mContext;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +98,9 @@ public class LoginActivity extends AppCompatActivity {
     private boolean validation() {
         boolean isvalid = false;
 
-        isvalid = EditTextUtils.isEmpty(etUsername, getResources().getString(R.string.error_email));
+        isvalid = EditTextUtils.isEmpty(txtInputUserName, getResources().getString(R.string.error_email));
 
-        isvalid = EditTextUtils.isEmpty(etPassword, getResources().getString(R.string.error_password));
+        isvalid = EditTextUtils.isEmpty(txtInputPassword, getResources().getString(R.string.error_password));
 
         return isvalid;
     }

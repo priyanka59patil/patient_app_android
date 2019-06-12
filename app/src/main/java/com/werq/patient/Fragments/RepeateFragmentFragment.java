@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
 
@@ -24,6 +25,8 @@ public class RepeateFragmentFragment extends Fragment {
     EditText etpassword;
     @BindView(R.id.btNext)
     Button btNext;
+    @BindView(R.id.tilPassword)
+    TextInputLayout tilPassword;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class RepeateFragmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_repeate, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         return view;
     }
 
@@ -46,15 +49,15 @@ public class RepeateFragmentFragment extends Fragment {
             case R.id.etpassword:
                 break;
             case R.id.btNext:
-                if(!validation())
-                getActivity().finish();
+                if (!validation())
+                    getActivity().finish();
                 break;
         }
     }
 
     private boolean validation() {
-        boolean isInValid=false;
-        isInValid= EditTextUtils.isEmpty(etpassword,getActivity().getResources().getString(R.string.error_password));
+        boolean isInValid = false;
+        isInValid = EditTextUtils.isEmpty(tilPassword, getActivity().getResources().getString(R.string.error_password));
         return isInValid;
     }
 

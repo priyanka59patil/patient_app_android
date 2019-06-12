@@ -18,21 +18,28 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         android:textSize="@dimen/textSize_title"
+        android:textColor="@color/black"
         android:text="To identify your identity please enter your Date of Birth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/spDob"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:hint="Select DOB"
-        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTextverifyIdentity" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTextverifyIdentity"
+        android:layout_marginTop="32dp">
+
+    <EditText
+        android:id="@+id/etspDob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Date Of Birth "
+        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+     />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/button"

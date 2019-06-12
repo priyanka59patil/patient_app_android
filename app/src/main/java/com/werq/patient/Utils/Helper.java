@@ -21,4 +21,5 @@ public class Helper {
         supportActionBar.setTitle(title);
         supportActionBar.setHomeAsUpIndicator(R.drawable.ic_close_white_24dp);
     }
+
 }

@@ -8,15 +8,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.EditTextUtils;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -29,12 +31,12 @@ public class VerifyIdentity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.tvTextverifyIdentity)
     TextView tvTextverifyIdentity;
-    @BindView(R.id.spDob)
-    EditText spDob;
     @BindView(R.id.button)
     Button button;
     Context mContext;
     Calendar myCalendar;
+    @BindView(R.id.spDob)
+    TextInputLayout spDob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class VerifyIdentity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initlizeVariables();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Verify Identity");
+        getSupportActionBar().setTitle("Verify Your Identity");
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -56,7 +58,13 @@ public class VerifyIdentity extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            spDob.setText(monthOfYear + 1 + "/" + dayOfMonth + "/" + year);
+
+            try {
+                spDob.getEditText().setText(DateHelper.dateFormatmmddyyyy(myCalendar.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
 
     };
@@ -82,10 +90,10 @@ public class VerifyIdentity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.spDob, R.id.button})
+    @OnClick({R.id.etspDob, R.id.button})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.spDob:
+            case R.id.etspDob:
                 new DatePickerDialog(mContext, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();

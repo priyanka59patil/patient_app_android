@@ -32,6 +32,7 @@ Context mContext;
             @Override
             public void run() {
                 startActivity(new Intent(mContext, LoginActivity.class));
+                finish();
             }
 
 

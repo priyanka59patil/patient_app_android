@@ -29,10 +29,6 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:maxLength="50"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
             android:maxLines="1"
             android:singleLine="true"
             />
@@ -44,6 +40,7 @@
         android:layout_height="wrap_content"
         android:hint="Password"
         android:layout_below="@+id/txtInputUserName"
+        android:layout_marginTop="8dp"
 
         app:passwordToggleEnabled="true"
         app:errorEnabled="true"
@@ -159,7 +156,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Dont have account?"
+            android:textColor="@color/black"
+            android:text="Don't Have an Account?"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"

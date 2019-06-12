@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
 
@@ -35,6 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     Intent intent;
     @BindView(R.id.etemail)
     EditText etemail;
+    @BindView(R.id.tilPassword)
+    TextInputLayout tilPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,15 +95,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     @OnClick(R.id.btForgotPassword)
     public void onViewClicked() {
-        if(!validation()){
-         startActivity(new Intent(this,LoginActivity.class));
-         finish();
+        if (!validation()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 
     private boolean validation() {
-        boolean isInvalid=false;
-        isInvalid= EditTextUtils.isEmpty(etemail,getResources().getString(R.string.select_email));
+        boolean isInvalid = false;
+        isInvalid = EditTextUtils.isEmpty(tilPassword, getResources().getString(R.string.select_email));
         return isInvalid;
     }
 }

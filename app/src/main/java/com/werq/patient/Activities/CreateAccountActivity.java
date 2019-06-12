@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
 
@@ -30,6 +31,10 @@ public class CreateAccountActivity extends AppCompatActivity {
     EditText etPassword;
     @BindView(R.id.btSignUp)
     Button btSignUp;
+    @BindView(R.id.txtInputUserName)
+    TextInputLayout txtInputUserName;
+    @BindView(R.id.txtInputPassword)
+    TextInputLayout txtInputPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +74,8 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private boolean Validation() {
         boolean isInvalid = false;
-        isInvalid = EditTextUtils.isEmpty(etemail, getResources().getString(R.string.error_email));
-        isInvalid = EditTextUtils.isEmpty(etPassword, getResources().getString(R.string.error_password));
+        isInvalid = EditTextUtils.isEmpty(txtInputUserName, getResources().getString(R.string.error_email));
+        isInvalid = EditTextUtils.isEmpty(txtInputPassword, getResources().getString(R.string.error_password));
         return isInvalid;
     }
 }
