@@ -164,8 +164,8 @@
 
                             <ImageButton
                                 android:id="@+id/btAskQuestion"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_centerHorizontal="true"
                                 android:background="@drawable/rounded_button"
                                 android:padding="@dimen/img_padding_for_img_bgcolor"
@@ -192,8 +192,8 @@
 
                             <ImageButton
                                 android:id="@+id/btReSchedule"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
                                 android:layout_centerHorizontal="true"
                                 android:background="@drawable/rounded_button"
                                 android:padding="@dimen/img_padding_for_img_bgcolor"

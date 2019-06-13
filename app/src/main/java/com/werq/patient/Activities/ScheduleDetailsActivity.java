@@ -27,6 +27,8 @@ import com.werq.patient.Adapters.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -113,19 +115,31 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initializeVariables();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Petaul Emma Elizabeth");
+
+        setToolbar();
+
         getIntentData();
+
         setConfirmButton();
+
         setStatusButton();
 
-        allFiles = getFilesData();
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
-        rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
-        rvFiles.setAdapter(filesAdapter);
+        setFiles();
+
+     ;
+
 
 
     }
+
+    private void setFiles() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,filesAdapter);
+    }
+
+    private void setToolbar() {
+        Helper.setToolbarwithCross(getSupportActionBar(),"Petaul Emma Elizabeth");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -185,9 +199,20 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     }
 
     private void initializeVariables() {
+        //Context
         mContext = this;
+
+        //intent
         intent = getIntent();
+
+        //listner
         recyclerViewClickListerner=this::onclick;
+
+        //data
+        allFiles = getFilesData();
+
+        //adapters
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
     }
 
 

@@ -23,14 +23,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Adapters.ImagePagerAdapter;
+import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DiologHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class InsuranceFragment extends Fragment {
+public class InsuranceFragment extends Fragment implements DiologListner{
 
     @BindView(R.id.imageViewPager)
     ViewPager imageViewPager;
@@ -174,6 +176,7 @@ public class InsuranceFragment extends Fragment {
    //context
     Context mContext;
     BottomSheetDialog mBottomSheetDialog;
+    private DiologListner diologListner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -215,10 +218,17 @@ public class InsuranceFragment extends Fragment {
     }
 
     private void InitializationVariables() {
+       //context
         mContext=getActivity();
-        mBottomSheetDialog = new BottomSheetDialog(getActivity());
-        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.camera_diolog_layout, null);
-        mBottomSheetDialog.setContentView(sheetView);
+
+        //listner
+        diologListner=this;
+
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.camera_diolog_layout,diologListner);
+
+
+      /*  View sheetView = getActivity().getLayoutInflater().inflate(R.layout.camera_diolog_layout, null);
+        mBottomSheetDialog.setContentView(sheetView);*/
     }
 
     @Override
@@ -267,5 +277,10 @@ public class InsuranceFragment extends Fragment {
                 ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED);
         return true;
+    }
+
+    @Override
+    public void setdiologview(View view) {
+
     }
 }

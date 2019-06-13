@@ -17,6 +17,7 @@ import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -58,22 +59,26 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         initializeVariables();
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Chat Info");
-        doctorUserList = new DoctorUserList(this, 1);
-        rvDoctor.setLayoutManager(new LinearLayoutManager(mContext));
-        rvDoctor.setHasFixedSize(false);
-        rvDoctor.setAdapter(doctorUserList);
-        teamList = new DoctorUserList(mContext, 7);
-        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
-        rvDoctorTeam.setHasFixedSize(false);
-        rvDoctorTeam.setAdapter(teamList);
-
-        allFiles = getFilesData();
-
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
-        rvSharedMedia.setLayoutManager(new LinearLayoutManager(mContext));
-        rvSharedMedia.setAdapter(filesAdapter);
+        setAdapetForDoctorList();
+        setAdapterForTeamList();
+        setAdapterForFilesList();
 
     }
+
+    private void setAdapterForFilesList() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvSharedMedia,filesAdapter);
+
+    }
+
+    private void setAdapterForTeamList() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,teamList);
+
+    }
+
+    private void setAdapetForDoctorList() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctor,doctorUserList);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -94,8 +99,25 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         return files;
     }
     private void initializeVariables() {
+        //context
         mContext = this;
+
+        //listers
         recyclerViewClickListerner=this::onclick;
+
+        //adapters
+        doctorUserList = new DoctorUserList(this, 1);
+
+        teamList = new DoctorUserList(mContext, 7);
+
+        allFiles = getFilesData();
+
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
+
+
+
+
+
     }
 
     @Override

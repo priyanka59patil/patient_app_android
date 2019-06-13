@@ -65,8 +65,13 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         intilizevariables();
-        Helper.setToolbar(getSupportActionBar(), "Log In");
+        setToolbar();
 
+
+    }
+
+    private void setToolbar() {
+        Helper.setToolbar(getSupportActionBar(), "Log In");
     }
 
     private void intilizevariables() {

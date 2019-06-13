@@ -16,6 +16,7 @@ import com.werq.patient.Adapters.ChatAdapters;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,17 +41,27 @@ public class NewChatActivity extends AppCompatActivity implements RecyclerViewCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_chat);
+
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
-        Helper.setToolbarwithBack(getSupportActionBar(),"New Chat");
+
+        setToolbar();
+
         initializeVariables();
-        chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner);
-        rvChats.setLayoutManager(new LinearLayoutManager(mContext));
-        rvChats.setHasFixedSize(true);
-        rvChats.setAdapter(chatAdapters);
+
+        setNewChatsList();
+
 
     }
 
+    private void setToolbar() {
+        Helper.setToolbarwithBack(getSupportActionBar(),"New Chat");
+    }
+
+    private void setNewChatsList() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvChats,chatAdapters);
+    }
 
 
     @Override
@@ -66,8 +77,15 @@ public class NewChatActivity extends AppCompatActivity implements RecyclerViewCl
 
 
     private void initializeVariables() {
+        //context
         mContext=this;
+
+        //listner
         recyclerViewClickListerner=this::onclick;
+
+        //adapters
+        chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner);
+
     }
 
     @Override

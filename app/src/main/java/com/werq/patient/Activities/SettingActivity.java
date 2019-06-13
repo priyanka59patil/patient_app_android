@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.werq.patient.Fragments.ChangePasswordFragment;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,11 +60,13 @@ public class SettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initializevariable();
-        getSupportActionBar().setTitle("Setting");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_close_white_24dp));
+        setToolbar();
 
 
+    }
+
+    private void setToolbar() {
+        Helper.setToolbarwithCross(getSupportActionBar(),"Setting");
     }
 
     private void initializevariable() {

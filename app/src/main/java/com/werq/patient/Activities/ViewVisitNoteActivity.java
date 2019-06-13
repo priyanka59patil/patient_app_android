@@ -77,15 +77,23 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
         return super.onOptionsItemSelected(item);
     }
     private void setAdapters() {
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
         rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
         rvFiles.setAdapter(filesAdapter);
     }
 
     private void initializevariables() {
+       //context
         mContext=this;
+
+        //data
         allFiles = getFilesData();
+
+        //listner
         recyclerViewClickListerner=this::onclick;
+
+        //adapters
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
+
     }
 
     private ArrayList<Files> getFilesData() {

@@ -22,16 +22,16 @@ import com.werq.patient.Fragments.AppointmentFragment;
 import com.werq.patient.Fragments.ChatFragments;
 import com.werq.patient.Fragments.DoctorTeamFragment;
 import com.werq.patient.Fragments.FilesFragment;
-import com.werq.patient.Fragments.PracticeFragment;
 import com.werq.patient.Fragments.ProfileFragment;
+import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class BottomTabActivity extends AppCompatActivity implements View.OnClickListener {
+public class BottomTabActivity extends AppCompatActivity implements View.OnClickListener, DiologListner {
     @BindView(R.id.mainLayout)
     FrameLayout mainLayout;
     @BindView(R.id.nav_view)
@@ -42,6 +42,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     Context mContext;
     BottomSheetDialog mBottomSheetDialog;
     String title;
+    DiologListner diologListner;
 
 
     LinearLayout layoutNewInvitation;
@@ -55,11 +56,10 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 case R.id.calendar:
                     AppointmentFragment appointmentFragment = new AppointmentFragment();
                     addFragment(appointmentFragment);
-                    if (add != null && setting != null) {
+                    if (add != null && setting != null &&search!=null) {
                         Helper.setToolbar(getSupportActionBar(), "Appointment");
-                        add.setVisible(false);
-                        setting.setVisible(true);
-                        search.setVisible(false);
+                      VisibleMenuItem(false,true,false);
+
                     }
 
                     return true;
@@ -68,6 +68,9 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     setToolbarForbottom(title,true,false);
                     ChatFragments chatFragments=new ChatFragments();
                     addFragment(chatFragments);
+                    VisibleMenuItem(true,false,false);
+
+
                     return true;
                 case R.id.people:
 
@@ -75,28 +78,34 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                     setToolbarForbottom(title,true,false);
                     DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
                     addFragment(doctorTeamFragment);
+                    VisibleMenuItem(true,false,false);
 
                     return true;
                 case R.id.profile:
                     ProfileFragment profileFragment = new ProfileFragment();
                     addFragment(profileFragment);
                     Helper.setToolbar(getSupportActionBar(), "My Profile");
-                    add.setVisible(false);
-                    setting.setVisible(true);
-                    search.setVisible(false);
+                    VisibleMenuItem(false,true,false);
+
                     return true;
                 case R.id.folder:
                     Helper.setToolbar(getSupportActionBar(), "Files");
                     FilesFragment filesFragment=new FilesFragment();
                     addFragment(filesFragment);
-                    add.setVisible(false);
-                    setting.setVisible(false);
-                    search.setVisible(true);
+                    VisibleMenuItem(false,false,true);
+
                     return true;
             }
             return false;
         }
     };
+
+    private void VisibleMenuItem(boolean addValue ,boolean settingValue,boolean searchValue) {
+       add.setVisible(addValue);
+       setting.setVisible(settingValue);
+       search.setVisible(searchValue);
+    }
+
     private MenuItem setting;
     private MenuItem add;
     private MenuItem search;
@@ -119,9 +128,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         setting = menu.findItem(R.id.action_settings);
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
-        add.setVisible(false);
-        setting.setVisible(true);
-        search.setVisible(false);
+        VisibleMenuItem(false,true,false);
         return true;
     }
 
@@ -133,7 +140,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.action_Doctor_name:
                 switch (title){
-                    case "Doctor Name":
+                    case "My Doctor Teams":
                         mBottomSheetDialog.show();
                         break;
                     case "Chat":
@@ -160,15 +167,22 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initializeVariables() {
+      //context
         mContext = this;
-        mBottomSheetDialog = new BottomSheetDialog(mContext);
-        View sheetView = getLayoutInflater().inflate(R.layout.doctor_name_diolog_layout, null);
-        layoutNewInvitation = (LinearLayout) sheetView.findViewById(R.id.layout_new_invitation);
-        layoutDoctorBase = (LinearLayout) sheetView.findViewById(R.id.layout_doctor_base);
-        layoutNewInvitation.setOnClickListener(this::onClick);
-        layoutDoctorBase.setOnClickListener(this::onClick);
-        mBottomSheetDialog.setContentView(sheetView);
+
+       //listner
+        diologListner=this;
+
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.doctor_name_diolog_layout,diologListner);
+
+
+
+       // mBottomSheetDialog.setContentView(sheetView);
+
+
     }
+
+
 
 
     @Override
@@ -184,5 +198,14 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 break;
 
         }
+    }
+
+
+    @Override
+    public void setdiologview(View view) {
+        layoutNewInvitation = (LinearLayout) view.findViewById(R.id.layout_new_invitation);
+        layoutDoctorBase = (LinearLayout) view.findViewById(R.id.layout_doctor_base);
+        layoutNewInvitation.setOnClickListener(this::onClick);
+        layoutDoctorBase.setOnClickListener(this::onClick);
     }
 }

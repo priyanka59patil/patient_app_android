@@ -41,7 +41,6 @@
         android:hint="Password"
         android:layout_below="@+id/txtInputUserName"
         android:layout_marginTop="8dp"
-
         app:passwordToggleEnabled="true"
         app:errorEnabled="true"
         app:layout_constraintEnd_toEndOf="parent"

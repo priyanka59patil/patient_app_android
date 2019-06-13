@@ -19,6 +19,7 @@ import com.werq.patient.Adapters.FilterDoctorAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -49,17 +50,30 @@ public class FilterDoctorList extends AppCompatActivity implements RecyclerViewC
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         inilializeVariables();
+        setToolbar();
+        setDoctorTeams();
 
+
+
+    }
+
+    private void setDoctorTeams() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,adapter);
+    }
+
+    private void setToolbar() {
         Helper.setToolbarwithCross(getSupportActionBar(), "Filter by Doctors");
-        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner);
-        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
-        rvDoctorTeam.setHasFixedSize(true);
-        rvDoctorTeam.setAdapter(adapter);
     }
 
     private void inilializeVariables() {
+        //Context
         mContext = this;
+
+        //listner
         recyclerViewClickListerner=this::onclick;
+
+        //adapters
+        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner);
 
     }
 

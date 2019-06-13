@@ -21,6 +21,7 @@ import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.OverlapDecoration;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -47,14 +48,25 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         setContentView(R.layout.activity_search_by_name);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        Helper.setToolbarwithBack(getSupportActionBar(),"Doctor Name");
+
+        setToolBar();
+
         inilizevariables();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,true,recyclerViewClickListerner);
-        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
-        rvDoctorTeam.setHasFixedSize(true);
-        rvDoctorTeam.setAdapter(doctorTeamAdapter);
+
+        setDoctorList();
+
+
 
         //searchView = (SearchView) searchItem.getActionView();
+    }
+
+    private void setDoctorList() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,doctorTeamAdapter);
+    }
+
+    private void setToolBar() {
+        Helper.setToolbarwithBack(getSupportActionBar(),"Doctor Name");
+
     }
 
     @Override
@@ -121,8 +133,14 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
     }*/
 
     private void inilizevariables() {
+        //context
         mContext = this;
+
+        //listner
         recyclerViewClickListerner=this;
+
+        //adapters
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,true,recyclerViewClickListerner);
     }
 
 
