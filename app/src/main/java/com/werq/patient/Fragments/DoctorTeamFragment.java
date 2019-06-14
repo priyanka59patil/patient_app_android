@@ -16,6 +16,7 @@ import com.werq.patient.Activities.ScrollingActivity;
 import com.werq.patient.Adapters.DoctorTeamAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,10 +49,7 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
         View view = inflater.inflate(R.layout.fragment_doctor_team, container, false);
         ButterKnife.bind(this, view);
         intializeVariables();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner);
-        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(mContext));
-        rvDoctorTeam.setHasFixedSize(true);
-        rvDoctorTeam.setAdapter(doctorTeamAdapter);
+        setRecyclerView();
 
         return view;
     }
@@ -59,6 +57,11 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
     private void intializeVariables() {
         mContext = getActivity();
         recyclerViewClickListerner=this;
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner);
+    }
+    private void setRecyclerView() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,doctorTeamAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvDoctorTeam);
     }
 
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.PracticeAdapter;
 import com.werq.patient.R;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,14 +53,14 @@ public class PracticeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_practice, container, false);
         ButterKnife.bind(this,view);
         initializeVariables();
+        setRecyclerViewAdapters();
        /// tvtitlepractice.requestFocus();
 
-        locationpracticeAdapter=new PracticeAdapter(mContext,true);
+
         rvPracticeLocations.setHasFixedSize(false);
         rvPracticeLocations.setLayoutManager(new LinearLayoutManager(mContext));
         rvPracticeLocations.setAdapter(locationpracticeAdapter);
 
-        hospitalpracticeAdapter=new PracticeAdapter(mContext,false);
         rvHospitleAffiliates.setHasFixedSize(false);
         rvHospitleAffiliates.setLayoutManager(new LinearLayoutManager(mContext));
         rvHospitleAffiliates.setAdapter(hospitalpracticeAdapter);
@@ -67,8 +68,23 @@ public class PracticeFragment extends Fragment {
         return view;
     }
 
+    private void setRecyclerViewAdapters() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvPracticeLocations,locationpracticeAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvPracticeLocations);
+
+
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvHospitleAffiliates,hospitalpracticeAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvHospitleAffiliates);
+    }
+
     private void initializeVariables() {
+        //context
         mContext=getActivity();
+
+        //adaters
+        locationpracticeAdapter=new PracticeAdapter(mContext,true);
+        hospitalpracticeAdapter=new PracticeAdapter(mContext,false);
+
     }
 
 

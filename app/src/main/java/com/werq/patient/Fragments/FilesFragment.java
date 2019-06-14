@@ -18,9 +18,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Activities.FilterDoctorList;
 import com.werq.patient.Activities.ViewVisitNoteActivity;
 import com.werq.patient.Adapters.FilesAdapter;
+import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DiologHelper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -28,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FilesFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListerner {
+public class FilesFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListerner, DiologListner {
 
     @BindView(R.id.tvFilterDoctors)
     TextView tvFilterDoctors;
@@ -46,6 +49,7 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
     private RelativeLayout layout_filter_sent;
     ImageView iv_sent_check,iv_received_check,iv_all_check;
     RecyclerViewClickListerner recyclerViewClickListerner;
+    DiologListner diologListner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,32 +58,35 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         ButterKnife.bind(this, view);
         initializeVariables();
-        allFiles = getFilesData();
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,true);
-        rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
-        rvFiles.setAdapter(filesAdapter);
+        setRecyclerViewAdapter();
+
 
         return view;
     }
 
+    private void setRecyclerViewAdapter() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,filesAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
+    }
+
     private void initializeVariables() {
+        //context
         mContext = getActivity();
+
+         //listner
+        diologListner=this::onClick;
         recyclerViewClickListerner=this::onclick;
-        mBottomSheetDialog = new BottomSheetDialog(mContext);
-        View sheetView = getActivity().getLayoutInflater().inflate(R.layout.filter_diolog_layout, null);
-        mBottomSheetDialog.setContentView(sheetView);
-        layout_filter_allDoctors=(RelativeLayout)sheetView.findViewById(R.id.layout_filter_allDoctors);
-        layout_filter_received=(RelativeLayout)sheetView.findViewById(R.id.layout_filter_received);
-        layout_filter_sent=(RelativeLayout)sheetView.findViewById(R.id.layout_filter_sent);
-        iv_sent_check=(ImageView)sheetView.findViewById(R.id.iv_sent_check);
-        iv_received_check=(ImageView)sheetView.findViewById(R.id.iv_received_check);
-        iv_all_check=(ImageView)sheetView.findViewById(R.id.iv_all_check);
-        layout_filter_allDoctors.setOnClickListener(this::onClick);
-        layout_filter_received.setOnClickListener(this::onClick);
-        layout_filter_sent.setOnClickListener(this::onClick);
-        iv_all_check.setVisibility(View.VISIBLE);
-        iv_received_check.setVisibility(View.GONE);
-        iv_sent_check.setVisibility(View.GONE);
+
+        //data
+        allFiles = getFilesData();
+
+        //adapters
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,true);
+
+        //dialog
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
+
+       ;
     }
 
     private ArrayList<Files> getFilesData() {
@@ -136,5 +143,21 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
             startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
         }
 
+    }
+
+    @Override
+    public void setdiologview(View view) {
+        layout_filter_allDoctors=(RelativeLayout)view.findViewById(R.id.layout_filter_allDoctors);
+        layout_filter_received=(RelativeLayout)view.findViewById(R.id.layout_filter_received);
+        layout_filter_sent=(RelativeLayout)view.findViewById(R.id.layout_filter_sent);
+        iv_sent_check=(ImageView)view.findViewById(R.id.iv_sent_check);
+        iv_received_check=(ImageView)view.findViewById(R.id.iv_received_check);
+        iv_all_check=(ImageView)view.findViewById(R.id.iv_all_check);
+        layout_filter_allDoctors.setOnClickListener(this::onClick);
+        layout_filter_received.setOnClickListener(this::onClick);
+        layout_filter_sent.setOnClickListener(this::onClick);
+        iv_all_check.setVisibility(View.VISIBLE);
+        iv_received_check.setVisibility(View.GONE);
+        iv_sent_check.setVisibility(View.GONE);
     }
 }

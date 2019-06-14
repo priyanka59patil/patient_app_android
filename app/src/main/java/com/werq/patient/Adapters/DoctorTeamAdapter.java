@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -38,15 +39,11 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
 
-        holder.rvUserProfiles.addItemDecoration(new OverlapDecoration());
-        holder.rvUserProfiles.setLayoutManager(layoutManager);
-        holder.rvUserProfiles.setHasFixedSize(true);
-        holder.rvUserProfiles.setAdapter(stackImageView);
+        stackImageView = new StackImagesAdapter(mContext, setImageResources());
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,  holder.rvUserProfiles,stackImageView);
+       RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
+
         if(fromSearchName)
             holder.btAdd.setVisibility(View.VISIBLE);
         else

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -39,13 +40,10 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        holder.rvUsers.addItemDecoration(new OverlapDecoration());
-        holder.rvUsers.setLayoutManager(layoutManager);
-        holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(stackImageView);
+        stackImageView = new StackImagesAdapter(mContext, setImageResources());
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,  holder.rvUsers,stackImageView);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
+
         holder.cbFilter.setVisibility(View.VISIBLE);
         holder.tvTime.setVisibility(View.GONE);
 

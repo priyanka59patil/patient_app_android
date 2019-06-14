@@ -40,7 +40,6 @@ public class TabAppointmentFragment extends Fragment implements RecyclerViewClic
     RecyclerViewClickListerner listerner;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +49,8 @@ public class TabAppointmentFragment extends Fragment implements RecyclerViewClic
 
     private void initializeVariables() {
         mContext = getActivity();
-        listerner=this::onclick;
-        adapter = new AppointmentAdapter(getActivity(),true,listerner);
+        listerner = this::onclick;
+        adapter = new AppointmentAdapter(getActivity(), true, listerner);
     }
 
     @Override
@@ -59,22 +58,29 @@ public class TabAppointmentFragment extends Fragment implements RecyclerViewClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         initializeVariables();
         setAdapter();
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     private void setAdapter() {
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvAppointmentList,adapter);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
 
     }
 
 
     @Override
     public void onclick(int position) {
-        Intent intent=new Intent(mContext, ScheduleDetailsActivity.class);
-        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming),true);
+        Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
+        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming), true);
         startActivity(intent);
 
     }

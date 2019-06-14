@@ -15,6 +15,7 @@ import com.werq.patient.Activities.ScheduleDetailsActivity;
 import com.werq.patient.Adapters.AppointmentAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,15 +39,21 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
         View view = inflater.inflate(R.layout.fragment_tab_history, container, false);
         ButterKnife.bind(this,view);
        IntializeVariables();
-        adapter = new AppointmentAdapter(getActivity(), false,listener);
-        rvAppointmentList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvAppointmentList.setAdapter(adapter);
+       setRecyclerViewAdapters();
         return view;
+    }
+
+    private void setRecyclerViewAdapters() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvAppointmentList,adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvAppointmentList);
     }
 
     private void IntializeVariables() {
         listener=this::onclick;
         mContext=getActivity();
+        adapter = new AppointmentAdapter(getActivity(), false,listener);
+
+
     }
 
 

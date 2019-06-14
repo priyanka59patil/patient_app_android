@@ -1,5 +1,6 @@
 package com.werq.patient.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.DoctorUserList;
 import com.werq.patient.R;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,6 +23,8 @@ public class DoctorsListFragment extends Fragment {
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
     private DoctorUserList doctorUserList;
+
+    Context mContext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,21 @@ public class DoctorsListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctors_list, container, false);
         ButterKnife.bind(this,view);
-         doctorUserList=new DoctorUserList(getActivity(),15);
-        rvDoctorTeam.setHasFixedSize(false);
-        rvDoctorTeam.setLayoutManager(new LinearLayoutManager(getActivity()));
-        rvDoctorTeam.setAdapter(doctorUserList);
+        initializeVariables();
+
+        setRecyclerView();
 
         return view;
+    }
+
+    private void initializeVariables() {
+        mContext=getActivity();
+        doctorUserList=new DoctorUserList(getActivity(),15);
+    }
+
+    private void setRecyclerView() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,doctorUserList);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvDoctorTeam);
     }
 
 

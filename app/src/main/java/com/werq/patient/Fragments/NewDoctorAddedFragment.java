@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Adapters.StackImagesAdapter;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -45,14 +46,8 @@ public class NewDoctorAddedFragment extends Fragment {
     }
 
     private void setStackImageadapter() {
-        stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
-        rvUserProfiles.addItemDecoration(new OverlapDecoration());
-        rvUserProfiles.setLayoutManager(layoutManager);
-        rvUserProfiles.setHasFixedSize(true);
-        rvUserProfiles.setAdapter(stackImageView);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvUserProfiles,stackImageView);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvUserProfiles);
     }
 
     private ArrayList<Integer> setImageResources() {
@@ -65,7 +60,12 @@ public class NewDoctorAddedFragment extends Fragment {
     }
 
     private void inilizevariables() {
+       //context
         mContext=getActivity();
+
+        //adapters
+        stackImageView = new StackImagesAdapter(mContext, setImageResources());
+
     }
 
 

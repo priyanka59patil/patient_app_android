@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.werq.patient.Adapters.MedicalInfoAdapter;
 import com.werq.patient.R;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
@@ -26,7 +28,7 @@ public class MedicalInfoFragment extends Fragment {
     MedicalInfoAdapter adapter;
     @BindView(R.id.rvMedicalInfo)
     RecyclerView rvMedicalInfo;
-
+    private Context mContext;
 
 
     @Override
@@ -41,7 +43,22 @@ public class MedicalInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_medical_info, container, false);
         ButterKnife.bind(this,view);
+        initializeVariables();
+        setRecyclerViewAdapters();
 
+        return view;
+    }
+
+    private void setRecyclerViewAdapters() {
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvMedicalInfo,adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvMedicalInfo);
+    }
+
+    private void initializeVariables() {
+        //context
+        mContext=getActivity();
+
+        //data
         ArrayList<String> titleList=new ArrayList<>();
         titleList.add("Summery Of Care");
         titleList.add("Immunization And Results");
@@ -49,14 +66,10 @@ public class MedicalInfoFragment extends Fragment {
         titleList.add("Vital sign");
         titleList.add("Problem list");
 
+        //adapters
         adapter=new MedicalInfoAdapter(getActivity(),titleList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        rvMedicalInfo.setLayoutManager(linearLayoutManager);
-        rvMedicalInfo.setHasFixedSize(true);
-        rvMedicalInfo.setAdapter(adapter);
 
 
-        return view;
     }
 
 }
