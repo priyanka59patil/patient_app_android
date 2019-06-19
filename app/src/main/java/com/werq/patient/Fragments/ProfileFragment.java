@@ -15,14 +15,20 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.werq.patient.Activities.Adapters.PagerAdapter;
+import com.werq.patient.Controller.ProfileController;
+import com.werq.patient.Interfaces.BasicActivities;
+import com.werq.patient.Interfaces.BasicFragments;
+import com.werq.patient.Interfaces.ProfileInterface;
+import com.werq.patient.Models.Responce;
 import com.werq.patient.R;
+import com.werq.patient.Utils.FragmentUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements BasicActivities {
 
     public PagerAdapter adapter;
     private OnFragmentInteractionListener mListener;
@@ -31,6 +37,24 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     Unbinder unbinder;
+
+    ProfileInterface profileInterface;
+
+    BasicFragments basicFragments;
+
+    BasicActivities basicActivities;
+
+    Responce data;
+
+    Context mContext;
+
+    Bundle medicalBundle;
+    Bundle insuranceBundle;
+    Bundle medicationBundle;
+
+    MedicalInfoFragment medicalInfoFragment;
+    InsuranceFragment insuranceFragment;
+    MedicationsFragment medicationsFragment;
 
 
     @Override
@@ -46,9 +70,9 @@ public class ProfileFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
 
         unbinder=ButterKnife.bind(this,view);
+        initializeVariables();
+        getData();
 
-        setupViewPager(viewpager);
-        tabs.setupWithViewPager(viewpager);
         viewpager.addOnAdapterChangeListener(new ViewPager.OnAdapterChangeListener() {
             @Override
             public void onAdapterChanged(@NonNull ViewPager viewPager, @Nullable androidx.viewpager.widget.PagerAdapter oldAdapter, @Nullable androidx.viewpager.widget.PagerAdapter newAdapter) {
@@ -62,9 +86,9 @@ public class ProfileFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
-        adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
-        adapter.addFragment(new MedicationsFragment(), getString(R.string.medications) );
+        adapter.addFragment(medicalInfoFragment, getString(R.string.medical_info) );
+        adapter.addFragment(insuranceFragment, getString(R.string.insurance) );
+        adapter.addFragment(medicationsFragment, getString(R.string.medications) );
         viewpager.setAdapter(adapter);
 
 
@@ -74,6 +98,61 @@ public class ProfileFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void initializeVariables() {
+        //context
+        mContext=getActivity();
+
+        //interface
+        basicActivities=this;
+        profileInterface=new ProfileController(basicActivities);
+
+
+        //other
+
+        basicFragments=new FragmentUtils();
+
+
+
+
+    }
+
+    @Override
+    public void setRecyclerView() {
+
+    }
+
+    @Override
+    public void setView(Object data) {
+        this.data=(Responce)data;
+
+
+        medicalBundle=profileInterface.bundle(this.data,"medical_info");
+        insuranceBundle=profileInterface.bundle(this.data,"insurance_info");
+        medicationBundle=profileInterface.bundle(this.data,"medications");
+
+
+        medicalInfoFragment= (MedicalInfoFragment) basicFragments.newInstance(mContext,medicalBundle,new MedicalInfoFragment());
+        insuranceFragment=(InsuranceFragment)basicFragments.newInstance(mContext,insuranceBundle,new InsuranceFragment());
+        medicationsFragment=(MedicationsFragment)basicFragments.newInstance(mContext,insuranceBundle,new MedicationsFragment());
+
+        setupViewPager(viewpager);
+        tabs.setupWithViewPager(viewpager);
+
+
+    }
+
+    @Override
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void getData() {
+        profileInterface.getData();
+
     }
 
 

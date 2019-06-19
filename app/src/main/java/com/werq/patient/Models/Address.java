@@ -1,58 +1,69 @@
 package com.werq.patient.Models;
 
 public class Address {
-    String address1;
-    String address2;
-    String city;
-    String state;
-    String pinCode;
-    String country;
+    private String address2;
 
-    public String getAddress1() {
-        return address1;
-    }
+    private String city;
 
-    public void setAddress1(String address1) {
-        this.address1 = address1;
-    }
+    private String address1;
 
-    public String getAddress2() {
+    private String state;
+
+    private String postal_code;
+
+    public String getAddress2 ()
+    {
         return address2;
     }
 
-    public void setAddress2(String address2) {
+    public void setAddress2 (String address2)
+    {
         this.address2 = address2;
     }
 
-    public String getCity() {
+    public String getCity ()
+    {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity (String city)
+    {
         this.city = city;
     }
 
-    public String getState() {
+    public String getAddress1 ()
+    {
+        return address1;
+    }
+
+    public void setAddress1 (String address1)
+    {
+        this.address1 = address1;
+    }
+
+    public String getState ()
+    {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState (String state)
+    {
         this.state = state;
     }
 
-    public String getPinCode() {
-        return pinCode;
+    public String getPostal_code ()
+    {
+        return postal_code;
     }
 
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
+    public void setPostal_code (String postal_code)
+    {
+        this.postal_code = postal_code;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+    @Override
+    public String toString()
+    {
+        return "ClassPojo [address2 = "+address2+", city = "+city+", address1 = "+address1+", state = "+state+", postal_code = "+postal_code+"]";
     }
 }

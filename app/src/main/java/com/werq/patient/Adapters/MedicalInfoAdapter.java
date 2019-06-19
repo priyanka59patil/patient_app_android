@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Activities.FunctionalActivity;
 import com.werq.patient.Activities.ImmunizationResultsActivity;
 import com.werq.patient.Activities.SummaryCareActivity;
+import com.werq.patient.Models.Medical_info;
 import com.werq.patient.R;
 
 import java.util.ArrayList;
@@ -25,11 +26,13 @@ import java.util.ArrayList;
 public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.ChipHolder> {
     Activity context;
     ArrayList<String> titleList;
-    String result,title;
+    ArrayList<Medical_info> medical_infos;
 
-    public MedicalInfoAdapter(Activity context, ArrayList<String> titleList) {
+
+
+    public MedicalInfoAdapter(Activity context,  ArrayList<Medical_info> medical_infos) {
         this.context = context;
-        this.titleList = titleList;
+        this.medical_infos = medical_infos;
 
     }
 
@@ -42,11 +45,18 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
     @Override
     public void onBindViewHolder(ChipHolder holder, int position) {
-        result = titleList.get(position);
+        Medical_info medical_info = medical_infos.get(position);
 
-        holder.tvTitle.setText(result);
-
+        holder.tvTitle.setText(medical_info.getType());
         holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(context, SummaryCareActivity.class);
+                context.startActivity(intent1);
+            }
+        });
+
+    /*    holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -68,14 +78,14 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
                     context.startActivityForResult(intent1, 2);
                 }
             }
-        });
+        });*/
 
 
     }
 
     @Override
     public int getItemCount() {
-        return titleList.size();
+        return medical_infos.size();
     }
 
     public class ChipHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -103,11 +113,9 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
             Log.e( "onClick: ", "View");
             switch (v.getId()) {
                 case R.id.ll_item_medical:
-                    Log.e( "onClick: ", "ll_item");
-                    if (title.equals("Summery Of Care")) {
                         Intent intent1 = new Intent(context, SummaryCareActivity.class);
                         context.startActivityForResult(intent1, 2);
-                    }
+
 
                     break;
 

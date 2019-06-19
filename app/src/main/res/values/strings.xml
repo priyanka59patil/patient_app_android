@@ -191,4 +191,5 @@
     <string name="label_received">Received</string>
     <string name="label_sent">Sent</string>
     <string name="title_activity_view_visit_note">ViewVisitNoteActivity</string>
+    <string name="title_activity_medical_info">MedicalInfoActivity</string>
 </resources>

@@ -19,9 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Activities.MedicalInfoActivity"
+            android:label="@string/title_activity_medical_info"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Activities.ViewVisitNoteActivity"
             android:label="@string/title_activity_view_visit_note"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Activities.FilterDoctorList"
             android:label="@string/title_activity_filter_doctor_list"
@@ -105,9 +109,7 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".Activities.SplashActivity"
             android:label="@string/title_activity_splash"

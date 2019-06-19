@@ -41,8 +41,8 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,  holder.rvUserProfiles,stackImageView);
-       RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
+        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUserProfiles,stackImageView);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
 
         if(fromSearchName)
             holder.btAdd.setVisibility(View.VISIBLE);
