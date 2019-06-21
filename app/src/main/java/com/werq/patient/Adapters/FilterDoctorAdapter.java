@@ -40,8 +40,7 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,  holder.rvUsers,stackImageView);
+        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUsers,stackImageView);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
 
         holder.cbFilter.setVisibility(View.VISIBLE);

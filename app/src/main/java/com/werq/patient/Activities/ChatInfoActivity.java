@@ -88,7 +88,7 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         }
         return super.onOptionsItemSelected(item);
     }
-    private ArrayList<Files> getFilesData() {
+    /*private ArrayList<Files> getFilesData() {
         ArrayList<Files> files = new ArrayList<>();
         Files file = new Files(R.drawable.imageone, "image", "Image-Attachment-01.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
         Files file1 = new Files(R.drawable.imagetwo, "image", "Image-Attachment-02.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
@@ -97,7 +97,7 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         files.add(file1);
         files.add(file2);
         return files;
-    }
+    }*/
     private void initializeVariables() {
         //context
         mContext = this;
@@ -110,7 +110,7 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
 
         teamList = new DoctorUserList(mContext, 7);
 
-        allFiles = getFilesData();
+        //allFiles = getFilesData();
 
         filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
 

@@ -155,6 +155,11 @@ public class ProfileFragment extends Fragment implements BasicActivities {
 
     }
 
+    @Override
+    public void setToolbar() {
+
+    }
+
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

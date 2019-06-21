@@ -29,7 +29,7 @@
     <string name="label_yes">Yes</string>
     <string name="finger_print_string">Would you like to use fingerprint instead of typing password when you Log In ?</string>
     <string name="tab_upcoming">UPCOMING</string>
-    <string name="tab_history">History</string>
+    <string name="tab_history">HISTORY</string>
     <string name="error_email">Email can not be empty</string>
     <string name="error_password">Password can not be empty</string>
     <string name="please_enter_pin">Please Enter Pin</string>
@@ -192,4 +192,6 @@
     <string name="label_sent">Sent</string>
     <string name="title_activity_view_visit_note">ViewVisitNoteActivity</string>
     <string name="title_activity_medical_info">MedicalInfoActivity</string>
+    <string name="label_to_confirmed">To Confirm</string>
+    <string name="label_data">data</string>
 </resources>

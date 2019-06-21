@@ -7,11 +7,26 @@ android {
         applicationId "com.werq.patient"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 6
-        versionName "0.6"
+        versionCode 7
+        versionName "0.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+
+    }
+    signingConfigs {
+        release {
+            keyAlias 'patient'
+            keyPassword 'nisostech'
+            storeFile file('../keystore/patientappkaystore.jks')
+            storePassword 'nisostech'
+            // path relative to project root
+//            keyAlias 'werq'
+//            keyPassword 'nisostech'
+//            storeFile file('werq_keystore.jks')
+//            storePassword 'nisostech'
+        }
+
 
     }
     lintOptions {
@@ -84,6 +99,14 @@ dependencies {
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //picassso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //searchview
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+
 
 
 }

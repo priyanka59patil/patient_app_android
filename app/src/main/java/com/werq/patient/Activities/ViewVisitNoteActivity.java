@@ -98,12 +98,12 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
 
     private ArrayList<Files> getFilesData() {
         ArrayList<Files> files = new ArrayList<>();
-        Files file = new Files(R.drawable.imageone, "image", "Image-Attachment-01.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
+       /* Files file = new Files(R.drawable.imageone, "image", "Image-Attachment-01.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
         Files file1 = new Files(R.drawable.imagetwo, "image", "Image-Attachment-02.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
         Files file2 = new Files(R.drawable.imagetwo, "pdf", "Intro-part-02.pdf", "sender", "David Crippin", "Yesterday 02:12:32 PM");
         files.add(file);
         files.add(file1);
-        files.add(file2);
+        files.add(file2);*/
         return files;
     }
 

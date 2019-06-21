@@ -3,31 +3,27 @@ package com.werq.patient.Activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.SearchView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.werq.patient.Adapters.DoctorTeamAdapter;
 import com.werq.patient.Adapters.StackImagesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.OverlapDecoration;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class SearchByNameActivity extends AppCompatActivity implements RecyclerViewClickListerner {
 
@@ -36,12 +32,16 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
     Toolbar toolbar;
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
+    @BindView(R.id.search_view)
+    MaterialSearchView searchView;
+    @BindView(R.id.toolbar_container)
+    FrameLayout toolbarContainer;
     private StackImagesAdapter stackImageView;
     Context mContext;
     private DoctorTeamAdapter doctorTeamAdapter;
-    private SearchView searchView;
     private SearchView.OnQueryTextListener queryTextListener;
     RecyclerViewClickListerner recyclerViewClickListerner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,33 +52,42 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         setToolBar();
 
         inilizevariables();
-
+        searchView.setVoiceSearch(false);
+        searchView.setEllipsize(true);
         setDoctorList();
-
 
 
         //searchView = (SearchView) searchItem.getActionView();
     }
 
     private void setDoctorList() {
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvDoctorTeam,doctorTeamAdapter);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvDoctorTeam, doctorTeamAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvDoctorTeam);
     }
 
     private void setToolBar() {
-        Helper.setToolbarwithBack(getSupportActionBar(),"Doctor Name");
+        Helper.setToolbarwithBack(getSupportActionBar(), "Doctor Name");
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.searchview, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
+            searchView.setMenuItem(searchItem);
         }
-        if (searchView != null) {
+ /*       if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
             queryTextListener = new SearchView.OnQueryTextListener() {
@@ -96,7 +105,7 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
                 }
             };
             searchView.setOnQueryTextListener(queryTextListener);
-        }
+        }*/
         return true;
     }
 
@@ -137,12 +146,11 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         mContext = this;
 
         //listner
-        recyclerViewClickListerner=this;
+        recyclerViewClickListerner = this;
 
         //adapters
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,true,recyclerViewClickListerner);
+        doctorTeamAdapter = new DoctorTeamAdapter(mContext, true, recyclerViewClickListerner);
     }
-
 
 
     private ArrayList<Integer> setImageResources() {

@@ -31,11 +31,13 @@ public class RecyclerViewHelper {
 
     public static void setAdapterToRecylerViewwithanimation(Context mContext, RecyclerView recyclerView){
         final LayoutAnimationController controller =
-                AnimationUtils.loadLayoutAnimation(mContext, R.anim.layout_animatin_from_right);
+                AnimationUtils.loadLayoutAnimation(mContext, R.anim.layout_animatin_from_bottom);
         recyclerView.setLayoutAnimation(controller);
         recyclerView.getAdapter().notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
 
   }
+
+
 
 }

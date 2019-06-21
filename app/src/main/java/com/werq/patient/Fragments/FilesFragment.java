@@ -18,20 +18,25 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Activities.FilterDoctorList;
 import com.werq.patient.Activities.ViewVisitNoteActivity;
 import com.werq.patient.Adapters.FilesAdapter;
+import com.werq.patient.Controller.FilesController;
+import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Interfaces.FilesInteface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
+import com.werq.patient.Models.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FilesFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListerner, DiologListner {
+public class FilesFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListerner, DiologListner, BasicActivities {
 
     @BindView(R.id.tvFilterDoctors)
     TextView tvFilterDoctors;
@@ -50,6 +55,9 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
     ImageView iv_sent_check,iv_received_check,iv_all_check;
     RecyclerViewClickListerner recyclerViewClickListerner;
     DiologListner diologListner;
+    FilesInteface controller;
+    BasicActivities basicActivities;
+    FilesData filesData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,60 +66,70 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         ButterKnife.bind(this, view);
         initializeVariables();
-        setRecyclerViewAdapter();
+        getData();
+
 
 
         return view;
     }
 
-    private void setRecyclerViewAdapter() {
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,filesAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
-    }
 
-    private void initializeVariables() {
+
+
+    @Override
+    public void initializeVariables() {
         //context
         mContext = getActivity();
 
-         //listner
+        //listner
         diologListner=this::onClick;
         recyclerViewClickListerner=this::onclick;
+        basicActivities=this;
+        controller= new FilesController(basicActivities);
 
         //data
-        allFiles = getFilesData();
+        allFiles = new ArrayList<>();
 
         //adapters
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,true);
+
 
         //dialog
         mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
 
-       ;
     }
 
-    private ArrayList<Files> getFilesData() {
-        ArrayList<Files> files = new ArrayList<>();
-        Files file = new Files(R.drawable.imageone, "visitNote", "Visit Note", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
-        Files file1 = new Files(R.drawable.imagetwo, "image", "Image-Attachment-02.jpg", "receiver", "jeffery Crippin", "Yesterday 02:12:32 PM");
-        Files file2 = new Files(R.drawable.imagetwo, "pdf", "Intro-part-02.pdf", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-        Files file3 = new Files(R.drawable.imagetwo, "pdf", "Intro-part-02.pdf", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-        Files file4 = new Files(R.drawable.imagetwo, "image", "Image-Attachment-02.jpg", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-        Files file5 = new Files(R.drawable.imagetwo, "visitNote", "Visit Note", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-        Files file6 = new Files(R.drawable.imagetwo, "image", "Image-Attachment-02.jpg", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-        Files file7 = new Files(R.drawable.imagetwo, "pdf", "Intro-part-02.pdf", "sender", "David Crippin", "Yesterday 02:12:32 PM");
-
-        files.add(file);
-        files.add(file1);
-        files.add(file2);
-        files.add(file3);
-        files.add(file4);
-        files.add(file5);
-        files.add(file6);
-        files.add(file7);
-
-
-        return files;
+    @Override
+    public void setRecyclerView() {
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,true);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,filesAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
     }
+
+    @Override
+    public void setView(Object data) {
+        filesData=(FilesData)data;
+        allFiles.addAll(Arrays.asList(filesData.getResponse()));
+        setRecyclerView();
+
+}
+    @Override
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void getData() {
+        controller.getData();
+
+
+    }
+
+    @Override
+    public void setToolbar() {
+
+    }
+
+
 
     @OnClick({R.id.tvFilterDoctors, R.id.tvFilterFiles})
     public void onViewClicked(View view) {
@@ -139,9 +157,9 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
 
     @Override
     public void onclick(int position) {
-        if(allFiles.get(position).getFileType().equals("visitNote")){
+       /* if(allFiles.get(position).getFileType().equals("visitNote")){
             startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
-        }
+        }*/
 
     }
 

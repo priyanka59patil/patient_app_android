@@ -157,4 +157,9 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
 
     }
 
+    @Override
+    public void setToolbar() {
+
+    }
+
 }

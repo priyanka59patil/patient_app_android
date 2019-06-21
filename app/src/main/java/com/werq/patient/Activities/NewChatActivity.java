@@ -61,6 +61,7 @@ public class NewChatActivity extends AppCompatActivity implements RecyclerViewCl
 
     private void setNewChatsList() {
         RecyclerViewHelper.setAdapterToRecylerView(mContext,rvChats,chatAdapters);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvChats);
     }
 
 

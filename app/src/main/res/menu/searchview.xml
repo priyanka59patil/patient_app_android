@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".HomeActivity">
 
+
     <item
         android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
-        app:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_action_search"
+        android:orderInCategory="100"
+        android:title="search"
         app:showAsAction="always" />
+
 
 </menu>

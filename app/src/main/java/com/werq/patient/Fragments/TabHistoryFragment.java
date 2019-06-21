@@ -11,17 +11,27 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.werq.patient.Activities.ScheduleDetailsActivity;
 import com.werq.patient.Adapters.AppointmentAdapter;
+import com.werq.patient.Controller.AppointmentController;
+import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Models.AppointmentData;
+import com.werq.patient.Models.AppointmentResponce;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TabHistoryFragment extends Fragment implements RecyclerViewClickListerner {
+public class TabHistoryFragment extends Fragment implements RecyclerViewClickListerner, BasicActivities {
 
 
     @BindView(R.id.rvAppointmentList)
@@ -30,37 +40,78 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
 
     //listener
     RecyclerViewClickListerner listener;
-     Context mContext;
+    Context mContext;
+    private TabHistoryFragment basicActivities;
+    private AppointmentController controller;
+    private ArrayList<AppointmentData> listAppointments;
+    private AppointmentResponce data;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_history, container, false);
-        ButterKnife.bind(this,view);
-       IntializeVariables();
-       setRecyclerViewAdapters();
+        ButterKnife.bind(this, view);
+        initializeVariables();
+        getData();
+        //   setRecyclerViewAdapters();
         return view;
     }
 
-    private void setRecyclerViewAdapters() {
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvAppointmentList,adapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvAppointmentList);
-    }
 
-    private void IntializeVariables() {
-        listener=this::onclick;
-        mContext=getActivity();
-        adapter = new AppointmentAdapter(getActivity(), false,listener);
+    @Override
+    public void initializeVariables() {
+        //context
+        mContext = getActivity();
+        //listner
+        listener = this::onclick;
+        basicActivities = this;
+        controller = new AppointmentController(basicActivities);
 
+        //data
+        listAppointments = new ArrayList<>();
 
     }
 
 
     @Override
     public void onclick(int position) {
-        Intent intent=new Intent(mContext, ScheduleDetailsActivity.class);
-        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming),false);
+        Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
+        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming), false);
+        intent.putExtra(getResources().getString(R.string.label_data),listAppointments.get(position));
         startActivity(intent);
+    }
+
+
+    @Override
+    public void setRecyclerView() {
+        adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
+    }
+
+    @Override
+    public void setView(Object data) {
+        this.data = (AppointmentResponce) data;
+        listAppointments.addAll(Arrays.asList(this.data.getResponse()));
+        setRecyclerView();
+    }
+
+    @Override
+    public void getIntentData() {
+
+    }
+
+    @Override
+    public void getData() {
+
+            controller.getHistoryData();
+
+    }
+
+    @Override
+    public void setToolbar() {
+
     }
 }

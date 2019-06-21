@@ -21,6 +21,8 @@ import com.werq.patient.Models.Responce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
+import java.text.ParseException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -65,7 +67,9 @@ public class PracticeFragment extends Fragment implements BasicActivities {
         ButterKnife.bind(this,view);
         initializeVariables();
         setRecyclerView();
-        getData();
+
+            getData();
+
 
 
         return view;
@@ -113,8 +117,13 @@ public class PracticeFragment extends Fragment implements BasicActivities {
     }
 
     @Override
-    public void getData() {
+    public void getData()  {
         profileInterface.getData();
+
+    }
+
+    @Override
+    public void setToolbar() {
 
     }
 

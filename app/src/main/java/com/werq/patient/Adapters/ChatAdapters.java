@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.OverlapDecoration;
+import com.werq.patient.Utils.RecyclerViewHelper;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -41,17 +42,12 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
     @Override
     public void onBindViewHolder(@NonNull ViewHolders holder, int position) {
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
-        layoutManager.setReverseLayout(true);
-        layoutManager.setStackFromEnd(true);
+        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUsers,stackImageView);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
         holder.cbFilter.setVisibility(View.GONE);
-        holder.tvTime.setVisibility(View.VISIBLE);
-        holder.rvUsers.addItemDecoration(new OverlapDecoration());
-        holder.rvUsers.setLayoutManager(layoutManager);
-        holder.rvUsers.setHasFixedSize(true);
-        holder.rvUsers.setAdapter(stackImageView);
         if(isFromRecentChat){
             holder.tvTime.setVisibility(View.VISIBLE);
+
         }
         else {
             holder.tvTime.setVisibility(View.GONE);

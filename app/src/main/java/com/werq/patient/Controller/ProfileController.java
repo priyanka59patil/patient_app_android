@@ -1,13 +1,14 @@
 package com.werq.patient.Controller;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 
 import com.google.gson.Gson;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.ProfileInterface;
-import com.werq.patient.MockData.ProfileJsonData;
+import com.werq.patient.MockData.JsonData;
 import com.werq.patient.Models.Responce;
+
+import java.text.ParseException;
 
 public class ProfileController implements ProfileInterface {
     BasicActivities basicActivities;
@@ -19,8 +20,8 @@ public class ProfileController implements ProfileInterface {
     }
 
     @Override
-    public void getData() {
-        Responce responce= ProfileJsonData.getProfileData();
+    public void getData()  {
+        Responce responce= JsonData.getProfileData();
         basicActivities.setView(responce);
 
     }

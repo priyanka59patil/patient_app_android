@@ -14,8 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DateHelper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,16 +55,16 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
     @Override
     public void onBindViewHolder(@NonNull FileadapterViewHolder holder, int position) {
      Files file=allFiles.get(position);
-        holder.tvFileName.setText(file.getFileName());
-        if(file.getUserType().equals("sender")){
-            holder.tvprefix.setText("To :");
-        }
-        else {
+        holder.tvFileName.setText(file.getFile_name());
+
             holder.tvprefix.setText("From :");
-        }
-        switch (file.getFileType()){
-            case "image":
-                holder.file_view.setImageDrawable(mContext.getResources().getDrawable(file.getFile()));
+
+        switch (file.getFile_type()){
+            case "png":
+                holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.imageone));
+                break;
+            case "jpg":
+                holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.imageone));
                 break;
             case "pdf":
                 holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pdf));
@@ -70,9 +73,17 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
                 holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.visitnote));
                 break;
         }
+        if(fileTab)
+        holder.tvUsername.setText(file.getProvider().getFirst_name()+" "+file.getProvider().getLast_name());
+        else
+            holder.tvUsername.setText("Parag Mane" );
+        try {
+            Date date=DateHelper.dateFromUtc(file.getCreated_at());
+            holder.tvTime.setText("today "+DateHelper.dayFromDate(date,"time"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        holder.tvUsername.setText(file.getUserName());
-        holder.tvTime.setText(file.getTime());
     }
 
     @Override

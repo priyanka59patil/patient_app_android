@@ -64,6 +64,6 @@ public class Address {
     @Override
     public String toString()
     {
-        return "ClassPojo [address2 = "+address2+", city = "+city+", address1 = "+address1+", state = "+state+", postal_code = "+postal_code+"]";
+        return " "+address1+", "+address2+" "+city+", "+state+",  "+postal_code+"";
     }
 }

@@ -163,7 +163,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         initializeVariables();
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setSelectedItemId(R.id.calendar);
-        Helper.setToolbar(getSupportActionBar(), "Appointment");
+        Helper.setToolbar(getSupportActionBar(), "Appointments");
     }
 
     private void initializeVariables() {

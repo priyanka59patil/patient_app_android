@@ -5,12 +5,20 @@ import android.view.animation.AlphaAnimation;
 
 import androidx.appcompat.app.ActionBar;
 
+import com.google.gson.Gson;
 import com.werq.patient.R;
 
 public class Helper {
+    public static Gson gson;
+    public static Gson getGsonInstance(){
+        if(gson==null)
+            gson=new Gson();
+        return gson;
+    }
+
     public static void setToolbar(ActionBar supportActionBar, String title) {
-       /* supportActionBar.setDisplayHomeAsUpEnabled(true);
-        supportActionBar.setHomeAsUpIndicator(R.drawable.ic_icon_logo);*/
+        supportActionBar.setDisplayHomeAsUpEnabled(true);
+        supportActionBar.setHomeAsUpIndicator(R.drawable.ic_icon_logo);
         supportActionBar.setTitle(title);
 
     }
