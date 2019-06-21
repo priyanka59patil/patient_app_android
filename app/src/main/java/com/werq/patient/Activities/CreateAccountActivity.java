@@ -43,7 +43,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Create An Account");
+        getSupportActionBar().setTitle("Create an Account");
 
 
     }

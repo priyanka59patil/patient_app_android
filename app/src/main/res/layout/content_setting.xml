@@ -91,6 +91,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="@dimen/main_layout_padding"
         android:text="Edit"
+        android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />

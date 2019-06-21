@@ -38,6 +38,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     EditText etemail;
     @BindView(R.id.tilPassword)
     TextInputLayout tilPassword;
+    @BindView(R.id.tilemail)
+    TextInputLayout tilemail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private boolean validation() {
         boolean isInvalid = false;
-        isInvalid = EditTextUtils.isEmpty(tilPassword, getResources().getString(R.string.select_email));
+        isInvalid = EditTextUtils.isEmpty(tilemail, getResources().getString(R.string.error_email_phone));
         return isInvalid;
     }
 }
