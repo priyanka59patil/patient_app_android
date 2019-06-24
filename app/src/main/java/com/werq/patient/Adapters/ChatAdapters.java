@@ -1,6 +1,7 @@
 package com.werq.patient.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,15 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolders holder, int position) {
+        if(position==0){
+            holder.tvMessage.setTypeface(null, Typeface.BOLD);
+            holder.tvMessage.setTextColor(mContext.getResources().getColor(R.color.black));
+            holder.tvTime.setTextColor(mContext.getResources().getColor(R.color.black));
+            holder.tvTime.setTypeface(null, Typeface.BOLD);
+            holder.tvDoctorTeamName.setTypeface(null, Typeface.BOLD);
+
+        }
+
         stackImageView = new StackImagesAdapter(mContext, setImageResources());
         RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUsers,stackImageView);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
@@ -71,7 +81,7 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
 
     public class ViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView rvUsers;
-        TextView tvMessage,tvTime;
+        TextView tvMessage,tvTime,tvDoctorTeamName;
         CardView cvMainLayout;
         CustomCheckBox cbFilter;
         public ViewHolders(@NonNull View itemView) {
@@ -81,6 +91,7 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
             tvTime=(TextView)itemView.findViewById(R.id.tvTime);
             cvMainLayout =(CardView)itemView.findViewById(R.id.cvMainLayout);
             cbFilter=(CustomCheckBox)itemView.findViewById(R.id.cbFilter);
+            tvDoctorTeamName=(TextView)itemView.findViewById(R.id.tvDoctorTeamName);
             cvMainLayout.setOnClickListener(this);
         }
 

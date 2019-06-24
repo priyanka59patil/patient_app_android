@@ -15,14 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.siyamed.shapeimageview.CircularImageView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.werq.patient.Adapters.MedicalInfoAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
+import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.ProfileInterface;
 import com.werq.patient.Models.Medical_info;
 import com.werq.patient.Models.Personal_info;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
@@ -30,9 +33,10 @@ import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-public class MedicalInfoFragment extends Fragment implements BasicActivities {
+public class MedicalInfoFragment extends Fragment implements BasicActivities, DiologListner {
 
     MedicalInfoAdapter adapter;
     @BindView(R.id.rvMedicalInfo)
@@ -69,6 +73,7 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
 
     private ProfileInterface profileInterface;
     private BasicActivities basicActivities;
+    DiologListner diologListner;
 
     private ArrayList<Medical_info> medical_infos;
 
@@ -78,6 +83,7 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
     Bundle bundle;
 
     Gson gson;
+    private BottomSheetDialog mBottomSheetDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,11 +121,14 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
         //listner
         basicActivities = this;
         profileInterface = new ProfileController(basicActivities);
+        diologListner = this;
 
         //others
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.camera_diolog_layout, diologListner);
+
         gson = new Gson();
-        medical_infos=new ArrayList<>();
-        adapter = new MedicalInfoAdapter(getActivity(), medical_infos);
+        medical_infos = new ArrayList<>();
+        adapter = new MedicalInfoAdapter(getActivity(), titleList);
 
 
     }
@@ -137,10 +146,10 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
         medical_info = gson.fromJson(bundle.getString("medical_info"), Medical_info[].class);
         medical_infos.addAll(Arrays.asList(medical_info));
 
-      tvPatientName.setText(personal_info.getFirst_name()+" "+personal_info.getLast_name());
-      tvDob.setText(personal_info.getDob());
-      tvContact.setText(personal_info.getPhone_number());
-      tvLocation.setText(personal_info.getAddress().toString());
+        tvPatientName.setText(personal_info.getFirst_name() + " " + personal_info.getLast_name());
+        tvDob.setText(personal_info.getDob());
+        tvContact.setText(personal_info.getPhone_number());
+     //   tvLocation.setText(personal_info.getAddress().toString());
 
 
     }
@@ -162,4 +171,13 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities {
 
     }
 
+    @Override
+    public void setdiologview(View view) {
+
+    }
+
+    @OnClick(R.id.ivProfilePhoto)
+    public void onViewClicked() {
+        mBottomSheetDialog.show();
+    }
 }

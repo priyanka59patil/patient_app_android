@@ -26,13 +26,13 @@ import java.util.ArrayList;
 public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.ChipHolder> {
     Activity context;
     ArrayList<String> titleList;
-    ArrayList<Medical_info> medical_infos;
 
 
 
-    public MedicalInfoAdapter(Activity context,  ArrayList<Medical_info> medical_infos) {
+
+    public MedicalInfoAdapter(Activity context,   ArrayList<String> titleList) {
         this.context = context;
-        this.medical_infos = medical_infos;
+        this.titleList = titleList;
 
     }
 
@@ -45,9 +45,9 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
     @Override
     public void onBindViewHolder(ChipHolder holder, int position) {
-        Medical_info medical_info = medical_infos.get(position);
+        String medical_info = titleList.get(position);
 
-        holder.tvTitle.setText(medical_info.getType());
+        holder.tvTitle.setText(medical_info);
         holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,7 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
     @Override
     public int getItemCount() {
-        return medical_infos.size();
+        return titleList.size();
     }
 
     public class ChipHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

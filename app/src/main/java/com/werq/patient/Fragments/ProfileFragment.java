@@ -13,14 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.werq.patient.Activities.Adapters.PagerAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.BasicFragments;
+import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.ProfileInterface;
 import com.werq.patient.Models.Responce;
 import com.werq.patient.R;
+import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.FragmentUtils;
 
 import butterknife.BindView;
@@ -28,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class ProfileFragment extends Fragment implements BasicActivities {
+public class ProfileFragment extends Fragment implements BasicActivities, DiologListner {
 
     public PagerAdapter adapter;
     private OnFragmentInteractionListener mListener;
@@ -55,6 +58,9 @@ public class ProfileFragment extends Fragment implements BasicActivities {
     MedicalInfoFragment medicalInfoFragment;
     InsuranceFragment insuranceFragment;
     MedicationsFragment medicationsFragment;
+
+    DiologListner diologListner;
+    private BottomSheetDialog mBottomSheetDialog;
 
 
     @Override
@@ -108,7 +114,7 @@ public class ProfileFragment extends Fragment implements BasicActivities {
         //interface
         basicActivities=this;
         profileInterface=new ProfileController(basicActivities);
-
+        diologListner=this;
 
         //other
 
@@ -157,6 +163,11 @@ public class ProfileFragment extends Fragment implements BasicActivities {
 
     @Override
     public void setToolbar() {
+
+    }
+
+    @Override
+    public void setdiologview(View view) {
 
     }
 

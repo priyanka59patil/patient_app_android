@@ -3,6 +3,7 @@ package com.werq.patient.Controller;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.werq.patient.Interfaces.AppointmentInterface;
@@ -15,6 +16,8 @@ import com.werq.patient.Utils.DateHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppointmentController implements AppointmentInterface {
 BasicActivities basicActivities;
@@ -57,9 +60,17 @@ BasicActivities basicActivities;
             case "toconfirm":
                 textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.orange_button));
                 textView.setText(mContext.getResources().getString(R.string.label_to_confirmed));
+
                 break;
 
         }
+    }
+
+    @Override
+    public void statusButtonBackground(Context mContext, String status, TextView textView, LinearLayout appointment) {
+
+        statusButtonBackground( mContext,  status,  textView);
+
 
 
     }

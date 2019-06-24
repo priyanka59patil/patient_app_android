@@ -6,7 +6,7 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="darkGray">#7f7f7f</color>
-    <color name="colorLightGreyBackground">#ECEFF1</color>
+    <color name="colorLightGreyBackground">#EBEEF1</color>
     <color name="color_btn_text">#3897f0</color>
     <color name="color_heading">#030303</color>
     <color name="sub_heding">#212121</color>
@@ -16,7 +16,8 @@
     <color name="buttongreen">#83cc55</color>
 
     <color name="orange"> #FFA500</color>
-    <color name="backgroundgrey">#ECEFF1</color>
+    <color name="backgroundgrey">#EBEEF1</color>
     <color name="gray_text_color">#9B9B9B</color>
+    <color name="toconfirm_bg_color">#F4F9FE</color>
 
 </resources>

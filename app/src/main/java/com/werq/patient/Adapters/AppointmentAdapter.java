@@ -62,7 +62,17 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         Provider provider = result.getProvider();
 
         holder.tvUseFullName.setText(provider.getFirst_name() + " " + provider.getLast_name());
+
         controller.statusButtonBackground(mContext, result.getSchedule_status(), holder.tvstatus);
+        if(result.getSchedule_status().toLowerCase().equals("toconfirm"))
+        {
+
+            holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+            holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+
+
+        }
+
         try {
             Date date = DateHelper.dateFromUtc(result.getAppointment_date());
             holder.tvday.setText(DateHelper.dayFromDate(date, "day"));
@@ -92,6 +102,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         TextView tvstatus, tvday, tvMonth, tvTime, tvUseFullName, tvSpeciality, tvAddress;
         LinearLayout appointment;
         CircleImageView ivUseImage;
+        RelativeLayout rl_profile_view;
+        ConstraintLayout layout_schedule_view;
 
         public AppointmentViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,6 +116,8 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             tvSpeciality = (TextView) itemView.findViewById(R.id.tvSpeciality);
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
             ivUseImage=(CircleImageView)itemView.findViewById(R.id.ivUseImage);
+            rl_profile_view=(RelativeLayout)itemView.findViewById(R.id.rl_profile_view);
+            layout_schedule_view=(ConstraintLayout)itemView.findViewById(R.id.layout_schedule_view);
             appointment.setOnClickListener(this::onClick);
         }
 

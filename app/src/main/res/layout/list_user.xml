@@ -6,10 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+
    >
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="@dimen/main_adapter_padding">
 
 
@@ -27,6 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:text="@string/value_username"
         app:layout_constraintStart_toEndOf="@+id/ivDoctorProfile"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,15 +49,14 @@
         app:layout_constraintStart_toEndOf="@+id/ivDoctorProfile"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:background="@color/colorLightGreyBackground"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivDoctorProfile"></View>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        android:layout_below="@+id/main_layout"></View>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

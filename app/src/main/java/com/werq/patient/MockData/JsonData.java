@@ -21,7 +21,7 @@ public class JsonData {
                "    \"last_name\": \"mane\",\n" +
                "    \"phone_number\": \"656565655\",\n" +
                "      \"profile_url\": \"ASASaSA\",\n" +
-               "        \"dob\":\"31 may,2009\", \n" +
+               "        \"dob\":\"May 31, 2009\", \n" +
                "    \"address\": {\n" +
                "      \"address1\": \"ahdvhjajdjsavd,sdasd,asdsad,asdasd,\",\n" +
                "      \"address2\": \"asdsadasdasdd,asdsa\",\n" +

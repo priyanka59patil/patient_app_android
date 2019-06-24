@@ -157,9 +157,11 @@ public class FilesFragment extends Fragment implements View.OnClickListener, Rec
 
     @Override
     public void onclick(int position) {
+        startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
        /* if(allFiles.get(position).getFileType().equals("visitNote")){
-            startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
+
         }*/
+
 
     }
 

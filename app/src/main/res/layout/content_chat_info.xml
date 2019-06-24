@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/label_doctorname"
+                android:text="@string/label_doctorteam_comel_case"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize_title"
                 app:layout_constraintStart_toStartOf="parent"

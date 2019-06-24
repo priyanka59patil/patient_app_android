@@ -20,7 +20,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants"
+            >
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
@@ -78,6 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
+                            android:textAllCaps="true"
                             android:background="@drawable/orange_button"
                             android:padding="3dp"
                             android:text="@string/label_to_confirmed"
@@ -303,20 +306,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvLocation" >
                <RelativeLayout
                    android:layout_width="wrap_content"
-                   android:layout_height="wrap_content">
+                   android:layout_height="wrap_content"
+                  android:paddingRight="10dp"
+                   android:paddingLeft="10dp"
+                   android:paddingBottom="10dp">
                 <TextView
                     android:id="@+id/tvAddressonMap"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:text="@string/address"
-                   android:layout_margin="@dimen/main_layout_padding"/>
-                <ImageView
-                    android:id="@+id/map"
-                    android:layout_below="@+id/tvAddressonMap"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/mapview"
-                    />
+                   />
+                   <ImageView
+                       android:id="@+id/map"
+                       android:layout_below="@+id/tvAddressonMap"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:scaleType="centerCrop"
+                       android:layout_marginTop="8dp"
+                       android:src="@drawable/mapview"
+                       />
+
                </RelativeLayout>
 
             </androidx.cardview.widget.CardView>

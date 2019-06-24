@@ -1,6 +1,7 @@
 package com.werq.patient.Activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.werq.patient.Fragments.ChangePasswordFragment;
+import com.werq.patient.Fragments.EnterNewPassword;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.Fragments.RepeateFragmentFragment;
 import com.werq.patient.R;
@@ -43,6 +45,15 @@ public class ChangePasswordActivity extends AppCompatActivity {
         super.onStart();
         EventBus.getDefault().register(this);
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public void onStop() {
@@ -52,6 +63,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String action) {
         switch (action){
+            case "New Password":
+                EnterNewPassword enterNewPassword=new EnterNewPassword();
+                addFragment(enterNewPassword);
+                break;
             case "Change Password":
                 RepeateFragmentFragment repeateFragmentFragment=new RepeateFragmentFragment();
                 addFragment(repeateFragmentFragment);

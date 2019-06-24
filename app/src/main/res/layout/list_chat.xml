@@ -61,8 +61,8 @@
             android:text="@string/last_message_date" />
         <net.igenius.customcheckbox.CustomCheckBox
             android:id="@+id/cbFilter"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/margin_left_rvUser"
             app:color_checked="@color/colorPrimary"

@@ -129,7 +129,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         setSupportActionBar(toolbar);
         initializeVariables();
 
-
+        layoutScheduleView.requestFocus();
 
         getIntentData();
 

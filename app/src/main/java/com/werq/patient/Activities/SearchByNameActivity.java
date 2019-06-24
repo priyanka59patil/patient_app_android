@@ -54,6 +54,8 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         inilizevariables();
         searchView.setVoiceSearch(false);
         searchView.setEllipsize(true);
+        searchView.setHint("Search People by Name");
+        searchView.setHintTextColor(getResources().getColor(R.color.gray_text_color));
         setDoctorList();
 
 
@@ -66,7 +68,7 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
     }
 
     private void setToolBar() {
-        Helper.setToolbarwithBack(getSupportActionBar(), "Doctor Name");
+        Helper.setToolbarwithBack(getSupportActionBar(), "Add Doctor");
 
     }
     @Override

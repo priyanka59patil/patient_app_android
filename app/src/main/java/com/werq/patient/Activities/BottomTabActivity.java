@@ -13,11 +13,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.werq.patient.Fragments.AppointmentFragment;
 import com.werq.patient.Fragments.ChatFragments;
 import com.werq.patient.Fragments.DoctorTeamFragment;
@@ -56,43 +58,43 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 case R.id.calendar:
                     AppointmentFragment appointmentFragment = new AppointmentFragment();
                     addFragment(appointmentFragment);
-                    if (add != null && setting != null &&search!=null) {
-                        Helper.setToolbar(getSupportActionBar(), "Appointment");
-                      VisibleMenuItem(false,true,false);
+                    if (add != null && setting != null && search != null) {
+                        Helper.setToolbar(getSupportActionBar(), "Appointments");
+                        VisibleMenuItem(false, false, true);
 
                     }
 
                     return true;
                 case R.id.messages:
-                    title="Chat";
-                    setToolbarForbottom(title,true,false);
-                    ChatFragments chatFragments=new ChatFragments();
+                    title = "Chats";
+                    setToolbarForbottom(title, true, false);
+                    ChatFragments chatFragments = new ChatFragments();
                     addFragment(chatFragments);
-                    VisibleMenuItem(true,false,false);
+                    VisibleMenuItem(true, false, false);
 
 
                     return true;
                 case R.id.people:
 
-                    title="My Doctor Teams";
-                    setToolbarForbottom(title,true,false);
+                    title = "My Doctor Teams";
+                    setToolbarForbottom(title, true, false);
                     DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
                     addFragment(doctorTeamFragment);
-                    VisibleMenuItem(true,false,false);
+                    VisibleMenuItem(true, false, false);
 
                     return true;
                 case R.id.profile:
                     ProfileFragment profileFragment = new ProfileFragment();
                     addFragment(profileFragment);
                     Helper.setToolbar(getSupportActionBar(), "My Profile");
-                    VisibleMenuItem(false,true,false);
+                    VisibleMenuItem(false, true, false);
 
                     return true;
                 case R.id.folder:
                     Helper.setToolbar(getSupportActionBar(), "Files");
-                    FilesFragment filesFragment=new FilesFragment();
+                    FilesFragment filesFragment = new FilesFragment();
                     addFragment(filesFragment);
-                    VisibleMenuItem(false,false,true);
+                    VisibleMenuItem(false, false, true);
 
                     return true;
             }
@@ -100,10 +102,10 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         }
     };
 
-    private void VisibleMenuItem(boolean addValue ,boolean settingValue,boolean searchValue) {
-       add.setVisible(addValue);
-       setting.setVisible(settingValue);
-       search.setVisible(searchValue);
+    private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
+        add.setVisible(addValue);
+        setting.setVisible(settingValue);
+        search.setVisible(searchValue);
     }
 
     private MenuItem setting;
@@ -116,7 +118,8 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         transaction.replace(R.id.mainLayout, fragment);
         transaction.commitNow();
     }
-    private void setToolbarForbottom(String title,boolean isaddVisiable,boolean isSettingvisible){
+
+    private void setToolbarForbottom(String title, boolean isaddVisiable, boolean isSettingvisible) {
         Helper.setToolbar(getSupportActionBar(), title);
         add.setVisible(true);
         setting.setVisible(false);
@@ -128,7 +131,8 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
         setting = menu.findItem(R.id.action_settings);
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
-        VisibleMenuItem(false,true,false);
+
+        VisibleMenuItem(false, false, true);
         return true;
     }
 
@@ -139,13 +143,13 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
                 startActivity(new Intent(mContext, SettingActivity.class));
                 break;
             case R.id.action_Doctor_name:
-                switch (title){
+                switch (title) {
                     case "My Doctor Teams":
                         mBottomSheetDialog.show();
                         break;
-                    case "Chat":
-                        startActivity(new Intent(mContext,NewChatActivity.class));
-                     break;
+                    case "Chats":
+                        startActivity(new Intent(mContext, NewChatActivity.class));
+                        break;
                 }
 
 
@@ -167,22 +171,19 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initializeVariables() {
-      //context
+        //context
         mContext = this;
 
-       //listner
-        diologListner=this;
+        //listner
+        diologListner = this;
 
-        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.doctor_name_diolog_layout,diologListner);
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.doctor_name_diolog_layout, diologListner);
 
 
-
-       // mBottomSheetDialog.setContentView(sheetView);
+        // mBottomSheetDialog.setContentView(sheetView);
 
 
     }
-
-
 
 
     @Override

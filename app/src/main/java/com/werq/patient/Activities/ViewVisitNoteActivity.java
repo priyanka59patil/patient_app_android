@@ -15,11 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.MockData.JsonData;
 import com.werq.patient.Models.Files;
+import com.werq.patient.Models.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,7 +89,9 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
         mContext=this;
 
         //data
-        allFiles = getFilesData();
+        FilesData filesData= JsonData.getFilesData();
+        allFiles=new ArrayList<>();
+        allFiles.addAll(Arrays.asList(filesData.getResponse()));
 
         //listner
         recyclerViewClickListerner=this::onclick;

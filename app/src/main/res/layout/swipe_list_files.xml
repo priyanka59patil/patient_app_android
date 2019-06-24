@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/file_view"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:text="Image-Attachment-01.jpg"
             android:layout_marginLeft="@dimen/margin_left_fileview"
             />

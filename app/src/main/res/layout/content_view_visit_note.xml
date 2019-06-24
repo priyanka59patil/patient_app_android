@@ -15,8 +15,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/titleDoctor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Doctor"
+            android:textSize="@dimen/textSize_note_size"
+            android:layout_marginStart="8dp"
+            />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
+        android:layout_below="@+id/titleDoctor"
+        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:textStyle="bold"
                 android:text="@string/value_username"
                 app:layout_constraintStart_toEndOf="@+id/ivDoctorProfile"
                 app:layout_constraintTop_toTopOf="parent" />

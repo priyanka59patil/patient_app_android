@@ -141,7 +141,7 @@ public class ProfileDoctorActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PracticeFragment(), getString(R.string.label_practice));
-        adapter.addFragment(new DoctorsListFragment(), getString(R.string.label_doctorname));
+        adapter.addFragment(new DoctorsListFragment(), getString(R.string.label_doctorTEAM));
         viewpager.setAdapter(adapter);
 
 

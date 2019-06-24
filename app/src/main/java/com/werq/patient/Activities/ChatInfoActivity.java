@@ -14,12 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Adapters.DoctorUserList;
 import com.werq.patient.Adapters.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.MockData.JsonData;
 import com.werq.patient.Models.Files;
+import com.werq.patient.Models.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -111,6 +114,9 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         teamList = new DoctorUserList(mContext, 7);
 
         //allFiles = getFilesData();
+        FilesData filesData= JsonData.getFilesData();
+        allFiles=new ArrayList<>();
+        allFiles.addAll(Arrays.asList(filesData.getResponse()));
 
         filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
 

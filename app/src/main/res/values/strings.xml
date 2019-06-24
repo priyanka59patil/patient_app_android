@@ -54,7 +54,7 @@
     <string name="intent_is_from_upcoming">IsFromUpcoming</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
     <string name="label_camera">Take New Photo</string>
-    <string name="label_choose_from_gallary">Choose from gallery</string>
+    <string name="label_choose_from_gallary">Choose From Gallery</string>
     <string name="label_invitationcode">Enter Invitation Code</string>
     <string name="label_search_doctor_base">Search Doctor Base</string>
     <string name="title_activity_add_doctor_team">AddDoctorTeamActivity</string>
@@ -156,11 +156,13 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="value_speciality">Dentistry, Hermatology, Cytophatology</string>
-    <string name="value_abouts">Sarah graduated from the Virginia commonwealth University SOM in 2012 anthony works in westminister,Co and specializes in family Medicines</string>
+    <string name="value_abouts">Sarah graduated from the Virginia commonwealth University SOM in 2012 anthony works in westminister,Co and specializes in family Medicines\n\n</string>
     <string name="label_call">Call</string>
     <string name="label_chat">Chat</string>
-    <string name="label_practice">Practice</string>
+    <string name="label_practice">PRACTICE</string>
     <string name="label_doctorname">Doctor Name</string>
+    <string name="label_doctorTEAM">DOCTOR TEAM</string>
+    <string name="label_doctorteam_comel_case">Doctor Team</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="value_message">Ok,we made reschedule</string>
     <string name="value_doctor_name">Ida Fox Team</string>
@@ -195,4 +197,5 @@
     <string name="title_activity_medical_info">MedicalInfoActivity</string>
     <string name="label_to_confirmed">To Confirm</string>
     <string name="label_data">data</string>
+    <string name="title_activity_view_file">ViewFileActivity</string>
 </resources>

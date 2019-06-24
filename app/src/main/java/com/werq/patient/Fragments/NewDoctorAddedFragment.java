@@ -46,7 +46,7 @@ public class NewDoctorAddedFragment extends Fragment {
     }
 
     private void setStackImageadapter() {
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvUserProfiles,stackImageView);
+        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,rvUserProfiles,stackImageView);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvUserProfiles);
     }
 

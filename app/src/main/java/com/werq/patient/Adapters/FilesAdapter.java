@@ -1,6 +1,7 @@
 package com.werq.patient.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Activities.ViewFileActivity;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.Files;
 import com.werq.patient.R;
@@ -23,27 +25,31 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterViewHolder> {
-   Context mContext;
+    Context mContext;
     ArrayList<Files> allFiles;
     RecyclerViewClickListerner recyclerViewClickListerner;
-    boolean fileTab=false;
+    boolean fileTab = false;
 
-    public FilesAdapter(Context mContext, ArrayList<Files> allFiles,RecyclerViewClickListerner recyclerViewClickListerner) {
+
+    public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
         this.allFiles = allFiles;
-        this.recyclerViewClickListerner=recyclerViewClickListerner;
+        this.recyclerViewClickListerner = recyclerViewClickListerner;
     }
-    public FilesAdapter(Context mContext, ArrayList<Files> allFiles,RecyclerViewClickListerner recyclerViewClickListerner,boolean fileTab) {
+
+
+
+    public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner, boolean fileTab) {
         this.mContext = mContext;
         this.allFiles = allFiles;
-        this.recyclerViewClickListerner=recyclerViewClickListerner;
-        this.fileTab=fileTab;
+        this.recyclerViewClickListerner = recyclerViewClickListerner;
+        this.fileTab = fileTab;
     }
 
     @NonNull
     @Override
     public FileadapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(fileTab){
+        if (fileTab) {
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.swipe_list_files, parent, false);
             return new FileadapterViewHolder(itemView);
         }
@@ -54,12 +60,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
 
     @Override
     public void onBindViewHolder(@NonNull FileadapterViewHolder holder, int position) {
-     Files file=allFiles.get(position);
+        Files file = allFiles.get(position);
         holder.tvFileName.setText(file.getFile_name());
 
-            holder.tvprefix.setText("From :");
+        holder.tvprefix.setText("From :");
 
-        switch (file.getFile_type()){
+        switch (file.getFile_type()) {
             case "png":
                 holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.imageone));
                 break;
@@ -73,13 +79,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
                 holder.file_view.setImageDrawable(mContext.getResources().getDrawable(R.drawable.visitnote));
                 break;
         }
-        if(fileTab)
-        holder.tvUsername.setText(file.getProvider().getFirst_name()+" "+file.getProvider().getLast_name());
+        if (fileTab)
+            holder.tvUsername.setText(file.getProvider().getFirst_name() + " " + file.getProvider().getLast_name());
         else
-            holder.tvUsername.setText("Parag Mane" );
+            holder.tvUsername.setText("Parag Mane");
         try {
-            Date date=DateHelper.dateFromUtc(file.getCreated_at());
-            holder.tvTime.setText("today "+DateHelper.dayFromDate(date,"time"));
+            Date date = DateHelper.dateFromUtc(file.getCreated_at());
+            holder.tvTime.setText("today " + DateHelper.dayFromDate(date, "time"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -88,31 +94,54 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
 
     @Override
     public int getItemCount() {
+
         return allFiles.size();
     }
 
     public class FileadapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView file_view;
-        TextView tvFileName,tvprefix,tvUsername,tvTime;
+        TextView tvFileName, tvprefix, tvUsername, tvTime;
         CircleImageView ivUserView;
         CardView cvMainlayout;
+
         public FileadapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            file_view=(ImageView) itemView.findViewById(R.id.file_view);
-            tvFileName=(TextView)itemView.findViewById(R.id.tvFileName);
-            tvprefix=(TextView)itemView.findViewById(R.id.tvprefix);
-            ivUserView=(CircleImageView)itemView.findViewById(R.id.ivUserView);
-            tvUsername=(TextView)itemView.findViewById(R.id.tvUsername);
-            tvTime=(TextView)itemView.findViewById(R.id.tvTime);
-            cvMainlayout=(CardView)itemView.findViewById(R.id.cvMainlayout);
+            file_view = (ImageView) itemView.findViewById(R.id.file_view);
+            tvFileName = (TextView) itemView.findViewById(R.id.tvFileName);
+            tvprefix = (TextView) itemView.findViewById(R.id.tvprefix);
+            ivUserView = (CircleImageView) itemView.findViewById(R.id.ivUserView);
+            tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
+            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
+            cvMainlayout = (CardView) itemView.findViewById(R.id.cvMainlayout);
             cvMainlayout.setOnClickListener(this);
+            file_view.setOnClickListener(this::onClick);
 
         }
 
         @Override
         public void onClick(View view) {
-            recyclerViewClickListerner.onclick(getAdapterPosition());
+            switch (view.getId()) {
+                case R.id.file_view:
+                    switch (allFiles.get(getAdapterPosition()).getFile_type()) {
+                        case "png":
+                            openViewPhoto();
+                            break;
 
+                        case "jpg":
+                            openViewPhoto();
+                            break;
+                    }
+                        break;
+                        case R.id.cvMainlayout:
+                            recyclerViewClickListerner.onclick(getAdapterPosition());
+                            break;
+                    }
+
+            }
+        }
+
+        private void openViewPhoto() {
+            mContext.startActivity(new Intent(mContext, ViewFileActivity.class));
         }
     }
-}
+
