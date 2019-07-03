@@ -7,8 +7,8 @@ android {
         applicationId "com.werq.patient"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 7
-        versionName "0.7"
+        versionCode 9
+        versionName "0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -105,6 +105,10 @@ dependencies {
 
     //searchview
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    //bugsee
+    implementation 'com.bugsee:bugsee-android:+'
+
 
 
 }

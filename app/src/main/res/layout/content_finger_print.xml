@@ -63,7 +63,7 @@
             android:layout_width="@dimen/button_yes_width"
             android:layout_height="@dimen/button_yes_height"
             android:layout_alignParentLeft="true"
-            android:background="@color/white"
+            android:background="@drawable/no_button"
             android:text="@string/label_no"
             android:textColor="@color/colorPrimary" />
 

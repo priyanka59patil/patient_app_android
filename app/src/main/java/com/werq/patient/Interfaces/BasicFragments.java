@@ -7,4 +7,5 @@ import androidx.fragment.app.Fragment;
 
 public interface BasicFragments {
     public Fragment newInstance(Context context, Bundle bundle,Fragment fragment);
+    Fragment   addFragment(Context Context ,Fragment fragment);
 }

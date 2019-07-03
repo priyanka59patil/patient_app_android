@@ -52,6 +52,7 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         setToolBar();
 
         inilizevariables();
+
         searchView.setVoiceSearch(false);
         searchView.setEllipsize(true);
         searchView.setHint("Search People by Name");
@@ -88,6 +89,7 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
 
         if (searchItem != null) {
             searchView.setMenuItem(searchItem);
+
         }
  /*       if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));

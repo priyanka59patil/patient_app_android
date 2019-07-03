@@ -133,6 +133,7 @@
                               </RelativeLayout>
 
                               <RelativeLayout
+                                  android:id="@+id/layout_bt_chat"
                                   android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
                                   android:layout_weight="1">
@@ -144,6 +145,7 @@
                                       android:layout_centerHorizontal="true"
                                       android:background="@drawable/rounded_button"
                                       android:padding="@dimen/img_padding_for_img_bgcolor"
+
                                       android:src="@drawable/message_white"
 
                                       />

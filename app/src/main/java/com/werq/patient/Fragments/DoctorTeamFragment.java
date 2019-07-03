@@ -67,7 +67,19 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
 
     @Override
     public void onclick(int position) {
-        startActivity(new Intent(mContext, ProfileDoctorActivity.class));
+        if(position==3){
+            openProfileDoctorActivity(true);
+        }
+        else {
+            openProfileDoctorActivity(false);
+        }
 
+
+    }
+
+    private void openProfileDoctorActivity(boolean isMessageDisabled) {
+        Intent intent=new Intent(mContext, ProfileDoctorActivity.class);
+        intent.putExtra("isMessageDisabled",isMessageDisabled);
+        startActivity(intent);
     }
 }

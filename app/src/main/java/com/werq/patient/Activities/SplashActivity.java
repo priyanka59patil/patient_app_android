@@ -10,9 +10,13 @@ import android.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.bugsee.library.Bugsee;
 import com.werq.patient.Activities.LoginActivity;
+import com.werq.patient.BuildConfig;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +32,7 @@ Context mContext;
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         mContext=this;
+        initBugsee();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -41,6 +46,14 @@ Context mContext;
 
 
 
+    }
+
+    private void initBugsee() {
+        HashMap<String, Object> options1 = new HashMap<>();
+        options1.put(Bugsee.Option.ReportPrioritySelector, true);
+        Bugsee.launch(this, "d801e4ee-338e-4595-955a-0b8608429dad", options1);
+//            }
+        Bugsee.setAttribute("Env", "Android-" + BuildConfig.BUILD_TYPE);
     }
 
 }

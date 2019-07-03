@@ -10,7 +10,9 @@
     tools:showIn="@layout/activity_profile_doctor"
     android:background="@color/colorLightGreyBackground"
     android:fillViewport="true">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/relTablayouts"
         android:layout_width="match_parent"
@@ -39,5 +41,10 @@
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
+</RelativeLayout>
 
 </androidx.core.widget.NestedScrollView>

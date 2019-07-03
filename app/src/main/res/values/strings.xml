@@ -172,7 +172,7 @@
     <string name="title_activity_chat_room">ChatRoomActivity</string>
     <string name="value_practice_name">Guha Dentistry practice</string>
     <string name="value_practice_about">Soho Pediatric Group is dedicated to the care health and development of children and their families</string>
-    <string name="value_practice_Location">Practice Location</string>
+    <string name="value_practice_Location">Practice Locations</string>
     <string name="value_hospital_affairs">Hospital Affiliates</string>
     <string name="value_website">www.sohopediatriciangroup.com</string>
     <string name="label_website">Website</string>
