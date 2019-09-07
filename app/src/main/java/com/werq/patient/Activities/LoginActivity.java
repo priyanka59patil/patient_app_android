@@ -35,6 +35,10 @@ public class LoginActivity extends BaseActivity {
 
 
 
+    @BindView(R.id.txtInputUserName)
+    TextInputLayout txtInputUserName;
+    @BindView(R.id.txtInputPassword)
+    TextInputLayout txtInputPassword;
     Context mContext;
 
     LoginViewModel loginViewModel;
@@ -47,11 +51,6 @@ public class LoginActivity extends BaseActivity {
         initBinding();
 
 
-
-
-
-
-
     }
 
     private void initBinding() {
@@ -59,7 +58,7 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding.setLifecycleOwner(this);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         activityLoginBinding.setLoginViewModel(loginViewModel);
-
+        mContext=this;
 
 
 
@@ -90,21 +89,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        loginViewModel.getPasswordError().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-
-
-
-            }
-        });
-
-        loginViewModel.getUserNameError().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-
-            }
-        });
 
 
 

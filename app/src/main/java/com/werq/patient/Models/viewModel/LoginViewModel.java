@@ -11,12 +11,13 @@ public class LoginViewModel extends ViewModel {
 
     MutableLiveData<String> userName=new MutableLiveData<>();
     MutableLiveData<String> password=new MutableLiveData<>();
-    MutableLiveData<Boolean> userNameError=new MutableLiveData<>();
-    MutableLiveData<Boolean> passwordError=new MutableLiveData<>();
+    MutableLiveData<String> userNameError=new MutableLiveData<>();
+    MutableLiveData<String> passwordError=new MutableLiveData<>();
     MutableLiveData<String> openActivity=new MutableLiveData<>();
 
+
     public LoginViewModel() {
-        userName.setValue("hi");
+
     }
 
     public MutableLiveData<String> getOpenActivity() {
@@ -31,17 +32,35 @@ public class LoginViewModel extends ViewModel {
         return password;
     }
 
-    public MutableLiveData<Boolean> getUserNameError() {
+    public MutableLiveData<String> getUserNameError() {
         return userNameError;
     }
 
-    public MutableLiveData<Boolean> getPasswordError() {
+    public MutableLiveData<String> getPasswordError() {
         return passwordError;
     }
 
     public void loginOnClick()
     {
-        openActivity.setValue("DashBoard");
+        Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
+        if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
+        password.getValue()!=null && !password.getValue().isEmpty() ) {
+            openActivity.setValue("DashBoard");
+        }
+        else {
+            if(userName.getValue()==null || userName.getValue().trim().equals(""))
+            {
+                userNameError.setValue("Email Cannot Be Empty");
+
+               // passwordError.setValue(null);
+            }
+             if(password.getValue()==null || password.getValue().trim().equals(""))
+            {
+               // userNameError.setValue(null);
+                passwordError.setValue("Password Cannot Be Empty");
+            }
+
+        }
     }
 
     public void signUpOnClick()
@@ -55,37 +74,44 @@ public class LoginViewModel extends ViewModel {
     }
 
     public TextWatcher unTextWatcher=new TextWatcher() {
+
+        private final String TAG = "in-un";
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            Log.e(TAG, "beforeTextChanged: ");
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            Log.e("wAtcher",""+charSequence);
-        password.setValue(charSequence+"");
+            Log.e(TAG, "onTextChanged: ");
+            userNameError.setValue(null);
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+            Log.e(TAG, "afterTextChanged: ");
 
         }
     };
 
     public TextWatcher pwdTextWatcher=new TextWatcher() {
+        private final String TAG = "in-pwd";
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            Log.e(TAG, "beforeTextChanged: ");
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            Log.e(TAG, "onTextChanged: ");
+            passwordError.setValue(null);
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+            Log.e(TAG, "afterTextChanged: ");
 
         }
     };
+
 }
