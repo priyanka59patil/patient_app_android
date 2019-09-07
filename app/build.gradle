@@ -14,6 +14,9 @@ android {
         multiDexEnabled true
 
     }
+    dataBinding{
+        enabled=true
+    }
     signingConfigs {
         release {
             keyAlias 'patient'
@@ -108,7 +111,7 @@ dependencies {
 
     //bugsee
     implementation 'com.bugsee:bugsee-android:+'
-
+    implementation "android.arch.lifecycle:extensions:1.1.1"
 
 
 }
