@@ -2,6 +2,7 @@ package com.werq.patient.Models.viewModel;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -61,7 +62,8 @@ public class LoginViewModel extends ViewModel {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            Log.e("wAtcher",""+charSequence);
+        password.setValue(charSequence+"");
         }
 
         @Override
