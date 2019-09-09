@@ -10,42 +10,61 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Models.viewModel.CreateAccountViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityCreateAccountBinding;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CreateAccountActivity extends AppCompatActivity {
+public class CreateAccountActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tvCreateAccount)
     TextView tvCreateAccount;
-    @BindView(R.id.etemail)
-    EditText etemail;
-    @BindView(R.id.etPassword)
-    EditText etPassword;
-    @BindView(R.id.btSignUp)
-    Button btSignUp;
-    @BindView(R.id.txtInputUserName)
-    TextInputLayout txtInputUserName;
-    @BindView(R.id.txtInputPassword)
-    TextInputLayout txtInputPassword;
+    CreateAccountViewModel caViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_account);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        //setContentView(R.layout.activity_create_account);
+        initBinding();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create an Account");
 
 
+    }
+
+    private void initBinding() {
+        ActivityCreateAccountBinding createAccountBinding= DataBindingUtil.setContentView(this,R.layout.activity_create_account);
+        createAccountBinding.setLifecycleOwner(this);
+        caViewModel= ViewModelProviders.of(this).get(CreateAccountViewModel.class);
+        createAccountBinding.setCaViewModel(caViewModel);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        caViewModel.getActivity().observe(this,s -> {
+            if(s!=null)
+            {
+                if(s.equals("FingerPrintActivity"))
+                {
+                    startActivity(new Intent(this, FingerPrintActivity.class));
+                }
+            }
+        });
     }
 
     @Override
@@ -61,7 +80,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @OnClick({R.id.btSignUp})
+  /*  @OnClick({R.id.btSignUp})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 
@@ -77,5 +96,5 @@ public class CreateAccountActivity extends AppCompatActivity {
         isInvalid = EditTextUtils.isEmpty(txtInputUserName, getResources().getString(R.string.error_email));
         isInvalid = EditTextUtils.isEmpty(txtInputPassword, getResources().getString(R.string.error_password));
         return isInvalid;
-    }
+    }*/
 }

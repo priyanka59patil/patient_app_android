@@ -15,7 +15,6 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<String> password;
     MutableLiveData<String> userNameError;
     MutableLiveData<String> passwordError;
-    //MutableLiveData<String> openActivity;
 
 
     public LoginViewModel() {
@@ -25,14 +24,8 @@ public class LoginViewModel extends BaseViewModel {
         password=new MutableLiveData<>();
         userNameError=new MutableLiveData<>();
         passwordError=new MutableLiveData<>();
-        //openActivity=new MutableLiveData<>();
 
-        //getToast().setValue("set toast");
     }
-
-    /*public MutableLiveData<String> getOpenActivity() {
-        return openActivity;
-    }*/
 
     public MutableLiveData<String> getUserName() {
         return userName;
@@ -62,11 +55,9 @@ public class LoginViewModel extends BaseViewModel {
             {
                 userNameError.setValue("Email Cannot Be Empty");
 
-               // passwordError.setValue(null);
             }
              if(password.getValue()==null || password.getValue().trim().equals(""))
             {
-               // userNameError.setValue(null);
                 passwordError.setValue("Password Cannot Be Empty");
             }
 
@@ -108,18 +99,15 @@ public class LoginViewModel extends BaseViewModel {
         private final String TAG = "in-pwd";
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            Log.e(TAG, "beforeTextChanged: ");
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            Log.e(TAG, "onTextChanged: ");
             passwordError.setValue(null);
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
-            Log.e(TAG, "afterTextChanged: ");
 
         }
     };

@@ -6,17 +6,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Models.viewModel.VerifyIdentityViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.EditTextUtils;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityVerifyIdentityBinding;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -25,28 +31,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class VerifyIdentity extends AppCompatActivity {
+public class VerifyIdentity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.tvTextverifyIdentity)
-    TextView tvTextverifyIdentity;
-    @BindView(R.id.button)
-    Button button;
     Context mContext;
     Calendar myCalendar;
     @BindView(R.id.spDob)
     TextInputLayout spDob;
 
+    VerifyIdentityViewModel viViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_verify_identity);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+       // setContentView(R.layout.activity_verify_identity);
+
         initlizeVariables();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Verify Your Identity");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viViewModel.getActivity().observe(this,s -> {
+            if (s != null) {
+                switch (s)
+                {
+                    case "CreateAccountActivity":
+                        startActivity(new Intent(mContext, CreateAccountActivity.class));
+                        break;
+                }
+            }
+        });
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -80,6 +98,12 @@ public class VerifyIdentity extends AppCompatActivity {
 
 
     private void initlizeVariables() {
+        ActivityVerifyIdentityBinding activityVIBinding= DataBindingUtil.setContentView(this,R.layout.activity_verify_identity);
+        activityVIBinding.setLifecycleOwner(this);
+        viViewModel= ViewModelProviders.of(this).get(VerifyIdentityViewModel.class);
+        activityVIBinding.setViViewModel(viViewModel);
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
         mContext = this;
         myCalendar = Calendar.getInstance();
     }
@@ -90,7 +114,7 @@ public class VerifyIdentity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.etspDob, R.id.button})
+    @OnClick({R.id.etspDob, })
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.etspDob:
@@ -98,10 +122,10 @@ public class VerifyIdentity extends AppCompatActivity {
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                 break;
-            case R.id.button:
+            /*case R.id.button:
                 if (!validation())
                     startActivity(new Intent(mContext, CreateAccountActivity.class));
-                break;
+                break;*/
         }
     }
 
