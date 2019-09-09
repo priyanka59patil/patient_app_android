@@ -1,4 +1,4 @@
-package com.werq.patient.Models;
+package com.werq.patient.Models.pojo;
 
 public class Medications {
     private String dosage;

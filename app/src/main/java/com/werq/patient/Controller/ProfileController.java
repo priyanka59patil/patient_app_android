@@ -6,9 +6,7 @@ import com.google.gson.Gson;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.ProfileInterface;
 import com.werq.patient.MockData.JsonData;
-import com.werq.patient.Models.Responce;
-
-import java.text.ParseException;
+import com.werq.patient.Models.pojo.Responce;
 
 public class ProfileController implements ProfileInterface {
     BasicActivities basicActivities;

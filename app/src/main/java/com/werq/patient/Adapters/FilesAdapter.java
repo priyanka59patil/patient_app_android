@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Activities.ViewFileActivity;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Models.Files;
+import com.werq.patient.Models.pojo.Files;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 

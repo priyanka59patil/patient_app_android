@@ -5,12 +5,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.werq.patient.Models.Files;
+import com.werq.patient.Models.pojo.Files;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public interface AppointmentInterface  {
     public void getUpcomingData();

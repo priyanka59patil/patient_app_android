@@ -1,5 +1,6 @@
 package com.werq.patient.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -10,16 +11,22 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Models.viewModel.ForgotPassswordViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.EditTextUtils;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityForgotPasswordBinding;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ForgotPasswordActivity extends AppCompatActivity {
+public class ForgotPasswordActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,11 +48,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     @BindView(R.id.tilemail)
     TextInputLayout tilemail;
 
+    Context mContext;
+    ForgotPassswordViewModel fpViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
-        ButterKnife.bind(this);
+        //setContentView(R.layout.activity_forgot_password);
+        initBinding();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Forgot Password");
@@ -53,6 +63,28 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         getIntentData();
         setView();
 
+    }
+
+    private void initBinding() {
+        ActivityForgotPasswordBinding activityFPBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
+        activityFPBinding.setLifecycleOwner(this);
+        fpViewModel= ViewModelProviders.of(this).get(ForgotPassswordViewModel.class);
+        activityFPBinding.setFpViewModel(fpViewModel);
+        mContext=this;
+        ButterKnife.bind(this);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        fpViewModel.getActivity().observe(this,s -> {
+            if(s!=null && s.equals("Login")) {
+                startActivity(new Intent(mContext, LoginActivity.class));
+                finish();
+            }
+        });
     }
 
     private void setView() {
@@ -95,17 +127,4 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    @OnClick(R.id.btForgotPassword)
-    public void onViewClicked() {
-        if (!validation()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-    }
-
-    private boolean validation() {
-        boolean isInvalid = false;
-        isInvalid = EditTextUtils.isEmpty(tilemail, getResources().getString(R.string.error_email_phone));
-        return isInvalid;
-    }
 }

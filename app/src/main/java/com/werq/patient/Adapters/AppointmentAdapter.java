@@ -1,7 +1,6 @@
 package com.werq.patient.Adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
-import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Models.AppointmentData;
-import com.werq.patient.Models.AppointmentResponce;
-import com.werq.patient.Models.Provider;
+import com.werq.patient.Models.pojo.AppointmentData;
+import com.werq.patient.Models.pojo.Provider;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 

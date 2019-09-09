@@ -2,26 +2,21 @@ package com.werq.patient.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.PracticeAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.ProfileInterface;
-import com.werq.patient.Models.ProfileData;
-import com.werq.patient.Models.Responce;
+import com.werq.patient.Models.pojo.Responce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
-
-import java.text.ParseException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

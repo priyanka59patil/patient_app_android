@@ -7,22 +7,32 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class LoginViewModel extends ViewModel {
+import com.werq.patient.base.BaseViewModel;
 
-    MutableLiveData<String> userName=new MutableLiveData<>();
-    MutableLiveData<String> password=new MutableLiveData<>();
-    MutableLiveData<String> userNameError=new MutableLiveData<>();
-    MutableLiveData<String> passwordError=new MutableLiveData<>();
-    MutableLiveData<String> openActivity=new MutableLiveData<>();
+public class LoginViewModel extends BaseViewModel {
+
+    MutableLiveData<String> userName;
+    MutableLiveData<String> password;
+    MutableLiveData<String> userNameError;
+    MutableLiveData<String> passwordError;
+    //MutableLiveData<String> openActivity;
 
 
     public LoginViewModel() {
+        super();
 
+        userName=new MutableLiveData<>();
+        password=new MutableLiveData<>();
+        userNameError=new MutableLiveData<>();
+        passwordError=new MutableLiveData<>();
+        //openActivity=new MutableLiveData<>();
+
+        //getToast().setValue("set toast");
     }
 
-    public MutableLiveData<String> getOpenActivity() {
+    /*public MutableLiveData<String> getOpenActivity() {
         return openActivity;
-    }
+    }*/
 
     public MutableLiveData<String> getUserName() {
         return userName;
@@ -45,7 +55,7 @@ public class LoginViewModel extends ViewModel {
         Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
         if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
         password.getValue()!=null && !password.getValue().isEmpty() ) {
-            openActivity.setValue("DashBoard");
+            getActivity().setValue("DashBoard");
         }
         else {
             if(userName.getValue()==null || userName.getValue().trim().equals(""))
@@ -65,12 +75,12 @@ public class LoginViewModel extends ViewModel {
 
     public void signUpOnClick()
     {
-        openActivity.setValue("SignUp");
+        getActivity().setValue("SignUp");
     }
 
     public void forgotPasswordOnClick()
     {
-        openActivity.setValue("ForgotPwd");
+        getActivity().setValue("ForgotPwd");
     }
 
     public TextWatcher unTextWatcher=new TextWatcher() {

@@ -1,7 +1,6 @@
 package com.werq.patient.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Adapters.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.MockData.JsonData;
-import com.werq.patient.Models.Files;
-import com.werq.patient.Models.FilesData;
+import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.Models.pojo.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 

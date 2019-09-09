@@ -11,10 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.werq.patient.Activities.FunctionalActivity;
-import com.werq.patient.Activities.ImmunizationResultsActivity;
 import com.werq.patient.Activities.SummaryCareActivity;
-import com.werq.patient.Models.Medical_info;
 import com.werq.patient.R;
 
 import java.util.ArrayList;

@@ -9,15 +9,11 @@ import android.widget.TextView;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.MockData.JsonData;
-import com.werq.patient.Models.AppointmentResponce;
-import com.werq.patient.Models.Files;
+import com.werq.patient.Models.pojo.AppointmentResponce;
+import com.werq.patient.Models.pojo.Files;
 import com.werq.patient.R;
-import com.werq.patient.Utils.DateHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppointmentController implements AppointmentInterface {
 BasicActivities basicActivities;

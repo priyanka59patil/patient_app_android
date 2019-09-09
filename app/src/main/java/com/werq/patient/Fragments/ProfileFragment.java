@@ -21,9 +21,8 @@ import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.BasicFragments;
 import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.ProfileInterface;
-import com.werq.patient.Models.Responce;
+import com.werq.patient.Models.pojo.Responce;
 import com.werq.patient.R;
-import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.FragmentUtils;
 
 import butterknife.BindView;

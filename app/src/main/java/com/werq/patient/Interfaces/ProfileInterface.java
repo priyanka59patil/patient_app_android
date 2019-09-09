@@ -2,9 +2,7 @@ package com.werq.patient.Interfaces;
 
 import android.os.Bundle;
 
-import com.werq.patient.Models.Responce;
-
-import java.text.ParseException;
+import com.werq.patient.Models.pojo.Responce;
 
 public interface ProfileInterface {
   public void getData() ;

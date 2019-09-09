@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -23,8 +22,8 @@ import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.FilesInteface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Models.Files;
-import com.werq.patient.Models.FilesData;
+import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.Models.pojo.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.RecyclerViewHelper;

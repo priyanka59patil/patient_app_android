@@ -8,22 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.werq.patient.Activities.ScheduleDetailsActivity;
 import com.werq.patient.Adapters.AppointmentAdapter;
 import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Models.AppointmentData;
-import com.werq.patient.Models.AppointmentResponce;
+import com.werq.patient.Models.pojo.AppointmentData;
+import com.werq.patient.Models.pojo.AppointmentResponce;
 import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 

@@ -35,10 +35,9 @@ public class LoginActivity extends BaseActivity {
 
 
 
-    @BindView(R.id.txtInputUserName)
-    TextInputLayout txtInputUserName;
-    @BindView(R.id.txtInputPassword)
-    TextInputLayout txtInputPassword;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     Context mContext;
 
     LoginViewModel loginViewModel;
@@ -50,19 +49,17 @@ public class LoginActivity extends BaseActivity {
         //  setContentView(R.layout.activity_login);
         initBinding();
 
-
     }
 
     private void initBinding() {
          activityLoginBinding= DataBindingUtil.setContentView(this,R.layout.activity_login);
         activityLoginBinding.setLifecycleOwner(this);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        setViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
         mContext=this;
-
-
-
-
+        ButterKnife.bind(this);
+        toolbar.setTitle("Log In");
 
     }
 
@@ -70,10 +67,10 @@ public class LoginActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        loginViewModel.getOpenActivity().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String open) {
-                switch (open){
+        loginViewModel.getActivity().observe(this,s ->  {
+            if(s!=null){
+
+                switch (s){
 
                     case "DashBoard": startActivity(new Intent(mContext,BottomTabActivity.class));
                         break;
@@ -85,11 +82,9 @@ public class LoginActivity extends BaseActivity {
                         break;
 
                 }
-
             }
+
         });
-
-
 
 
     }
