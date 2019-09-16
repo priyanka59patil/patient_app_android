@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -17,6 +20,7 @@ import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.pojo.AppointmentData;
 import com.werq.patient.Models.pojo.Provider;
+import com.werq.patient.Models.viewModel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 
@@ -24,17 +28,19 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.AppointmentViewHolder> {
     Context mContext;
     boolean isFromUpcoming;
     RecyclerViewClickListerner listerner;
-    ArrayList<AppointmentData> listAppointments;
+    ArrayList<AppointmentData> listAppointments ;
     AppointmentInterface controller;
 
 
-    public AppointmentAdapter(Context mContext, boolean isFromUpcoming,
+    /*public AppointmentAdapter(Context mContext, boolean isFromUpcoming,
                               RecyclerViewClickListerner listerner,
                               ArrayList<AppointmentData> listAppointments,
                               AppointmentInterface controller) {
@@ -43,13 +49,41 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.listerner = listerner;
         this.listAppointments = listAppointments;
         this.controller = controller;
+    }*/
+
+    public AppointmentAdapter(Context mContext,
+                       boolean isFromUpcoming,
+                       RecyclerViewClickListerner listerner,
+                       ArrayList<AppointmentData> listAppointments,
+                       AppointmentInterface controller,
+                       TabAppoinmentViewModel viewModel,
+                       LifecycleOwner lifecycleOwner)
+    {
+        this.mContext = mContext;
+        this.isFromUpcoming = isFromUpcoming;
+        this.listerner=listerner;
+        this.controller = controller;
+        this.listAppointments=listAppointments;
+        viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentData>>() {
+            @Override
+            public void onChanged(ArrayList<AppointmentData> appointmentData) {
+
+                if(appointmentData!=null) {
+                    listAppointments.clear();
+                    listAppointments.addAll(appointmentData);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+       // setHasStableIds(true);
+
     }
 
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_appointment, parent, false);
-        return new AppointmentViewHolder(itemView);
+        return new AppointmentViewHolder(itemView,listerner);
     }
 
     @Override
@@ -96,15 +130,35 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     }
 
     public class AppointmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvstatus, tvday, tvMonth, tvTime, tvUseFullName, tvSpeciality, tvAddress;
+
+        @BindView(R.id.tvstatus) TextView tvstatus;
+        @BindView(R.id.tvday) TextView tvday;
+        @BindView(R.id.tvMonth) TextView tvMonth;
+        @BindView(R.id.tvTime) TextView tvTime;
+        @BindView(R.id.tvUseFullName) TextView tvUseFullName;
+        @BindView(R.id.tvSpeciality) TextView tvSpeciality;
+        @BindView(R.id.tvAddress) TextView tvAddress;
+        @BindView(R.id.appointment) LinearLayout appointment;
+        @BindView(R.id.ivUseImage) CircleImageView ivUseImage;
+        @BindView(R.id.rl_profile_view) RelativeLayout rl_profile_view;
+        @BindView(R.id.layout_schedule_view) ConstraintLayout layout_schedule_view;
+        /*TextView tvstatus, tvday, tvMonth, tvTime, tvUseFullName, tvSpeciality, tvAddress;
         LinearLayout appointment;
         CircleImageView ivUseImage;
         RelativeLayout rl_profile_view;
-        ConstraintLayout layout_schedule_view;
+        ConstraintLayout layout_schedule_view;*/
 
-        public AppointmentViewHolder(@NonNull View itemView) {
+        public AppointmentViewHolder(@NonNull View itemView, RecyclerViewClickListerner listerner) {
             super(itemView);
-            tvstatus = (TextView) itemView.findViewById(R.id.tvstatus);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(view -> {
+                switch (view.getId()) {
+                    case R.id.appointment:
+                        listerner.onclick(getAdapterPosition());
+                        break;
+                }
+            });
+           /* tvstatus = (TextView) itemView.findViewById(R.id.tvstatus);
             appointment = (LinearLayout) itemView.findViewById(R.id.appointment);
             tvday = (TextView) itemView.findViewById(R.id.tvday);
             tvMonth = (TextView) itemView.findViewById(R.id.tvMonth);
@@ -114,8 +168,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
             ivUseImage=(CircleImageView)itemView.findViewById(R.id.ivUseImage);
             rl_profile_view=(RelativeLayout)itemView.findViewById(R.id.rl_profile_view);
-            layout_schedule_view=(ConstraintLayout)itemView.findViewById(R.id.layout_schedule_view);
-            appointment.setOnClickListener(this::onClick);
+            layout_schedule_view=(ConstraintLayout)itemView.findViewById(R.id.layout_schedule_view);*/
         }
 
         @Override

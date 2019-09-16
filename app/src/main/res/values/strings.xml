@@ -198,4 +198,5 @@
     <string name="label_to_confirmed">To Confirm</string>
     <string name="label_data">data</string>
     <string name="title_activity_view_file">ViewFileActivity</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

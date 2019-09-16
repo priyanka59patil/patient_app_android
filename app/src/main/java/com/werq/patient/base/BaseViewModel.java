@@ -6,10 +6,15 @@ import androidx.lifecycle.ViewModel;
 public abstract class BaseViewModel extends ViewModel {
     private MutableLiveData<String> mShowToast;
     private MutableLiveData<String> mNewActivity;
+    private MutableLiveData<Boolean> loading;
+    private MutableLiveData<Boolean> repoLoadError;
 
     public BaseViewModel(){
         mShowToast=new MutableLiveData<>();
         mNewActivity=new MutableLiveData<>();
+        loading=new MutableLiveData<>();
+        repoLoadError=new MutableLiveData<>();
+
     }
 
 
@@ -21,7 +26,11 @@ public abstract class BaseViewModel extends ViewModel {
         return mNewActivity;
     }
 
+    public MutableLiveData<Boolean> getLoading() {
+        return loading;
+    }
 
-
-
+    public MutableLiveData<Boolean> getRepoLoadError() {
+        return repoLoadError;
+    }
 }

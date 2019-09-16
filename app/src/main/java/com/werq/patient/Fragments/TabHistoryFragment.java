@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Activities.ScheduleDetailsActivity;
@@ -17,8 +18,10 @@ import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.pojo.AppointmentData;
 import com.werq.patient.Models.pojo.AppointmentResponce;
+import com.werq.patient.Models.viewModel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
+import com.werq.patient.ViewModelProviderFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,13 +44,14 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
     private AppointmentController controller;
     private ArrayList<AppointmentData> listAppointments;
     private AppointmentResponce data;
-
+    TabAppoinmentViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_history, container, false);
+        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
         ButterKnife.bind(this, view);
         initializeVariables();
         getData();
@@ -64,10 +68,11 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
         listener = this::onclick;
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
-
-        //data
         listAppointments = new ArrayList<>();
-
+        adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
+        rvAppointmentList.setAdapter(adapter);
     }
 
 
@@ -82,16 +87,16 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
 
     @Override
     public void setRecyclerView() {
-        adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller);
+        /*adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);*/
     }
 
     @Override
     public void setView(Object data) {
-        this.data = (AppointmentResponce) data;
-        listAppointments.addAll(Arrays.asList(this.data.getResponse()));
-        setRecyclerView();
+       /* this.data = (AppointmentResponce) data;
+        listAppointments.addAll(Arrays.asList(this.data.getResponse()));*/
+        //setRecyclerView();
     }
 
     @Override
@@ -102,7 +107,7 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
     @Override
     public void getData() {
 
-            controller.getHistoryData();
+           /* controller.getHistoryData();*/
 
     }
 

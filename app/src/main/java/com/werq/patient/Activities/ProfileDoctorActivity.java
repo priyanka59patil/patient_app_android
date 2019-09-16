@@ -25,7 +25,7 @@ import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
-import com.werq.patient.Activities.Adapters.PagerAdapter;
+import com.werq.patient.Adapters.PagerAdapter;
 import com.werq.patient.Fragments.DoctorsListFragment;
 import com.werq.patient.Fragments.PracticeFragment;
 import com.werq.patient.Interfaces.BasicActivities;

@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.werq.patient.Activities.Adapters.PagerAdapter;
+import com.werq.patient.Adapters.PagerAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.BasicFragments;

@@ -14,8 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -26,14 +28,17 @@ import com.werq.patient.Fragments.DoctorTeamFragment;
 import com.werq.patient.Fragments.FilesFragment;
 import com.werq.patient.Fragments.ProfileFragment;
 import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Models.viewModel.BottomTabViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityBottomTabBinding;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BottomTabActivity extends AppCompatActivity implements View.OnClickListener, DiologListner {
+public class BottomTabActivity extends BaseActivity implements View.OnClickListener, DiologListner {
     @BindView(R.id.mainLayout)
     FrameLayout mainLayout;
     @BindView(R.id.nav_view)
@@ -49,7 +54,9 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
 
     LinearLayout layoutNewInvitation;
     LinearLayout layoutDoctorBase;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    BottomTabViewModel tabViewModel;
+
+/*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -100,7 +107,7 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
             }
             return false;
         }
-    };
+    };*/
 
     private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
         add.setVisible(addValue);
@@ -162,12 +169,65 @@ public class BottomTabActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bottom_tab);
+        //setContentView(R.layout.activity_bottom_tab);
+        ActivityBottomTabBinding bottomTabBinding= DataBindingUtil.setContentView(this,R.layout.activity_bottom_tab);
+        bottomTabBinding.setLifecycleOwner(this);
+        tabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
         initializeVariables();
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navView.setSelectedItemId(R.id.calendar);
+        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //navView.setSelectedItemId(R.id.calendar);
         Helper.setToolbar(getSupportActionBar(), "Appointments");
+        tabViewModel.getOpenFrag().observe(this,s -> {
+            if(s!=null)
+            {
+                switch (s) {
+                    case "calendar":
+                        AppointmentFragment appointmentFragment = new AppointmentFragment();
+                        addFragment(appointmentFragment);
+                        if (add != null && setting != null && search != null) {
+                            Helper.setToolbar(getSupportActionBar(), "Appointments");
+                            VisibleMenuItem(false, false, true);
+
+                        }
+
+                        break;
+                    case "messages":
+                        title = "Chats";
+                        setToolbarForbottom(title, true, false);
+                        ChatFragments chatFragments = new ChatFragments();
+                        addFragment(chatFragments);
+                        VisibleMenuItem(true, false, false);
+
+
+                        break;
+                    case "people":
+
+                        title = "My Doctor Teams";
+                        setToolbarForbottom(title, true, false);
+                        DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
+                        addFragment(doctorTeamFragment);
+                        VisibleMenuItem(true, false, false);
+
+                        break;
+                    case "profile":
+                        ProfileFragment profileFragment = new ProfileFragment();
+                        addFragment(profileFragment);
+                        Helper.setToolbar(getSupportActionBar(), "My Profile");
+                        VisibleMenuItem(false, true, false);
+
+                        break;
+                    case "folder":
+                        Helper.setToolbar(getSupportActionBar(), "Files");
+                        FilesFragment filesFragment = new FilesFragment();
+                        addFragment(filesFragment);
+                        VisibleMenuItem(false, false, true);
+
+                        break;
+                }
+            }
+        });
     }
 
     private void initializeVariables() {

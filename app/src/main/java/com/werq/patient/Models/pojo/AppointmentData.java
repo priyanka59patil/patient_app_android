@@ -5,8 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
+import androidx.databinding.BaseObservable;
 
-public class AppointmentData implements Parcelable {
+public class AppointmentData extends BaseObservable implements Parcelable {
     private Provider provider;
 
     private String referral_id;

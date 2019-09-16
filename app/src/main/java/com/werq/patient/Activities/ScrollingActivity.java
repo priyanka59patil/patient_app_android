@@ -16,7 +16,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.werq.patient.Activities.Adapters.PagerAdapter;
+import com.werq.patient.Adapters.PagerAdapter;
 import com.werq.patient.Fragments.DoctorsListFragment;
 import com.werq.patient.Fragments.PracticeFragment;
 import com.werq.patient.R;
@@ -54,7 +54,7 @@ public class ScrollingActivity extends AppCompatActivity {
 
     }
     private void setupViewPager(ViewPager viewPager) {
-        adapter = new com.werq.patient.Activities.Adapters.PagerAdapter(getSupportFragmentManager());
+        adapter = new PagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PracticeFragment(), getString(R.string.label_practice));
         adapter.addFragment(new DoctorsListFragment(), getString(R.string.label_doctorname));
         viewpager.setAdapter(adapter);

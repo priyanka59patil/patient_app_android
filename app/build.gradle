@@ -127,6 +127,9 @@ implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 // GSON body parser
     implementation 'com.google.code.gson:gson:2.8.2'
 
+    api 'com.google.dagger:dagger:2.24'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.werq.patient.Activities.Adapters;
+package com.werq.patient.Adapters;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,5 +38,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitles.get(position);
     }
+
+
 }
 
