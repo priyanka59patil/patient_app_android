@@ -10,11 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Activities.ViewFileActivity;
+import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.Models.viewModel.ScheduleDetailsViewModel;
+import com.werq.patient.Models.viewModel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 
@@ -22,6 +26,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterViewHolder> {
@@ -29,13 +35,13 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
     ArrayList<Files> allFiles;
     RecyclerViewClickListerner recyclerViewClickListerner;
     boolean fileTab = false;
+    AppointmentInterface controller;
 
-
-    public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner) {
+   /* public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
         this.allFiles = allFiles;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
-    }
+    }*/
 
 
 
@@ -44,6 +50,28 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
         this.allFiles = allFiles;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.fileTab = fileTab;
+    }
+
+    public FilesAdapter(Context mContext,
+                        ArrayList<Files> allFiles,
+                        RecyclerViewClickListerner recyclerViewClickListerner,
+                        AppointmentInterface controller,
+                        ScheduleDetailsViewModel viewModel,
+                        LifecycleOwner lifecycleOwner) {
+        this.mContext = mContext;
+        this.allFiles = allFiles;
+        this.recyclerViewClickListerner = recyclerViewClickListerner;
+        this.controller=controller;
+
+        viewModel.getFilesList().observe(lifecycleOwner,files -> {
+            if(files!=null)
+            {
+                allFiles.clear();
+                allFiles.addAll(files);
+                notifyDataSetChanged();
+            }
+        });
+
     }
 
     @NonNull
@@ -99,20 +127,19 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
     }
 
     public class FileadapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView file_view;
-        TextView tvFileName, tvprefix, tvUsername, tvTime;
-        CircleImageView ivUserView;
-        CardView cvMainlayout;
+
+        @BindView(R.id.file_view) ImageView file_view;
+        @BindView(R.id.tvFileName) TextView tvFileName;
+        @BindView(R.id.tvprefix) TextView tvprefix;
+        @BindView(R.id.tvUsername) TextView tvUsername;
+        @BindView(R.id.tvTime) TextView tvTime;
+        @BindView(R.id.ivUserView) CircleImageView ivUserView;
+        @BindView(R.id.cvMainlayout) CardView cvMainlayout;
 
         public FileadapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            file_view = (ImageView) itemView.findViewById(R.id.file_view);
-            tvFileName = (TextView) itemView.findViewById(R.id.tvFileName);
-            tvprefix = (TextView) itemView.findViewById(R.id.tvprefix);
-            ivUserView = (CircleImageView) itemView.findViewById(R.id.ivUserView);
-            tvUsername = (TextView) itemView.findViewById(R.id.tvUsername);
-            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
-            cvMainlayout = (CardView) itemView.findViewById(R.id.cvMainlayout);
+            ButterKnife.bind(this, itemView);
+
             cvMainlayout.setOnClickListener(this);
             file_view.setOnClickListener(this::onClick);
 

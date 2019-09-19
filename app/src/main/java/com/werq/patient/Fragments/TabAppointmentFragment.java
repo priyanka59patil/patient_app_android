@@ -3,7 +3,6 @@ package com.werq.patient.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import com.werq.patient.Models.pojo.AppointmentResponce;
 import com.werq.patient.Models.viewModel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.ViewModelProviderFactory;
+import com.werq.patient.Models.Factory.ViewModelProviderFactory;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentTabAppointmentBinding;
 

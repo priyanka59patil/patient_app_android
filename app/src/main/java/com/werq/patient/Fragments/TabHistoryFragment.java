@@ -21,10 +21,9 @@ import com.werq.patient.Models.pojo.AppointmentResponce;
 import com.werq.patient.Models.viewModel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.ViewModelProviderFactory;
+import com.werq.patient.Models.Factory.ViewModelProviderFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

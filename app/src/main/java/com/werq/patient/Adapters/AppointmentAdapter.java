@@ -142,11 +142,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         @BindView(R.id.ivUseImage) CircleImageView ivUseImage;
         @BindView(R.id.rl_profile_view) RelativeLayout rl_profile_view;
         @BindView(R.id.layout_schedule_view) ConstraintLayout layout_schedule_view;
-        /*TextView tvstatus, tvday, tvMonth, tvTime, tvUseFullName, tvSpeciality, tvAddress;
-        LinearLayout appointment;
-        CircleImageView ivUseImage;
-        RelativeLayout rl_profile_view;
-        ConstraintLayout layout_schedule_view;*/
+
 
         public AppointmentViewHolder(@NonNull View itemView, RecyclerViewClickListerner listerner) {
             super(itemView);
@@ -158,17 +154,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                         break;
                 }
             });
-           /* tvstatus = (TextView) itemView.findViewById(R.id.tvstatus);
-            appointment = (LinearLayout) itemView.findViewById(R.id.appointment);
-            tvday = (TextView) itemView.findViewById(R.id.tvday);
-            tvMonth = (TextView) itemView.findViewById(R.id.tvMonth);
-            tvTime = (TextView) itemView.findViewById(R.id.tvTime);
-            tvUseFullName = (TextView) itemView.findViewById(R.id.tvUseFullName);
-            tvSpeciality = (TextView) itemView.findViewById(R.id.tvSpeciality);
-            tvAddress = (TextView) itemView.findViewById(R.id.tvAddress);
-            ivUseImage=(CircleImageView)itemView.findViewById(R.id.ivUseImage);
-            rl_profile_view=(RelativeLayout)itemView.findViewById(R.id.rl_profile_view);
-            layout_schedule_view=(ConstraintLayout)itemView.findViewById(R.id.layout_schedule_view);*/
+
         }
 
         @Override

@@ -116,7 +116,7 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         allFiles=new ArrayList<>();
         allFiles.addAll(Arrays.asList(filesData.getResponse()));
 
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,null,null,null );
 
 
 

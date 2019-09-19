@@ -1,4 +1,4 @@
-package com.werq.patient;
+package com.werq.patient.Models.Factory;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;

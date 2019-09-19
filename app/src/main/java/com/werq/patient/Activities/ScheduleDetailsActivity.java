@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Adapters.FilesAdapter;
@@ -26,12 +29,15 @@ import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Models.Factory.ScheduleDeatilsVmFactory;
 import com.werq.patient.Models.pojo.AppointmentData;
 import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.Models.viewModel.ScheduleDetailsViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
+import com.werq.patient.databinding.ActivityScheduleDetailsBinding;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,7 +106,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     FilesAdapter filesAdapter;
 
     //data
-    AppointmentData data;
     ArrayList<Files> files;
 
     //listner
@@ -119,28 +124,32 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     TextView tvAddressonMap;
     @BindView(R.id.map)
     ImageView map;
+    ActivityScheduleDetailsBinding detailsBinding;
+    ScheduleDetailsViewModel viewModel;
+    private AppointmentData data;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_schedule_details);
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+        //setContentView(R.layout.activity_schedule_details);
+
         initializeVariables();
 
         layoutScheduleView.requestFocus();
 
-        getIntentData();
-
-
-        ;
-
+        //getIntentData();
 
     }
 
 
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -167,7 +176,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void setToolbar() {
-        Helper.setToolbarwithCross(getSupportActionBar(), data.getProvider().getFirst_name()+" "+data.getProvider().getLast_name());
+       Helper.setToolbarwithCross(getSupportActionBar(), data.getProvider().getFirst_name()+" "+data.getProvider().getLast_name());
 
     }
 
@@ -191,27 +200,33 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void initializeVariables() {
-        //Context
+
+        detailsBinding= DataBindingUtil.setContentView(this,R.layout.activity_schedule_details);
+        detailsBinding.setLifecycleOwner(this);
         mContext = this;
-
-        //intent
         intent = getIntent();
-
-        //listner
-        recyclerViewClickListerner = this::onclick;
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
 
-        //data
+        ButterKnife.bind(this);
+        setSupportActionBar(toolbar);
+        getIntentData();
+
+        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(data,controller)).get(ScheduleDetailsViewModel.class);
+        detailsBinding.setScheduleDetailsViewModel(viewModel);
+
+        recyclerViewClickListerner = this::onclick;
         files = new ArrayList<>();
+        setView(data);
+        setRecyclerView();
     }
 
     @Override
     public void setRecyclerView() {
 
-        tvTextAttachedFiles.setVisibility(View.VISIBLE);
-        rvFiles.setVisibility(View.VISIBLE);
-        filesAdapter = new FilesAdapter(mContext, files, recyclerViewClickListerner);
+        /*tvTextAttachedFiles.setVisibility(View.VISIBLE);
+        rvFiles.setVisibility(View.VISIBLE);*/
+        filesAdapter = new FilesAdapter(mContext, files, recyclerViewClickListerner,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, filesAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvFiles);
 
@@ -219,13 +234,13 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void setView(Object data) {
-        this.data = (AppointmentData) data;
-        setToolbar();
+        //this.data = (AppointmentData) data;
+        //setToolbar();
         setConfirmButton();
 
         setStatusButton();
 
-        tvUseFullName.setText(this.data.getProvider().getFirst_name() + " " + this.data.getProvider().getFirst_name());
+       /* tvUseFullName.setText(this.data.getProvider().getFirst_name() + " " + this.data.getProvider().getFirst_name());
         tvSpeciality.setText(this.data.getProvider().getSpeciality());
         try {
             Date date = DateHelper.dateFromUtc(this.data.getAppointment_date());
@@ -242,15 +257,15 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
 
         files.addAll(Arrays.asList(this.data.getFiles()));
-        controller.checkFilesSize(files, basicActivities);
+        controller.checkFilesSize(files, basicActivities);*/
 
     }
 
     @Override
     public void getIntentData() {
         isFromUpcoming = intent.getBooleanExtra(getResources().getString(R.string.intent_is_from_upcoming), false);
-        AppointmentData appointmentData = intent.getParcelableExtra(getResources().getString(R.string.label_data));
-        setView(appointmentData);
+        data = intent.getParcelableExtra(getResources().getString(R.string.label_data));
+       
 
     }
 

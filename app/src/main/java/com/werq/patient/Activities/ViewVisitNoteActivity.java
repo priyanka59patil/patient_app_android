@@ -96,7 +96,7 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
         recyclerViewClickListerner=this::onclick;
 
         //adapters
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner);
+        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,null,null,null);
 
     }
 
