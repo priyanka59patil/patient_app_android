@@ -1,9 +1,9 @@
 package com.werq.patient.MockData;
 
 import com.google.gson.Gson;
-import com.werq.patient.Models.pojo.AppointmentResponce;
-import com.werq.patient.Models.pojo.FilesData;
-import com.werq.patient.Models.pojo.Responce;
+import com.werq.patient.service.model.AppointmentResponce;
+import com.werq.patient.service.model.FilesData;
+import com.werq.patient.service.model.Responce;
 import com.werq.patient.Utils.Helper;
 
 public class JsonData {

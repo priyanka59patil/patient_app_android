@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:overScrollMode="never"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".Activities.ProfileDoctorActivity"
+    tools:context=".views.ui.ProfileDoctorActivity"
     tools:showIn="@layout/activity_profile_doctor"
     android:background="@color/colorLightGreyBackground"
     android:fillViewport="true">

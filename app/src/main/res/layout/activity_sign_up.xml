@@ -4,7 +4,7 @@
     <data>
         <variable
             name="signupViewModel"
-            type="com.werq.patient.Models.viewModel.SignUpViewModel" />
+            type="com.werq.patient.viewmodel.SignUpViewModel" />
     </data>
 
 
@@ -13,7 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.SignUpActivity"
+        tools:context=".views.ui.SignUpActivity"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout

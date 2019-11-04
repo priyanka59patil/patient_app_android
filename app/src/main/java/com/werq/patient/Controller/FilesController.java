@@ -3,7 +3,7 @@ package com.werq.patient.Controller;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.FilesInteface;
 import com.werq.patient.MockData.JsonData;
-import com.werq.patient.Models.pojo.FilesData;
+import com.werq.patient.service.model.FilesData;
 
 public class FilesController implements FilesInteface {
    BasicActivities basicActivities;

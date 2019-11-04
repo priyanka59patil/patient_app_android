@@ -3,7 +3,7 @@
     <data>
         <variable
             name="caViewModel"
-            type="com.werq.patient.Models.viewModel.CreateAccountViewModel" />
+            type="com.werq.patient.viewmodel.CreateAccountViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +11,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.CreateAccountActivity"
+        tools:context=".views.ui.CreateAccountActivity"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -72,7 +72,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="@={caViewModel.userName}"
-                    android:onTextChanged="@{caViewModel.unOnTextChanged}"/>
+                    android:onTextChanged="@{caViewModel::unOnTextChanged}"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -100,7 +100,7 @@
                     android:text="@={caViewModel.newpassword}"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:onTextChanged="@{caViewModel.pwdOnTextChanged}"
+                    android:onTextChanged="@{caViewModel::pwdOnTextChanged}"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 

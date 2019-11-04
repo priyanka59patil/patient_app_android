@@ -5,7 +5,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.service.model.Files;
 
 import java.util.ArrayList;
 

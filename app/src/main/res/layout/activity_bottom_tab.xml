@@ -4,7 +4,7 @@
     <data>
         <variable
             name="bottomViewModel"
-            type="com.werq.patient.Models.viewModel.BottomTabViewModel" />
+            type="com.werq.patient.viewmodel.BottomTabViewModel" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,7 +13,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.BottomTabActivity">
+        tools:context=".views.ui.BottomTabActivity">
 
 
         <FrameLayout

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View" />
         <variable
             name="scheduleDetailsViewModel"
-            type="com.werq.patient.Models.viewModel.ScheduleDetailsViewModel" />
+            type="com.werq.patient.viewmodel.ScheduleDetailsViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +12,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.ScheduleDetailsActivity"
+        tools:context=".views.ui.ScheduleDetailsActivity"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -24,8 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@{scheduleDetailsViewModel.toolbar}"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -38,7 +38,7 @@
             android:background="@color/colorLightGreyBackground"
             android:padding="@dimen/main_layout_padding"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".Activities.ScheduleDetailsActivity"
+            tools:context=".views.ui.ScheduleDetailsActivity"
             tools:showIn="@layout/activity_schedule_details">
 
             <ScrollView
@@ -304,16 +304,15 @@
                         android:layout_marginTop="24dp"
                         android:text="@string/label_attached_files"
                         android:textColor="@color/black"
-                        android:visibility="gone"
                         android:textSize="@dimen/textSize_note_size"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cvNote" />
+                        app:layout_constraintTop_toBottomOf="@+id/cvNote"
+                        android:visibility="@{scheduleDetailsViewModel.visibility==true?View.GONE:View.VISIBLE}"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvFiles"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
 

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorLightGreyBackground"
     android:padding="@dimen/main_layout_padding"
-    tools:context=".Fragments.PracticeFragment"
+    tools:context=".views.ui.Fragments.PracticeFragment"
    >
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.FilesFragment"
+    tools:context=".views.ui.Fragments.FilesFragment"
     android:background="@color/colorLightGreyBackground"
     android:padding="@dimen/main_layout_padding"
     >

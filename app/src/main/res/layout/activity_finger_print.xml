@@ -3,7 +3,7 @@
     <data>
         <variable
             name="fpViewModel"
-            type="com.werq.patient.Models.viewModel.FingerPrintViewModel" />
+            type="com.werq.patient.viewmodel.FingerPrintViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +11,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".Activities.FingerPrintActivity"
+        tools:context=".views.ui.FingerPrintActivity"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout

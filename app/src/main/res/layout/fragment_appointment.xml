@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/backgroundgrey"
 
-    tools:context=".Fragments.AppointmentFragment">
+    tools:context=".views.ui.Fragments.AppointmentFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"

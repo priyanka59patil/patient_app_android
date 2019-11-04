@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorLightGreyBackground"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.DoctorTeamFragment">
+    tools:context=".views.ui.Fragments.DoctorTeamFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDoctorTeam"

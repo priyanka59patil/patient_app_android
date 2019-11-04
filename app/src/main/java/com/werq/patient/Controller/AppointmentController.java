@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.MockData.JsonData;
-import com.werq.patient.Models.pojo.AppointmentResponce;
-import com.werq.patient.Models.pojo.Files;
+import com.werq.patient.service.model.AppointmentResponce;
+import com.werq.patient.service.model.Files;
 import com.werq.patient.R;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/main_layout_padding"
     android:background="@color/white"
-    tools:context=".Fragments.NewDoctorAddedFragment">
+    tools:context=".views.ui.Fragments.NewDoctorAddedFragment">
 
 
     <TextView

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/main_layout_padding"
     android:paddingRight="@dimen/main_layout_padding"
     android:paddingTop="@dimen/main_layout_padding"
-    tools:context=".Fragments.ChatFragments">
+    tools:context=".views.ui.Fragments.ChatFragments">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chats"

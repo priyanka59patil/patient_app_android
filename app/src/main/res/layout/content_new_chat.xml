@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:background="@color/colorLightGreyBackground"
-    tools:context=".Activities.NewChatActivity"
+    tools:context=".views.ui.NewChatActivity"
     tools:showIn="@layout/activity_new_chat">
 
     <RelativeLayout
