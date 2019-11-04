@@ -9,11 +9,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
+import com.werq.patient.viewmodel.ChatFragmentViewModel;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 
@@ -25,17 +27,25 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
     boolean isFromRecentChat;
     RecyclerViewClickListerner recyclerViewClickListerner;
 
-    public ChatAdapters(Context mContext,boolean isFromRecentChat, RecyclerViewClickListerner recyclerViewClickListerner) {
+    public ChatAdapters(Context mContext, boolean isFromRecentChat,
+                        RecyclerViewClickListerner recyclerViewClickListerner,
+                        ChatFragmentViewModel viewModel,
+                        LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.isFromRecentChat=isFromRecentChat;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
+        /*viewModel.getLoading().observe(lifecycleOwner,aBoolean -> {
+
+        });*/
     }
+
+
 
     @NonNull
     @Override
     public ViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_chat,parent, false);
-    return new ViewHolders(view);
+       return new ViewHolders(view);
     }
 
     @Override

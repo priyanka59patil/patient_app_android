@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.base.BaseFragment;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
 import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.Controller.AppointmentController;
@@ -29,13 +31,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TabHistoryFragment extends Fragment implements RecyclerViewClickListerner, BasicActivities {
+public class TabHistoryFragment extends BaseFragment implements RecyclerViewClickListerner, BasicActivities {
 
 
     @BindView(R.id.rvAppointmentList)
     RecyclerView rvAppointmentList;
     private AppointmentAdapter adapter;
 
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
     //listener
     RecyclerViewClickListerner listener;
     Context mContext;
@@ -83,6 +87,28 @@ public class TabHistoryFragment extends Fragment implements RecyclerViewClickLis
         startActivity(intent);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        viewModel.getRepoLoadError().observe(this,aBoolean -> {
+            if (aBoolean != null && aBoolean) {
+                viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
+            }else {
+                viewModel.getToast().setValue(null);
+            }
+        });
+
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean !=null && aBoolean)
+                loadingView.setVisibility(View.VISIBLE);
+            else
+                loadingView.setVisibility(View.INVISIBLE);
+        });
+
+
+    }
 
     @Override
     public void setRecyclerView() {

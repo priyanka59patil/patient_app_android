@@ -9,8 +9,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.viewmodel.ChatFragmentViewModel;
 import com.werq.patient.views.adapter.ChatAdapters;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
@@ -20,7 +23,7 @@ import com.werq.patient.Utils.RecyclerViewHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NewChatActivity extends AppCompatActivity implements RecyclerViewClickListerner {
+public class NewChatActivity extends BaseActivity implements RecyclerViewClickListerner {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -35,11 +38,16 @@ public class NewChatActivity extends AppCompatActivity implements RecyclerViewCl
     private ChatAdapters chatAdapters;
     private Context mContext;
     RecyclerViewClickListerner recyclerViewClickListerner;
+    ChatFragmentViewModel chatFragmentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_chat);
+
+
+        chatFragmentViewModel= ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
+
 
         ButterKnife.bind(this);
 
@@ -84,7 +92,7 @@ public class NewChatActivity extends AppCompatActivity implements RecyclerViewCl
         recyclerViewClickListerner=this::onclick;
 
         //adapters
-        chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner);
+        //chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner);
 
     }
 
