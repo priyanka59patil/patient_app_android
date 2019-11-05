@@ -43,11 +43,9 @@ public class NewChatActivity extends BaseActivity implements RecyclerViewClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_chat);
-
+        //setContentView(R.layout.activity_new_chat);
 
         chatFragmentViewModel= ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
-
 
         ButterKnife.bind(this);
 
@@ -57,7 +55,6 @@ public class NewChatActivity extends BaseActivity implements RecyclerViewClickLi
 
         initializeVariables();
 
-        setNewChatsList();
 
 
     }
@@ -92,8 +89,9 @@ public class NewChatActivity extends BaseActivity implements RecyclerViewClickLi
         recyclerViewClickListerner=this::onclick;
 
         //adapters
-        //chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner);
-
+        chatAdapters=new ChatAdapters(mContext,false,recyclerViewClickListerner,
+                chatFragmentViewModel,this);
+        setNewChatsList();
     }
 
     @Override

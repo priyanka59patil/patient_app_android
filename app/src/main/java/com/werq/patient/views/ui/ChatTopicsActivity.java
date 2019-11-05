@@ -6,8 +6,12 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.databinding.ActivityChatTopicsBinding;
+import com.werq.patient.viewmodel.ChatTopicsViewModel;
 import com.werq.patient.views.adapter.ChatTopicsAdapter;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -26,11 +30,18 @@ public class ChatTopicsActivity extends AppCompatActivity {
     RecyclerView rvTopics;
     ChatTopicsAdapter chatTopicsAdapter;
     Context mContext;
+    ChatTopicsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_topics);
+        //setContentView(R.layout.activity_chat_topics);
+        ActivityChatTopicsBinding activityChatTopicsBinding=
+                DataBindingUtil.setContentView(this,R.layout.activity_chat_topics);
+
+        viewModel= ViewModelProviders.of(this).get(ChatTopicsViewModel.class);
+        activityChatTopicsBinding.setLifecycleOwner(this);
+        activityChatTopicsBinding.setChatTopicsViewModel(viewModel);
 
         ButterKnife.bind(this);
 
@@ -39,8 +50,6 @@ public class ChatTopicsActivity extends AppCompatActivity {
         initializeVariables();
 
         setToobar();
-
-        setAdapterTopics();
 
 
     }
@@ -91,9 +100,9 @@ public class ChatTopicsActivity extends AppCompatActivity {
     private void initializeVariables() {
         //context
         mContext=this;
-
         //adapters
         chatTopicsAdapter=new ChatTopicsAdapter(mContext,getArrayList());
+        setAdapterTopics();
     }
 
 }

@@ -34,7 +34,7 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
         this.mContext = mContext;
         this.isFromRecentChat=isFromRecentChat;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
-        /*viewModel.getLoading().observe(lifecycleOwner,aBoolean -> {
+       /* viewModel.getLoading().observe(lifecycleOwner,aBoolean -> {
 
         });*/
     }

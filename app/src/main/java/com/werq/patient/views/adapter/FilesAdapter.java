@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.viewmodel.ChatInfoViewModel;
 import com.werq.patient.views.ui.ViewFileActivity;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
@@ -59,6 +60,29 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
                         LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.allFiles = allFiles;
+        this.recyclerViewClickListerner = recyclerViewClickListerner;
+        this.controller=controller;
+
+        viewModel.getFilesList().observe(lifecycleOwner,files -> {
+            if(files!=null)
+            {
+                allFiles.clear();
+                allFiles.addAll(files);
+                notifyDataSetChanged();
+            }
+        });
+
+    }
+
+
+    public FilesAdapter(Context mContext,
+                        /*ArrayList<Files> allFiles,*/
+                        RecyclerViewClickListerner recyclerViewClickListerner,
+                        ChatInfoViewModel viewModel,
+                        LifecycleOwner lifecycleOwner) {
+        this.mContext = mContext;
+        //this.allFiles = allFiles;
+        allFiles=new ArrayList<>();
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.controller=controller;
 

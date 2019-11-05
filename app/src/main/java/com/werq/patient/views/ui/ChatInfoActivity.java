@@ -7,8 +7,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.databinding.ActivityChatInfoBinding;
+import com.werq.patient.viewmodel.ChatInfoViewModel;
 import com.werq.patient.views.adapter.DoctorUserList;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
@@ -25,7 +31,7 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewClickListerner {
+public class ChatInfoActivity extends BaseActivity implements RecyclerViewClickListerner {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -50,19 +56,25 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
     private DoctorUserList doctorUserList;
     private DoctorUserList teamList;
     private FilesAdapter filesAdapter;
+    ChatInfoViewModel chatInfoViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_info);
+        //setContentView(R.layout.activity_chat_info);
+
+        ActivityChatInfoBinding activityChatInfoBinding=
+                DataBindingUtil.setContentView(this,R.layout.activity_chat_info);
+
+        chatInfoViewModel= ViewModelProviders.of(this).get(ChatInfoViewModel.class);
+        activityChatInfoBinding.setLifecycleOwner(this);
+        activityChatInfoBinding.setChatInfoViewModel(chatInfoViewModel);
         ButterKnife.bind(this);
         initializeVariables();
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Chat Info");
-        setAdapetForDoctorList();
-        setAdapterForTeamList();
-        setAdapterForFilesList();
+
 
     }
 
@@ -112,12 +124,14 @@ public class ChatInfoActivity extends AppCompatActivity implements RecyclerViewC
         teamList = new DoctorUserList(mContext, 7);
 
         //allFiles = getFilesData();
-        FilesData filesData= JsonData.getFilesData();
+        /*FilesData filesData= JsonData.getFilesData();
         allFiles=new ArrayList<>();
-        allFiles.addAll(Arrays.asList(filesData.getResponse()));
+        allFiles.addAll(Arrays.asList(filesData.getResponse()));*/
 
-        filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,null,null,null );
-
+        filesAdapter = new FilesAdapter(mContext,recyclerViewClickListerner,chatInfoViewModel,this );
+        setAdapetForDoctorList();
+        setAdapterForTeamList();
+        setAdapterForFilesList();
 
 
 
