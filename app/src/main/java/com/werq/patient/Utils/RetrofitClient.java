@@ -24,9 +24,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class RetrofitClient {
+    static String TAG="RetrofitClient";
 
     public static Retrofit retrofit;
-    public static String baseUrl="https://patient-dev.werq.com";
+    public static String baseUrl="https://patient-dev.werq.com/api/Auth/";
     private static ApiInterface apiInterface;
 
 
@@ -75,17 +76,26 @@ public class RetrofitClient {
     }
 
 
-    public  void callApi(Call<Object> call, String url, ApiResponce apiResponce, MutableLiveData<String> mToast){
+    public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce, MutableLiveData<String> mToast){
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {
-                switch (response.code()){
-                    case 200:{
+                Helper.setLog(TAG,"Responce code :- "+response.code());
+                Helper.setLog(TAG,"url :- "+url);
 
+                switch (response.code()){
+
+
+                    case 200:{
+                        mToast.setValue("Success");
                     break;
                     }
                     case 400:{
                         mToast.setValue("Something went wrong ");
+                        break;
+                    }
+                    case 404:{
+                        mToast.setValue("Server Not Found");
                         break;
                     }
                     default:{

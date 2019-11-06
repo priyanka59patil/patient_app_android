@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import okhttp3.internal.http2.ErrorCode;
+
 public class ScheduleDetailsViewModel extends BaseViewModel {
 
     AppointmentData data;
@@ -121,5 +123,15 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
         //controller.checkFilesSize(files, basicActivities);
        // status.setValue();
+    }
+
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
     }
 }

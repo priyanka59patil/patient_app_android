@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.base.BaseViewModel;
 
+import okhttp3.internal.http2.ErrorCode;
+
 public class LoginViewModel extends BaseViewModel {
 
     MutableLiveData<String> userName;
@@ -111,4 +113,13 @@ public class LoginViewModel extends BaseViewModel {
         }
     };
 
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
+    }
 }

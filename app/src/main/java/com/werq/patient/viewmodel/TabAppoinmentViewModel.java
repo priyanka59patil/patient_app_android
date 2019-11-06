@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import io.reactivex.disposables.CompositeDisposable;
+import okhttp3.internal.http2.ErrorCode;
 
 public class TabAppoinmentViewModel extends BaseViewModel {
 
@@ -98,5 +99,15 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             disposable.clear();
             disposable = null;
         }
+    }
+
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
     }
 }

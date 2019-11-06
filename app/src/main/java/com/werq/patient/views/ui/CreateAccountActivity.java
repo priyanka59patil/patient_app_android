@@ -13,6 +13,7 @@ import com.werq.patient.viewmodel.CreateAccountViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityCreateAccountBinding;
+import com.werq.patient.viewmodel.SignUpViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +24,7 @@ public class CreateAccountActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.tvCreateAccount)
     TextView tvCreateAccount;
-    CreateAccountViewModel caViewModel;
+    SignUpViewModel caViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +40,25 @@ public class CreateAccountActivity extends BaseActivity {
     private void initBinding() {
         ActivityCreateAccountBinding createAccountBinding= DataBindingUtil.setContentView(this,R.layout.activity_create_account);
         createAccountBinding.setLifecycleOwner(this);
-        caViewModel= ViewModelProviders.of(this).get(CreateAccountViewModel.class);
+        caViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
         createAccountBinding.setCaViewModel(caViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+
+        String  invitationCode=getIntent().getStringExtra("invitationCode");
+        String dob=getIntent().getStringExtra("dob");
+        caViewModel.setInvitaionCode(invitationCode);
+        caViewModel.setDobData(dob);
+
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        caViewModel.getActivity().observe(this,s -> {
-            if(s!=null)
-            {
-                if(s.equals("FingerPrintActivity"))
-                {
-                    startActivity(new Intent(this, FingerPrintActivity.class));
-                }
-            }
-        });
+
     }
 
     @Override

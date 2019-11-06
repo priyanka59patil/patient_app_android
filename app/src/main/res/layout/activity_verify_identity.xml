@@ -4,7 +4,7 @@
     <data>
         <variable
             name="viViewModel"
-            type="com.werq.patient.viewmodel.VerifyIdentityViewModel" />
+            type="com.werq.patient.viewmodel.SignUpViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -81,7 +81,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spDob"
-                android:onClick="@{()-> viViewModel.nextOnClick()}"/>
+                android:onClick="@{()-> viViewModel.DobnextOnClick()}"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

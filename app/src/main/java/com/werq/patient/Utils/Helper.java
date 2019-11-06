@@ -1,5 +1,6 @@
 package com.werq.patient.Utils;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 
@@ -15,10 +16,16 @@ import java.util.List;
 
 public class Helper {
     public static Gson gson;
+    public static String ContentType ="application/json";
+
     public static Gson getGsonInstance(){
         if(gson==null)
             gson=new Gson();
         return gson;
+    }
+
+    public static void setLog(String tag,String value){
+        Log.e(tag,value);
     }
 
     public static void setToolbar(ActionBar supportActionBar, String title) {

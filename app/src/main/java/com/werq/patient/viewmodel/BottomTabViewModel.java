@@ -10,6 +10,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseViewModel;
 
+import okhttp3.internal.http2.ErrorCode;
+
 public class BottomTabViewModel extends BaseViewModel implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "BottomTabViewModel";
@@ -79,5 +81,15 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
     }
 }

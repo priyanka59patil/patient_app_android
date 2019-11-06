@@ -56,32 +56,26 @@ public class SignUpActivity extends BaseActivity {
         activitySignUpBinding.setSignupViewModel(signUpViewModel);
         mContext = this;
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        Helper.setToolbar(getSupportActionBar(), "Sign Up");
+        setToolbarTitle(toolbar,"signUp");
+
+        signUpViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
+            @Override
+            public void onChanged(Bundle bundle) {
+                if(bundle!=null){
+                    Intent  intent=new Intent(mContext,VerifyIdentity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+
+                }
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        signUpViewModel.getActivity().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                if(s!=null)
-                {
-                    switch (s)
-                    {
-                        case "Login":startActivity(new Intent(mContext, LoginActivity.class));
-                            break;
 
-                        case "VerifyIdentity":startActivity(new Intent(mContext, VerifyIdentity.class));
-                            finish();
-                            break;
-                    }
-                }
-
-            }
-        });
 
         signUpViewModel.getEtFocus().observe(this,s -> {
             if(s!=null)
@@ -108,50 +102,5 @@ public class SignUpActivity extends BaseActivity {
     }
 
 
-  /* private class GenericTextWatcher implements TextWatcher {
-        private View view;
 
-        private GenericTextWatcher(View view) {
-            this.view = view;
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            // TODO Auto-generated method stub
-            String text = editable.toString();
-            switch (view.getId()) {
-
-                case R.id.etPin1:
-                    if (text.length() == 1)
-                        etPin2.requestFocus();
-                    break;
-                case R.id.etPin2:
-                    if (text.length() == 1)
-                        etPin3.requestFocus();
-                    else if (text.length() == 0)
-                        etPin1.requestFocus();
-                    break;
-                case R.id.etPin3:
-                    if (text.length() == 1)
-                        etPin4.requestFocus();
-                    else if (text.length() == 0)
-                        etPin2.requestFocus();
-                    break;
-                case R.id.etPin4:
-                    if (text.length() == 0)
-                        etPin3.requestFocus();
-                    break;
-            }
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            // TODO Auto-generated method stub
-        }
-    }*/
 }

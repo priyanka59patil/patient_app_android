@@ -10,9 +10,11 @@ import android.widget.DatePicker;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.viewmodel.SignUpViewModel;
 import com.werq.patient.viewmodel.VerifyIdentityViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
@@ -36,7 +38,7 @@ public class VerifyIdentity extends BaseActivity {
     @BindView(R.id.spDob)
     TextInputLayout spDob;
 
-    VerifyIdentityViewModel viViewModel;
+    SignUpViewModel viViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,7 @@ public class VerifyIdentity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        viViewModel.getActivity().observe(this,s -> {
-            if (s != null) {
-                switch (s)
-                {
-                    case "CreateAccountActivity":
-                        startActivity(new Intent(mContext, CreateAccountActivity.class));
-                        break;
-                }
-            }
-        });
+
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -96,12 +89,27 @@ public class VerifyIdentity extends BaseActivity {
     private void initlizeVariables() {
         ActivityVerifyIdentityBinding activityVIBinding= DataBindingUtil.setContentView(this,R.layout.activity_verify_identity);
         activityVIBinding.setLifecycleOwner(this);
-        viViewModel= ViewModelProviders.of(this).get(VerifyIdentityViewModel.class);
+        viViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
         activityVIBinding.setViViewModel(viViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         mContext = this;
         myCalendar = Calendar.getInstance();
+        String invitationcode=getIntent().getExtras().getString("invitationCode");
+        viViewModel.setInvitaionCode(invitationcode);
+        viViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
+            @Override
+            public void onChanged(Bundle bundle) {
+                if(bundle!=null){
+                    Intent intent=new Intent(mContext,CreateAccountActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.werq.patient.base;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public abstract class BaseViewModel extends ViewModel {
+import com.werq.patient.Interfaces.ApiResponce;
+
+public abstract class BaseViewModel extends ViewModel implements ApiResponce {
     private MutableLiveData<String> mShowToast;
     private MutableLiveData<String> mNewActivity;
     private MutableLiveData<Boolean> loading;

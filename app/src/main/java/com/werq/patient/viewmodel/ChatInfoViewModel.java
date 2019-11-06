@@ -11,6 +11,8 @@ import com.werq.patient.service.model.FilesData;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import okhttp3.internal.http2.ErrorCode;
+
 public class ChatInfoViewModel extends BaseViewModel {
 
     MutableLiveData<ArrayList<Files>> filesList;
@@ -44,5 +46,15 @@ public class ChatInfoViewModel extends BaseViewModel {
         else {
             visibility.setValue(false);
         }*/
+    }
+
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
     }
 }

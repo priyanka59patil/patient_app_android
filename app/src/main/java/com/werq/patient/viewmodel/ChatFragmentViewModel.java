@@ -8,6 +8,7 @@ import com.werq.patient.service.repository.ChatRepository;
 import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
+import okhttp3.internal.http2.ErrorCode;
 
 public class ChatFragmentViewModel  extends BaseViewModel {
 
@@ -34,4 +35,13 @@ public class ChatFragmentViewModel  extends BaseViewModel {
         }
     }
 
+    @Override
+    public void onSuccess(String url, String jsonObject) {
+
+    }
+
+    @Override
+    public void onError(String url, ErrorCode errorCode) {
+
+    }
 }

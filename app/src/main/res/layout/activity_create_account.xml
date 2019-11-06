@@ -3,7 +3,7 @@
     <data>
         <variable
             name="caViewModel"
-            type="com.werq.patient.viewmodel.CreateAccountViewModel" />
+            type="com.werq.patient.viewmodel.SignUpViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
