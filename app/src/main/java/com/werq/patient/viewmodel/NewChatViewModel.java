@@ -11,7 +11,7 @@ public class NewChatViewModel extends BaseViewModel {
     MutableLiveData<String> searchText;
 
     @Override
-    public void onSuccess(String url, String jsonObject) {
+    public void onSuccess(String url, Object object) {
 
     }
 

@@ -109,6 +109,9 @@ dependencies {
     //searchview
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
+    //aes encryption/decryption
+    implementation 'com.scottyab:aescrypt:0.0.1'
+
     //bugsee
     implementation 'com.bugsee:bugsee-android:+'
     def lifecycle_version = "2.1.0"

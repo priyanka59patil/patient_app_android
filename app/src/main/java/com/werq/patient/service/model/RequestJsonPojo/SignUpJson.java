@@ -52,6 +52,6 @@ public class SignUpJson {
     @Override
     public String toString()
     {
-        return "ClassPojo [Username = "+Username+", DOB = "+DOB+", InvitationCode = "+InvitationCode+", Password = "+Password+"]";
+        return "SignUpJson [Username = "+Username+", DOB = "+DOB+", InvitationCode = "+InvitationCode+", Password = "+Password+"]";
     }
 }

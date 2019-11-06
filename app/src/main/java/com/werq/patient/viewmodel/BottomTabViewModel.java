@@ -84,10 +84,9 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
     @Override
-    public void onSuccess(String url, String jsonObject) {
+    public void onSuccess(String url, Object object) {
 
     }
-
     @Override
     public void onError(String url, String errorCode) {
 

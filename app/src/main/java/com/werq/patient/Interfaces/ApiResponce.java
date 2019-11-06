@@ -4,7 +4,7 @@ import okhttp3.internal.http2.ErrorCode;
 
 public interface ApiResponce {
 
-    void onSuccess(String url, String jsonObject);
+    void onSuccess(String url, Object jsonObject);
     void onError(String url, String errorCode);
 
 }

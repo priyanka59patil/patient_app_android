@@ -502,7 +502,7 @@ public class SignUpViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String jsonObject) {
+    public void onSuccess(String url, Object object) {
         Helper.setLog("SignUpVM OnSuccess","successfull login intent to fingerprint");
     }
 

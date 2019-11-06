@@ -2,6 +2,7 @@ package com.werq.patient.Utils;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,16 +10,23 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.werq.patient.Interfaces.ApiInterface;
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.service.model.ResponeError.ErrorData;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -75,6 +83,20 @@ public class RetrofitClient {
         return retrofit;
     }
 
+    public static Retrofit getClientOnly() {
+        if (retrofit==null) {
+
+            retrofit = new Retrofit.Builder()
+
+                    .baseUrl(baseUrl)
+                    .client(okHttpClent)
+
+                    .addConverterFactory(GsonConverterFactory.create())
+
+                    .build();
+        }
+        return retrofit;
+    }
 
     public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce, MutableLiveData<String> mToast){
         call.enqueue(new Callback<Object>() {
@@ -84,6 +106,25 @@ public class RetrofitClient {
                 String json =Helper.getGsonInstance().toJson(response.body());
                 Helper.setLog(TAG,"json :- "+json);
                 Helper.setLog(TAG,"url :- "+url);
+                String errorMessage = null;
+                if (response.errorBody() != null) {
+
+                    Converter<ResponseBody, ErrorData> errorConvertor =
+                            RetrofitClient.getClientOnly().responseBodyConverter(ErrorData.class, new Annotation[0]);
+                    try {
+                        ErrorData errorData = errorConvertor.convert(response.errorBody());
+                        Log.e(TAG, "jObjError: "+errorData.toString() );
+                        errorMessage=errorData.getError().getMessage();
+                    }
+                    catch (IOException e) {
+                        Log.e(TAG, "IOException: "+e.getMessage() );
+                    }
+                    catch (Exception e){
+                        Log.e(TAG, "Exception: "+e.getMessage() );
+                    }
+
+
+                }
 
                 switch (response.code()){
 
@@ -92,8 +133,12 @@ public class RetrofitClient {
                         break;
 
                     case 400:
-                        apiResponce.onError(url,"400");
-                        mToast.setValue("Something went wrong ");
+                        if(response.errorBody()!=null && errorMessage!=null)
+                        {
+                            Helper.setLog(TAG,"json error :- "+errorMessage);
+                            mToast.setValue(errorMessage);
+                        }
+                          apiResponce.onError(url,"400");
                         break;
 
                     case 404:

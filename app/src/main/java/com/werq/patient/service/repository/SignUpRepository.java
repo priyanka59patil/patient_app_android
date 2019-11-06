@@ -15,7 +15,8 @@ public class SignUpRepository {
 
 
     public void signUp(SignUpJson signUpJson, MutableLiveData<String> toast, ApiResponce apiResponce,String url){
-        Call call= RetrofitClient.getRetrofit().Signup(Helper.ContentType,signUpJson);
+        Helper.setLog("beforecall", signUpJson.toString());
+        Call call= RetrofitClient.getRetrofit().signUp(Helper.ContentType,signUpJson);
 
         RetrofitClient.callApi(call,url,apiResponce,toast);
 

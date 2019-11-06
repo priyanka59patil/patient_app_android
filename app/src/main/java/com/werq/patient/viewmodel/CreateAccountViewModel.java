@@ -15,7 +15,7 @@ public class CreateAccountViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String jsonObject) {
+    public void onSuccess(String url, Object object) {
 
     }
 

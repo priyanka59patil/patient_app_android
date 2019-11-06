@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.werq.patient.Factory.LoginVmProviderFactory;
 import com.werq.patient.viewmodel.LoginViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
@@ -19,6 +20,7 @@ import com.werq.patient.databinding.ActivityLoginBinding;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import vn.luongvo.widget.iosswitchview.SwitchView;
 
 ;
 
@@ -30,6 +32,9 @@ public class LoginActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+
+    @BindView(R.id.swRememberMe)
+    SwitchView swRememberMe;
 
     Context mContext;
 
@@ -46,12 +51,13 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initBinding() {
-         activityLoginBinding= DataBindingUtil.setContentView(this,R.layout.activity_login);
+        activityLoginBinding= DataBindingUtil.setContentView(this,R.layout.activity_login);
         activityLoginBinding.setLifecycleOwner(this);
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        mContext=this;
+        loginViewModel = ViewModelProviders.of(this,new LoginVmProviderFactory(mContext)).get(LoginViewModel.class);
         setViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
-        mContext=this;
+
         ButterKnife.bind(this);
         toolbar.setTitle("Log In");
 
@@ -60,6 +66,20 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        swRememberMe.setOnCheckedChangeListener(new SwitchView.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(SwitchView switchView, boolean b) {
+                loginViewModel.getRememberMe().setValue(b);
+            }
+        });
+
+        loginViewModel.getRememberMe().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                swRememberMe.setChecked(aBoolean);
+            }
+        });
 
         /*loginViewModel.getActivity().observe(this,s ->  {
             if(s!=null){
@@ -82,8 +102,5 @@ public class LoginActivity extends BaseActivity {
 */
 
     }
-
-
-
 
 }

@@ -29,6 +29,10 @@ public class User {
         this.FirstName = FirstName;
     }
 
+    public String getUserName(){
+        return FirstName+" "+LastName;
+    }
+
     public String getDOB ()
     {
         return DOB;

@@ -12,7 +12,7 @@ public class ChatTopicsViewModel extends BaseViewModel {
     CompositeDisposable compositeDisposable;
 
     @Override
-    public void onSuccess(String url, String jsonObject) {
+    public void onSuccess(String url, Object object) {
 
     }
 

@@ -12,7 +12,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
 
     @POST("Auth/signup")
-    Call<Void> Signup(@Header("Content-Type") String contentType,
+    Call<LoginResponce> signUp(@Header("Content-Type") String contentType,
                              @Body SignUpJson params);
 
     @POST("Auth")
