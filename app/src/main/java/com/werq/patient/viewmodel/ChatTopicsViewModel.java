@@ -17,7 +17,7 @@ public class ChatTopicsViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, ErrorCode errorCode) {
+    public void onError(String url, String errorCode) {
 
     }
 }

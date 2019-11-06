@@ -87,10 +87,13 @@ public class RetrofitClient {
 
 
                     case 200:{
-                        mToast.setValue("Success");
+                        String json =Helper.getGsonInstance().toJson(response.body());
+                        Helper.setLog(TAG,"json :- "+json);
+                        apiResponce.onSuccess(url,json);
                     break;
                     }
                     case 400:{
+                        apiResponce.onError(url,"400");
                         mToast.setValue("Something went wrong ");
                         break;
                     }

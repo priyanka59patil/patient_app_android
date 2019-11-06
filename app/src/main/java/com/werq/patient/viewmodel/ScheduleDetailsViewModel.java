@@ -131,7 +131,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, ErrorCode errorCode) {
+    public void onError(String url, Stringg errorCode) {
 
     }
 }

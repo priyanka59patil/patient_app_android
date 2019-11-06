@@ -89,7 +89,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
     @Override
-    public void onError(String url, ErrorCode errorCode) {
+    public void onError(String url, String errorCode) {
 
     }
 }
