@@ -1,8 +1,10 @@
 package com.werq.patient.Utils;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 
@@ -27,6 +29,12 @@ public class Helper {
     public static void setLog(String tag,String value){
         Log.e(tag,value);
     }
+
+    public static void showToast(Context context,String message)
+    {
+        Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
 
     public static void setToolbar(ActionBar supportActionBar, String title) {
         supportActionBar.setDisplayHomeAsUpEnabled(true);

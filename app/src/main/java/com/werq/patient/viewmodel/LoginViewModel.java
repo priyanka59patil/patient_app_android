@@ -6,7 +6,11 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
+import com.werq.patient.service.repository.LoginRepository;
+import com.werq.patient.service.repository.SignUpRepository;
 
 import okhttp3.internal.http2.ErrorCode;
 
@@ -18,6 +22,9 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<String> passwordError;
 
 
+    LoginRepository loginRepository;
+    ApiResponce apiResponce=this;
+
     public LoginViewModel() {
         super();
 
@@ -25,6 +32,7 @@ public class LoginViewModel extends BaseViewModel {
         password=new MutableLiveData<>();
         userNameError=new MutableLiveData<>();
         passwordError=new MutableLiveData<>();
+        loginRepository=new LoginRepository();
 
     }
 
@@ -49,7 +57,13 @@ public class LoginViewModel extends BaseViewModel {
         Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
         if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
         password.getValue()!=null && !password.getValue().isEmpty() ) {
-            getActivity().setValue("DashBoard");
+
+            UserCredential userCredential=new UserCredential();
+            userCredential.setUsername(userName.getValue());
+            userCredential.setPassword(password.getValue());
+            getLoading().setValue(true);
+            loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+
         }
         else {
             if(userName.getValue()==null || userName.getValue().trim().equals(""))
@@ -67,6 +81,7 @@ public class LoginViewModel extends BaseViewModel {
 
     public void signUpOnClick()
     {
+
         getActivity().setValue("SignUp");
     }
 
@@ -80,18 +95,18 @@ public class LoginViewModel extends BaseViewModel {
         private final String TAG = "in-un";
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            Log.e(TAG, "beforeTextChanged: ");
+            //Log.e(TAG, "beforeTextChanged: ");
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            Log.e(TAG, "onTextChanged: ");
+            //Log.e(TAG, "onTextChanged: ");
             userNameError.setValue(null);
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
-            Log.e(TAG, "afterTextChanged: ");
+           // Log.e(TAG, "afterTextChanged: ");
 
         }
     };
@@ -116,10 +131,15 @@ public class LoginViewModel extends BaseViewModel {
     @Override
     public void onSuccess(String url, String jsonObject) {
 
+        getLoading().setValue(false);
+        if(url.equals("SIGNIN")){
+            getActivity().setValue("DashBoard");
+        }
+
     }
 
     @Override
     public void onError(String url, String errorCode) {
-
+        getLoading().setValue(false);
     }
 }

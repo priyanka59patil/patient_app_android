@@ -1,6 +1,6 @@
 package com.werq.patient.service.model.ResponcejsonPojo;
 
-public class SignupResponce {
+public class LoginResponce {
     private String Message;
 
     private SignUpData Data;

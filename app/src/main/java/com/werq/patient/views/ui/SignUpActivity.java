@@ -38,12 +38,16 @@ public class SignUpActivity extends BaseActivity {
     EditText etPin3;
     @BindView(R.id.etPin4)
     EditText etPin4;
+    @BindView(R.id.etPin5)
+    EditText etPin5;
+    @BindView(R.id.etPin6)
+    EditText etPin6;
 
     Context mContext;
     SignUpViewModel signUpViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_sign_up);
         initilizevariables();
@@ -93,6 +97,12 @@ public class SignUpActivity extends BaseActivity {
                         break;
                     case "pin4":
                             etPin4.requestFocus();
+                        break;
+                    case "pin5":
+                        etPin5.requestFocus();
+                        break;
+                    case "pin6":
+                        etPin6.requestFocus();
                         break;
                 }
             }

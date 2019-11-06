@@ -1,12 +1,15 @@
 package com.werq.patient.views.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.werq.patient.viewmodel.CreateAccountViewModel;
@@ -25,9 +28,10 @@ public class CreateAccountActivity extends BaseActivity {
     @BindView(R.id.tvCreateAccount)
     TextView tvCreateAccount;
     SignUpViewModel caViewModel;
+    Context mContext;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_create_account);
         initBinding();
@@ -43,6 +47,8 @@ public class CreateAccountActivity extends BaseActivity {
         caViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
         createAccountBinding.setCaViewModel(caViewModel);
         ButterKnife.bind(this);
+        setViewModel(caViewModel);
+        mContext=this;
         setSupportActionBar(toolbar);
 
         String  invitationCode=getIntent().getStringExtra("invitationCode");
@@ -57,7 +63,13 @@ public class CreateAccountActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+       /* caViewModel.getToast().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
 
+            }
+        });*/
 
     }
 

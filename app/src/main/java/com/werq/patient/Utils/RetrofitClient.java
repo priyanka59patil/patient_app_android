@@ -27,7 +27,7 @@ public class RetrofitClient {
     static String TAG="RetrofitClient";
 
     public static Retrofit retrofit;
-    public static String baseUrl="https://patient-dev.werq.com/api/Auth/";
+    public static String baseUrl="https://patient-dev.werq.com/api/";
     private static ApiInterface apiInterface;
 
 
@@ -81,29 +81,28 @@ public class RetrofitClient {
             @Override
             public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {
                 Helper.setLog(TAG,"Responce code :- "+response.code());
+                String json =Helper.getGsonInstance().toJson(response.body());
+                Helper.setLog(TAG,"json :- "+json);
                 Helper.setLog(TAG,"url :- "+url);
 
                 switch (response.code()){
 
-
-                    case 200:{
-                        String json =Helper.getGsonInstance().toJson(response.body());
-                        Helper.setLog(TAG,"json :- "+json);
+                    case 200:
                         apiResponce.onSuccess(url,json);
-                    break;
-                    }
-                    case 400:{
+                        break;
+
+                    case 400:
                         apiResponce.onError(url,"400");
                         mToast.setValue("Something went wrong ");
                         break;
-                    }
-                    case 404:{
+
+                    case 404:
                         mToast.setValue("Server Not Found");
                         break;
-                    }
-                    default:{
+
+                    default:
                         mToast.setValue("Something went wrong ");
-                    }
+                        break;
 
 
                 }

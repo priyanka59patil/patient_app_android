@@ -41,7 +41,7 @@ public class NewChatActivity extends BaseActivity implements RecyclerViewClickLi
     ChatFragmentViewModel chatFragmentViewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_new_chat);
 

@@ -68,8 +68,8 @@
 
                 <EditText
                     android:id="@+id/etPin1"
-                    android:layout_width="48dp"
-                    android:layout_height="46dp"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:gravity="center"
                     android:inputType="number"
@@ -83,8 +83,8 @@
 
                 <EditText
                     android:id="@+id/etPin2"
-                    android:layout_width="48dp"
-                    android:layout_height="46dp"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:ems="10"
                     android:maxLength="1"
@@ -99,8 +99,8 @@
 
                 <EditText
                     android:id="@+id/etPin3"
-                    android:layout_width="48dp"
-                    android:layout_height="46dp"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:ems="10"
                     android:maxLength="1"
@@ -114,8 +114,8 @@
 
                 <EditText
                     android:id="@+id/etPin4"
-                    android:layout_width="48dp"
-                    android:layout_height="46dp"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:ems="10"
                     android:maxLength="1"
@@ -127,6 +127,38 @@
                     android:text="@={signupViewModel.pin4}"
                     app:error="@{signupViewModel.pin4Error}"
                     android:addTextChangedListener="@{signupViewModel.pin4TextWatcher}"/>
+
+                <EditText
+                    android:id="@+id/etPin5"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:ems="10"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:inputType="number"
+                    app:layout_constraintBottom_toBottomOf="@+id/etPin4"
+                    app:layout_constraintStart_toEndOf="@+id/etPin4"
+                    app:layout_constraintTop_toTopOf="@+id/etPin4"
+                    android:text="@={signupViewModel.pin5}"
+                    app:error="@{signupViewModel.pin5Error}"
+                    android:addTextChangedListener="@{signupViewModel.pin5TextWatcher}"/>
+
+                <EditText
+                    android:id="@+id/etPin6"
+                    android:layout_width="45dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:ems="10"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:inputType="number"
+                    app:layout_constraintBottom_toBottomOf="@+id/etPin5"
+                    app:layout_constraintStart_toEndOf="@+id/etPin5"
+                    app:layout_constraintTop_toTopOf="@+id/etPin5"
+                    android:text="@={signupViewModel.pin6}"
+                    app:error="@{signupViewModel.pin6Error}"
+                    android:addTextChangedListener="@{signupViewModel.pin6TextWatcher}"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button

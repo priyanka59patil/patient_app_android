@@ -37,7 +37,7 @@ public class ChatRoomActivity extends BaseActivity implements View.OnClickListen
     private EditText chooseTopics;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_chat_room);
         ActivityChatRoomBinding activityChatRoomBinding =

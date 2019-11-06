@@ -163,7 +163,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_bottom_tab);
         ActivityBottomTabBinding bottomTabBinding= DataBindingUtil.setContentView(this,R.layout.activity_bottom_tab);

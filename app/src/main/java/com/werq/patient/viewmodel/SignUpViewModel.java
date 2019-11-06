@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.repository.SignUpRepository;
@@ -19,10 +20,14 @@ public class SignUpViewModel extends BaseViewModel {
     MutableLiveData<String> pin2;
     MutableLiveData<String> pin3;
     MutableLiveData<String> pin4;
+    MutableLiveData<String> pin5;
+    MutableLiveData<String> pin6;
     MutableLiveData<String> pin1Error;
     MutableLiveData<String> pin2Error;
     MutableLiveData<String> pin3Error;
     MutableLiveData<String> pin4Error;
+    MutableLiveData<String> pin5Error;
+    MutableLiveData<String> pin6Error;
     MutableLiveData<String> etFocus;
     MutableLiveData<String> dob;
     MutableLiveData<String> dobError;
@@ -139,15 +144,51 @@ public class SignUpViewModel extends BaseViewModel {
         this.pin4TextWatcher = pin4TextWatcher;
     }
 
+    public MutableLiveData<String> getPin5() {
+        return pin5;
+    }
+
+    public void setPin5(MutableLiveData<String> pin5) {
+        this.pin5 = pin5;
+    }
+
+    public MutableLiveData<String> getPin6() {
+        return pin6;
+    }
+
+    public void setPin6(MutableLiveData<String> pin6) {
+        this.pin6 = pin6;
+    }
+
+    public MutableLiveData<String> getPin5Error() {
+        return pin5Error;
+    }
+
+    public void setPin5Error(MutableLiveData<String> pin5Error) {
+        this.pin5Error = pin5Error;
+    }
+
+    public MutableLiveData<String> getPin6Error() {
+        return pin6Error;
+    }
+
+    public void setPin6Error(MutableLiveData<String> pin6Error) {
+        this.pin6Error = pin6Error;
+    }
+
     public SignUpViewModel() {
         pin1 = new MutableLiveData<>();
         pin2 = new MutableLiveData<>();
         pin3 = new MutableLiveData<>();
         pin4 = new MutableLiveData<>();
+        pin5 = new MutableLiveData<>();
+        pin6 =new MutableLiveData<>();
         pin1Error = new MutableLiveData<>();
         pin2Error = new MutableLiveData<>();
         pin3Error = new MutableLiveData<>();
         pin4Error = new MutableLiveData<>();
+        pin5Error=new MutableLiveData<>();
+        pin6Error=new MutableLiveData<>();
         etFocus = new MutableLiveData<>();
         dob = new MutableLiveData<>();
         dobError = new MutableLiveData<>();
@@ -261,10 +302,12 @@ public class SignUpViewModel extends BaseViewModel {
         if (pin1.getValue() != null && !pin1.getValue().trim().isEmpty()
                 && pin2.getValue() != null && !pin2.getValue().trim().isEmpty()
                 && pin3.getValue() != null && !pin3.getValue().trim().isEmpty()
-                && pin4.getValue() != null && !pin4.getValue().trim().isEmpty()) {
+                && pin4.getValue() != null && !pin4.getValue().trim().isEmpty()
+                && pin5.getValue() != null && !pin5.getValue().trim().isEmpty()
+                && pin6.getValue() != null && !pin6.getValue().trim().isEmpty()) {
 
             Bundle bundle =new Bundle();
-            bundle.putString("invitationCode",pin1.getValue()+pin2.getValue()+pin3.getValue()+pin4.getValue());
+            bundle.putString("invitationCode",pin1.getValue()+pin2.getValue()+pin3.getValue()+pin4.getValue()+pin5.getValue()+pin6.getValue());
 
             getOpenActivitywithBundle().setValue(bundle);
          //   getActivity().setValue("VerifyIdentity");
@@ -281,6 +324,13 @@ public class SignUpViewModel extends BaseViewModel {
             }
             if (pin4.getValue() == null || pin4.getValue().trim().isEmpty()) {
                 pin4Error.setValue("Please Enter Pin");
+            }
+
+            if (pin5.getValue() == null || pin5.getValue().trim().isEmpty()) {
+                pin5Error.setValue("Please Enter Pin");
+            }
+            if (pin6.getValue() == null || pin6.getValue().trim().isEmpty()) {
+                pin6Error.setValue("Please Enter Pin");
             }
 
         }
@@ -397,19 +447,67 @@ public class SignUpViewModel extends BaseViewModel {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (editable.toString().length() == 0)
+            if (editable.toString().length() == 1) {
+                etFocus.setValue("pin5");
+            }
+            else if (editable.toString().length() == 0)
                 etFocus.setValue("pin3");
         }
     };
 
+    public TextWatcher pin5TextWatcher = new TextWatcher() {
+
+        private final String TAG = "in-un";
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            pin5Error.setValue(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editable.toString().length() == 1) {
+                etFocus.setValue("pin6");
+            }
+            else if (editable.toString().length() == 0)
+                etFocus.setValue("pin4");
+        }
+    };
+
+
+    public TextWatcher pin6TextWatcher = new TextWatcher() {
+
+        private final String TAG = "in-un";
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            pin6Error.setValue(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (editable.toString().length() == 0)
+                etFocus.setValue("pin5");
+        }
+    };
+
+
 
     @Override
     public void onSuccess(String url, String jsonObject) {
-
+        Helper.setLog("SignUpVM OnSuccess","successfull login intent to fingerprint");
     }
 
     @Override
     public void onError(String url, String errorCode) {
-
+        Helper.setLog("SignUpVM onError","signUp failed");
     }
 }

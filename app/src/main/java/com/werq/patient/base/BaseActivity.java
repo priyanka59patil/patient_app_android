@@ -1,5 +1,6 @@
 package com.werq.patient.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,61 +13,118 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.views.ui.BottomTabActivity;
 import com.werq.patient.views.ui.CreateAccountActivity;
 import com.werq.patient.views.ui.FingerPrintActivity;
+import com.werq.patient.views.ui.ForgotPasswordActivity;
 import com.werq.patient.views.ui.LoginActivity;
+import com.werq.patient.views.ui.SignUpActivity;
 import com.werq.patient.views.ui.VerifyIdentity;
 
 public class BaseActivity extends AppCompatActivity {
     BaseViewModel baseViewModel;
     Context mContext;
 
+    ProgressDialog progressDialog;
+
 
     public void setViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
     }
 
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mContext = this;
+        progressDialog = new ProgressDialog(this);
 
-        baseViewModel.getToast().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
 
-            }
-        });
 
-        baseViewModel.getActivity().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                switch (s) {
+        /*baseViewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean)
+                progressDialog.show();
+            else
+                progressDialog.dismiss();
+        });*/
 
-                    case "Login":
-                        startActivity(new Intent(mContext, LoginActivity.class));
-                        break;
-                    case "VerifyIdentity":
-                        startActivity(new Intent(mContext, VerifyIdentity.class));
-                        finish();
-                        break;
-                    case "CreateAccountActivity":
-                        startActivity(new Intent(mContext, CreateAccountActivity.class));
-                        break;
-                    case "FingerPrintActivity":
-                        startActivity(new Intent(mContext, FingerPrintActivity.class));
-                        break;
+
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(baseViewModel!=null){
+            baseViewModel.getToast().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+
+
+                    Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+
                 }
-            }
+            });
 
-        });
+            baseViewModel.getActivity().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+                    switch (s) {
 
+                        case "Login":
+                            startActivity(new Intent(mContext, LoginActivity.class));
+                            break;
+                        case "VerifyIdentity":
+                            startActivity(new Intent(mContext, VerifyIdentity.class));
+                            finish();
+                            break;
+                        case "CreateAccountActivity":
+                            startActivity(new Intent(mContext, CreateAccountActivity.class));
+                            break;
+                        case "FingerPrintActivity":
+                            startActivity(new Intent(mContext, FingerPrintActivity.class));
+                            break;
 
+                        /*from login intent*/
+                        case "DashBoard": startActivity(new Intent(mContext, BottomTabActivity.class));
+                            break;
+
+                        case "ForgotPwd":startActivity(new Intent(mContext, ForgotPasswordActivity.class));
+                            break;
+
+                        case "SignUp":startActivity(new Intent(mContext, SignUpActivity.class));
+                            break;
+                    }
+                }
+
+            });
+
+            baseViewModel.getLoading().observe(this,aBoolean -> {
+                if(aBoolean){
+                    /*  progressBar.setVisibility(View.VISIBLE);*/
+                    progressDialog.show();
+                }
+                else {
+                    /*  progressBar.setVisibility(View.GONE);*/
+                    progressDialog.hide();
+                }
+
+            });
+
+        }
+
+    }
+
+    public ProgressDialog getProgressDialog() {
+        return progressDialog;
     }
 
     public void setToolbarTitle(Toolbar toolbar, String title) {
         setSupportActionBar(toolbar);
         Helper.setToolbar(getSupportActionBar(), title);
     }
+
 }

@@ -3,9 +3,13 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.werq.patient.viewmodel.LoginViewModel;
@@ -24,6 +28,8 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     Context mContext;
 
@@ -31,8 +37,9 @@ public class LoginActivity extends BaseActivity {
     private ActivityLoginBinding activityLoginBinding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //  setContentView(R.layout.activity_login);
         initBinding();
 
@@ -54,7 +61,7 @@ public class LoginActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        loginViewModel.getActivity().observe(this,s ->  {
+        /*loginViewModel.getActivity().observe(this,s ->  {
             if(s!=null){
 
                 switch (s){
@@ -72,7 +79,7 @@ public class LoginActivity extends BaseActivity {
             }
 
         });
-
+*/
 
     }
 
