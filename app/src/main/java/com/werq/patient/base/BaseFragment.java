@@ -1,5 +1,6 @@
 package com.werq.patient.base;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -22,6 +23,7 @@ public abstract class BaseFragment extends Fragment {
 
     BaseViewModel baseViewModel;
     Context mContext;
+    ProgressDialog progressDialog;
 
 
     public void setViewModel(BaseViewModel viewModel){
@@ -33,7 +35,7 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mContext=getContext();
-
+        progressDialog = new ProgressDialog(getActivity());
         /*baseViewModel.getToast().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -54,6 +56,41 @@ public abstract class BaseFragment extends Fragment {
 
             }
         });*/
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(baseViewModel!=null){
+            baseViewModel.getToast().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String s) {
+
+
+                    Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            baseViewModel.getLoading().observe(this,aBoolean -> {
+                if(aBoolean){
+                    /*  progressBar.setVisibility(View.VISIBLE);*/
+                    progressDialog.show();
+                }
+                else {
+                    /*  progressBar.setVisibility(View.GONE);*/
+                    progressDialog.hide();
+                }
+
+            });
+
+        }
+
+    }
+
+    public ProgressDialog getProgressDialog() {
+        return progressDialog;
     }
 
 }

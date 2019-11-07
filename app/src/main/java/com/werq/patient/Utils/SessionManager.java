@@ -76,6 +76,10 @@ public class SessionManager {
         return userPref.getString(rem_username, "");
     }
 
+    public String getAuthToken() {
+        return pref.getString(token, "");
+    }
+
     public String getRem_password() {
         return userPref.getString(rem_password, "");
     }
@@ -92,9 +96,7 @@ public class SessionManager {
         return username;
     }
 
-    public static String getToken() {
-        return token;
-    }
+
 
     public static String getTimeStamp() {
         return timeStamp;

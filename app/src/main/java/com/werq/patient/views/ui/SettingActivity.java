@@ -13,12 +13,13 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -53,7 +54,7 @@ public class SettingActivity extends AppCompatActivity {
     private Context mContext;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
@@ -93,4 +94,6 @@ public class SettingActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 }

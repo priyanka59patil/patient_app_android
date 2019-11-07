@@ -1,6 +1,7 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,13 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.Provider;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
+import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
@@ -35,7 +38,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     Context mContext;
     boolean isFromUpcoming;
     RecyclerViewClickListerner listerner;
-    ArrayList<AppointmentData> listAppointments ;
+    ArrayList<AppointmentResult> listAppointments ;
     AppointmentInterface controller;
 
 
@@ -53,7 +56,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     public AppointmentAdapter(Context mContext,
                        boolean isFromUpcoming,
                        RecyclerViewClickListerner listerner,
-                       ArrayList<AppointmentData> listAppointments,
+                       ArrayList<AppointmentResult> listAppointments,
                        AppointmentInterface controller,
                        TabAppoinmentViewModel viewModel,
                        LifecycleOwner lifecycleOwner)
@@ -63,7 +66,20 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.listerner=listerner;
         this.controller = controller;
         this.listAppointments=listAppointments;
-        viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentData>>() {
+        
+        viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentResult>>() {
+            @Override
+            public void onChanged(ArrayList<AppointmentResult> appointmentResults) {
+
+                if(appointmentResults!=null){
+                    listAppointments.clear();
+                    listAppointments.addAll(appointmentResults);
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
+       /* viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentData>>() {
             @Override
             public void onChanged(ArrayList<AppointmentData> appointmentData) {
 
@@ -73,7 +89,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
                     notifyDataSetChanged();
                 }
             }
-        });
+        });*/
        // setHasStableIds(true);
 
     }
@@ -88,13 +104,14 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
     @Override
     public void onBindViewHolder(@NonNull AppointmentViewHolder holder, int position) {
 
-        AppointmentData result = listAppointments.get(position);
-        Provider provider = result.getProvider();
+        AppointmentResult result = listAppointments.get(position);
+        //Provider provider = result.get();
+        Doctor doctor=result.getDoctor();
 
-        holder.tvUseFullName.setText(provider.getFirst_name() + " " + provider.getLast_name());
+        holder.tvUseFullName.setText(doctor.getFirstName() + " " + doctor.getLastName());
 
-        controller.statusButtonBackground(mContext, result.getSchedule_status(), holder.tvstatus);
-        if(result.getSchedule_status().toLowerCase().equals("toconfirm"))
+        controller.statusButtonBackground(mContext, result.getAppointmentStatus(), holder.tvstatus);
+        if(result.getAppointmentStatus().toLowerCase().equals("toconfirm"))
         {
 
             holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
@@ -104,15 +121,18 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         }
 
         try {
-            Date date = DateHelper.dateFromUtc(result.getAppointment_date());
+
+            Date date = DateHelper.dateFromUtc(result.getAppintmentDate());
             holder.tvday.setText(DateHelper.dayFromDate(date, "day"));
             holder.tvMonth.setText(DateHelper.dayFromDate(date, "month"));
             holder.tvTime.setText(DateHelper.dayFromDate(date,"time"));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        holder.tvAddress.setText(provider.getOffice().toString());
-        holder.tvSpeciality.setText(provider.getSpeciality());
+        Location location=result.getLocation();
+        holder.tvAddress.setText(location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
+                +" "+location.getPostalcode()+" "+ location.getPostalcode()+""+location.getCountry());
+        holder.tvSpeciality.setText(doctor.getSpeciality().getName());
         /*Picasso.get()
                 .load(provider.getProfile_photo())
                 .error(R.drawable.user_image_placeholder)

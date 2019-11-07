@@ -1,5 +1,7 @@
 package com.werq.patient.Factory;
 
+import android.content.Context;
+
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -15,17 +17,19 @@ import javax.inject.Singleton;
 @Singleton
 public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFactory {
   private boolean isFromUpcoming;
+  private Context context;
 
   @Inject
-  public ViewModelProviderFactory(boolean isFromUpcoming) {
+  public ViewModelProviderFactory(boolean isFromUpcoming,Context context) {
     this.isFromUpcoming = isFromUpcoming;
+    this.context=context;
   }
 
   @Override
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(TabAppoinmentViewModel.class)) {
       //noinspection unchecked
-      return (T) new TabAppoinmentViewModel(isFromUpcoming);
+      return (T) new TabAppoinmentViewModel(isFromUpcoming,context);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

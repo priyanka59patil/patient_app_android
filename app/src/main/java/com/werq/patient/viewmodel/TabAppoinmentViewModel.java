@@ -1,12 +1,24 @@
 package com.werq.patient.viewmodel;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.MockData.JsonData;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.AppointmentResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.base.BaseViewModel;
 
@@ -18,27 +30,43 @@ import okhttp3.internal.http2.ErrorCode;
 
 public class TabAppoinmentViewModel extends BaseViewModel {
 
-    private final AppointmentRepository appointmentRepo;
+    private final AppointmentRepository appointmentRepository;
     private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
 
-    private final MutableLiveData<ArrayList<AppointmentData>> listAppointments = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<AppointmentResult>> listAppointments = new MutableLiveData<>();
     private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
+    private MutableLiveData<Boolean> rvVisibility;
     boolean isFromUpcoming;
 
 
-    public TabAppoinmentViewModel(boolean isFromUpcoming) {
+    int visibleItemCount,totalItemCount,pastVisiblesItems;
+    private int listcount;
+    boolean loading;
+    private int page=0;
+    SessionManager sessionManager,userRememberPref;
+    ApiResponce apiResponce=this;
 
-        appointmentRepo = new AppointmentRepository();
+    public TabAppoinmentViewModel(boolean isFromUpcoming, Context context) {
+
+        appointmentRepository = new AppointmentRepository();
         disposable = new CompositeDisposable();
         this.isFromUpcoming=isFromUpcoming;
+        loading=true;
+        rvVisibility=new MutableLiveData<>();
+
+        Helper.setLog("context",context+"");
+        sessionManager = new SessionManager(context);
+        userRememberPref = new SessionManager(context, "");
+
+
         if(isFromUpcoming)
-             getUpcomingData();
+            getUpcomingAppointmentList();
         else
-            getHistoryData();
+            getHistoryAppointmentList();
     }
 
-    public MutableLiveData<ArrayList<AppointmentData>> getListAppointments() {
+    public MutableLiveData<ArrayList<AppointmentResult>> getListAppointments() {
         return listAppointments;
     }
 
@@ -47,33 +75,15 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     }
 
 
-
-    public void getUpcomingData()  {
-        getLoading().setValue(true);
-        AppointmentResponce appointmentResponce= JsonData.getUpcomingData();
-        ArrayList<AppointmentData> list = new ArrayList<>();
-        list.addAll(Arrays.asList(appointmentResponce.getResponse()));
-        Log.e(TAG, "getUpcomingData: "+list.size());
-
-        listAppointments.setValue(list);
-        getLoading().setValue(false);
-
-
+    public MutableLiveData<Boolean> getRvVisibility() {
+        return rvVisibility;
     }
 
-    public void getHistoryData()  {
-        getLoading().setValue(true);
-        AppointmentResponce appointmentResponce= JsonData.getHistoryData();
-        ArrayList<AppointmentData> list = new ArrayList<>();
-        list.addAll(Arrays.asList(appointmentResponce.getResponse()));
-        Log.e(TAG, "getHistoryData: "+list.size());
-        listAppointments.setValue(list);
-        getLoading().setValue(false);
-
-
+    public void setRvVisibility(MutableLiveData<Boolean> rvVisibility) {
+        this.rvVisibility = rvVisibility;
     }
 
-   /* private void fetchRepos() {
+    /* private void fetchRepos() {
         loading.setValue(true);
         disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
@@ -102,12 +112,103 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onSuccess(String url, Object object) {
+    public void onSuccess(String url,String responseJson) {
+
+        Helper.setLog("responseJson",responseJson);
+
+        AppointmentResponse appointmentResponce=Helper.getGsonInstance().fromJson(responseJson,AppointmentResponse.class);
+
+        getLoading().setValue(false);
+
+        if(url!=null && url.equals("UpcomingAppointment"))
+        {
+            listcount = appointmentResponce.getData().getCount();
+            ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
+            dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
+            listAppointments.setValue(dataArrayList);
+
+            if (listAppointments.getValue().size() > 0) {
+                rvVisibility.setValue(true);
+                //noVisitNote.setVisibility(View.GONE);
+
+            } else {
+                rvVisibility.setValue(false);
+            }
+        }
+
+        if(url!=null && url.equals("HistoryAppointment"))
+        {
+            listcount = appointmentResponce.getData().getCount();
+            ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
+            dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
+            listAppointments.setValue(dataArrayList);
+
+           /* if (listAppointments.getValue().size() > 0) {
+                if (rvVisitList !=null) {
+                    rvVisitList.setVisibility(View.VISIBLE);
+                    noVisitNote.setVisibility(View.GONE);
+                }
+
+            } else {
+                if (rvVisitList !=null) {
+                    rvVisitList.setVisibility(View.GONE);
+                    noVisitNote.setVisibility(View.VISIBLE);
+                }
+            }*/
+        }
 
     }
 
     @Override
     public void onError(String url, String errorCode) {
-
+        getLoading().setValue(false);
     }
+
+   /* public void onScrollDown(int childCount,int itemCount,int firstVisibleItemPosition){
+
+       *//* visibleItemCount = recyclerView.getChildCount();
+        totalItemCount = recyclerView.getAdapter().getItemCount();
+        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();*//*
+
+        visibleItemCount = childCount;
+        totalItemCount = itemCount;
+        pastVisiblesItems = firstVisibleItemPosition;
+        if (listcount < 20) {
+            loading = false;
+        }
+        int count = page + 1;
+        int data = totalItemCount ;
+
+        if (data == (count * 20)) {
+            if (loading) {
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    //                                loading = false;
+                    //Logv("...", "Last Item Wow !");
+                    loading=true;
+                    ++page;
+                    getUpcomingAppointmentList();
+                    //Do pagination.. i.e. fetch new data
+                }
+            }
+        }
+    }*/
+
+    private void getUpcomingAppointmentList() {
+        getLoading().setValue(true);
+
+        Log.e(TAG, "getToken: "+sessionManager.getAuthToken() );
+
+        appointmentRepository.getUpcommingAppoitment(sessionManager.getAuthToken(),"10",""+page*10,
+                getToast(),apiResponce,"UpcomingAppointment");
+    }
+
+    private void getHistoryAppointmentList(){
+        getLoading().setValue(true);
+        appointmentRepository.getHistoryAppoitment(sessionManager.getAuthToken(),"10",""+page*10,
+                getToast(),apiResponce,"HistoryAppointment");
+    }
+
+
+
+
 }

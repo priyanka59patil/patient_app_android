@@ -135,7 +135,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
 
-        VisibleMenuItem(false, false, true);
+        VisibleMenuItem(false, true, true);
         return true;
     }
 

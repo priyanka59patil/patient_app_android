@@ -58,7 +58,7 @@ public class ForgotPassswordViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, Object object) {
+    public void onSuccess(String url, String responseJson) {
 
     }
 

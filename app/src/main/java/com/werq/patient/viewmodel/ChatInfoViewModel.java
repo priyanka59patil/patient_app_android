@@ -49,7 +49,7 @@ public class ChatInfoViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onSuccess(String url, Object object) {
+    public void onSuccess(String url, String responseJson) {
 
     }
 

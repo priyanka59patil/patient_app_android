@@ -156,15 +156,19 @@ public class LoginViewModel extends BaseViewModel {
     };
 
     @Override
-    public void onSuccess(String url, Object object) {
+    public void onSuccess(String url, String responseJson) {
 
+        Helper.setLog("responseJson",responseJson);
+
+        LoginResponce loginResponce=Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
+
+        Helper.setLog("convertedLogin",loginResponce.toString());
 
         getLoading().setValue(false);
         if(url.equals("SIGNIN")){
 
-            if(object!=null)
+            if(loginResponce!=null)
             {
-                LoginResponce loginResponce=(LoginResponce) object;
 
                 long expiryTimestamp = 0;
 

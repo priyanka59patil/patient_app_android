@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
 import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.Controller.AppointmentController;
@@ -49,14 +52,14 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     BasicActivities basicActivities;
     //data
     AppointmentResponce data;
-    ArrayList<AppointmentData> listAppointments;
+    ArrayList<AppointmentResult> listAppointments;
     TabAppoinmentViewModel viewModel;
     FragmentTabAppointmentBinding appointmentBinding;
 
     @Override
     public void initializeVariables() {
         //context
-        mContext = getActivity();
+
         listAppointments=new ArrayList<>();
         listener = this::onclick;
         basicActivities=this;
@@ -103,7 +106,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
 
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
-            viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
+        mContext = getActivity();
+            viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true,mContext)).get(TabAppoinmentViewModel.class);
             ButterKnife.bind(this, view);
             initializeVariables();
             adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
@@ -128,13 +132,42 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             }
         });
 
+        viewModel.getRvVisibility().observe(this,aBoolean -> {
+            if(aBoolean)
+            {
+                rvAppointmentList.setVisibility(View.VISIBLE);
+            }
+            else {
+                rvAppointmentList.setVisibility(View.GONE);
+            }
+        });
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+
+       /* viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean !=null && aBoolean)
                 loadingView.setVisibility(View.VISIBLE);
             else
                 loadingView.setVisibility(View.INVISIBLE);
         });
+*/
+        /*rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+
+                        viewModel.onScrollDown(recyclerView.getChildCount(),
+                                recyclerView.getAdapter().getItemCount(),
+                                ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });*/
 
 
     }
@@ -146,10 +179,10 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onclick(int position) {
 
       //  String gsonData= Helper.getGsonInstance().toJson(listAppointments.get(position));
-        Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
+       /* Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
         intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming), true);
         intent.putExtra(getResources().getString(R.string.label_data),listAppointments.get(position));
-        startActivity(intent);
+        startActivity(intent);*/
 
     }
 
