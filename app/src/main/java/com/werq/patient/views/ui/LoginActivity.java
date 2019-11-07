@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.werq.patient.Factory.LoginVmProviderFactory;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.viewmodel.LoginViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
@@ -60,6 +61,7 @@ public class LoginActivity extends BaseActivity {
 
         ButterKnife.bind(this);
         toolbar.setTitle("Log In");
+        loginViewModel.setSessionManager( SessionManager.getSessionManager(mContext));
 
     }
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
@@ -57,6 +58,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         View view = inflater.inflate(R.layout.fragment_tab_history, container, false);
         mContext = getActivity();
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false,mContext)).get(TabAppoinmentViewModel.class);
+        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         ButterKnife.bind(this, view);
         initializeVariables();
         getData();

@@ -33,7 +33,7 @@ public class LoginViewModel extends BaseViewModel {
     LoginRepository loginRepository;
     ApiResponce apiResponce=this;
 
-    SessionManager sessionManager,userRememberPref;
+    SessionManager sessionManager;
 
     public LoginViewModel() {
     }
@@ -49,13 +49,10 @@ public class LoginViewModel extends BaseViewModel {
         rememberMe=new MutableLiveData<>();
 
         Helper.setLog("context",context+"");
-        sessionManager = new SessionManager(context);
-        userRememberPref = new SessionManager(context, "");
+        /*sessionManager = new SessionManager(context);
+        userRememberPref = new SessionManager(context, "");*/
 
-        if(userRememberPref.isRememberUsername()) {
-            rememberMe.setValue(true);
-            setPrefilledUsername();
-        }
+
 
     }
 
@@ -196,8 +193,8 @@ public class LoginViewModel extends BaseViewModel {
                         //handle error
                         e.printStackTrace();
                     }
-                    userRememberPref.setRememberUsername(true, encryptedUName);
-                    userRememberPref.setRememberPassword(true, encryptedPass);
+                    sessionManager.setRememberUsername(true, encryptedUName);
+                    sessionManager.setRememberPassword(true, encryptedPass);
                 }
             }
 
@@ -215,7 +212,7 @@ public class LoginViewModel extends BaseViewModel {
 
     private void setPrefilledUsername() {
         try {
-            String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", userRememberPref.getRem_username());
+            String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_username());
                Helper.setLog("decrypUname", uNameAfterDecrypt);
             userName.setValue(uNameAfterDecrypt);
         } catch (GeneralSecurityException e) {
@@ -224,4 +221,15 @@ public class LoginViewModel extends BaseViewModel {
         }
     }
 
+    public SessionManager getSessionManager() {
+        return sessionManager;
+    }
+
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+        if(sessionManager.isRememberUsername()) {
+            rememberMe.setValue(true);
+            setPrefilledUsername();
+        }
+    }
 }

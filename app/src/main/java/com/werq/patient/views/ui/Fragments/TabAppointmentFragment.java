@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
 import com.werq.patient.views.adapter.AppointmentAdapter;
@@ -108,6 +109,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
         mContext = getActivity();
             viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true,mContext)).get(TabAppoinmentViewModel.class);
+            viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+
             ButterKnife.bind(this, view);
             initializeVariables();
             adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);

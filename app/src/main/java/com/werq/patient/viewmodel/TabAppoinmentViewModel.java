@@ -37,14 +37,14 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private final MutableLiveData<ArrayList<AppointmentResult>> listAppointments = new MutableLiveData<>();
     private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     private MutableLiveData<Boolean> rvVisibility;
-    boolean isFromUpcoming;
+    boolean isFromUpcoming=true;;
 
 
     int visibleItemCount,totalItemCount,pastVisiblesItems;
     private int listcount;
     boolean loading;
     private int page=0;
-    SessionManager sessionManager,userRememberPref;
+    String authToken;
     ApiResponce apiResponce=this;
 
     public TabAppoinmentViewModel(boolean isFromUpcoming, Context context) {
@@ -55,15 +55,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         loading=true;
         rvVisibility=new MutableLiveData<>();
 
-        Helper.setLog("context",context+"");
-        sessionManager = new SessionManager(context);
-        userRememberPref = new SessionManager(context, "");
 
-
-        if(isFromUpcoming)
-            getUpcomingAppointmentList();
-        else
-            getHistoryAppointmentList();
     }
 
     public MutableLiveData<ArrayList<AppointmentResult>> getListAppointments() {
@@ -196,19 +188,30 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private void getUpcomingAppointmentList() {
         getLoading().setValue(true);
 
-        Log.e(TAG, "getToken: "+sessionManager.getAuthToken() );
+        if(authToken!=null&& !authToken.isEmpty()){
+            Log.e(TAG, "getToken: "+authToken );
 
-        appointmentRepository.getUpcommingAppoitment(sessionManager.getAuthToken(),"10",""+page*10,
-                getToast(),apiResponce,"UpcomingAppointment");
+            appointmentRepository.getUpcommingAppoitment(authToken,"10",""+page*10,
+                    getToast(),apiResponce,"UpcomingAppointment");
+        }
+
     }
 
     private void getHistoryAppointmentList(){
         getLoading().setValue(true);
-        appointmentRepository.getHistoryAppoitment(sessionManager.getAuthToken(),"10",""+page*10,
+        appointmentRepository.getHistoryAppoitment(authToken,"10",""+page*10,
                 getToast(),apiResponce,"HistoryAppointment");
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
 
-
-
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+        if(isFromUpcoming)
+            getUpcomingAppointmentList();
+        else
+            getHistoryAppointmentList();
+    }
 }

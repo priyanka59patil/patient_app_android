@@ -5,9 +5,9 @@ import android.content.SharedPreferences;
 
 public class SessionManager {
 
-    SharedPreferences pref, userPref;
+    public static SharedPreferences pref, userPref;
 
-    SharedPreferences.Editor editor,userEditor;
+    public static SharedPreferences.Editor editor,userEditor;
 
     // Sharedpref file name
     private static final String PrefName_Login = "Login";
@@ -31,20 +31,32 @@ public class SessionManager {
 
 
     Context context;
-    int PRIVATE_MODE = 0;
+    static int PRIVATE_MODE = 0;
 
+    public static SessionManager sessionManager;
+
+    public static SessionManager getSessionManager(Context context){
+        if(sessionManager==null)
+        {
+            sessionManager=new SessionManager(context);
+        }
+
+        return sessionManager;
+    }
     public SessionManager(Context context) {
         this.context = context;
         pref = context.getSharedPreferences(PrefName_Login, PRIVATE_MODE);
         editor = pref.edit();
-    }
-
-    public SessionManager(Context context, String userRemember) {
-        this.context = context;
         userPref = context.getSharedPreferences(PrefName_RememberUsername, PRIVATE_MODE);
         userEditor = userPref.edit();
     }
 
+   /* public SessionManager(Context context, String userRemember) {
+        this.context = context;
+        userPref = context.getSharedPreferences(PrefName_RememberUsername, PRIVATE_MODE);
+        userEditor = userPref.edit();
+    }
+*/
     public void creteUserSession(String AccessToken, String IdToken, String Username, String Userid, long tmpstmp) {
         editor.putBoolean(IS_LOGIN, true);
 
