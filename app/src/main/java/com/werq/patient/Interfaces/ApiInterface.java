@@ -10,6 +10,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
@@ -31,6 +32,10 @@ public interface ApiInterface {
     Call<Object> getHistoryAppointment(@Header("Authorization") String authToken,
                                         @Query("take") String take,
                                         @Query("skip") String skip);
+
+    @GET("Appointments/Details/{apppointmentId}")
+    Call<Object> getAppointmentDetails(@Header("Authorization") String authToken,
+                                       @Path("apppointmentId") String appointmentId);
 
 
 }

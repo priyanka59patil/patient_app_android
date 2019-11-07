@@ -98,7 +98,10 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce, MutableLiveData<String> mToast){
+    public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce,
+                                 MutableLiveData<String> mToast/*,String refreshTocken,long timestamp*/){
+
+
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {

@@ -2,11 +2,18 @@ package com.werq.patient.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiInterface;
+import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Interfaces.AppointmentInterface;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.Files;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.repository.AppointmentRepository;
+import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +23,7 @@ import okhttp3.internal.http2.ErrorCode;
 
 public class ScheduleDetailsViewModel extends BaseViewModel {
 
-    AppointmentData data;
+    AppointmentResult appointmentResult;
     AppointmentInterface controller;
 
     //MutableLiveData<String> toolbar;
@@ -25,12 +32,32 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     MutableLiveData<ArrayList<Files>> filesList;
 
     MutableLiveData<Boolean> visibility;
+    public MutableLiveData<String> toolbarTitle;
+
+    String authToken;
+    ApiResponce apiResponce=this;
+    AppointmentRepository appointmentRepository;
+    int appointmentId;
+    AppointmentDetailResponse apptDetailResponse;
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+        getAppointmentData();
+    }
 
     public ScheduleDetailsViewModel() {
 
     }
 
-    public ScheduleDetailsViewModel(AppointmentData data,AppointmentInterface controller) {
+    public ScheduleDetailsViewModel(AppointmentResult appointmentResult, AppointmentInterface controller) {
 
         //toolbar=new MutableLiveData<>();
         day=new MutableLiveData<>();
@@ -44,10 +71,10 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         filesList=new MutableLiveData<>();
         day=new MutableLiveData<>();
         visibility=new MutableLiveData<Boolean>();
-
-        this.data = data;
+        toolbarTitle =new MutableLiveData<>();
+        //this.appointmentResult = appointmentResult;
         this.controller=controller;
-        prepareData();
+        appointmentRepository=new AppointmentRepository();
 
     }
 
@@ -88,6 +115,10 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         return filesList;
     }
 
+    public MutableLiveData<String> getToolbarTitle() {
+        return toolbarTitle;
+    }
+
     public MutableLiveData<Boolean> getVisibility() {
         return visibility;
     }
@@ -95,23 +126,29 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     private void prepareData()
     {
         //toolbar.setValue(data.getProvider().getFirst_name() + " " + data.getProvider().getLast_name());
-        fullUserName.setValue(data.getProvider().getFirst_name() + " " + data.getProvider().getLast_name());
-        speciality.setValue(data.getProvider().getSpeciality());
+
+        this.appointmentResult=apptDetailResponse.getData().getAppointment();
+        String doctorfullName=appointmentResult.getDoctor().getFirstName() + " " + appointmentResult.getDoctor().getLastName();
+        toolbarTitle.setValue(doctorfullName);
+        fullUserName.setValue(doctorfullName);
+        speciality.setValue(appointmentResult.getDoctor().getSpeciality().getName());
 
         try {
-            Date date = DateHelper.dateFromUtc(data.getAppointment_date());
+            Date date = DateHelper.dateFromUtc(appointmentResult.getAppintmentDate());
             day.setValue(DateHelper.dayFromDate(date, "day"));
             month.setValue(DateHelper.dayFromDate(date, "month"));
             time.setValue(DateHelper.dayFromDate(date, "time"));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (this.data.getProvider().getOffice() != null) {
-            address.setValue(data.getProvider().getOffice().toString());
-            addressOnMap.setValue(data.getProvider().getOffice().toString());
+        if (this.appointmentResult.getLocation() != null) {
+            address.setValue(appointmentResult.getLocation().getOrganizationName());
+            addressOnMap.setValue(appointmentResult.getLocation().getOrganizationName());
         }
-        ArrayList<Files> filesArrayList=new ArrayList<>();
-        filesArrayList.addAll(Arrays.asList(data.getFiles()));
+
+        //getAttachments();
+        /*ArrayList<Files> filesArrayList=new ArrayList<>();
+        filesArrayList.addAll(Arrays.asList(appointmentResult.get()));
         filesList.setValue(filesArrayList);
 
         if(filesArrayList.size()>0){
@@ -119,19 +156,36 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         }
         else {
             visibility.setValue(false);
-        }
+        }*/
 
         //controller.checkFilesSize(files, basicActivities);
        // status.setValue();
     }
 
+    private void getAppointmentData() {
+        getLoading().setValue(true);
+        appointmentRepository.getAppointmentDetails(authToken,appointmentId+"",getToast(),apiResponce,"GetAppointmentDetails");
+    }
+
     @Override
     public void onSuccess(String url, String responseJson) {
+        getLoading().setValue(false);
+        if(url!=null && !url.isEmpty())
+        {
+            if(url.equalsIgnoreCase("GetAppointmentDetails")){
+
+                apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                if(apptDetailResponse!=null)
+                {
+                    prepareData();
+                }
+            }
+        }
 
     }
 
     @Override
     public void onError(String url, String errorCode) {
-
+        getLoading().setValue(false);
     }
 }

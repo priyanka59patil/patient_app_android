@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
@@ -56,6 +57,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     ArrayList<AppointmentResult> listAppointments;
     TabAppoinmentViewModel viewModel;
     FragmentTabAppointmentBinding appointmentBinding;
+    private String TAG="TabAppointmentFragment";
 
     @Override
     public void initializeVariables() {
@@ -182,10 +184,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onclick(int position) {
 
       //  String gsonData= Helper.getGsonInstance().toJson(listAppointments.get(position));
-       /* Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
-        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming), true);
-        intent.putExtra(getResources().getString(R.string.label_data),listAppointments.get(position));
-        startActivity(intent);*/
+        Helper.setLog(TAG,listAppointments.get(position).toString());
+        Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
+        intent.putExtra("IsFromUpcommming", true);
+        intent.putExtra("AppointmentData",listAppointments.get(position).getID());
+        startActivity(intent);
 
     }
 

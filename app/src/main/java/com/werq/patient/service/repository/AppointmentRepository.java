@@ -23,7 +23,6 @@ public class AppointmentRepository  {
     public void  getUpcommingAppoitment(String authToken, String take, String skip , MutableLiveData<String> toast,
                                         ApiResponce apiResponce, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken);
 
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getUpcomingAppointment(authToken,take,skip);
 
@@ -34,9 +33,19 @@ public class AppointmentRepository  {
     public void  getHistoryAppoitment(String authToken, String take, String skip , MutableLiveData<String> toast,
                                         ApiResponce apiResponce, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken);
 
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getHistoryAppointment(authToken,take,skip);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
+    public void  getAppointmentDetails(String authToken, String appointmentId, MutableLiveData<String> toast,
+                                      ApiResponce apiResponce, String url){
+
+        Helper.setLog(TAG,"authToken:- "+authToken);
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAppointmentDetails(authToken,appointmentId);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 

@@ -167,20 +167,24 @@ public class LoginViewModel extends BaseViewModel {
             if(loginResponce!=null)
             {
 
-                long expiryTimestamp = 0;
+                /*long expiryTimestamp = 0;
 
                 try{
                     expiryTimestamp=Long.parseLong(loginResponce.getData().getAuthExpiryTime());
 
                 }catch (Exception e){
 
-                }
+                }*/
+                Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
                 sessionManager.clear();
+                long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
                 sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
                         loginResponce.getData().getRefreshToken(),
                         loginResponce.getData().getUser().getUserName(),
                         loginResponce.getData().getUser().getID(),
-                        expiryTimestamp);
+                        timestamp);
+
+                Helper.setLog("convertedTimeStamp",timestamp+"");
 
                 if(rememberMe.getValue()){
 

@@ -23,6 +23,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.AppointmentInterface;
@@ -122,7 +124,9 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     ImageView map;
     ActivityScheduleDetailsBinding detailsBinding;
     ScheduleDetailsViewModel viewModel;
-    private AppointmentData data;
+    private AppointmentResult appointmentResult;
+    private String TAG="schedule_details";
+    private  int appointmentId;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -156,12 +160,12 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     }
 
     private void setStatusButton() {
-        controller.statusButtonBackground(mContext, data.getSchedule_status(), tvstatus);
+        controller.statusButtonBackground(mContext, appointmentResult.getDoctor().getStatus(), tvstatus);
 
     }
 
     private void setConfirmButton() {
-        controller.setConfirmButton(mContext, data.getSchedule_status(), btConfirm);
+        controller.setConfirmButton(mContext, appointmentResult.getDoctor().getStatus(), btConfirm);
     }
 
 
@@ -172,7 +176,14 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void setToolbar() {
-       Helper.setToolbarwithCross(getSupportActionBar(), data.getProvider().getFirst_name()+" "+data.getProvider().getLast_name());
+        viewModel.toolbarTitle.observe(this, s -> {
+            if(s!=null && !s.isEmpty())
+            {
+                Helper.setToolbarwithCross(getSupportActionBar(), s);
+
+            }
+        });
+       //Helper.setToolbarwithCross(getSupportActionBar(), appointmentResult.getDoctor().getFirstName()+" "+appointmentResult.getDoctor().getLastName());
 
     }
 
@@ -208,12 +219,14 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(data,controller)).get(ScheduleDetailsViewModel.class);
+        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(appointmentResult,controller)).get(ScheduleDetailsViewModel.class);
         detailsBinding.setScheduleDetailsViewModel(viewModel);
 
+        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setAppointmentId(appointmentId);
         recyclerViewClickListerner = this::onclick;
         files = new ArrayList<>();
-        setView(data);
+        setView(appointmentResult);
         setRecyclerView();
     }
 
@@ -232,9 +245,9 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     public void setView(Object data) {
         //this.data = (AppointmentData) data;
         setToolbar();
-        setConfirmButton();
+        /*setConfirmButton();
 
-        setStatusButton();
+        setStatusButton();*/
 
        /* tvUseFullName.setText(this.data.getProvider().getFirst_name() + " " + this.data.getProvider().getFirst_name());
         tvSpeciality.setText(this.data.getProvider().getSpeciality());
@@ -259,9 +272,11 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void getIntentData() {
-        isFromUpcoming = intent.getBooleanExtra(getResources().getString(R.string.intent_is_from_upcoming), false);
-        data = intent.getParcelableExtra(getResources().getString(R.string.label_data));
-       
+
+            isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
+            appointmentId = getIntent().getIntExtra("AppointmentData",0);
+
+             Helper.setLog(TAG,appointmentId+"");
 
     }
 

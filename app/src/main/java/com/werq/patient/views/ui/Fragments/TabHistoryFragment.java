@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -50,6 +51,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     private ArrayList<AppointmentResult> listAppointments;
     private AppointmentResponce data;
     TabAppoinmentViewModel viewModel;
+    private String TAG="TabHistoryFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,10 +87,11 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
     @Override
     public void onclick(int position) {
-     /*   Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
-        intent.putExtra(getResources().getString(R.string.intent_is_from_upcoming), false);
-        intent.putExtra(getResources().getString(R.string.label_data),listAppointments.get(position));
-        startActivity(intent);*/
+        Helper.setLog(TAG,listAppointments.get(position).toString());
+        Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
+        intent.putExtra("IsFromUpcommming", true);
+        intent.putExtra("AppointmentData",listAppointments.get(position).getID());
+        startActivity(intent);
     }
 
     @Override
@@ -100,6 +103,16 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                 viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
             }else {
                 viewModel.getToast().setValue(null);
+            }
+        });
+
+        viewModel.getRvVisibility().observe(this,aBoolean -> {
+            if(aBoolean)
+            {
+                rvAppointmentList.setVisibility(View.VISIBLE);
+            }
+            else {
+                rvAppointmentList.setVisibility(View.GONE);
             }
         });
 

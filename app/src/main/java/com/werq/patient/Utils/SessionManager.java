@@ -35,10 +35,18 @@ public class SessionManager {
 
     public static SessionManager sessionManager;
 
+
+    private synchronized static void createInstance(Context context){
+        if(sessionManager==null){
+            sessionManager=new SessionManager(context);
+
+        }
+    }
+
     public static SessionManager getSessionManager(Context context){
         if(sessionManager==null)
         {
-            sessionManager=new SessionManager(context);
+            createInstance(context);
         }
 
         return sessionManager;
@@ -80,6 +88,10 @@ public class SessionManager {
         userEditor.commit();
     }
 
+    public static long getTimeStamp() {
+        return pref.getLong(timeStamp, 0);
+    }
+
     public boolean isRememberUsername() {
         return userPref.getBoolean(REMEMBER_USERNAME, false);
     }
@@ -110,9 +122,7 @@ public class SessionManager {
 
 
 
-    public static String getTimeStamp() {
-        return timeStamp;
-    }
+
 
     public static String getRememberUsername() {
         return REMEMBER_USERNAME;

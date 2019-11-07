@@ -13,7 +13,12 @@ import com.werq.patient.R;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class Helper {
@@ -91,5 +96,24 @@ public class Helper {
             ignored.printStackTrace();
         } // for now eat exceptions
         return "";
+    }
+
+    public static long convertTimestamp(String timestamp){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        try {
+            Date sessionTimestamp= sdf.parse(timestamp);
+            return sessionTimestamp.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static boolean isTimestampExpired(long timestamp){
+
+        if (((System.currentTimeMillis() - timestamp)/3600000)>=1 ) {
+            return true;
+        }
+        return false;
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.service.model.AppointmentData;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
 
 import javax.inject.Inject;
@@ -15,12 +16,13 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class ScheduleDeatilsVmFactory extends ViewModelProvider.NewInstanceFactory {
-  private AppointmentData data;
+  //private AppointmentData data;
+  AppointmentResult appointmentResult;
   private AppointmentInterface controller;
 
   @Inject
-  public ScheduleDeatilsVmFactory(AppointmentData data,AppointmentInterface controller) {
-    this.data=data;
+  public ScheduleDeatilsVmFactory( AppointmentResult appointmentResult,AppointmentInterface controller) {
+    this.appointmentResult=appointmentResult;
     this.controller=controller;
   }
 
@@ -29,7 +31,7 @@ public class ScheduleDeatilsVmFactory extends ViewModelProvider.NewInstanceFacto
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(ScheduleDetailsViewModel.class)) {
       //noinspection unchecked
-      return (T) new ScheduleDetailsViewModel(data,controller);
+      return (T) new ScheduleDetailsViewModel(appointmentResult,controller);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }
