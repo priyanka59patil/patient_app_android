@@ -1,5 +1,6 @@
 package com.werq.patient.Interfaces;
 
+import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
@@ -10,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -35,10 +37,15 @@ public interface ApiInterface {
 
     @GET("Appointments/Details/{apppointmentId}")
     Call<Object> getAppointmentDetails(@Header("Authorization") String authToken,
-                                       @Path("apppointmentId") String appointmentId);
+                                       @Path("apppointmentId") int appointmentId);
 
-    @POST("")
+    @POST("Auth/RefreshToken")
     Call<Object> refreshAuthToken(@Header("RefreshToken") String refreshTokenId);
+
+    @PUT("Appointments/ConfirmAppt")
+    Call<Object> setConfirmAppointment(@Header("Authorization") String authToken,
+                                       @Header("Content-Type") String contentType,
+                                       @Body ConfirmAppointment confirmAppointment);
 
 }
 

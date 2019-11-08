@@ -12,7 +12,7 @@ public class Doctor implements Serializable
 {
 
     @SerializedName("ID")
-    private String iD;
+    private Integer iD;
     @SerializedName("Status")
     private String status;
     @SerializedName("FirstName")
@@ -31,11 +31,11 @@ public class Doctor implements Serializable
     public Doctor() {
     }
 
-    public String getiD() {
+    public Integer getiD() {
         return iD;
     }
 
-    public void setiD(String iD) {
+    public void setiD(Integer iD) {
         this.iD = iD;
     }
 

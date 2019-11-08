@@ -13,10 +13,14 @@ public class Location implements Serializable
 
     @SerializedName("ID")
     @Expose
-    private String iD;
+    private Integer iD;
     @SerializedName("OrgNpi")
     @Expose
     private String orgNpi;
+    @SerializedName("CorpNpi")
+    @Expose
+    private String corpNpi;
+
     @SerializedName("Address1")
     @Expose
     private String address1;
@@ -127,11 +131,11 @@ public class Location implements Serializable
         this.organizationName = organizationName;
     }
 
-    public String getiD() {
+    public Integer getiD() {
         return iD;
     }
 
-    public void setiD(String iD) {
+    public void setiD(Integer iD) {
         this.iD = iD;
     }
 
@@ -141,6 +145,14 @@ public class Location implements Serializable
 
     public void setOrgNpi(String orgNpi) {
         this.orgNpi = orgNpi;
+    }
+
+    public String getCorpNpi() {
+        return corpNpi;
+    }
+
+    public void setCorpNpi(String corpNpi) {
+        this.corpNpi = corpNpi;
     }
 
     public Boolean getDeleted() {
@@ -172,6 +184,7 @@ public class Location implements Serializable
         return "Location{" +
                 "iD=" + iD +
                 ", orgNpi=" + orgNpi +
+                ", corpNpi=" + corpNpi +
                 ", address1='" + address1 + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +

@@ -248,13 +248,23 @@ public class RetrofitClient  {
                         }
                           apiResponce.onError(url,"400");
                         break;
+                    case 500:
+                        if(response.errorBody()!=null && errorMessage!=null)
+                        {
+                            Helper.setLog(TAG,"json error :- "+errorMessage);
+                            mToast.setValue(errorMessage);
+                        }
+                        apiResponce.onError(url,"500");
+                        break;
 
                     case 404:
                         mToast.setValue("Server Not Found");
+                        apiResponce.onError(url,"404");
                         break;
 
                     default:
                         mToast.setValue("Something went wrong ");
+                        apiResponce.onError(url,"");
                         break;
 
 

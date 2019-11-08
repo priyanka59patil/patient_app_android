@@ -56,8 +56,11 @@ BasicActivities basicActivities;
             case "toconfirm":
                 textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.orange_button));
                 textView.setText(mContext.getResources().getString(R.string.label_to_confirmed));
-
                 break;
+
+                default:textView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.orange_button));
+                    textView.setText(status);
+                    break;
 
         }
     }

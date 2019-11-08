@@ -168,6 +168,8 @@
                                     android:layout_below="@+id/ivUseImage"
                                     android:layout_marginStart="16dp"
                                     android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@{scheduleDetailsViewModel.address}"
                                    />
 
@@ -264,7 +266,9 @@
                                 android:layout_margin="@dimen/button_confirm_margin"
                                 android:background="@color/colorPrimary"
                                 android:text="@string/label_confirm"
-                                android:textColor="@color/white" />
+                                android:textColor="@color/white"
+                                android:onClick="@{()-> scheduleDetailsViewModel.confirmButtonOnClick()}"
+                                />
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 

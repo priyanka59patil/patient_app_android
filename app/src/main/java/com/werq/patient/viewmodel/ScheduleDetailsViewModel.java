@@ -1,5 +1,7 @@
 package com.werq.patient.viewmodel;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiInterface;
@@ -10,15 +12,18 @@ import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.Files;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
+import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteAttachment;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.internal.http2.ErrorCode;
 
@@ -33,12 +38,15 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     MutableLiveData<ArrayList<Files>> filesList;
 
     public MutableLiveData<Boolean> attachmentVisibility;
+    public MutableLiveData<Boolean> confirmButtonVisibility;
+    public MutableLiveData<String> appointmentStatus;
     //public MutableLiveData<String> toolbarTitle;
 
     String authToken;
     ApiResponce apiResponce=this;
     AppointmentRepository appointmentRepository;
     AppointmentDetailResponse apptDetailResponse;
+    private String TAG="ScheduleDetailsViewModel";
 
     public String getAuthToken() {
         return authToken;
@@ -69,6 +77,9 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         filesList=new MutableLiveData<>();
         day=new MutableLiveData<>();
         attachmentVisibility=new MutableLiveData<Boolean>();
+        confirmButtonVisibility=new MutableLiveData<Boolean>();
+        appointmentStatus =new MutableLiveData<>();
+        confirmButtonVisibility.setValue(false);
         attachmentVisibility.setValue(false);
 
         //toolbarTitle =new MutableLiveData<>();
@@ -115,7 +126,13 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         return filesList;
     }
 
-   /* public MutableLiveData<String> getToolbarTitle() {
+
+
+    public MutableLiveData<String> getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    /* public MutableLiveData<String> getToolbarTitle() {
         return toolbarTitle;
     }*/
 
@@ -148,7 +165,11 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             addressOnMap.setValue(strAddress);
         }
+        Log.e(TAG, "prepareData: "+ appointmentResult.getConfirmByPatient());
 
+        confirmButtonVisibility.setValue(appointmentResult.getConfirmByPatient());
+
+        appointmentStatus.setValue(appointmentResult.getDoctor().getStatus());
         //getAttachments();
         /*ArrayList<Files> filesArrayList=new ArrayList<>();
         filesArrayList.addAll(Arrays.asList(appointmentResult.get()));
@@ -158,9 +179,11 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         if(filesList.getValue()!=null){
             if(filesList.getValue().size()>0){
                 attachmentVisibility.setValue(true);
+
             }
             else {
                 attachmentVisibility.setValue(false);
+                appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
             }
         }
 
@@ -175,16 +198,38 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
     @Override
     public void onSuccess(String url, String responseJson) {
+        Helper.setLog(TAG,url+"::" +responseJson);
+
         getLoading().setValue(false);
         if(url!=null && !url.isEmpty())
         {
             if(url.equalsIgnoreCase("GetAppointmentDetails")){
 
-                apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-                if(apptDetailResponse!=null)
+                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
-                    prepareData();
+                    List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
+                    if(visitNoteList!=null && visitNoteList.size()>0)
+                    {
+                        Helper.setLog("visitNoteList.size()",visitNoteList.size()+"");
+                    }
+
                 }
+            }
+            else if(url.equalsIgnoreCase("ConfirmAppointment")){
+                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                Log.e(TAG, "onSuccess: "+apptDetailResponse.getData().getAppointment().getConfirmByPatient() );
+                if(apptDetailResponse.getData().getAppointment().getConfirmByPatient()==true)
+                {
+                    appointmentStatus.setValue("Confirmed");
+
+                }else
+                {
+                   appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
+
+                }
+              confirmButtonVisibility.setValue(apptDetailResponse.getData().getAppointment().getConfirmByPatient());
+
             }
         }
 
@@ -198,5 +243,17 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     @Override
     public void onTokenRefersh(String responseJson) {
 
+    }
+
+    public  void confirmButtonOnClick(){
+
+        if(appointmentResult.getiD()!=null && appointmentResult.getiD()!=0)
+        {
+            getLoading().setValue(true);
+            ConfirmAppointment confirmAppointment=new ConfirmAppointment();
+            confirmAppointment.setID(appointmentResult.getiD());
+            confirmAppointment.setConfirmByPatient("true");
+            appointmentRepository.setConfirmAppointment(authToken,confirmAppointment,getToast(),apiResponce,"ConfirmAppointment");
+        }
     }
 }

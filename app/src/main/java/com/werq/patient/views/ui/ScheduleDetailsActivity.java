@@ -1,10 +1,12 @@
 package com.werq.patient.views.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.base.BaseActivity;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Controller.AppointmentController;
@@ -47,7 +51,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ScheduleDetailsActivity extends AppCompatActivity implements RecyclerViewClickListerner, BasicActivities {
+public class ScheduleDetailsActivity extends BaseActivity implements RecyclerViewClickListerner, BasicActivities {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
     @BindView(R.id.toolbar)
@@ -131,10 +135,12 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     private AppointmentResult appointmentResult;
     private String TAG="schedule_details";
     private  int appointmentId;
+    ProgressDialog progressDialog;
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_schedule_details);
 
@@ -163,6 +169,28 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
                 cvNoAttachments.setVisibility(View.VISIBLE);
             }
 
+        });
+
+        viewModel.confirmButtonVisibility.observe(this,aBoolean -> {
+            Log.e(TAG, "onResume: confirmButtonVisibility="+aBoolean );
+            if(aBoolean) {
+                btConfirm.setVisibility(View.GONE);
+            }else {
+                btConfirm.setVisibility(View.VISIBLE);
+            }
+        });
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean){
+                progressDialog.show();
+            }
+            else {
+                progressDialog.hide();
+            }
+        });
+
+        viewModel.appointmentStatus.observe(this,s -> {
+            setStatusButton();
         });
 
     }
@@ -228,6 +256,7 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         detailsBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
+        progressDialog=Helper.createProgressDialog(mContext);
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
 
@@ -297,5 +326,11 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     @Override
     public void onclick(int position) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        progressDialog.hide();
     }
 }
