@@ -309,14 +309,50 @@
                         app:layout_constraintTop_toBottomOf="@+id/cvNote"
                         android:visibility="@{scheduleDetailsViewModel.visibility==true?View.GONE:View.VISIBLE}"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvFiles"
+                    <LinearLayout
+                        android:id="@+id/llAttachments"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
+                        app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles" >
 
-                    </androidx.recyclerview.widget.RecyclerView>
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvNoAttachments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:layout_marginTop="@dimen/main_layout_padding"
+                            android:layout_marginBottom="@dimen/main_layout_padding"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/main_layout_padding"
+                                android:text="No Attachments" />
+
+
+
+
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFiles"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles"
+                            app:layout_constraintTop_toTopOf="@+id/cvNoAttachments">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </LinearLayout>
+
+
                     <TextView
                         android:id="@+id/tvLocation"
                         android:layout_width="wrap_content"
@@ -326,7 +362,8 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/textSize_note_size"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rvFiles" />
+                        app:layout_constraintTop_toBottomOf="@+id/llAttachments"
+                        />
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

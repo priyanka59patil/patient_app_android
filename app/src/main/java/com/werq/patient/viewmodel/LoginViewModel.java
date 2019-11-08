@@ -214,11 +214,18 @@ public class LoginViewModel extends BaseViewModel {
 
     }
 
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
+    }
+
     private void setPrefilledUsername() {
         try {
             String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_username());
+            String pwdAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_password());
                Helper.setLog("decrypUname", uNameAfterDecrypt);
             userName.setValue(uNameAfterDecrypt);
+            password.setValue(pwdAfterDecrypt);
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg
             e.printStackTrace();

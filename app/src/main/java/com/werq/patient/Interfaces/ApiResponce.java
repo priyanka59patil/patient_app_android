@@ -6,5 +6,7 @@ public interface ApiResponce {
 
     void onSuccess(String url, String responseJson);
     void onError(String url, String errorCode);
+    void onTokenRefersh(String responseJson);
+
 
 }

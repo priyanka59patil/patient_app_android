@@ -12,6 +12,7 @@ import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 
@@ -31,13 +32,12 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
                             addressOnMap;
     MutableLiveData<ArrayList<Files>> filesList;
 
-    MutableLiveData<Boolean> visibility;
-    public MutableLiveData<String> toolbarTitle;
+    public MutableLiveData<Boolean> attachmentVisibility;
+    //public MutableLiveData<String> toolbarTitle;
 
     String authToken;
     ApiResponce apiResponce=this;
     AppointmentRepository appointmentRepository;
-    int appointmentId;
     AppointmentDetailResponse apptDetailResponse;
 
     public String getAuthToken() {
@@ -46,12 +46,10 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
+        prepareData();
         getAppointmentData();
     }
+
 
     public ScheduleDetailsViewModel() {
 
@@ -70,9 +68,11 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         addressOnMap=new MutableLiveData<>();
         filesList=new MutableLiveData<>();
         day=new MutableLiveData<>();
-        visibility=new MutableLiveData<Boolean>();
-        toolbarTitle =new MutableLiveData<>();
-        //this.appointmentResult = appointmentResult;
+        attachmentVisibility=new MutableLiveData<Boolean>();
+        attachmentVisibility.setValue(false);
+
+        //toolbarTitle =new MutableLiveData<>();
+        this.appointmentResult = appointmentResult;
         this.controller=controller;
         appointmentRepository=new AppointmentRepository();
 
@@ -115,22 +115,20 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         return filesList;
     }
 
-    public MutableLiveData<String> getToolbarTitle() {
+   /* public MutableLiveData<String> getToolbarTitle() {
         return toolbarTitle;
-    }
+    }*/
 
     public MutableLiveData<Boolean> getVisibility() {
-        return visibility;
+        return attachmentVisibility;
     }
 
     private void prepareData()
     {
         //toolbar.setValue(data.getProvider().getFirst_name() + " " + data.getProvider().getLast_name());
 
-        this.appointmentResult=apptDetailResponse.getData().getAppointment();
-        String doctorfullName=appointmentResult.getDoctor().getFirstName() + " " + appointmentResult.getDoctor().getLastName();
-        toolbarTitle.setValue(doctorfullName);
-        fullUserName.setValue(doctorfullName);
+        //this.appointmentResult=apptDetailResponse.getData().getAppointment();
+        fullUserName.setValue(appointmentResult.getDoctor().getFirstName() + " " + appointmentResult.getDoctor().getLastName());
         speciality.setValue(appointmentResult.getDoctor().getSpeciality().getName());
 
         try {
@@ -142,8 +140,13 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             e.printStackTrace();
         }
         if (this.appointmentResult.getLocation() != null) {
-            address.setValue(appointmentResult.getLocation().getOrganizationName());
-            addressOnMap.setValue(appointmentResult.getLocation().getOrganizationName());
+
+            Location location=appointmentResult.getLocation();
+            String strAddress =location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
+                    +" "+location.getPostalcode()+" "+ location.getPostalcode()+""+location.getCountry();
+            address.setValue(strAddress);
+
+            addressOnMap.setValue(strAddress);
         }
 
         //getAttachments();
@@ -151,12 +154,15 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         filesArrayList.addAll(Arrays.asList(appointmentResult.get()));
         filesList.setValue(filesArrayList);
 
-        if(filesArrayList.size()>0){
-            visibility.setValue(true);
+        */
+        if(filesList.getValue()!=null){
+            if(filesList.getValue().size()>0){
+                attachmentVisibility.setValue(true);
+            }
+            else {
+                attachmentVisibility.setValue(false);
+            }
         }
-        else {
-            visibility.setValue(false);
-        }*/
 
         //controller.checkFilesSize(files, basicActivities);
        // status.setValue();
@@ -164,7 +170,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
     private void getAppointmentData() {
         getLoading().setValue(true);
-        appointmentRepository.getAppointmentDetails(authToken,appointmentId+"",getToast(),apiResponce,"GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(authToken,appointmentResult.getiD(),getToast(),apiResponce,"GetAppointmentDetails");
     }
 
     @Override
@@ -187,5 +193,10 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     @Override
     public void onError(String url, String errorCode) {
         getLoading().setValue(false);
+    }
+
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
     }
 }

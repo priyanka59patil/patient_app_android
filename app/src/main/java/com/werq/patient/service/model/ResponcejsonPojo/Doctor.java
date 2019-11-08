@@ -12,7 +12,7 @@ public class Doctor implements Serializable
 {
 
     @SerializedName("ID")
-    private Integer iD;
+    private String iD;
     @SerializedName("Status")
     private String status;
     @SerializedName("FirstName")
@@ -20,7 +20,7 @@ public class Doctor implements Serializable
     @SerializedName("LastName")
     private String lastName;
     @SerializedName("NPINumber")
-    private Integer nPINumber;
+    private String nPINumber;
     @SerializedName("IsDeleted")
     private Boolean isDeleted;
     @SerializedName("ContactInfo")
@@ -31,12 +31,20 @@ public class Doctor implements Serializable
     public Doctor() {
     }
 
-    public Integer getID() {
+    public String getiD() {
         return iD;
     }
 
-    public void setID(Integer iD) {
+    public void setiD(String iD) {
         this.iD = iD;
+    }
+
+    public String getnPINumber() {
+        return nPINumber;
+    }
+
+    public void setnPINumber(String nPINumber) {
+        this.nPINumber = nPINumber;
     }
 
     public String getStatus() {
@@ -63,13 +71,6 @@ public class Doctor implements Serializable
         this.lastName = lastName;
     }
 
-    public Integer getNPINumber() {
-        return nPINumber;
-    }
-
-    public void setNPINumber(Integer nPINumber) {
-        this.nPINumber = nPINumber;
-    }
 
     public Boolean getIsDeleted() {
         return isDeleted;

@@ -45,6 +45,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     boolean loading;
     private int page=0;
     String authToken;
+    String refreshTokenId;
     ApiResponce apiResponce=this;
 
     public TabAppoinmentViewModel(boolean isFromUpcoming, Context context) {
@@ -156,7 +157,12 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         getLoading().setValue(false);
     }
 
-   /* public void onScrollDown(int childCount,int itemCount,int firstVisibleItemPosition){
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
+    }
+
+    /* public void onScrollDown(int childCount,int itemCount,int firstVisibleItemPosition){
 
        *//* visibleItemCount = recyclerView.getChildCount();
         totalItemCount = recyclerView.getAdapter().getItemCount();
@@ -205,6 +211,14 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public String getAuthToken() {
         return authToken;
+    }
+
+    public String getRefreshTokenId() {
+        return refreshTokenId;
+    }
+
+    public void setRefreshTokenId(String refreshTokenId) {
+        this.refreshTokenId = refreshTokenId;
     }
 
     public void setAuthToken(String authToken) {

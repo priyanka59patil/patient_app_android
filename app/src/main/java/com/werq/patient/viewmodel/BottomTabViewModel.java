@@ -91,4 +91,9 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public void onError(String url, String errorCode) {
 
     }
+
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
+    }
 }

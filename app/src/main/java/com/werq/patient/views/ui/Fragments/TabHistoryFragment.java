@@ -90,8 +90,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         Helper.setLog(TAG,listAppointments.get(position).toString());
         Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
         intent.putExtra("IsFromUpcommming", true);
-        intent.putExtra("AppointmentData",listAppointments.get(position).getID());
+        intent.putExtra("AppointmentData",listAppointments.get(position));
         startActivity(intent);
+
     }
 
     @Override
@@ -116,13 +117,6 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             }
         });
 
-
-       /* viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean !=null && aBoolean)
-                loadingView.setVisibility(View.VISIBLE);
-            else
-                loadingView.setVisibility(View.INVISIBLE);
-        });*/
 
 
     }

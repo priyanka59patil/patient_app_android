@@ -510,4 +510,9 @@ public class SignUpViewModel extends BaseViewModel {
     public void onError(String url, String errorCode) {
         Helper.setLog("SignUpVM onError","signUp failed");
     }
+
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
+    }
 }

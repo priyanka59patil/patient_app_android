@@ -35,4 +35,11 @@ public class LoginRepository {
 
     }
 
+    public void refreshAuthToken(String refreshTokenId, MutableLiveData<String> toast, ApiResponce apiResponce,String url){
+        Helper.setLog("beforecall refreshTokenId", refreshTokenId);
+
+        Call<Object>  call=RetrofitClient.getRetrofit().refreshAuthToken(refreshTokenId);
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+    }
+
 }

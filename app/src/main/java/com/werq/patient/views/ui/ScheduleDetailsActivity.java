@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,6 +86,8 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     View line;
     @BindView(R.id.cardView)
     CardView cardView;
+    @BindView(R.id.cvNoAttachments)
+    CardView cvNoAttachments;
     @BindView(R.id.tvTextNote)
     TextView tvTextNote;
     @BindView(R.id.cvNote)
@@ -137,7 +141,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         initializeVariables();
 
         layoutScheduleView.requestFocus();
-
         //getIntentData();
 
     }
@@ -148,6 +151,19 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     @Override
     protected void onResume() {
         super.onResume();
+
+        viewModel.attachmentVisibility.observe(this, aBoolean -> {
+            if(aBoolean)
+            {
+                rvFiles.setVisibility(View.VISIBLE);
+                cvNoAttachments.setVisibility(View.GONE);
+            }
+            else {
+                rvFiles.setVisibility(View.GONE);
+                cvNoAttachments.setVisibility(View.VISIBLE);
+            }
+
+        });
 
     }
 
@@ -176,14 +192,14 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
 
     @Override
     public void setToolbar() {
-        viewModel.toolbarTitle.observe(this, s -> {
+       /* viewModel.toolbarTitle.observe(this, s -> {
             if(s!=null && !s.isEmpty())
             {
                 Helper.setToolbarwithCross(getSupportActionBar(), s);
 
             }
-        });
-       //Helper.setToolbarwithCross(getSupportActionBar(), appointmentResult.getDoctor().getFirstName()+" "+appointmentResult.getDoctor().getLastName());
+        });*/
+       Helper.setToolbarwithCross(getSupportActionBar(), appointmentResult.getDoctor().getFirstName()+" "+appointmentResult.getDoctor().getLastName());
 
     }
 
@@ -223,7 +239,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
         detailsBinding.setScheduleDetailsViewModel(viewModel);
 
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setAppointmentId(appointmentId);
         recyclerViewClickListerner = this::onclick;
         files = new ArrayList<>();
         setView(appointmentResult);
@@ -264,7 +279,6 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
             tvAddressonMap.setText(this.data.getProvider().getOffice().toString());
         }
 
-
         files.addAll(Arrays.asList(this.data.getFiles()));
         controller.checkFilesSize(files, basicActivities);*/
 
@@ -274,9 +288,8 @@ public class ScheduleDetailsActivity extends AppCompatActivity implements Recycl
     public void getIntentData() {
 
             isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
-            appointmentId = getIntent().getIntExtra("AppointmentData",0);
-
-             Helper.setLog(TAG,appointmentId+"");
+            appointmentResult = (AppointmentResult) getIntent().getSerializableExtra("AppointmentData");
+            Helper.setLog(TAG,appointmentId+"-:"+appointmentResult.toString());
 
     }
 

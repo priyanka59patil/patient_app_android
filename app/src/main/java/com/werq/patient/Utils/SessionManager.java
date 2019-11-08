@@ -104,6 +104,10 @@ public class SessionManager {
         return pref.getString(token, "");
     }
 
+    public String getRefreshTokenId() {
+        return pref.getString(idToken, ""); }
+
+
     public String getRem_password() {
         return userPref.getString(rem_password, "");
     }
@@ -112,13 +116,6 @@ public class SessionManager {
         return userPref.getBoolean(REMEMBER_PASSWORD, false);
     }
 
-    public static String getUserid() {
-        return userid;
-    }
-
-    public static String getUsername() {
-        return username;
-    }
 
 
 

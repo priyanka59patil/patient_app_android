@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.werq.patient.Interfaces.ApiInterface;
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.Interfaces.RefreshTokenStatus;
 import com.werq.patient.service.model.ResponeError.ErrorData;
 
 import org.json.JSONException;
@@ -31,12 +32,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class RetrofitClient {
+public class RetrofitClient  {
     static String TAG="RetrofitClient";
 
     public static Retrofit retrofit;
     public static String baseUrl="https://patient-dev.werq.com/api/";
     private static ApiInterface apiInterface;
+    public static Call<Object> callApi;
+    public static String urlApi;
+
+
 
 
     final static OkHttpClient okHttpClent = new OkHttpClient.Builder().addInterceptor(new Interceptor() {
@@ -99,7 +104,107 @@ public class RetrofitClient {
     }
 
     public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce,
-                                 MutableLiveData<String> mToast/*,String refreshTocken,long timestamp*/){
+                                 MutableLiveData<String> mToast,String refreshTokenId,long timestamp){
+
+
+        if (Helper.isTimestampExpired(timestamp)){
+            callApi=call;
+            urlApi=url;
+
+            Call<Object> refereshTkencall=getRetrofit().refreshAuthToken(refreshTokenId);
+
+            enqueuecall(refereshTkencall,"refreshToken",apiResponce,mToast);
+        }
+        else {
+            enqueuecall(call,url,apiResponce,mToast);
+
+        }
+
+
+
+
+    }
+
+    private static void enqueuecall(Call<Object> call, String url, ApiResponce apiResponce,
+                                    MutableLiveData<String> mToast) {
+
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {
+                Helper.setLog(TAG,"Responce code :- "+response.code());
+                String json =Helper.getGsonInstance().toJson(response.body());
+                Helper.setLog(TAG,"json :- "+json);
+                Helper.setLog(TAG,"url :- "+url);
+                String errorMessage = null;
+                if (response.errorBody() != null) {
+
+                    Converter<ResponseBody, ErrorData> errorConvertor =
+                            RetrofitClient.getClientOnly().responseBodyConverter(ErrorData.class, new Annotation[0]);
+                    try {
+                        ErrorData errorData = errorConvertor.convert(response.errorBody());
+                        Log.e(TAG, "jObjError: "+errorData.toString() );
+                        errorMessage=errorData.getError().getMessage();
+                    }
+                    catch (IOException e) {
+                        Log.e(TAG, "IOException: "+e.getMessage() );
+                    }
+                    catch (Exception e){
+                        Log.e(TAG, "Exception: "+e.getMessage() );
+                    }
+
+
+                }
+
+                switch (response.code()){
+
+                    case 200:
+                        if(url.equals("refreshToken")){
+                            apiResponce.onTokenRefersh(json);
+                            enqueuecall(callApi,urlApi,apiResponce,mToast);
+
+                        }
+                        else {
+                            apiResponce.onSuccess(url,json);
+                        }
+
+
+                        break;
+
+                    case 400:
+                        if(response.errorBody()!=null && errorMessage!=null)
+                        {
+                            Helper.setLog(TAG,"json error :- "+errorMessage);
+                            mToast.setValue(errorMessage);
+                        }
+                        apiResponce.onError(url,"400");
+                        break;
+
+                    case 404:
+                        mToast.setValue("Server Not Found");
+                        break;
+
+                    default:
+                        mToast.setValue("Something went wrong ");
+                        break;
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    public static   void callApi(Call<Object> call, String url, ApiResponce apiResponce,
+                                 MutableLiveData<String> mToast/*,String refreshTokenId,long timestamp*/){
+
 
 
         call.enqueue(new Callback<Object>() {
@@ -164,6 +269,7 @@ public class RetrofitClient {
             }
         });
     }
+
 
 
 }

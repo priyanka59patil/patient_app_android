@@ -11,16 +11,16 @@ public class AppointmentResult implements Serializable
 {
 
     @SerializedName("ID")
-    private Integer iD;
+    private String iD;
 
     @SerializedName("PatientId")
-    private Integer patientId;
+    private String patientId;
 
     @SerializedName("DoctorId")
-    private Integer doctorId;
+    private String doctorId;
 
     @SerializedName("LocationId")
-    private Integer locationId;
+    private String locationId;
 
     @SerializedName("AppintmentDate")
     private String appintmentDate;
@@ -41,35 +41,35 @@ public class AppointmentResult implements Serializable
     public AppointmentResult() {
     }
 
-    public Integer getID() {
+    public String getiD() {
         return iD;
     }
 
-    public void setID(Integer iD) {
+    public void setiD(String iD) {
         this.iD = iD;
     }
 
-    public Integer getPatientId() {
+    public String getPatientId() {
         return patientId;
     }
 
-    public void setPatientId(Integer patientId) {
+    public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
 
-    public Integer getDoctorId() {
+    public String getDoctorId() {
         return doctorId;
     }
 
-    public void setDoctorId(Integer doctorId) {
+    public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
     }
 
-    public Integer getLocationId() {
+    public String getLocationId() {
         return locationId;
     }
 
-    public void setLocationId(Integer locationId) {
+    public void setLocationId(String locationId) {
         this.locationId = locationId;
     }
 

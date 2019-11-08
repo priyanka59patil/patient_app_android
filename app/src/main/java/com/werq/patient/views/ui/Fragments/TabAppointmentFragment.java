@@ -112,6 +112,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         mContext = getActivity();
             viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true,mContext)).get(TabAppoinmentViewModel.class);
             viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+            viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
 
             ButterKnife.bind(this, view);
             initializeVariables();
@@ -148,13 +149,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         });
 
 
-       /* viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean !=null && aBoolean)
-                loadingView.setVisibility(View.VISIBLE);
-            else
-                loadingView.setVisibility(View.INVISIBLE);
-        });
-*/
+
         /*rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -187,7 +182,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         Helper.setLog(TAG,listAppointments.get(position).toString());
         Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
         intent.putExtra("IsFromUpcommming", true);
-        intent.putExtra("AppointmentData",listAppointments.get(position).getID());
+        intent.putExtra("AppointmentData",listAppointments.get(position));
         startActivity(intent);
 
     }

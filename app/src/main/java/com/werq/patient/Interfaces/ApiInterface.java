@@ -37,6 +37,8 @@ public interface ApiInterface {
     Call<Object> getAppointmentDetails(@Header("Authorization") String authToken,
                                        @Path("apppointmentId") String appointmentId);
 
+    @POST("")
+    Call<Object> refreshAuthToken(@Header("RefreshToken") String refreshTokenId);
 
 }
 

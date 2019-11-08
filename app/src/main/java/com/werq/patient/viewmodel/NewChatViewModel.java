@@ -19,4 +19,9 @@ public class NewChatViewModel extends BaseViewModel {
     public void onError(String url, String errorCode) {
 
     }
+
+    @Override
+    public void onTokenRefersh(String responseJson) {
+
+    }
 }
