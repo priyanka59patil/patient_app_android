@@ -26,6 +26,9 @@ public class Doctor implements Serializable
 
     @SerializedName("ProfilePhoto")
     private String profilePhoto;
+    @SerializedName("AboutMe")
+    @Expose
+    private String aboutMe;
 
     @SerializedName("NPINumber")
     private String nPINumber;
@@ -120,6 +123,14 @@ public class Doctor implements Serializable
         this.profilePhoto = profilePhoto;
     }
 
+    public String getAboutMe() {
+        return aboutMe;
+    }
+
+    public void setAboutMe(String aboutMe) {
+        this.aboutMe = aboutMe;
+    }
+
     @Override
     public String toString() {
         return "Doctor{" +
@@ -129,6 +140,7 @@ public class Doctor implements Serializable
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePhoto='" + profilePhoto + '\'' +
+                ", aboutMe='" + aboutMe + '\'' +
                 ", nPINumber='" + nPINumber + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", contactInfo=" + contactInfo +

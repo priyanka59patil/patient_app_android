@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.viewmodel.DoctorTeamViewModel;
@@ -45,6 +46,7 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
     RecyclerViewClickListerner recyclerViewClickListerner;
     DoctorTeamViewModel viewModel;
     ArrayList<DoctorTeamResult> teamList;
+    private String TAG="DoctorTeamFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -112,17 +114,19 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
     @Override
     public void onclick(int position) {
         if(position==3){
-            openProfileDoctorActivity(true);
+            openProfileDoctorActivity(true, position);
         }
         else {
-            openProfileDoctorActivity(false);
+            openProfileDoctorActivity(false, position);
         }
 
 
     }
 
-    private void openProfileDoctorActivity(boolean isMessageDisabled) {
+    private void openProfileDoctorActivity(boolean isMessageDisabled,int position) {
+        Helper.setLog(TAG,teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1).toString());
         Intent intent=new Intent(mContext, ProfileDoctorActivity.class);
+        intent.putExtra("doctorData",teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1));
         intent.putExtra("isMessageDisabled",isMessageDisabled);
         startActivity(intent);
     }

@@ -52,7 +52,9 @@ public interface ApiInterface {
     Call<Object> getDoctorTeams(@Header("Authorization") String authToken,
                                         @Query("take") String take,
                                         @Query("skip") String skip);
-
+    @GET("Doctors/Details/{doctorId}")
+    Call<Object> getDoctorDetails(@Header("Authorization") String authToken,
+                                @Path("doctorId") int doctorId);
 }
 
 

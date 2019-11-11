@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -17,14 +18,26 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.werq.patient.BuildConfig;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityProfileDoctorBinding;
+import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
+import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
 import com.werq.patient.views.ui.Fragments.DoctorsListFragment;
 import com.werq.patient.views.ui.Fragments.PracticeFragment;
@@ -35,7 +48,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ProfileDoctorActivity extends AppCompatActivity implements BasicActivities {
+public class ProfileDoctorActivity extends BaseActivity implements BasicActivities {
 
 
     @BindView(R.id.ivUserProfile)
@@ -86,17 +99,30 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
     private Resources r;
     private int mPx;
     boolean isMessageDisabled;
-
+    Intent intent;
+    private  int doctorId;
+    ProgressDialog progressDialog;
+    Doctor doctorData;
+    ProfileDoctorViewModel profileDoctorViewModel;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_doctor);
+        //setContentView(R.layout.activity_profile_doctor);
+
+        ActivityProfileDoctorBinding activityProfileDoctorBinding= DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
+        activityProfileDoctorBinding.setLifecycleOwner(this);
+        mContext = this;
+        intent = getIntent();
+        progressDialog= Helper.createProgressDialog(mContext);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        initializeVariables();
         getIntentData();
         tvAbout.setTrimCollapsedText("Read More...");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
+        profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        profileDoctorViewModel.setDoctorId(doctorData.getiD());
 
         r = mContext.getResources();
         mPx = (int) TypedValue.applyDimension(
@@ -117,7 +143,7 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
 
                     tbuserimageview.setVisibility(View.VISIBLE);
                     collasbaleView.setVisibility(View.GONE);
-                    toolbarLayout.setTitle(getResources().getString(R.string.value_username));
+                    toolbarLayout.setTitle(profileDoctorViewModel.getDoctorName().getValue());
                     tabs.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
                     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
                     tabs.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -142,6 +168,46 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+        profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean){
+                progressDialog.show();
+            }
+            else {
+                progressDialog.hide();
+            }
+        });
+
+        profileDoctorViewModel.profileUrl.observe(this,s -> {
+
+            if(s!=null && !s.equals(""))
+            {
+                String url = null;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
+                Glide.with(mContext).load(url).apply(new RequestOptions()
+                        .placeholder(R.drawable.user_image_placeholder)
+                        .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(ivUserProfile);
+            }
+            else {
+                ivUserProfile.setImageResource(R.drawable.user_image_placeholder);
+            }
+        });
+
+        profileDoctorViewModel.doctorName.observe(this,s -> {
+            tvUsername.setText(s);
+        });
+        profileDoctorViewModel.doctorSpeciality.observe(this,s -> {
+            tvSpeciality.setText(s);
+        });
+
+        profileDoctorViewModel.about.observe(this,s -> {
+            tvAbout.setText(s);
+        });
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -153,6 +219,15 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getSupportFragmentManager());
+
+        /*DoctorsListFragment fra=new DoctorsListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("doctorDetailsResponse", profileDoctorViewModel.doctorDetailsResponse.getValue());
+        fra.setArguments(bundle);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment, fra);
+        transaction.commitNow();*/
+
         adapter.addFragment(new PracticeFragment(), getString(R.string.label_practice));
         adapter.addFragment(new DoctorsListFragment(), getString(R.string.label_doctorTEAM));
         viewpager.setAdapter(adapter);
@@ -162,7 +237,6 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
 
     @Override
     public void initializeVariables() {
-        mContext = this;
     }
 
     @Override
@@ -175,27 +249,36 @@ public class ProfileDoctorActivity extends AppCompatActivity implements BasicAct
 
     }
     public void addFragment(Fragment fra) {
+        /*Bundle bundle = new Bundle();
+        bundle.putSerializable("doctorDetailsResponse", profileDoctorViewModel.doctorDetailsResponse.getValue());
+        fra.setArguments(bundle);*/
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, fra);
         transaction.commitNow();
+
     }
+
 
     @Override
     public void getIntentData() {
-        Intent intent = getIntent();
-        isMessageDisabled = intent.getBooleanExtra("isMessageDisabled", false);
-        if (isMessageDisabled) {
-            layoutBtChat.setVisibility(View.GONE);
-            relTablayouts.setVisibility(View.GONE);
-            fragment.setVisibility(View.VISIBLE);
-            addFragment(new PracticeFragment());
-        } else {
-            fragment.setVisibility(View.GONE);
-            layoutBtChat.setVisibility(View.VISIBLE);
-            relTablayouts.setVisibility(View.VISIBLE);
-            setupViewPager(viewpager);
-            tabs.setupWithViewPager(viewpager);
+        if(intent!=null){
+            doctorData= (Doctor) intent.getSerializableExtra("doctorData");
+            Helper.setLog("doctorData",doctorData.toString());
+            isMessageDisabled = intent.getBooleanExtra("isMessageDisabled", false);
+            if (isMessageDisabled) {
+                layoutBtChat.setVisibility(View.GONE);
+                relTablayouts.setVisibility(View.GONE);
+                fragment.setVisibility(View.VISIBLE);
+                addFragment(new PracticeFragment());
+            } else {
+                fragment.setVisibility(View.GONE);
+                layoutBtChat.setVisibility(View.VISIBLE);
+                relTablayouts.setVisibility(View.VISIBLE);
+                setupViewPager(viewpager);
+                tabs.setupWithViewPager(viewpager);
+            }
         }
+
     }
 
     @Override

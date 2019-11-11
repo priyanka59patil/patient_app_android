@@ -24,6 +24,9 @@ public class Location implements Serializable
     @SerializedName("Address1")
     @Expose
     private String address1;
+    @SerializedName("Address2")
+    @Expose
+    private String address2;
     @SerializedName("City")
     @Expose
     private String city;
@@ -192,6 +195,14 @@ public class Location implements Serializable
         this.phoneNumber = phoneNumber;
     }
 
+    public String getAddress2() {
+        return address2;
+    }
+
+    public void setAddress2(String address2) {
+        this.address2 = address2;
+    }
+
     @Override
     public String toString() {
         return "Location{" +
@@ -199,6 +210,7 @@ public class Location implements Serializable
                 ", orgNpi='" + orgNpi + '\'' +
                 ", corpNpi='" + corpNpi + '\'' +
                 ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", postalcode='" + postalcode + '\'' +
