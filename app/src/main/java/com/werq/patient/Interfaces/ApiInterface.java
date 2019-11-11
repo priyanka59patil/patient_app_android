@@ -47,6 +47,12 @@ public interface ApiInterface {
                                        @Header("Content-Type") String contentType,
                                        @Body ConfirmAppointment confirmAppointment);
 
+
+    @GET("Doctors/Team")
+    Call<Object> getDoctorTeams(@Header("Authorization") String authToken,
+                                        @Query("take") String take,
+                                        @Query("skip") String skip);
+
 }
 
 

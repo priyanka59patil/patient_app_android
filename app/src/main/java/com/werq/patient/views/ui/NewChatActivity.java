@@ -60,7 +60,7 @@ public class NewChatActivity extends BaseActivity implements RecyclerViewClickLi
     }
 
     private void setToolbar() {
-        Helper.setToolbarwithBack(getSupportActionBar(),"New Chat");
+        //Helper.setToolbarwithBack(getSupportActionBar(),"New Chat");
     }
 
     private void setNewChatsList() {

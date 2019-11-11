@@ -36,9 +36,34 @@ android {
         checkReleaseBuilds false
     }
     buildTypes {
-        release {
+        /*release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }*/
+        debug   {
+
+            //resValue "string", "app_name", "Patient-Dev"
+            buildConfigField "String", "app_version", "\"1.1\""
+
+            buildConfigField "String", "s3BucketName", "\"dev-werq-com-ugc-private\""
+            buildConfigField "String", "s3BucketNameUserProfileDelete", "\"dev-werq-com-user-profile/\""
+            buildConfigField "String", "s3BucketNameUserProfileUpload", "\"dev-werq-com-user-profile\""
+
+
+            buildConfigField "String", "s3BucketNameUserProfile", "\"dev-werq-com-user-profile/resized/\""
+            buildConfigField "String", "profileBucketName", "\"dev-werq-com-user-profile\""
+
+            //debug build urls
+            buildConfigField "String", "baseUrl", "\"https://dev.werq.com/\""
+
+            //minifyEnabled true
+            //shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".dev"
+
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyA0F_mzmchYXl7AOkFqbzqSV1Lnqy1q6Xo"]
+
+            //signingConfig signingConfigs.debug
         }
     }
     compileOptions {
@@ -132,6 +157,9 @@ implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 
     api 'com.google.dagger:dagger:2.24'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.24'
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
 
 

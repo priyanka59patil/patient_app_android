@@ -153,7 +153,7 @@ public class SearchByNameActivity extends AppCompatActivity implements RecyclerV
         recyclerViewClickListerner = this;
 
         //adapters
-        doctorTeamAdapter = new DoctorTeamAdapter(mContext, true, recyclerViewClickListerner);
+      //  doctorTeamAdapter = new DoctorTeamAdapter(mContext, true, recyclerViewClickListerner);
     }
 
 

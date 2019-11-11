@@ -160,7 +160,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             Location location=appointmentResult.getLocation();
             String strAddress =location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
-                    +" "+location.getPostalcode()+" "+ location.getPostalcode()+""+location.getCountry();
+                    +" "+location.getState()+" "+ location.getPostalcode()+""+location.getCountry();
             address.setValue(strAddress);
 
             addressOnMap.setValue(strAddress);

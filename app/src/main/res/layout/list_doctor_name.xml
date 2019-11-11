@@ -23,7 +23,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
-            android:id="@+id/tvTeamName"
+            android:id="@+id/tvPracticeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rvUserProfiles"
@@ -32,7 +32,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/textheader15dp" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/tvPracticeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:layout_marginTop="@dimen/margin_top_doctorname"
             android:textSize="@dimen/textnormal12dp"
             android:textColor="@color/color_text"
-            android:text="Guha Dentistry practice" />
+            android:text="Guha Dentistry practice" />-->
 
         <TextView
             android:id="@+id/tvAddress"
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/margin_top_doctorname"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/btAdd"
-           android:gravity="center_vertical"
+            android:gravity="center_vertical"
             android:drawableLeft="@drawable/ic_location_on_blue_24dp"
             android:drawablePadding="@dimen/drawable_padding"
             android:textSize="@dimen/textnormal12dp"

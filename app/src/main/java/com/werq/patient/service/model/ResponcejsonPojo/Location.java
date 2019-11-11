@@ -54,6 +54,11 @@ public class Location implements Serializable
     @SerializedName("OrganizationName")
     @Expose
     private String organizationName;
+
+    @SerializedName("PhoneNumber")
+    @Expose
+    private String phoneNumber;
+
     public Location() {
     }
 
@@ -179,12 +184,20 @@ public class Location implements Serializable
         this.latitude = latitude;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "Location{" +
                 "iD=" + iD +
-                ", orgNpi=" + orgNpi +
-                ", corpNpi=" + corpNpi +
+                ", orgNpi='" + orgNpi + '\'' +
+                ", corpNpi='" + corpNpi + '\'' +
                 ", address1='" + address1 + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
@@ -193,11 +206,10 @@ public class Location implements Serializable
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 ", isDeleted=" + isDeleted +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
                 ", organizationName='" + organizationName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
-
-
 }

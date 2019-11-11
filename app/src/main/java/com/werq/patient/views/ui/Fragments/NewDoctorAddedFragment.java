@@ -62,7 +62,7 @@ public class NewDoctorAddedFragment extends Fragment {
         mContext=getActivity();
 
         //adapters
-        stackImageView = new StackImagesAdapter(mContext, setImageResources());
+        //stackImageView = new StackImagesAdapter(mContext, setImageResources());
 
     }
 
