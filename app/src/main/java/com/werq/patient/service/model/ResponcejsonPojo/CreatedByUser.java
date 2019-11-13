@@ -17,8 +17,19 @@ public class CreatedByUser implements Serializable
     @SerializedName("FirstName")
     private String firstName;
 
+    @SerializedName("MiddleName")
+    @Expose
+    private String middleName;
+
     @SerializedName("LastName")
     private String lastName;
+
+    @SerializedName("ProfilePhoto")
+    @Expose
+    private String profilePhoto;
+    @SerializedName("NPINumber")
+    @Expose
+    private Integer nPINumber;
 
     @SerializedName("IsDeleted")
     private Boolean isDeleted;
@@ -63,13 +74,40 @@ public class CreatedByUser implements Serializable
         this.isDeleted = isDeleted;
     }
 
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getProfilePhoto() {
+        return profilePhoto;
+    }
+
+    public void setProfilePhoto(String profilePhoto) {
+        this.profilePhoto = profilePhoto;
+    }
+
+    public Integer getnPINumber() {
+        return nPINumber;
+    }
+
+    public void setnPINumber(Integer nPINumber) {
+        this.nPINumber = nPINumber;
+    }
+
     @Override
     public String toString() {
         return "CreatedByUser{" +
                 "iD=" + iD +
                 ", status='" + status + '\'' +
                 ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", profilePhoto='" + profilePhoto + '\'' +
+                ", nPINumber=" + nPINumber +
                 ", isDeleted=" + isDeleted +
                 '}';
     }

@@ -55,6 +55,12 @@ public interface ApiInterface {
     @GET("Doctors/Details/{doctorId}")
     Call<Object> getDoctorDetails(@Header("Authorization") String authToken,
                                 @Path("doctorId") int doctorId);
+
+    @GET("Attachments")
+    Call<Object> getAttachments(@Header("Authorization") String authToken,
+                                @Query("doctors") String doctors,
+                                @Query("take") String take,
+                                @Query("skip") String skip);
 }
 
 

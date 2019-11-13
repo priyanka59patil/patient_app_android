@@ -64,6 +64,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
                 return true;
             case R.id.profile:
+                openFrag.setValue("profile");
                 Log.e(TAG, "profile: " );
                 /*ProfileFragment profileFragment = new ProfileFragment();
                 addFragment(profileFragment);
@@ -72,6 +73,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
                 return true;
             case R.id.folder:
+                openFrag.setValue("folder");
                 Log.e(TAG, "folder: " );
                 /*Helper.setToolbar(getSupportActionBar(), "Files");
                 FilesFragment filesFragment = new FilesFragment();

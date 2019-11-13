@@ -1,51 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.ui.Fragments.FilesFragment"
-    android:background="@color/colorLightGreyBackground"
-    android:padding="@dimen/main_layout_padding"
-    >
+<layout>
+    <data>
+        <variable
+            name="attachmentViewModel"
+            type="com.werq.patient.viewmodel.AttachmentViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/tvFilterDoctors"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:textStyle="bold"
-        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/colorPrimary"
-        android:text="All Doctors"
-        android:textColor="@color/colorPrimary"
-        />
-
-    <TextView
-        android:id="@+id/tvFilterFiles"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/colorPrimary"
-        android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-        android:drawablePadding="5dp"
-        android:drawableTint="@color/colorPrimary"
-        android:text="All Files"
-    android:layout_toRightOf="@+id/tvFilterDoctors" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvFiles"
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-       android:layout_below="@+id/tvFilterDoctors"
-        tools:layout_editor_absoluteX="8dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent"
+        tools:context=".views.ui.Fragments.FilesFragment"
+        android:background="@color/colorLightGreyBackground"
+        android:padding="@dimen/main_layout_padding"
+        >
 
+        <TextView
+            android:id="@+id/tvFilterDoctors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/colorPrimary"
+            android:text="All Doctors"
+            android:textColor="@color/colorPrimary"
+            />
 
+        <TextView
+            android:id="@+id/tvFilterFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/colorPrimary"
+            android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:drawablePadding="5dp"
+            android:drawableTint="@color/colorPrimary"
+            android:text="All Files"
+            android:layout_toRightOf="@+id/tvFilterDoctors" />
 
-</RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFiles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/tvFilterDoctors"
+            tools:layout_editor_absoluteX="8dp">
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tvNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="No Doctor Team"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+</layout>

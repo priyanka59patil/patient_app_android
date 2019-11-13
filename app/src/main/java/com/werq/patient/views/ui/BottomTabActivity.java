@@ -208,17 +208,20 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
                         break;
                     case "profile":
+                        title = "My Profile";
                         ProfileFragment profileFragment = new ProfileFragment();
                         addFragment(profileFragment);
                         Helper.setToolbar(getSupportActionBar(), "My Profile");
                         VisibleMenuItem(false, true, false);
 
                         break;
+
                     case "folder":
-                        Helper.setToolbar(getSupportActionBar(), "Files");
+                        title = "Files";
+                        Helper.setLog("folder","FilesFragment");
                         FilesFragment filesFragment = new FilesFragment();
                         addFragment(filesFragment);
-                        VisibleMenuItem(false, false, true);
+                        Helper.setToolbar(getSupportActionBar(), "Files");
 
                         break;
                 }

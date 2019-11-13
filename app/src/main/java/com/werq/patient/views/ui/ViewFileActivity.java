@@ -5,13 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.databinding.ActivityViewFileBinding;
+import com.werq.patient.databinding.FragmentFilesBinding;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.viewmodel.AttachmentViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +34,17 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
     private Context mContext;
 
+    @BindView(R.id.ivImageFileMain)
+    ImageView backgroundImage;
+    @BindView(R.id.ivImageFile)
+    ImageView foregroundImage;
+    @BindView(R.id.tvFileName)
+    TextView tvFileName;
+    @BindView(R.id.tvUserName)
+    TextView tvUsername;
+
+    AttachmentResult attachmentResult;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +52,36 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Helper.setToolbarwithCross(getSupportActionBar(),"");
+        getIntentData();
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(attachmentResult!=null)
+        {
+            Glide.with(mContext).load(attachmentResult.getResizeURL()).apply(new RequestOptions()
+                    .placeholder(R.drawable.ic_image_gray_24dp)
+                    .error(R.drawable.ic_image_gray_24dp)
+                    .skipMemoryCache(false)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(backgroundImage);
+
+            Glide.with(mContext).load(attachmentResult.getResizeURL()).apply(new RequestOptions()
+                    .placeholder(R.drawable.ic_image_gray_24dp)
+                    .error(R.drawable.ic_image_gray_24dp)
+                    .skipMemoryCache(false)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(foregroundImage);
+            tvFileName.setText(attachmentResult.getFileName());
+            tvUsername.setText(attachmentResult.getCreatedByUser().getFirstName()
+                    + " " + attachmentResult.getCreatedByUser().getMiddleName()
+                    + " " + attachmentResult.getCreatedByUser().getLastName());
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_forword, menu);
@@ -67,6 +117,9 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
     @Override
     public void getIntentData() {
+
+        attachmentResult= (AttachmentResult) getIntent().getSerializableExtra("attachmentResult");
+
 
     }
 

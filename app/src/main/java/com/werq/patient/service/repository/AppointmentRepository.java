@@ -64,4 +64,14 @@ public class AppointmentRepository  {
 
     }
 
+    public void  getAttachments(String authToken,String doctor, String take, String skip , MutableLiveData<String> toast,
+                                      ApiResponce apiResponce, String url){
+
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,take,skip);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
 }
