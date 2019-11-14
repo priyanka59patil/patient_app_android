@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.werq.patient.Factory.LoginVmProviderFactory;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.viewmodel.LoginViewModel;
 import com.werq.patient.R;
@@ -31,9 +33,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.progressBar)
+   /* @BindView(R.id.progressBar)
     ProgressBar progressBar;
-
+*/
     @BindView(R.id.swRememberMe)
     SwitchView swRememberMe;
 
@@ -41,6 +43,8 @@ public class LoginActivity extends BaseActivity {
 
     LoginViewModel loginViewModel;
     private ActivityLoginBinding activityLoginBinding;
+
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,7 +62,8 @@ public class LoginActivity extends BaseActivity {
         loginViewModel = ViewModelProviders.of(this,new LoginVmProviderFactory(mContext)).get(LoginViewModel.class);
         setViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
-
+        progressDialog=new ProgressDialog(mContext);
+        progressDialog.setMessage("Please wait");
         ButterKnife.bind(this);
         toolbar.setTitle("Log In");
         loginViewModel.setSessionManager( SessionManager.getSessionManager(mContext));
@@ -80,6 +85,17 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onChanged(Boolean aBoolean) {
                 swRememberMe.setChecked(aBoolean);
+            }
+        });
+
+        loginViewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
+            }
+            else {
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
             }
         });
 

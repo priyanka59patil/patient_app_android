@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,13 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentDoctorTeamBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
+import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.DoctorTeamViewModel;
 import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.views.ui.ProfileDoctorActivity;
@@ -29,7 +34,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickListerner {
+public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClickListerner {
 
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
@@ -44,9 +49,12 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
 
     //recyclerviewonclick
     RecyclerViewClickListerner recyclerViewClickListerner;
-    DoctorTeamViewModel viewModel;
+    BottomTabViewModel viewModel;
     ArrayList<DoctorTeamResult> teamList;
     private String TAG="DoctorTeamFragment";
+    FragmentDoctorTeamBinding fragmentDoctorTeamBinding;
+    ProgressDialog progressDialog;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +68,16 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctor_team, container, false);
         mContext = getActivity();
-        viewModel= ViewModelProviders.of(this).get(DoctorTeamViewModel.class);
+        if(fragmentDoctorTeamBinding==null){
+            fragmentDoctorTeamBinding= FragmentDoctorTeamBinding.bind(view);
+        }
+
+        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+        fragmentDoctorTeamBinding.setLifecycleOwner(this);
+        fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
+        progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this, view);
         intializeVariables();
         setRecyclerView();
@@ -91,6 +106,19 @@ public class DoctorTeamFragment extends Fragment  implements RecyclerViewClickLi
                 rvDoctorTeam.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
+        });
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
+            }
+            else {
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
+            }
+
         });
     }
 

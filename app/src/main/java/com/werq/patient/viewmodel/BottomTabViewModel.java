@@ -7,19 +7,56 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 
+import java.util.ArrayList;
+
+import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.internal.http2.ErrorCode;
 
 public class BottomTabViewModel extends BaseViewModel implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "BottomTabViewModel";
+    private PatientRepository patientRepository;
+    private CompositeDisposable disposable;
+
+    int visibleItemCount,totalItemCount,pastVisiblesItems;
+    private int listcount;
+    boolean loading;
+    private int page=0;
+    String authToken;
+    String refreshTokenId;
+    ApiResponce apiResponce=this;
+    private MutableLiveData<Boolean> rvVisibility;
+    private MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
+    public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
+    public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
+
     public  MutableLiveData<String> openFrag;
     public BottomTabViewModel() {
         super();
         openFrag=new MutableLiveData<>();
         openFrag.setValue("calendar");
+
+        patientRepository = new PatientRepository();
+        disposable = new CompositeDisposable();
+        this.patientRepository =new PatientRepository();
+
+
+        rvVisibility=new MutableLiveData<>();
+        teamList=new MutableLiveData<>();
+        listAttachments=new MutableLiveData<>();
+        listUpcommingAppointments=new MutableLiveData<>();
+
     }
 
     public MutableLiveData<String> getOpenFrag() {
@@ -33,69 +70,140 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
             case R.id.calendar:
                 Log.e(TAG, "calendar: " );
                 openFrag.setValue("calendar");
-                /*AppointmentFragment appointmentFragment = new AppointmentFragment();
-                addFragment(appointmentFragment);
-                if (add != null && setting != null && search != null) {
-                    Helper.setToolbar(getSupportActionBar(), "Appointments");
-                    VisibleMenuItem(false, false, true);
-
-                }*/
-
                 return true;
+
             case R.id.messages:
                 Log.e(TAG, "messages: " );
                 openFrag.setValue("messages");
-                /*title = "Chats";
-                setToolbarForbottom(title, true, false);
-                ChatFragments chatFragments = new ChatFragments();
-                addFragment(chatFragments);
-                VisibleMenuItem(true, false, false);*/
-
-
                 return true;
+
             case R.id.people:
                 openFrag.setValue("people");
                 Log.e(TAG, "people: " );
-               /* title = "My Doctor Teams";
-                setToolbarForbottom(title, true, false);
-                DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
-                addFragment(doctorTeamFragment);
-                VisibleMenuItem(true, false, false);*/
+               return true;
 
-                return true;
             case R.id.profile:
                 openFrag.setValue("profile");
                 Log.e(TAG, "profile: " );
-                /*ProfileFragment profileFragment = new ProfileFragment();
-                addFragment(profileFragment);
-                Helper.setToolbar(getSupportActionBar(), "My Profile");
-                VisibleMenuItem(false, true, false);*/
-
                 return true;
+
             case R.id.folder:
                 openFrag.setValue("folder");
                 Log.e(TAG, "folder: " );
-                /*Helper.setToolbar(getSupportActionBar(), "Files");
-                FilesFragment filesFragment = new FilesFragment();
-                addFragment(filesFragment);
-                VisibleMenuItem(false, false, true);*/
-
                 return true;
         }
         return false;
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+        fetchTeamList();
+
+        fetchAttachments();
+    }
+
+    public String getRefreshTokenId() {
+        return refreshTokenId;
+    }
+
+    public void setRefreshTokenId(String refreshTokenId) {
+        this.refreshTokenId = refreshTokenId;
+    }
+
+    public MutableLiveData<Boolean> getRvVisibility() {
+        return rvVisibility;
+    }
+
+
+    public void fetchTeamList(){
+
+        if(authToken!=null&& !authToken.isEmpty()){
+            Log.e(TAG, "authToken: "+authToken );
+
+            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
+                    getToast(),apiResponce,"DoctorTeam");
+        }
+    }
+
+    private void fetchAttachments() {
+        getLoading().setValue(true);
+
+        patientRepository.getAttachments(authToken,"",10+"",page*10+"",getToast(),apiResponce,"AllAttachments");
+    }
+
+
     @Override
     public void onSuccess(String url, String responseJson) {
+        Helper.setLog("responseJson",responseJson);
+
+        DoctorTeamResponse doctorTeamResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorTeamResponse.class);
+
+        getLoading().setValue(false);
+
+        if(url!=null && url.equals("DoctorTeam"))
+        {
+            listcount = doctorTeamResponse.getData().getCount();
+            ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
+            dataArrayList.addAll(doctorTeamResponse.getData().getResult());
+            teamList.setValue(dataArrayList);
+
+            if (teamList.getValue().size() > 0) {
+                rvVisibility.setValue(true);
+                //noVisitNote.setVisibility(View.GONE);
+
+            } else {
+                rvVisibility.setValue(false);
+            }
+        }
+        if(url!=null && url.equals("AllAttachments"))
+        {
+            AttachmentResponse attachmentResponse=Helper.getGsonInstance().fromJson(responseJson,AttachmentResponse.class);
+            listcount = attachmentResponse.getData().getCount();
+            ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
+            dataArrayList.addAll(attachmentResponse.getData().getResult());
+            listAttachments.setValue(dataArrayList);
+
+            if (listAttachments.getValue().size() > 0) {
+                rvVisibility.setValue(true);
+                //noVisitNote.setVisibility(View.GONE);
+
+            } else {
+                rvVisibility.setValue(false);
+            }
+        }
 
     }
+
     @Override
     public void onError(String url, String errorCode) {
-
+        getLoading().setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
+        getLoading().setValue(false);
+    }
 
+    public MutableLiveData<ArrayList<AttachmentResult>> getListAttachments() {
+        return listAttachments;
+    }
+
+    public MutableLiveData<ArrayList<DoctorTeamResult>> getTeamList() {
+        return teamList;
+    }
+
+
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        if (disposable != null) {
+            disposable.clear();
+            disposable = null;
+        }
     }
 }

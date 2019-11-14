@@ -11,6 +11,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentAppointmentBinding;
+import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
 import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.R;
@@ -20,7 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class AppointmentFragment extends Fragment {
+public class AppointmentFragment extends BaseFragment {
 
 
     @BindView(R.id.tabs)
@@ -29,7 +32,8 @@ public class AppointmentFragment extends Fragment {
     ViewPager viewpager;
     private PagerAdapter adapter;
     Unbinder unbinder;
-    BottomTabViewModel tabViewModel;
+    FragmentAppointmentBinding fragmentAppointmentBinding;
+    TabAppoinmentViewModel tabViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +46,9 @@ public class AppointmentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_appointment, container, false);
-
-            tabViewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+            fragmentAppointmentBinding= FragmentAppointmentBinding.bind(view);
+            fragmentAppointmentBinding.setLifecycleOwner(this);
+            tabViewModel= ViewModelProviders.of(this).get(TabAppoinmentViewModel.class);
             unbinder= ButterKnife.bind(this,view);
             setupViewPager(viewpager);
             tabs.setupWithViewPager(viewpager);

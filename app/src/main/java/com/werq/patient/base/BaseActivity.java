@@ -3,8 +3,10 @@ package com.werq.patient.base;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 
+import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.views.ui.BottomTabActivity;
 import com.werq.patient.views.ui.CreateAccountActivity;
@@ -25,8 +28,6 @@ public class BaseActivity extends AppCompatActivity {
     BaseViewModel baseViewModel;
     Context mContext;
 
-    ProgressDialog progressDialog;
-
 
     public void setViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
@@ -37,8 +38,6 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        progressDialog = new ProgressDialog(this);
-
 
 
         /*baseViewModel.getLoading().observe(this,aBoolean -> {
@@ -102,25 +101,11 @@ public class BaseActivity extends AppCompatActivity {
 
             });
 
-            baseViewModel.getLoading().observe(this,aBoolean -> {
-                if(aBoolean){
-                    /*  progressBar.setVisibility(View.VISIBLE);*/
-                    progressDialog.show();
-                }
-                else {
-                    /*  progressBar.setVisibility(View.GONE);*/
-                    progressDialog.hide();
-                }
-
-            });
 
         }
 
     }
 
-    public ProgressDialog getProgressDialog() {
-        return progressDialog;
-    }
 
     public void setToolbarTitle(Toolbar toolbar, String title) {
         setSupportActionBar(toolbar);

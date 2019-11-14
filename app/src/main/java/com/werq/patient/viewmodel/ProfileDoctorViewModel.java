@@ -8,6 +8,7 @@ import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
@@ -22,7 +23,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class ProfileDoctorViewModel extends BaseViewModel {
 
-    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
     private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
 
@@ -63,7 +64,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         getLoading().setValue(true);
         if(doctorId!=0){
-            doctorRepository.getDocterDetails(authToken,doctorId,getToast(),apiResponce,"DoctorDetails");
+            patientRepository.getDocterDetails(authToken,doctorId,getToast(),apiResponce,"DoctorDetails");
         }
     }
 
@@ -71,9 +72,9 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         Log.e("ProfileDoctorViewModel","init");
 
-        doctorRepository = new DoctorRepository();
+        patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
-        this.doctorRepository =new DoctorRepository();
+        this.patientRepository =new PatientRepository();
 
         doctorName=new MutableLiveData<>();
         doctorSpeciality=new MutableLiveData<>();

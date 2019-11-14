@@ -2,8 +2,8 @@
 <layout>
     <data>
         <variable
-            name="attachmentViewModel"
-            type="com.werq.patient.viewmodel.AttachmentViewModel" />
+            name="bottomTabViewModel"
+            type="com.werq.patient.viewmodel.BottomTabViewModel" />
     </data>
 
     <RelativeLayout

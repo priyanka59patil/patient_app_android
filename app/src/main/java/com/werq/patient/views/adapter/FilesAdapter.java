@@ -21,6 +21,7 @@ import com.werq.patient.BuildConfig;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.AttachmentViewModel;
+import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.ChatInfoViewModel;
 import com.werq.patient.views.ui.ViewFileActivity;
 import com.werq.patient.Interfaces.AppointmentInterface;
@@ -45,7 +46,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
     RecyclerViewClickListerner recyclerViewClickListerner;
     boolean fileTab = false;
     AppointmentInterface controller;
-    AttachmentViewModel viewModel;
 
    /* public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner) {
         this.mContext = mContext;
@@ -59,13 +59,12 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
                         ArrayList<AttachmentResult> attachmentResultArrayList,
                         RecyclerViewClickListerner recyclerViewClickListerner,
                         boolean fileTab,
-                        AttachmentViewModel viewModel,
+                        BottomTabViewModel viewModel,
                         LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.attachmentResultArrayList = attachmentResultArrayList;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.fileTab = fileTab;
-        this.viewModel=viewModel;
 
         viewModel.getListAttachments().observe(lifecycleOwner,attachmentResultArrayList1 -> {
             if(attachmentResultArrayList1!=null)
@@ -146,8 +145,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
 
             holder.tvprefix.setText("From :");
 
-            Helper.setLog("FileType",result.getFileType());
-            Log.e( "onBindViewHolder: ", result.getFileUrl());
+           /* Helper.setLog("FileType",result.getFileType());
+            Log.e( "onBindViewHolder: ", result.getFileUrl());*/
             switch (result.getFileType()) {
                 case "image/png":
                     Glide.with(mContext).load(result.getFileUrl()).apply(new RequestOptions()

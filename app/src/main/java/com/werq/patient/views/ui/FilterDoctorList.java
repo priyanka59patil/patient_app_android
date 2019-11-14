@@ -9,8 +9,14 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.ActivityFilterDoctorListBinding;
+import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.views.adapter.FilterDoctorAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
@@ -22,7 +28,7 @@ import net.igenius.customcheckbox.CustomCheckBox;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilterDoctorList extends AppCompatActivity implements RecyclerViewClickListerner {
+public class FilterDoctorList extends BaseActivity implements RecyclerViewClickListerner {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -37,20 +43,27 @@ public class FilterDoctorList extends AppCompatActivity implements RecyclerViewC
     View view;
     @BindView(R.id.cbFilter)
     CustomCheckBox cbFilter;
+    ActivityFilterDoctorListBinding doctorListBinding;
+    BottomTabViewModel bottomTabViewModel;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter_doctor_list);
+        //setContentView(R.layout.activity_filter_doctor_list);
+        doctorListBinding = DataBindingUtil.setContentView(this,R.layout.activity_filter_doctor_list);
+        bottomTabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        doctorListBinding.setLifecycleOwner(this);
+        doctorListBinding.setBottomTabViewModel(bottomTabViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         inilializeVariables();
         setToolbar();
         setDoctorTeams();
 
-
-
+        bottomTabViewModel.getTeamList().observe(this,doctorTeamResults -> {
+            Helper.setLog("FilterDoctorList",doctorTeamResults.size()+"");
+        });
     }
 
     private void setDoctorTeams() {

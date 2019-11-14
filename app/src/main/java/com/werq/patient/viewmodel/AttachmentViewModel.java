@@ -94,7 +94,7 @@ public class AttachmentViewModel extends BaseViewModel {
     private void fetchAttachments() {
         getLoading().setValue(true);
 
-        appointmentRepository.getAttachments(authToken,"",10+"",page*10+"",getToast(),apiResponce,"AllAttachments");
+        //appointmentRepository.getAttachments(authToken,"",10+"",page*10+"",getToast(),apiResponce,"AllAttachments");
     }
 
     public String getRefreshTokenId() {

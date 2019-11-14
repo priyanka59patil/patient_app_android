@@ -15,6 +15,7 @@ public abstract class BaseViewModel extends ViewModel implements ApiResponce {
         mShowToast=new MutableLiveData<>();
         mNewActivity=new MutableLiveData<>();
         loading=new MutableLiveData<>();
+        //loading.setValue(false);
         repoLoadError=new MutableLiveData<>();
 
     }

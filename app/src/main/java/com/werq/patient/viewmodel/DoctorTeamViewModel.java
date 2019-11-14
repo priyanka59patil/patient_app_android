@@ -7,10 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
+import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
-import com.werq.patient.service.repository.AppointmentRepository;
-import com.werq.patient.service.repository.DoctorRepository;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class DoctorTeamViewModel  extends BaseViewModel {
 
-    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
     private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
 
@@ -33,9 +32,9 @@ public class DoctorTeamViewModel  extends BaseViewModel {
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
 
     public DoctorTeamViewModel() {
-        doctorRepository = new DoctorRepository();
+        patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
-        this.doctorRepository =new DoctorRepository();
+        this.patientRepository =new PatientRepository();
 
         teamList=new MutableLiveData<>();
         rvVisibility=new MutableLiveData<>();
@@ -71,7 +70,7 @@ public class DoctorTeamViewModel  extends BaseViewModel {
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
-            doctorRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
+            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
                     getToast(),apiResponce,"DoctorTeam");
         }
     }

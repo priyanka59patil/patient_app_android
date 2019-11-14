@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentTabHistoryBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
 import com.werq.patient.views.adapter.AppointmentAdapter;
@@ -52,15 +55,29 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     private AppointmentResponce data;
     TabAppoinmentViewModel viewModel;
     private String TAG="TabHistoryFragment";
+    ProgressDialog progressDialog;
+    FragmentTabHistoryBinding fragmentTabHistoryBinding;
+
+    /*@Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tab_history, container, false);
-        mContext = getActivity();
+
+        if(fragmentTabHistoryBinding== null){
+            fragmentTabHistoryBinding=FragmentTabHistoryBinding.bind(view);
+        }
+        fragmentTabHistoryBinding.setLifecycleOwner(this);
+        mContext = getContext();
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false,mContext)).get(TabAppoinmentViewModel.class);
+        fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
         ButterKnife.bind(this, view);
         initializeVariables();
         getData();
@@ -78,6 +95,8 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
         listAppointments = new ArrayList<>();
+        progressDialog=Helper.createProgressDialog(mContext);
+        //progressDialog.hide();
         adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
@@ -116,8 +135,16 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                 rvAppointmentList.setVisibility(View.GONE);
             }
         });
-
-
+        viewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
+            }
+            else {
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
+            }
+        });
 
     }
 

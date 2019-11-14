@@ -68,7 +68,7 @@ public class DoctorsListFragment extends BaseFragment {
         fragmentDoctorsListBinding.setLifecycleOwner(this);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
-        progressDialog=getProgressDialog();
+        progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this,view);
         initializeVariables();
 
@@ -76,11 +76,13 @@ public class DoctorsListFragment extends BaseFragment {
 
         viewModel.getLoading().observe(this,aBoolean -> {
 
-            if(aBoolean)
-            {
-                progressDialog.show();
-            }else {
-                progressDialog.hide();
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
+            }
+            else {
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
             }
 
         });

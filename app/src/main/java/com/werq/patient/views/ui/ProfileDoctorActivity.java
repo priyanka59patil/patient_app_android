@@ -125,6 +125,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         profileDoctorViewModel.setDoctorId(doctorData.getiD());
 
         r = mContext.getResources();
+
         mPx = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 20,
@@ -172,10 +173,12 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         super.onResume();
 
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean){
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
                 progressDialog.show();
             }
             else {
+                if(progressDialog.isShowing())
                 progressDialog.hide();
             }
         });

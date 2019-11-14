@@ -24,6 +24,7 @@ import com.werq.patient.databinding.FragmentFilesBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.AttachmentViewModel;
+import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.views.ui.FilterDoctorList;
 import com.werq.patient.views.ui.ViewFileActivity;
 import com.werq.patient.views.ui.ViewVisitNoteActivity;
@@ -71,7 +72,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     FilesInteface controller;
     BasicActivities basicActivities;
     FilesData filesData;
-    AttachmentViewModel viewModel;
+    BottomTabViewModel viewModel;
     FragmentFilesBinding fragmentFilesBinding;
     ProgressDialog progressDialog;
 
@@ -86,9 +87,9 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             fragmentFilesBinding= FragmentFilesBinding.bind(view);
         }
 
-        viewModel= ViewModelProviders.of(this).get(AttachmentViewModel.class);
+        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
         fragmentFilesBinding.setLifecycleOwner(this);
-        fragmentFilesBinding.setAttachmentViewModel(viewModel);
+        fragmentFilesBinding.setBottomTabViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
 
@@ -107,11 +108,19 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         super.onResume();
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean){
-                progressDialog.show();
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
             }
             else {
-                progressDialog.hide();
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
+            }
+        });
+
+        viewModel.getTeamList().observe(this,doctorTeamResults -> {
+            for (int i = 0; i <doctorTeamResults.size() ; i++) {
+                Helper.setLog("doctorTeamResults",doctorTeamResults.get(i).toString());
             }
         });
 

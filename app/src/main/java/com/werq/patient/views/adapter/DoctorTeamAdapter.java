@@ -18,6 +18,7 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
+import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.DoctorTeamViewModel;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
     public DoctorTeamAdapter(Context mContext, boolean fromSearchName,
                              RecyclerViewClickListerner recyclerViewClickListerner,
                              ArrayList<DoctorTeamResult> teamList,
-                             DoctorTeamViewModel viewModel,
+                             BottomTabViewModel viewModel,
                              LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.fromSearchName=fromSearchName;

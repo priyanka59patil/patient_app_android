@@ -9,25 +9,5 @@ import retrofit2.Call;
 
 public class DoctorRepository {
 
-    private String TAG="DoctorRepository";
 
-    public void  getDocterTeamAppoitment(String authToken, String take, String skip , MutableLiveData<String> toast,
-                                        ApiResponce apiResponce, String url){
-
-
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorTeams(authToken,take,skip);
-
-        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
-
-    }
-
-    public void  getDocterDetails(String authToken, int doctorId, MutableLiveData<String> toast,
-                                         ApiResponce apiResponce, String url){
-
-
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(authToken,doctorId);
-
-        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
-
-    }
 }

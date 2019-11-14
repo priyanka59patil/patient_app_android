@@ -48,12 +48,15 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     String refreshTokenId;
     ApiResponce apiResponce=this;
 
+    public TabAppoinmentViewModel(){
+        appointmentRepository = new AppointmentRepository();
+    }
+
     public TabAppoinmentViewModel(boolean isFromUpcoming, Context context) {
 
         appointmentRepository = new AppointmentRepository();
         disposable = new CompositeDisposable();
         this.isFromUpcoming=isFromUpcoming;
-        loading=true;
         rvVisibility=new MutableLiveData<>();
 
 
@@ -76,8 +79,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         this.rvVisibility = rvVisibility;
     }
 
-    /* private void fetchRepos() {
-        loading.setValue(true);
+     /*private void fetchRepos() {
+        getLoading().setValue(true);
         disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
                     @Override
@@ -93,8 +96,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                         loading.setValue(false);
                     }
                 }));
-    }*/
-
+    }
+*/
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -108,10 +111,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public void onSuccess(String url,String responseJson) {
 
         Helper.setLog("responseJson",responseJson);
-
+        getLoading().setValue(false);
         AppointmentResponse appointmentResponce=Helper.getGsonInstance().fromJson(responseJson,AppointmentResponse.class);
 
-        getLoading().setValue(false);
+
 
         if(url!=null && url.equals("UpcomingAppointment"))
         {
@@ -136,7 +139,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
             listAppointments.setValue(dataArrayList);
 
-           /* if (listAppointments.getValue().size() > 0) {
+            /*if (listAppointments.getValue().size() > 0) {
                 if (rvVisitList !=null) {
                     rvVisitList.setVisibility(View.VISIBLE);
                     noVisitNote.setVisibility(View.GONE);
@@ -159,7 +162,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     @Override
     public void onTokenRefersh(String responseJson) {
-
+        getLoading().setValue(false);
     }
 
     /* public void onScrollDown(int childCount,int itemCount,int firstVisibleItemPosition){

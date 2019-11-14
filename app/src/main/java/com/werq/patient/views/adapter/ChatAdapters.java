@@ -60,8 +60,8 @@ public class ChatAdapters extends RecyclerView.Adapter<ChatAdapters.ViewHolders>
         }
 
        // stackImageView = new StackImagesAdapter(mContext, setImageResources());
-        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUsers,stackImageView);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
+        //RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUsers,stackImageView);
+        //RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUsers);
         holder.cbFilter.setVisibility(View.GONE);
         if(isFromRecentChat){
             holder.tvTime.setVisibility(View.VISIBLE);

@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import com.werq.patient.Utils.Helper;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -23,7 +25,6 @@ public abstract class BaseFragment extends Fragment {
 
     BaseViewModel baseViewModel;
     Context mContext;
-    ProgressDialog progressDialog;
 
 
     public void setViewModel(BaseViewModel viewModel){
@@ -35,7 +36,6 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mContext=getContext();
-        progressDialog = new ProgressDialog(getActivity());
         /*baseViewModel.getToast().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
@@ -73,24 +73,20 @@ public abstract class BaseFragment extends Fragment {
                 }
             });
 
-            baseViewModel.getLoading().observe(this,aBoolean -> {
+            /*baseViewModel.getLoading().observe(this,aBoolean -> {
                 if(aBoolean){
-                    /*  progressBar.setVisibility(View.VISIBLE);*/
+                    *//*  progressBar.setVisibility(View.VISIBLE);*//*
                     progressDialog.show();
                 }
                 else {
-                    /*  progressBar.setVisibility(View.GONE);*/
+                    *//*  progressBar.setVisibility(View.GONE);*//*
                     progressDialog.hide();
                 }
 
-            });
+            });*/
 
         }
 
-    }
-
-    public ProgressDialog getProgressDialog() {
-        return progressDialog;
     }
 
 }

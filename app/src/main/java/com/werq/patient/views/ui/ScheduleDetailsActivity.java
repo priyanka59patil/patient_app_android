@@ -181,11 +181,13 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         });
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean){
-                progressDialog.show();
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
             }
             else {
-                progressDialog.hide();
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
             }
         });
 

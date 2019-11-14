@@ -47,7 +47,6 @@ public class LoginViewModel extends BaseViewModel {
         passwordError=new MutableLiveData<>();
         loginRepository=new LoginRepository();
         rememberMe=new MutableLiveData<>();
-
         Helper.setLog("context",context+"");
         /*sessionManager = new SessionManager(context);
         userRememberPref = new SessionManager(context, "");*/
