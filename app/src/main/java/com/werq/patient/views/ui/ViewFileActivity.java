@@ -6,20 +6,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.databinding.ActivityViewFileBinding;
 import com.werq.patient.databinding.FragmentFilesBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.AttachmentViewModel;
@@ -36,6 +39,9 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
     @BindView(R.id.ivImageFileMain)
     ImageView backgroundImage;
+
+    /*@BindView(R.id.rlViewFile)
+    RelativeLayout rlViewFile;*/
     @BindView(R.id.ivImageFile)
     ImageView foregroundImage;
     @BindView(R.id.tvFileName)
@@ -52,6 +58,7 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Helper.setToolbarwithCross(getSupportActionBar(),"");
+        initializeVariables();
         getIntentData();
 
     }
@@ -62,14 +69,18 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
         if(attachmentResult!=null)
         {
-            Glide.with(mContext).load(attachmentResult.getResizeURL()).apply(new RequestOptions()
+            Helper.setLog("ViewFileActivity",attachmentResult.getFileUrl());
+            Helper.setLog("ViewFileActivity",attachmentResult.getResizeURL());
+            Glide.with(mContext).load(attachmentResult.getFileUrl()).apply(new RequestOptions()
                     .placeholder(R.drawable.ic_image_gray_24dp)
                     .error(R.drawable.ic_image_gray_24dp)
                     .skipMemoryCache(false)
                     .diskCacheStrategy(DiskCacheStrategy.ALL))
                     .into(backgroundImage);
 
-            Glide.with(mContext).load(attachmentResult.getResizeURL()).apply(new RequestOptions()
+            backgroundImage.setAlpha(0.5f);
+
+            Glide.with(mContext).load(attachmentResult.getFileUrl()).apply(new RequestOptions()
                     .placeholder(R.drawable.ic_image_gray_24dp)
                     .error(R.drawable.ic_image_gray_24dp)
                     .skipMemoryCache(false)

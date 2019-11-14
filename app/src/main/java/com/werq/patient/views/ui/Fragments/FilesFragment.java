@@ -215,9 +215,9 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
             startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
         }
-        else {
+        /*else {
             mContext.startActivity(new Intent(mContext, ViewFileActivity.class));
-        }
+        }*/
 
        /* if(allFiles.get(position).getFileType().equals("visitNote")){
 
