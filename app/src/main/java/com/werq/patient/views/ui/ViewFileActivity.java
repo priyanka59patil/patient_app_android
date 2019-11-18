@@ -3,6 +3,7 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -69,8 +70,14 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
         if(attachmentResult!=null)
         {
-            Helper.setLog("ViewFileActivity",attachmentResult.getFileUrl());
-            Helper.setLog("ViewFileActivity",attachmentResult.getResizeURL());
+            try{
+                Helper.setLog("ViewFileActivity",attachmentResult.getFileUrl());
+                Helper.setLog("ViewFileActivity",attachmentResult.getResizeURL());
+            }
+            catch (Exception e)
+            {
+                Log.e("Exception: ", e.getMessage());
+            }
             Glide.with(mContext).load(attachmentResult.getFileUrl()).apply(new RequestOptions()
                     .placeholder(R.drawable.ic_image_gray_24dp)
                     .error(R.drawable.ic_image_gray_24dp)

@@ -1,114 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorLightGreyBackground"
-    android:padding="@dimen/main_layout_padding"
-    tools:context=".views.ui.Fragments.PracticeFragment"
-   >
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none"
-    android:fillViewport="true"
 
-    >
-    <androidx.constraintlayout.widget.ConstraintLayout
+<layout>
+    <data>
+        <variable
+            name="doctorProfileViewModel"
+            type="com.werq.patient.viewmodel.ProfileDoctorViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:descendantFocusability="blocksDescendants">
-
-        <TextView
-            android:id="@+id/tvtitlepractice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/value_practice_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textSize_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvpracticeabout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/value_practice_about"
-        android:background="@color/white"
-        android:padding="@dimen/padding_textview_practice"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvtitlepractice" />
-
-    <TextView
-        android:id="@+id/tvtittlePracticeLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/value_practice_Location"
-        android:textSize="@dimen/textSize_title"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvpracticeabout" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPracticeLocations"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvtittlePracticeLocation"></androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/tvtitleHospitleAffiliates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textSize_title"
-        android:text="@string/value_hospital_affairs"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvPracticeLocations" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHospitleAffiliates"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvtitleHospitleAffiliates"></androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/tvtitlepracticeweb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/label_website"
-        android:textColor="@color/black"
-        android:textSize="@dimen/textSize_title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvHospitleAffiliates" />
-
-        <TextView
+        android:background="@color/colorLightGreyBackground"
+        android:padding="@dimen/main_layout_padding"
+        tools:context=".views.ui.Fragments.PracticeFragment"
+        >
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="@dimen/padding_textview_practice"
-            android:text="@string/value_website"
-            android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:fillViewport="true"
 
-            app:layout_constraintTop_toBottomOf="@+id/tvtitlepracticeweb" />
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="blocksDescendants">
+
+                <TextView
+                    android:id="@+id/tvtitlepractice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/value_practice_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:maxLines="1"/>
+
+                <TextView
+                    android:id="@+id/tvpracticeabout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/value_practice_about"
+                    android:background="@color/white"
+                    android:padding="@dimen/padding_textview_practice"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvtitlepractice" />
+
+                <TextView
+                    android:id="@+id/tvtittlePracticeLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/value_practice_Location"
+                    android:textSize="@dimen/textSize_title"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@+id/tvpracticeabout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPracticeLocations"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvtittlePracticeLocation"
+                    >
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <!--<TextView
+                    android:id="@+id/tvtitleHospitleAffiliates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_title"
+                    android:text="@string/value_hospital_affairs"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvPracticeLocations" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHospitleAffiliates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvtitleHospitleAffiliates">
+
+                </androidx.recyclerview.widget.RecyclerView>-->
+
+                <TextView
+                    android:id="@+id/tvtitlepracticeweb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/label_website"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSize_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rvPracticeLocations" />
+
+                <TextView
+                    android:id="@+id/tvWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="@dimen/padding_textview_practice"
+                    android:text="@string/value_website"
+                    android:textColor="@color/colorPrimaryDark"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toBottomOf="@+id/tvtitlepracticeweb" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

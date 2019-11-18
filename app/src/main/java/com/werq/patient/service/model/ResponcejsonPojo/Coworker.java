@@ -30,6 +30,15 @@ public class Coworker implements Serializable {
     @SerializedName("IsDeleted")
     private Boolean isDeleted;
 
+    @SerializedName("CreatedAt")
+    private String createdAt;
+
+    @SerializedName("JobTitle")
+    private JobTitle jobTitle;
+
+    @SerializedName("Speciality")
+    private Speciality speciality;
+
     public Integer getID() {
         return iD;
     }
@@ -94,6 +103,30 @@ public class Coworker implements Serializable {
         this.isDeleted = isDeleted;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public JobTitle getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(JobTitle jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public Speciality getSpeciality() {
+        return speciality;
+    }
+
+    public void setSpeciality(Speciality speciality) {
+        this.speciality = speciality;
+    }
+
     @Override
     public String toString() {
         return "Coworker{" +
@@ -103,8 +136,11 @@ public class Coworker implements Serializable {
                 ", middleName='" + middleName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", profilePhoto='" + profilePhoto + '\'' +
-                ", nPINumber=" + nPINumber +
+                ", nPINumber='" + nPINumber + '\'' +
                 ", isDeleted=" + isDeleted +
+                ", createdAt='" + createdAt + '\'' +
+                ", jobTitle=" + jobTitle +
+                ", speciality=" + speciality +
                 '}';
     }
 }

@@ -14,6 +14,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.werq.patient.BuildConfig;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
@@ -69,6 +73,45 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
         holder.tvUsername.setText(coworkerArrayList.get(position).getFirstName() +" "+
                 coworkerArrayList.get(position).getMiddleName()+" "+
                 coworkerArrayList.get(position).getLastName());
+
+        if(coworkerArrayList.get(position).getSpeciality()!=null   ){
+
+            if(!coworkerArrayList.get(position).getSpeciality().getName().trim().isEmpty()
+                    && coworkerArrayList.get(position).getSpeciality().getSubSpeciality()!=null ){
+
+                String speciality=" ";
+                for (int i = 0; i < coworkerArrayList.get(position).getSpeciality().getSubSpeciality().size(); i++) {
+
+                    if(!coworkerArrayList.get(position).getSpeciality().getSubSpeciality().get(i).getName().isEmpty())
+                    speciality=coworkerArrayList.get(position).getSpeciality().getSubSpeciality().get(i).getName()+", ";
+                }
+                holder.tvSpeciality.setText(speciality);
+            }
+            else {
+                holder.tvSpeciality.setText(coworkerArrayList.get(position).getSpeciality().getName());
+            }
+        }
+        else {
+            if(coworkerArrayList.get(position).getJobTitle()!=null)
+            holder.tvSpeciality.setText(coworkerArrayList.get(position).getJobTitle().getTitle());
+            else
+                holder.tvSpeciality.setText("-");
+        }
+
+            if(coworkerArrayList.get(position).getProfilePhoto()!=null){
+                String url = null;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+coworkerArrayList.get(position).getProfilePhoto();
+                Glide.with(mContext).load(url).apply(new RequestOptions()
+                        .placeholder(R.drawable.user_image_placeholder)
+                        .error(R.drawable.user_image_placeholder)
+                        .skipMemoryCache(false)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(holder.ivDoctorProfile);
+
+            }
+            else {
+                holder.ivDoctorProfile.setImageResource(R.drawable.user_image_placeholder);
+            }
     }
 
     @Override
@@ -79,8 +122,11 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvUsername)
         TextView tvUsername;
-
+        @BindView(R.id.tvSpeciality)
         TextView tvSpeciality;
+        @BindView(R.id.ivDoctorProfile)
+        CircleImageView ivDoctorProfile;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 

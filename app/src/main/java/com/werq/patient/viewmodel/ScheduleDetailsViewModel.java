@@ -35,6 +35,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     public MutableLiveData<Boolean> confirmButtonVisibility;
     public MutableLiveData<String> appointmentStatus;
     public MutableLiveData<List<AttachmentResult>> attachmentList;
+    public MutableLiveData<String> doctorProfilePhoto;
     //public MutableLiveData<String> toolbarTitle;
 
     String authToken;
@@ -77,6 +78,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         confirmButtonVisibility.setValue(false);
         attachmentVisibility.setValue(false);
         attachmentList=new MutableLiveData<>();
+        doctorProfilePhoto =new MutableLiveData<>();
 
         //toolbarTitle =new MutableLiveData<>();
         this.appointmentResult = appointmentResult;
@@ -130,7 +132,11 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         return appointmentStatus;
     }
 
-    /* public MutableLiveData<String> getToolbarTitle() {
+    public MutableLiveData<String> getDoctorProfilePhoto() {
+        return doctorProfilePhoto;
+    }
+
+/* public MutableLiveData<String> getToolbarTitle() {
         return toolbarTitle;
     }*/
 
@@ -167,7 +173,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
         confirmButtonVisibility.setValue(appointmentResult.getConfirmByPatient());
 
-        appointmentStatus.setValue(appointmentResult.getDoctor().getStatus());
+        appointmentStatus.setValue(appointmentResult.getAppointmentStatus());
         //getAttachments();
         /*ArrayList<Files> filesArrayList=new ArrayList<>();
         filesArrayList.addAll(Arrays.asList(appointmentResult.get()));
@@ -182,7 +188,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             }
             else {
                 attachmentVisibility.setValue(false);
-                appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
+                appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getAppointmentStatus());
             }
         }
 
@@ -218,6 +224,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
                 }*/
 
+                doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
                 attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
 
                 if(attachmentList.getValue()!=null){
@@ -227,20 +234,22 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
                     }
                     else {
                         attachmentVisibility.setValue(false);
-                        appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
+                        appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getAppointmentStatus());
                     }
                 }
             }
             else if(url.equalsIgnoreCase("ConfirmAppointment")){
                 AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
                 Log.e(TAG, "onSuccess: "+apptDetailResponse.getData().getAppointment().getConfirmByPatient() );
+
+                doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
                 if(apptDetailResponse.getData().getAppointment().getConfirmByPatient()==true)
                 {
                     appointmentStatus.setValue("Confirmed");
 
                 }else
                 {
-                   appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
+                   appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getAppointmentStatus());
 
                 }
               confirmButtonVisibility.setValue(apptDetailResponse.getData().getAppointment().getConfirmByPatient());

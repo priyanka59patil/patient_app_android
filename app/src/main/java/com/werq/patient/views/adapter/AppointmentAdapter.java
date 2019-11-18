@@ -110,7 +110,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         holder.tvUseFullName.setText(doctor.getFirstName() + " " + doctor.getLastName());
 
-        controller.statusButtonBackground(mContext, result.getDoctor().getStatus(), holder.tvstatus);
+        controller.statusButtonBackground(mContext, result.getAppointmentStatus(), holder.tvstatus);
         if(result.getAppointmentStatus().toLowerCase().equals("toconfirm"))
         {
 

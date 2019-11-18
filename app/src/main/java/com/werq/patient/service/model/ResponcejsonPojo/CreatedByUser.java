@@ -18,17 +18,15 @@ public class CreatedByUser implements Serializable
     private String firstName;
 
     @SerializedName("MiddleName")
-    @Expose
     private String middleName;
 
     @SerializedName("LastName")
     private String lastName;
 
     @SerializedName("ProfilePhoto")
-    @Expose
     private String profilePhoto;
+
     @SerializedName("NPINumber")
-    @Expose
     private Integer nPINumber;
 
     @SerializedName("IsDeleted")

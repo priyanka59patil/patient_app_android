@@ -170,7 +170,6 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             }
 
             holder.tvUsername.setText(result.getCreatedByUser().getFirstName()
-                    + " " + result.getCreatedByUser().getMiddleName()
                     + " " + result.getCreatedByUser().getLastName());
 
             holder.tvTime.setText("Time not available");

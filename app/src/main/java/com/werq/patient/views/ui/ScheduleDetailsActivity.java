@@ -28,6 +28,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.werq.patient.BuildConfig;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -111,10 +115,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     Context mContext;
 
     //adapter
-    AttachmentsAdapter filesAdapter;
+    AttachmentsAdapter attachmentListAdapter;
 
     //data
-    ArrayList<AttachmentResult> files;
+    ArrayList<AttachmentResult> attachmentList;
 
     //listner
     AppointmentInterface controller;
@@ -197,6 +201,21 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             setStatusButton();
         });
 
+        viewModel.doctorProfilePhoto.observe(this,s -> {
+
+            if(s!=null){
+                String url = null;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
+                Glide.with(mContext).load(url).apply(new RequestOptions()
+                        .placeholder(R.drawable.user_image_placeholder)
+                        .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(ivUseImage);
+
+            }
+            else {
+                ivUseImage.setImageResource(R.drawable.user_image_placeholder);
+            }
+        });
+
     }
 
     @Override
@@ -208,12 +227,12 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     }
 
     private void setStatusButton() {
-        controller.statusButtonBackground(mContext, appointmentResult.getDoctor().getStatus(), tvstatus);
+        controller.statusButtonBackground(mContext, appointmentResult.getAppointmentStatus(), tvstatus);
 
     }
 
     private void setConfirmButton() {
-        controller.setConfirmButton(mContext, appointmentResult.getDoctor().getStatus(), btConfirm);
+        controller.setConfirmButton(mContext, appointmentResult.getAppointmentStatus(), btConfirm);
     }
 
 
@@ -273,7 +292,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         recyclerViewClickListerner = this::onclick;
-        files = new ArrayList<>();
+        attachmentList = new ArrayList<>();
         setView(appointmentResult);
         setRecyclerView();
     }
@@ -283,8 +302,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
         /*tvTextAttachedFiles.setVisibility(View.VISIBLE);
         rvFiles.setVisibility(View.VISIBLE);*/
-        filesAdapter = new AttachmentsAdapter(mContext, files, recyclerViewClickListerner,controller,viewModel,this);
-        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, filesAdapter);
+        attachmentListAdapter = new AttachmentsAdapter(mContext, attachmentList, recyclerViewClickListerner,controller,viewModel,this);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, attachmentListAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvFiles);
 
     }
@@ -312,8 +331,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             tvAddressonMap.setText(this.data.getProvider().getOffice().toString());
         }
 
-        files.addAll(Arrays.asList(this.data.getFiles()));
-        controller.checkFilesSize(files, basicActivities);*/
+        attachmentList.addAll(Arrays.asList(this.data.getFiles()));
+        controller.checkFilesSize(attachmentList, basicActivities);*/
 
     }
 
@@ -329,6 +348,27 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
     @Override
     public void onclick(int position) {
+
+        Helper.setLog("aaaa",attachmentList.get(position).toString());
+
+        if(attachmentList.get(position).getVisitNoteId()!=null){
+            if(attachmentList.get(position).getVisitNoteId()!=0){
+
+                Helper.setLog("getAppointmentId",attachmentList.get(position).getAppointmentId()+"" );
+                Helper.setLog("getVisitNoteId",attachmentList.get(position).getVisitNoteId()+"" );
+
+                Intent intent =new Intent(mContext, ViewVisitNoteActivity.class);
+                intent.putExtra("appointmentId",attachmentList.get(position).getAppointmentId());
+                intent.putExtra("visitNoteId",attachmentList.get(position).getVisitNoteId());
+                startActivity(intent);
+            }
+            else {
+                Helper.showToast(mContext,"No Details Available");
+            }
+        }
+        else {
+            Helper.showToast(mContext,"No Details Available");
+        }
 
     }
 

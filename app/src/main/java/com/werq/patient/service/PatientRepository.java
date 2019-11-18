@@ -20,11 +20,12 @@ public class PatientRepository {
 
     }
 
-    public void  getDocterDetails(String authToken, int doctorId, MutableLiveData<String> toast,
+    public void  getDocterDetails(String authToken, int doctorId, MutableLiveData<String> toast
+                                , String coworkerTake, String coworkerSkip,
                                   ApiResponce apiResponce, String url){
 
 
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(authToken,doctorId);
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(authToken,doctorId,coworkerTake,coworkerSkip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 

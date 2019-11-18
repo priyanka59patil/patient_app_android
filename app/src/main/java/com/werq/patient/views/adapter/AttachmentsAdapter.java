@@ -42,7 +42,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
     Context mContext;
     ArrayList<AttachmentResult> attachmentResultArrayList;
     RecyclerViewClickListerner recyclerViewClickListerner;
-    boolean fileTab = false;
+    boolean fileTab = false, fromVisitNoteDetails = false;
     AppointmentInterface controller;
 
    /* public FilesAdapter(Context mContext, ArrayList<Files> allFiles, RecyclerViewClickListerner recyclerViewClickListerner) {
@@ -62,6 +62,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.fileTab = fileTab;
 
+
         viewModel.getListAttachments().observe(lifecycleOwner, attachmentResultArrayList1 -> {
             if (attachmentResultArrayList1 != null) {
                 Helper.setLog("attachmentList1", attachmentResultArrayList1.size() + "");
@@ -79,6 +80,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
                               RecyclerViewClickListerner recyclerViewClickListerner,
                               ViewVisitNoteViewModel viewModel,
                               LifecycleOwner lifecycleOwner) {
+        this.fromVisitNoteDetails = true;
         this.mContext = mContext;
         this.attachmentResultArrayList = attachmentResultArrayList;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
@@ -95,20 +97,20 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
     }
 
     public AttachmentsAdapter(Context mContext,
-                        ArrayList<AttachmentResult> attachmentResultArrayList,
-                        RecyclerViewClickListerner recyclerViewClickListerner,
-                        AppointmentInterface controller,
-                        ScheduleDetailsViewModel viewModel,
-                        LifecycleOwner lifecycleOwner) {
+                              ArrayList<AttachmentResult> attachmentResultArrayList,
+                              RecyclerViewClickListerner recyclerViewClickListerner,
+                              AppointmentInterface controller,
+                              ScheduleDetailsViewModel viewModel,
+                              LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.attachmentResultArrayList = attachmentResultArrayList;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
-        this.controller=controller;
+        this.controller = controller;
 
-        viewModel.getAttachmentList().observe(lifecycleOwner,attachmentResults -> {
+        viewModel.getAttachmentList().observe(lifecycleOwner, attachmentResults -> {
 
-            if(attachmentResults!=null){
-                Helper.setLog("attachmentList1",attachmentResults.size()+"");
+            if (attachmentResults != null) {
+                Helper.setLog("attachmentList1", attachmentResults.size() + "");
                 attachmentResultArrayList.clear();
                 attachmentResultArrayList.addAll(attachmentResults);
                 notifyDataSetChanged();
@@ -165,7 +167,6 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
         }
 
         holder.tvUsername.setText(result.getCreatedByUser().getFirstName()
-                + " " + result.getCreatedByUser().getMiddleName()
                 + " " + result.getCreatedByUser().getLastName());
 
         holder.tvTime.setText("Time not available");
@@ -181,13 +182,16 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
             holder.ivUserView.setImageResource(R.drawable.user_image_placeholder);
         }
 
-        if(fileTab)
-        {
-            if (result.getVisitNoteId() != 0) {
-                holder.tvHasVisitNote.setVisibility(View.VISIBLE);
+        if (!fromVisitNoteDetails) {
+            if (result.getVisitNoteId() != null) {
+                if (result.getVisitNoteId() != 0)
+                    holder.tvHasVisitNote.setVisibility(View.VISIBLE);
+                else
+                    holder.tvHasVisitNote.setVisibility(View.GONE);
             } else
                 holder.tvHasVisitNote.setVisibility(View.GONE);
-        }
+        } else
+            holder.tvHasVisitNote.setVisibility(View.GONE);
 
 
 

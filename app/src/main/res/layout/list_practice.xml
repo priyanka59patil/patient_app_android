@@ -1,38 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/main_adapter_padding"
-    android:paddingLeft="@dimen/main_adapter_padding"
-    android:paddingRight="@dimen/main_adapter_padding"
-    android:paddingBottom="@dimen/main_adapter_padding"
-    android:background="@color/white"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/tvHospitalname"
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/value_hospital"
-        android:textColor="@color/black"
-        />
+        android:paddingTop="@dimen/main_adapter_padding"
+        android:paddingLeft="@dimen/main_adapter_padding"
+        android:paddingRight="@dimen/main_adapter_padding"
+        android:paddingBottom="@dimen/main_adapter_padding"
+        android:background="@color/white"
+        android:orientation="vertical"
+        >
 
-    <TextView
-        android:id="@+id/tvAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/colorPrimary"
-        android:drawablePadding="@dimen/drawable_padding"
-        android:drawableLeft="@drawable/ic_location_on_blue_24dp"
-        android:text="@string/address"/>
-    <TextView
-        android:id="@+id/tvPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-       android:drawableLeft="@drawable/ic_call_blue_24dp"
-        android:text="@string/value_phone_number"
-        android:textColor="@color/colorPrimary"
-        android:drawablePadding="@dimen/drawable_padding"
-        />
+        <TextView
+            android:id="@+id/tvHospitalname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/value_hospital"
+            android:textColor="@color/black"
+            android:paddingLeft="3dp"/>
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/colorPrimary"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:drawableLeft="@drawable/ic_location_on_blue_24dp"
+            android:text="@string/address"/>
+        <TextView
+            android:id="@+id/tvPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_call_blue_24dp"
+            android:text="@string/value_phone_number"
+            android:textColor="@color/colorPrimary"
+            android:drawablePadding="@dimen/drawable_padding"
+            />
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/layout_schedule_view"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorLightGreyBackground" />
 </LinearLayout>

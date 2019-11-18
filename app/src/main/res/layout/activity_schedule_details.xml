@@ -317,7 +317,7 @@
                         android:textSize="@dimen/textSize_note_size"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cvNote"
-                        android:visibility="@{scheduleDetailsViewModel.visibility==true?View.GONE:View.VISIBLE}"/>
+                        />
 
                     <LinearLayout
                         android:id="@+id/llAttachments"
@@ -344,9 +344,6 @@
                                 android:layout_margin="@dimen/main_layout_padding"
                                 android:text="No Attachments" />
 
-
-
-
                         </androidx.cardview.widget.CardView>
 
 
@@ -355,8 +352,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles"
-                            app:layout_constraintTop_toTopOf="@+id/cvNoAttachments">
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
 
                         </androidx.recyclerview.widget.RecyclerView>
 

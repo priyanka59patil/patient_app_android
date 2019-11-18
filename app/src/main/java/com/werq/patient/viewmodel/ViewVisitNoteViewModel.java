@@ -69,7 +69,12 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
 
 
             ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
-            dataArrayList.addAll(visitNoteResponse.getData().getVisitNoteResult().getAttachement());
+            if(visitNoteResponse.getData()!=null
+                    && visitNoteResponse.getData().getVisitNoteResult()!=null
+                    && visitNoteResponse.getData().getVisitNoteResult().getAttachement()!=null){
+                dataArrayList.addAll(visitNoteResponse.getData().getVisitNoteResult().getAttachement());
+            }
+
             visitNoteAttachments.setValue(dataArrayList);
             if(visitNoteAttachments.getValue()!=null){
 
@@ -130,7 +135,9 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     public void setUrlRequest(int appointmentId, int visitNoteId) {
         this.appointmentId = appointmentId;
         this.visitNoteId = visitNoteId;
-        fetchVisitNoteDetails();
+        if(visitNoteId!=0) {
+            fetchVisitNoteDetails();
+        }
     }
 
     public  void fetchVisitNoteDetails(){

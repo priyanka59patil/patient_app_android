@@ -11,6 +11,7 @@ import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.Location;
 
 import java.util.ArrayList;
 
@@ -38,8 +39,14 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
     public MutableLiveData<ArrayList<Coworker>> coworkerList;
-
     public MutableLiveData<Boolean> rvCoworkerVisibility;
+
+    public MutableLiveData<ArrayList<Location>> locationsList;
+    public MutableLiveData<String> practicePhoneNumber;
+    public MutableLiveData<String> practiceWebUrl;
+    //public MutableLiveData<String> aboutPractice;
+    public MutableLiveData<String> practiceName;
+    public MutableLiveData<Boolean> rvPracticesVisibility;
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
@@ -59,7 +66,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         getLoading().setValue(true);
         if(doctorId!=0){
-            patientRepository.getDocterDetails(authToken,doctorId,getToast(),apiResponce,"DoctorDetails");
+            patientRepository.getDocterDetails(authToken,doctorId,getToast(),10+"",page*10+"",apiResponce,"DoctorDetails");
         }
     }
 
@@ -76,8 +83,16 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         about=new MutableLiveData<>();
         profileUrl=new MutableLiveData<>();
         doctorDetailsResponse=new MutableLiveData<>();
+        
         coworkerList=new MutableLiveData<>();
         rvCoworkerVisibility=new MutableLiveData<>();
+        locationsList=new MutableLiveData<>();
+        rvPracticesVisibility=new MutableLiveData<>();
+        
+        practiceWebUrl=new MutableLiveData<>();
+        practicePhoneNumber=new MutableLiveData<>();
+       // aboutPractice=new MutableLiveData<>();
+        practiceName=new MutableLiveData<>();
     }
 
     @Override
@@ -85,6 +100,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         getLoading().setValue(false);
         if(url!=null && !url.isEmpty()){
+
             if(url.equalsIgnoreCase("DoctorDetails"))
             {
                 DoctorDetailsResponse detailsResponse= Helper.getGsonInstance().fromJson(responseJson,DoctorDetailsResponse.class);
@@ -94,6 +110,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                 //currently they dont give speciality in json
                 doctorSpeciality.setValue("Dentistry, Hermatology, Cytophatology");
                 about.setValue(doctor.getAboutMe());
+
 
                 profileUrl.setValue(doctor.getProfilePhoto());
                 doctorDetailsResponse.setValue(detailsResponse);
@@ -106,6 +123,31 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                     rvCoworkerVisibility.setValue(false);
                 }
 
+                ArrayList<Location> locationsArrayList=(ArrayList<Location>) detailsResponse.getData().getLocations();
+                locationsList.setValue(locationsArrayList);
+                //practiceName.setValue(doctor.get);
+                if(locationsArrayList.size()>0){
+                    rvPracticesVisibility.setValue(true);
+                }else {
+                    rvPracticesVisibility.setValue(false);
+                }
+                
+
+                
+                if(doctor.getContactInfo()!=null){
+
+                    for (int i = 0; i < doctor.getContactInfo().size(); i++) {
+                        //1 means website
+                        // 2 means phone number
+                        if(doctor.getContactInfo().get(i).getType()==1 ){
+                            practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                        }
+
+                        if(doctor.getContactInfo().get(i).getType()==2 ){
+                            practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                        }
+                    }
+                }
             }
         }
 
@@ -152,5 +194,26 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getRvCoworkerVisibility() {
         return rvCoworkerVisibility;
+    }
+
+    public MutableLiveData<ArrayList<Location>> getLocationsList() {
+        return locationsList;
+    }
+
+    public MutableLiveData<String> getPracticePhoneNumber() {
+        return practicePhoneNumber;
+    }
+
+    public MutableLiveData<String> getPracticeWebUrl() {
+        return practiceWebUrl;
+    }
+
+
+    public MutableLiveData<Boolean> getRvPracticesVisibility() {
+        return rvPracticesVisibility;
+    }
+
+    public MutableLiveData<String> getPracticeName() {
+        return practiceName;
     }
 }

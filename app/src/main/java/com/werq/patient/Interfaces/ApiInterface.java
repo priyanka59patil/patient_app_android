@@ -25,7 +25,7 @@ public interface ApiInterface {
     Call<Object> signIn(@Header("Content-Type") String contentType,
                                @Body UserCredential userCredential);
 
-    @GET("Appointments/upcomming")
+    @GET("Appointments/upcoming")
     Call<Object> getUpcomingAppointment(@Header("Authorization") String authToken,
                                                      @Query("take") String take,
                                                      @Query("skip") String skip);
@@ -54,7 +54,9 @@ public interface ApiInterface {
                                         @Query("skip") String skip);
     @GET("Doctors/Details/{doctorId}")
     Call<Object> getDoctorDetails(@Header("Authorization") String authToken,
-                                @Path("doctorId") int doctorId);
+                                  @Path("doctorId") int doctorId,
+                                  @Query("coworker_take" ) String coworkerTake,
+                                  @Query("coworker_skip" ) String coworkerSkip);
 
     @GET("Attachments")
     Call<Object> getAttachments(@Header("Authorization") String authToken,

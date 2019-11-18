@@ -23,7 +23,7 @@ public class VisitNoteResult implements Serializable {
     @SerializedName("CreatedByUser")
     @Expose
     private VisitNoteCreatedByUser visitNoteCreatedByUser;
-    @SerializedName("Attachement")
+    @SerializedName("Attachment")
     @Expose
     private List<AttachmentResult> attachement = null;
 
