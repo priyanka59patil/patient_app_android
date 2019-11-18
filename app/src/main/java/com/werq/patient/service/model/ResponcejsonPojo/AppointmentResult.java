@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class AppointmentResult implements Serializable
 {
@@ -36,6 +37,9 @@ public class AppointmentResult implements Serializable
 
     @SerializedName("Location")
     private Location location;
+
+    @SerializedName("ReferralAttachment")
+    private List<AttachmentResult> referralAttachment = null;
 
 
     public AppointmentResult() {
@@ -113,6 +117,14 @@ public class AppointmentResult implements Serializable
         this.location = location;
     }
 
+    public List<AttachmentResult> getReferralAttachment() {
+        return referralAttachment;
+    }
+
+    public void setReferralAttachment(List<AttachmentResult> referralAttachment) {
+        this.referralAttachment = referralAttachment;
+    }
+
     @Override
     public String toString() {
         return "AppointmentResult{" +
@@ -125,10 +137,10 @@ public class AppointmentResult implements Serializable
                 ", confirmByPatient=" + confirmByPatient +
                 ", doctor=" + doctor +
                 ", location=" + location +
+                ", referralAttachment=" + referralAttachment +
                 '}';
     }
-
-   /* public void writeToParcel(Parcel dest, int flags) {
+/* public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(iD);
         dest.writeValue(patientId);
         dest.writeValue(doctorId);

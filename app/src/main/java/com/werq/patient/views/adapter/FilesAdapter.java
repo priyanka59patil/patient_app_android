@@ -69,7 +69,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
         viewModel.getListAttachments().observe(lifecycleOwner,attachmentResultArrayList1 -> {
             if(attachmentResultArrayList1!=null)
             {
-                Helper.setLog("attachmentResultArrayList1",attachmentResultArrayList1.size()+"");
+                Helper.setLog("attachmentList1",attachmentResultArrayList1.size()+"");
                 attachmentResultArrayList.clear();
                 attachmentResultArrayList.addAll(attachmentResultArrayList1);
                 notifyDataSetChanged();
@@ -79,21 +79,21 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
     }
 
     public FilesAdapter(Context mContext,
-                        ArrayList<Files> allFiles,
+                        ArrayList<AttachmentResult> attachmentResultArrayList,
                         RecyclerViewClickListerner recyclerViewClickListerner,
                         AppointmentInterface controller,
                         ScheduleDetailsViewModel viewModel,
                         LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
-        this.allFiles = allFiles;
+        this.attachmentResultArrayList = attachmentResultArrayList;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.controller=controller;
 
-        viewModel.getFilesList().observe(lifecycleOwner,files -> {
-            if(files!=null)
-            {
-                allFiles.clear();
-                allFiles.addAll(files);
+        viewModel.getAttachmentList().observe(lifecycleOwner,attachmentResults -> {
+            if(attachmentResults!=null){
+                Helper.setLog("attachmentList1",attachmentResults.size()+"");
+                attachmentResultArrayList.clear();
+                attachmentResultArrayList.addAll(attachmentResults);
                 notifyDataSetChanged();
             }
         });
@@ -137,7 +137,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
 
     @Override
     public void onBindViewHolder(@NonNull FileadapterViewHolder holder, int position) {
-        if(fileTab){
+       // if(fileTab){
 
 
             AttachmentResult result = attachmentResultArrayList.get(position);
@@ -186,6 +186,11 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             else {
                 holder.ivUserView.setImageResource(R.drawable.user_image_placeholder);
             }
+
+            if(result.getVisitNoteId()!=0){
+                holder.tvHasVisitNote.setVisibility(View.VISIBLE);
+            }else
+                holder.tvHasVisitNote.setVisibility(View.GONE);
             /*try {
                 Date date = DateHelper.dateFromUtc(result.getCreatedByUser().);
                 holder.tvTime.setText("today " + DateHelper.dayFromDate(date, "time"));
@@ -194,7 +199,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             }*/
 
 
-        }else {
+       /* }else {
             Files file = allFiles.get(position);
             holder.tvFileName.setText(file.getFile_name());
 
@@ -224,7 +229,7 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
 
     }
@@ -249,6 +254,8 @@ public class FilesAdapter extends RecyclerView.Adapter<FilesAdapter.FileadapterV
         @BindView(R.id.tvTime) TextView tvTime;
         @BindView(R.id.ivUserView) CircleImageView ivUserView;
         @BindView(R.id.cvMainlayout) CardView cvMainlayout;
+        @BindView(R.id.tvHasVisitNote) TextView tvHasVisitNote;
+
 
         public FileadapterViewHolder(@NonNull View itemView) {
             super(itemView);

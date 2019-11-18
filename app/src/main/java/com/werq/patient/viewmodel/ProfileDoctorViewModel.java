@@ -5,19 +5,14 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiResponce;
-import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
-import com.werq.patient.service.repository.DoctorRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 

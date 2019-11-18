@@ -4,28 +4,22 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.werq.patient.Interfaces.ApiInterface;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.Files;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteAttachment;
 import com.werq.patient.service.repository.AppointmentRepository;
-import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import okhttp3.internal.http2.ErrorCode;
 
 public class ScheduleDetailsViewModel extends BaseViewModel {
 
@@ -40,6 +34,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     public MutableLiveData<Boolean> attachmentVisibility;
     public MutableLiveData<Boolean> confirmButtonVisibility;
     public MutableLiveData<String> appointmentStatus;
+    public MutableLiveData<List<AttachmentResult>> attachmentList;
     //public MutableLiveData<String> toolbarTitle;
 
     String authToken;
@@ -81,6 +76,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         appointmentStatus =new MutableLiveData<>();
         confirmButtonVisibility.setValue(false);
         attachmentVisibility.setValue(false);
+        attachmentList=new MutableLiveData<>();
 
         //toolbarTitle =new MutableLiveData<>();
         this.appointmentResult = appointmentResult;
@@ -126,7 +122,9 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         return filesList;
     }
 
-
+    public MutableLiveData<List<AttachmentResult>> getAttachmentList() {
+        return attachmentList;
+    }
 
     public MutableLiveData<String> getAppointmentStatus() {
         return appointmentStatus;
@@ -176,8 +174,9 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         filesList.setValue(filesArrayList);
 
         */
-        if(filesList.getValue()!=null){
-            if(filesList.getValue().size()>0){
+
+        if(attachmentList.getValue()!=null){
+            if(attachmentList.getValue().size()>0){
                 attachmentVisibility.setValue(true);
 
             }
@@ -186,6 +185,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
                 appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
             }
         }
+
 
         //controller.checkFilesSize(files, basicActivities);
        // status.setValue();
@@ -206,14 +206,29 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             if(url.equalsIgnoreCase("GetAppointmentDetails")){
 
                 AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-                if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
+                /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
+
+                    List<VisitNoteAttachment> get=apptDetailResponse.getData().getVisitNoteAttachment();
                     if(visitNoteList!=null && visitNoteList.size()>0)
                     {
                         Helper.setLog("visitNoteList.size()",visitNoteList.size()+"");
                     }
 
+                }*/
+
+                attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
+
+                if(attachmentList.getValue()!=null){
+                    if(attachmentList.getValue().size()>0){
+                        attachmentVisibility.setValue(true);
+
+                    }
+                    else {
+                        attachmentVisibility.setValue(false);
+                        appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getStatus());
+                    }
                 }
             }
             else if(url.equalsIgnoreCase("ConfirmAppointment")){
@@ -255,5 +270,46 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             confirmAppointment.setConfirmByPatient("true");
             appointmentRepository.setConfirmAppointment(authToken,confirmAppointment,getToast(),apiResponce,"ConfirmAppointment");
         }
+    }
+
+    public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse)
+    {
+        List<AttachmentResult> attachmentResultList =new ArrayList<>();
+
+        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+
+        try{
+            if(apptDetailResponse.getData().getAppointment().getReferralAttachment()!=null){
+                attachmentResultList.addAll(apptDetailResponse.getData().getAppointment().getReferralAttachment());
+            }
+        }
+        catch (Exception e){
+            Helper.setLog(TAG+" -Exception",e.getMessage());
+        }
+
+        Helper.setLog("visitnote size",apptDetailResponse.getData().getVisitNoteAttachment().size()+"");
+
+        try{
+
+
+            for (int i = 0; i < apptDetailResponse.getData().getVisitNoteAttachment().size(); i++) {
+
+                Helper.setLog("apptDetailResponse",apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement().size()+"");
+
+                List<AttachmentResult> visitNote=apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement();
+                if(visitNote!=null){
+                    attachmentResultList.addAll(visitNote);
+                }
+
+
+            }
+        }catch (Exception e){
+            Helper.setLog(TAG+" -Exception",e.getMessage());
+        }
+
+
+        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+
+        return attachmentResultList;
     }
 }

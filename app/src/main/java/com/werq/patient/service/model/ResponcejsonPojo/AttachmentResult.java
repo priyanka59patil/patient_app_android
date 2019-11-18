@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class AttachmentResult implements Serializable {
 
+
     @SerializedName("ID")
     private Integer iD;
 
@@ -14,6 +15,9 @@ public class AttachmentResult implements Serializable {
 
     @SerializedName("AppointmentId")
     private Integer appointmentId;
+
+    @SerializedName("ReferralId")
+    private Integer referralId;
 
     @SerializedName("CreatedBy")
     private Integer createdBy;
@@ -105,12 +109,21 @@ public class AttachmentResult implements Serializable {
         this.resizeURL = resizeURL;
     }
 
+    public Integer getReferralId() {
+        return referralId;
+    }
+
+    public void setReferralId(Integer referralId) {
+        this.referralId = referralId;
+    }
+
     @Override
     public String toString() {
         return "AttachmentResult{" +
                 "iD=" + iD +
                 ", visitNoteId=" + visitNoteId +
                 ", appointmentId=" + appointmentId +
+                ", referralId=" + referralId +
                 ", createdBy=" + createdBy +
                 ", createdByUser=" + createdByUser +
                 ", fileName='" + fileName + '\'' +

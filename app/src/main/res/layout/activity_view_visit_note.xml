@@ -1,27 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.ui.ViewVisitNoteActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+<layout
+    >
+    <data>
+        <variable
+            name="viewVnViewModel"
+            type="com.werq.patient.viewmodel.ViewVisitNoteViewModel" />
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        tools:context=".views.ui.ViewVisitNoteActivity"
+        android:orientation="vertical"
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <include layout="@layout/content_view_visit_note" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--<include layout="@layout/content_view_visit_note" />-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorLightGreyBackground"
+            android:padding="@dimen/main_layout_padding"
+            tools:context=".views.ui.ViewVisitNoteActivity"
+            tools:showIn="@layout/activity_view_visit_note"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/titleDoctor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:text="Doctor"
+                        android:textSize="@dimen/textSize_note_size"
+                        />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_below="@+id/titleDoctor"
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        >
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/main_adapter_padding">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_keyboard_arrow_right_black_24dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/ivDoctorProfile"
+                                android:layout_width="@dimen/doctor_height_width"
+                                android:layout_height="@dimen/doctor_height_width"
+                                android:src="@drawable/user_image_placeholder"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvUsername"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:textStyle="bold"
+                                android:text="@={viewVnViewModel.doctorName}"
+                                app:layout_constraintStart_toEndOf="@+id/ivDoctorProfile"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tvSpeciality"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="4dp"
+                                android:text="@={viewVnViewModel.speciality}"
+                                app:layout_constraintStart_toEndOf="@+id/ivDoctorProfile"
+                                app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/colorLightGreyBackground"
+                                android:visibility="gone"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/ivDoctorProfile"></View>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_below="@+id/cardView">
+
+                        <TextView
+                            android:id="@+id/tvTextNote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_note"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSize_note_size"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cvNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:background="@color/white"
+
+                            android:layout_marginTop="@dimen/main_layout_padding"
+                            android:layout_marginBottom="@dimen/main_layout_padding"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextNote">
+
+                            <TextView
+                                android:id="@+id/tvVisitNoteText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/main_layout_padding"
+                                android:text="@={viewVnViewModel.visitNoteText}" />
+
+                        </androidx.cardview.widget.CardView>
+
+                        <LinearLayout
+                            android:id="@+id/llAttachments"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles" >
+
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cvNoAttachments"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:layout_marginTop="@dimen/main_layout_padding"
+                                android:layout_marginBottom="@dimen/main_layout_padding"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/main_layout_padding"
+                                    android:text="No Attachments" />
 
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                            </androidx.cardview.widget.CardView>
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvFiles"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles"
+                                app:layout_constraintTop_toTopOf="@+id/cvNoAttachments">
+
+                            </androidx.recyclerview.widget.RecyclerView>
+
+                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvTextAttachedFiles"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:text="@string/label_attached_files"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/textSize_note_size"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/cvNote" />
+
+                        <!--<androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvFiles"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvTextAttachedFiles">
+
+                        </androidx.recyclerview.widget.RecyclerView>-->
+
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </RelativeLayout>
+
+            </ScrollView>
+
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

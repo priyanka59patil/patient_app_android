@@ -40,4 +40,15 @@ public class PatientRepository {
 
     }
 
+    public void  getVisitNoteDetails(String authToken, int appointmentId, int visitNoteId, String take, String skip
+                        , MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit()
+                                        .getVisitNoteDetails(authToken,appointmentId+"",visitNoteId,take,skip);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
 }

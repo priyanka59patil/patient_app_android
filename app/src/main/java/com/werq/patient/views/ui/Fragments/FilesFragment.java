@@ -76,6 +76,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     FragmentFilesBinding fragmentFilesBinding;
     ProgressDialog progressDialog;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -220,9 +221,19 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onclick(int position) {
 
-        if(attachmentList.get(position).getVisitNoteId()!=0){
 
-            startActivity(new Intent(mContext, ViewVisitNoteActivity.class));
+        if(attachmentList.get(position).getVisitNoteId()!=0){
+            Helper.setLog("aaaa",attachmentList.get(position).toString());
+            Helper.setLog("getAppointmentId",attachmentList.get(position).getAppointmentId()+"" );
+            Helper.setLog("getVisitNoteId",attachmentList.get(position).getVisitNoteId()+"" );
+
+            Intent intent =new Intent(mContext, ViewVisitNoteActivity.class);
+            intent.putExtra("appointmentId",attachmentList.get(position).getAppointmentId());
+            intent.putExtra("visitNoteId",attachmentList.get(position).getVisitNoteId());
+            startActivity(intent);
+        }
+        else {
+            Helper.showToast(mContext,"No Details Available");
         }
         /*else {
             mContext.startActivity(new Intent(mContext, ViewFileActivity.class));

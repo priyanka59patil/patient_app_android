@@ -1,28 +1,31 @@
-
 package com.werq.patient.service.model.ResponcejsonPojo;
 
-import java.io.Serializable;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VisitNoteAttachment implements Serializable
-{
+import java.io.Serializable;
+import java.util.List;
+
+public class VisitNoteResult implements Serializable {
 
     @SerializedName("ID")
+    @Expose
     private Integer iD;
-
     @SerializedName("AppointmentId")
+    @Expose
     private Integer appointmentId;
-
     @SerializedName("Note")
+    @Expose
     private String note;
-
     @SerializedName("CreatedBy")
+    @Expose
     private Integer createdBy;
-
-    @SerializedName("Attachment")
-    private List<AttachmentResult> Attachement;
+    @SerializedName("CreatedByUser")
+    @Expose
+    private VisitNoteCreatedByUser visitNoteCreatedByUser;
+    @SerializedName("Attachement")
+    @Expose
+    private List<AttachmentResult> attachement = null;
 
     public Integer getID() {
         return iD;
@@ -56,22 +59,31 @@ public class VisitNoteAttachment implements Serializable
         this.createdBy = createdBy;
     }
 
+    public VisitNoteCreatedByUser getVisitNoteCreatedByUser() {
+        return visitNoteCreatedByUser;
+    }
+
+    public void setVisitNoteCreatedByUser(VisitNoteCreatedByUser visitNoteCreatedByUser) {
+        this.visitNoteCreatedByUser = visitNoteCreatedByUser;
+    }
+
     public List<AttachmentResult> getAttachement() {
-        return Attachement;
+        return attachement;
     }
 
     public void setAttachement(List<AttachmentResult> attachement) {
-        this.Attachement = attachement;
+        this.attachement = attachement;
     }
 
     @Override
     public String toString() {
-        return "VisitNoteAttachment{" +
+        return "VisitNoteResult{" +
                 "iD=" + iD +
                 ", appointmentId=" + appointmentId +
                 ", note='" + note + '\'' +
                 ", createdBy=" + createdBy +
-                ", attachement=" + Attachement +
+                ", visitNoteCreatedByUser=" + visitNoteCreatedByUser +
+                ", attachement=" + attachement +
                 '}';
     }
 }

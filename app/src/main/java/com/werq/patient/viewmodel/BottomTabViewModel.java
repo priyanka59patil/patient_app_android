@@ -37,7 +37,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     String refreshTokenId;
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
-    private MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
 
@@ -55,7 +54,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         rvVisibility=new MutableLiveData<>();
         teamList=new MutableLiveData<>();
         listAttachments=new MutableLiveData<>();
-        listUpcommingAppointments=new MutableLiveData<>();
 
     }
 

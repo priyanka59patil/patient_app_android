@@ -211,6 +211,7 @@ public class RetrofitClient  {
             @Override
             public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {
                 Helper.setLog(TAG,"Responce code :- "+response.code());
+                Helper.setLog(TAG,"Request Url :- "+call.request().url());
                 String json =Helper.getGsonInstance().toJson(response.body());
                 Helper.setLog(TAG,"json :- "+json);
                 Helper.setLog(TAG,"url :- "+url);

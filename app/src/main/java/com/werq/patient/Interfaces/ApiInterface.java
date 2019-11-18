@@ -61,6 +61,13 @@ public interface ApiInterface {
                                 @Query("doctors") String doctors,
                                 @Query("take") String take,
                                 @Query("skip") String skip);
+
+    @GET("Attachments/VisitNote/{appointmentId}")
+    Call<Object> getVisitNoteDetails(@Header("Authorization") String authToken,
+                                     @Path("appointmentId") String appointmentId,
+                                     @Query("visit_note_id") int visitNoteId,
+                                     @Query("take") String take,
+                                     @Query("skip") String skip);
 }
 
 

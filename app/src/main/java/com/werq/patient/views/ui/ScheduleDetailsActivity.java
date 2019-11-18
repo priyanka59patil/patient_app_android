@@ -31,6 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.AppointmentInterface;
@@ -109,10 +111,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     Context mContext;
 
     //adapter
-    FilesAdapter filesAdapter;
+    AttachmentsAdapter filesAdapter;
 
     //data
-    ArrayList<Files> files;
+    ArrayList<AttachmentResult> files;
 
     //listner
     AppointmentInterface controller;
@@ -281,7 +283,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
         /*tvTextAttachedFiles.setVisibility(View.VISIBLE);
         rvFiles.setVisibility(View.VISIBLE);*/
-        filesAdapter = new FilesAdapter(mContext, files, recyclerViewClickListerner,controller,viewModel,this);
+        filesAdapter = new AttachmentsAdapter(mContext, files, recyclerViewClickListerner,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, filesAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvFiles);
 

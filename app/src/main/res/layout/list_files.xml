@@ -68,6 +68,17 @@
            android:layout_marginLeft="@dimen/margin_left_fileview"
            />
 
+       <TextView
+           android:id="@+id/tvHasVisitNote"
+           android:layout_width="30dp"
+           android:layout_height="30dp"
+           android:layout_below="@+id/tvUsername"
+           android:layout_toRightOf="@+id/file_view"
+           android:background="@drawable/ic_keyboard_arrow_right_black_24dp"
+           android:drawableTint="@color/black"
+           android:visibility="gone"
+           />
+
 
    </RelativeLayout>
 

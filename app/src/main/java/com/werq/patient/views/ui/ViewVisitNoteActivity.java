@@ -4,14 +4,26 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityViewVisitNoteBinding;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.viewmodel.ViewVisitNoteViewModel;
+import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.MockData.JsonData;
@@ -27,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewVisitNoteActivity extends AppCompatActivity implements RecyclerViewClickListerner {
+public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewClickListerner {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -45,22 +57,66 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
     TextView tvTextAttachedFiles;
     @BindView(R.id.rvFiles)
     RecyclerView rvFiles;
-    private ArrayList<Files> allFiles;
-    private FilesAdapter filesAdapter;
+    @BindView(R.id.cvNoAttachments)
+    CardView cvNoAttachments;
+    private ArrayList<AttachmentResult> allFiles;
+    private AttachmentsAdapter filesAdapter;
     private Context mContext;
     RecyclerViewClickListerner recyclerViewClickListerner;
 
+    ActivityViewVisitNoteBinding viewVisitNoteBinding;
+    ViewVisitNoteViewModel viewModel;
+    int appointmentId;
+    int visitNoteId;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_visit_note);
+        //setContentView(R.layout.activity_view_visit_note);
+        viewVisitNoteBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_visit_note);
+        mContext=this;
+        viewVisitNoteBinding.setLifecycleOwner(this);
+        viewModel= ViewModelProviders.of(this).get(ViewVisitNoteViewModel.class);
+        viewVisitNoteBinding.setViewVnViewModel(viewModel);
+        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
+        appointmentId=getIntent().getIntExtra("appointmentId",0);
+        visitNoteId=getIntent().getIntExtra("visitNoteId",0);
+        Helper.setLog("getIntent",appointmentId+" "+visitNoteId );
+    /*    viewModel.setAppointmentId(appointmentId);
+        viewModel.setVisitNoteId(visitNoteId);*/
+        viewModel.setUrlRequest(appointmentId,visitNoteId);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Visit Note");
         initializevariables();
-        setAdapters();
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.getRvAttachmentsVisibility().observe(this, aBoolean -> {
+            if(aBoolean)
+            {
+                rvFiles.setVisibility(View.VISIBLE);
+                cvNoAttachments.setVisibility(View.GONE);
+            }
+            else {
+                rvFiles.setVisibility(View.GONE);
+                cvNoAttachments.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        viewModel.profileUrl.observe(this,s -> {
+            Glide.with(mContext).load(s).apply(new RequestOptions()
+                    .placeholder(R.drawable.user_image_placeholder)
+                    .error(R.drawable.user_image_placeholder).skipMemoryCache(false)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL))
+                    .into(ivDoctorProfile);
+        });
     }
 
     @Override
@@ -78,26 +134,14 @@ public class ViewVisitNoteActivity extends AppCompatActivity implements Recycler
         }
         return super.onOptionsItemSelected(item);
     }
-    private void setAdapters() {
-        rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
-        rvFiles.setAdapter(filesAdapter);
-    }
 
     private void initializevariables() {
-       //context
-        mContext=this;
 
-        //data
-        FilesData filesData= JsonData.getFilesData();
         allFiles=new ArrayList<>();
-        allFiles.addAll(Arrays.asList(filesData.getResponse()));
-
-        //listner
         recyclerViewClickListerner=this::onclick;
-
-        //adapters
-      //  filesAdapter = new FilesAdapter(mContext, allFiles,recyclerViewClickListerner,null,null,null);
-
+        filesAdapter = new AttachmentsAdapter(mContext, allFiles,recyclerViewClickListerner,viewModel,this);
+        rvFiles.setLayoutManager(new LinearLayoutManager(mContext));
+        rvFiles.setAdapter(filesAdapter);
     }
 
     private ArrayList<Files> getFilesData() {
