@@ -2,6 +2,7 @@ package com.werq.patient.views.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,8 +141,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
         holder.tvprefix.setText("From :");
 
         Helper.setLog("FileType", result.getFileType());
-           /*
-            Log.e( "onBindViewHolder: ", result.getFileUrl());*/
+            Log.e( position+"onBindViewHolder: ", result.getFileUrl());
         switch (result.getFileType()) {
             case "image/png":
                 Glide.with(mContext).load(result.getFileUrl()).apply(new RequestOptions()
@@ -254,6 +254,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 
 
                 case R.id.file_view:
+                    Log.e( "onClick: ", attachmentResultArrayList.get(getAdapterPosition()).getFileType());
 
                     switch (attachmentResultArrayList.get(getAdapterPosition()).getFileType()) {
                         case "image/png":
@@ -261,6 +262,10 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
                             break;
 
                         case "image/jpeg":
+                            openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
+                            break;
+
+                        case "application/pdf":
                             openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
                             break;
                     }

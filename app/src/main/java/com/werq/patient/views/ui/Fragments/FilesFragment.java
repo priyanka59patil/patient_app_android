@@ -25,6 +25,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.AttachmentViewModel;
 import com.werq.patient.viewmodel.BottomTabViewModel;
+import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.ui.FilterDoctorList;
 import com.werq.patient.views.ui.ViewFileActivity;
 import com.werq.patient.views.ui.ViewVisitNoteActivity;
@@ -61,7 +62,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     Context mContext;
     ArrayList<Files> allFiles;
     ArrayList<AttachmentResult> attachmentList;
-    private FilesAdapter filesAdapter;
+    private AttachmentsAdapter attachmentsAdapter;
     private BottomSheetDialog mBottomSheetDialog;
     private RelativeLayout layout_filter_allDoctors;
     private RelativeLayout layout_filter_received;
@@ -163,8 +164,8 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void setRecyclerView() {
-        filesAdapter = new FilesAdapter(mContext, attachmentList,recyclerViewClickListerner,true,viewModel,this);
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,filesAdapter);
+        attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList,recyclerViewClickListerner,true,viewModel,this);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,attachmentsAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
     }
 
