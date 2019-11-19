@@ -74,7 +74,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         }
         fragmentTabHistoryBinding.setLifecycleOwner(this);
         mContext = getContext();
-        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false,mContext)).get(TabAppoinmentViewModel.class);
+        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
         fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());

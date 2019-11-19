@@ -124,7 +124,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             if(appointmentBinding==null){
                 appointmentBinding=FragmentTabAppointmentBinding.bind(view);
             }
-            viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true,mContext)).get(TabAppoinmentViewModel.class);
+            viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
             appointmentBinding.setLifecycleOwner(this);
             appointmentBinding.setAppontmentViewModel(viewModel);
             viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());

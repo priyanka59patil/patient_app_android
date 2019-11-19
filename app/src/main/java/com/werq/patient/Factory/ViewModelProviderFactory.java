@@ -20,16 +20,16 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
   private Context context;
 
   @Inject
-  public ViewModelProviderFactory(boolean isFromUpcoming,Context context) {
+  public ViewModelProviderFactory(boolean isFromUpcoming) {
     this.isFromUpcoming = isFromUpcoming;
-    this.context=context;
+   // this.context=context;
   }
 
   @Override
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(TabAppoinmentViewModel.class)) {
       //noinspection unchecked
-      return (T) new TabAppoinmentViewModel(isFromUpcoming,context);
+      return (T) new TabAppoinmentViewModel(isFromUpcoming);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

@@ -28,6 +28,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.ChatInfoViewModel;
 import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
+import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.viewmodel.ViewVisitNoteViewModel;
 import com.werq.patient.views.ui.ViewFileActivity;
 
@@ -101,7 +102,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
                               ArrayList<AttachmentResult> attachmentResultArrayList,
                               RecyclerViewClickListerner recyclerViewClickListerner,
                               AppointmentInterface controller,
-                              ScheduleDetailsViewModel viewModel,
+                              TabAppoinmentViewModel viewModel,
                               LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.attachmentResultArrayList = attachmentResultArrayList;

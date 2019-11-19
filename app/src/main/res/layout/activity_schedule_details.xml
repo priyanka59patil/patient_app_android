@@ -3,8 +3,8 @@
     <data>
         <import type="android.view.View" />
         <variable
-            name="scheduleDetailsViewModel"
-            type="com.werq.patient.viewmodel.ScheduleDetailsViewModel" />
+            name="tabAppoinmentViewModel"
+            type="com.werq.patient.viewmodel.TabAppoinmentViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -41,12 +41,28 @@
             tools:context=".views.ui.ScheduleDetailsActivity"
             tools:showIn="@layout/activity_schedule_details">
 
+            <TextView
+                android:id="@+id/tvNoApptDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_appt_details"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:drawableTop="@drawable/calendar"
+                android:textAlignment="center"
+                android:padding="10dp"/>
+
+
             <ScrollView
+                android:id="@+id/apptDetailsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout_editor_absoluteX="277dp"
                 tools:layout_editor_absoluteY="36dp"
-                android:scrollbars="none">
+                android:scrollbars="none"
+                android:visibility="gone">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -81,7 +97,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="8dp"
-                                    android:text="@{scheduleDetailsViewModel.day}"
+                                    android:text="@{tabAppoinmentViewModel.day}"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/textSize_title"
                                     android:textStyle="bold"
@@ -94,7 +110,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="8dp"
-                                    android:text="@{scheduleDetailsViewModel.month}"
+                                    android:text="@{tabAppoinmentViewModel.month}"
                                     android:textColor="@color/black"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +122,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:layout_marginEnd="8dp"
-                                    android:text="@{scheduleDetailsViewModel.time}"
+                                    android:text="@{tabAppoinmentViewModel.time}"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="@+id/tvstatus"
                                     app:layout_constraintTop_toBottomOf="@+id/tvMonth" />
@@ -117,9 +133,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="8dp"
                                     android:textAllCaps="true"
-                                    android:background="@drawable/orange_button"
                                     android:padding="3dp"
-                                    android:text="@string/label_to_confirmed"
+                                    android:text=""
                                     android:textColor="@color/white"
                                     android:textSize="@dimen/tvStatusSize"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -151,7 +166,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="8dp"
                                     android:layout_toRightOf="@+id/ivUseImage"
-                                    android:text="@{scheduleDetailsViewModel.fullUserName}"
+                                    android:text="@{tabAppoinmentViewModel.fullUserName}"
                                     android:textColor="@color/black"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toEndOf="@+id/ivUseImage"
@@ -165,7 +180,7 @@
                                     android:layout_marginStart="8dp"
                                     android:layout_marginTop="4dp"
                                     android:layout_toRightOf="@+id/ivUseImage"
-                                    android:text="@{scheduleDetailsViewModel.speciality}" />
+                                    android:text="@{tabAppoinmentViewModel.speciality}" />
 
                                 <TextView
                                     android:id="@+id/tvAddress"
@@ -176,7 +191,7 @@
                                     android:layout_marginTop="8dp"
                                     android:ellipsize="end"
                                     android:maxLines="2"
-                                    android:text="@{scheduleDetailsViewModel.address}"
+                                    android:text="@{tabAppoinmentViewModel.address}"
                                    />
 
                             </RelativeLayout>
@@ -273,7 +288,8 @@
                                 android:background="@color/colorPrimary"
                                 android:text="@string/label_confirm"
                                 android:textColor="@color/white"
-                                android:onClick="@{()-> scheduleDetailsViewModel.confirmButtonOnClick()}"
+                                android:onClick="@{()-> tabAppoinmentViewModel.confirmButtonOnClick()}"
+                                android:visibility="gone"
                                 />
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
@@ -386,7 +402,7 @@
                                 android:id="@+id/tvAddressonMap"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@{scheduleDetailsViewModel.addressOnMap}"
+                                android:text="@{tabAppoinmentViewModel.addressOnMap}"
                                 />
                             <ImageView
                                 android:id="@+id/map"

@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,10 +33,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.BuildConfig;
+import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Controller.AppointmentController;
@@ -111,6 +114,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @BindView(R.id.appointment)
     ConstraintLayout appointment;
 
+    @BindView(R.id.apptDetailsLayout)
+    ScrollView apptDetailsLayout;
+    @BindView(R.id.tvNoApptDetails)
+    TextView tvNoApptDetails;
     //context
     Context mContext;
 
@@ -137,7 +144,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @BindView(R.id.map)
     ImageView map;
     ActivityScheduleDetailsBinding detailsBinding;
-    ScheduleDetailsViewModel viewModel;
+    TabAppoinmentViewModel viewModel;
     private AppointmentResult appointmentResult;
     private String TAG="schedule_details";
     private  int appointmentId;
@@ -163,6 +170,16 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onResume() {
         super.onResume();
+
+        viewModel.getScheduleDetailsVisibility().observe(this,aBoolean -> {
+            if(aBoolean){
+                apptDetailsLayout.setVisibility(View.VISIBLE);
+                tvNoApptDetails.setVisibility(View.GONE);
+            }else {
+                apptDetailsLayout.setVisibility(View.GONE);
+                tvNoApptDetails.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         viewModel.appointmentResultData.observe(this,appointmentResult1 -> {
@@ -305,10 +322,11 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(isFromUpcoming,appointmentResult,controller)).get(ScheduleDetailsViewModel.class);
-        detailsBinding.setScheduleDetailsViewModel(viewModel);
-        viewModel.setFromUpcoming(isFromUpcoming);
+        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(isFromUpcoming)).get(TabAppoinmentViewModel.class);
+        detailsBinding.setTabAppoinmentViewModel(viewModel);
+       // viewModel.setFromUpcoming(isFromUpcoming);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setAppointmentId(appointmentId);
         recyclerViewClickListerner = this::onclick;
         attachmentList = new ArrayList<>();
         setView(appointmentResult);
@@ -360,6 +378,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
 
             appointmentResult = (AppointmentResult) getIntent().getSerializableExtra("AppointmentData");
+            appointmentId=appointmentResult.getiD();
             Helper.setLog(TAG,appointmentId+"-:"+appointmentResult.toString());
 
     }

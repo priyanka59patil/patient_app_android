@@ -199,4 +199,6 @@
     <string name="label_data">data</string>
     <string name="title_activity_view_file">ViewFileActivity</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="no_appt_details">Sorry, something went wrong and we are looking into it. Please try again in a few minutes</string>
+
 </resources>
