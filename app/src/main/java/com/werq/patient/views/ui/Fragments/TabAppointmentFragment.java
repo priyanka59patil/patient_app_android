@@ -175,6 +175,14 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             }
         });
 
+       /* viewModel.listUpcommingAppointments.observe(this,appointmentResults -> {
+            if(appointmentResults!=null){
+                listAppointments.clear();
+                listAppointments.addAll(appointmentResults);
+                adapter.notifyDataSetChanged();
+            }
+        });*/
+
 
 
         /*rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {

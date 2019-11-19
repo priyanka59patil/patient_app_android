@@ -17,11 +17,15 @@ import javax.inject.Singleton;
 @Singleton
 public class ScheduleDeatilsVmFactory extends ViewModelProvider.NewInstanceFactory {
   //private AppointmentData data;
+  boolean isFromUpcomming;
   AppointmentResult appointmentResult;
   private AppointmentInterface controller;
 
   @Inject
-  public ScheduleDeatilsVmFactory( AppointmentResult appointmentResult,AppointmentInterface controller) {
+  public ScheduleDeatilsVmFactory(boolean isFromUpcomming,
+                                  AppointmentResult appointmentResult
+          ,AppointmentInterface controller) {
+    this.isFromUpcomming=isFromUpcomming;
     this.appointmentResult=appointmentResult;
     this.controller=controller;
   }
@@ -31,7 +35,7 @@ public class ScheduleDeatilsVmFactory extends ViewModelProvider.NewInstanceFacto
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(ScheduleDetailsViewModel.class)) {
       //noinspection unchecked
-      return (T) new ScheduleDetailsViewModel(appointmentResult,controller);
+      return (T) new ScheduleDetailsViewModel(isFromUpcomming,appointmentResult,controller);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

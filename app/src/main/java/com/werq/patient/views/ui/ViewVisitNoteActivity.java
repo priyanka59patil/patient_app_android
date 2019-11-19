@@ -1,6 +1,7 @@
 package com.werq.patient.views.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,6 +91,15 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Visit Note");
         initializevariables();
+
+        viewModel.visitNoteAttachments.observe(this,attachmentResults -> {
+            if(attachmentResults!=null)
+            {
+                allFiles.clear();
+                allFiles.addAll(attachmentResults);
+            }
+
+        });
 
 
     }

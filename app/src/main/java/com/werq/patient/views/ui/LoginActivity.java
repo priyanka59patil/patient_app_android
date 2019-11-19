@@ -90,8 +90,7 @@ public class LoginActivity extends BaseActivity {
 
         loginViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                if(!progressDialog.isShowing()) progressDialog.show();
             }
             else {
                 if(progressDialog.isShowing())

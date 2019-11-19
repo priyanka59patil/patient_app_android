@@ -34,9 +34,11 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
 
-    private final MutableLiveData<ArrayList<AppointmentResult>> listAppointments = new MutableLiveData<>();
+    public MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
+    public MutableLiveData<ArrayList<AppointmentResult>> listHistoryAppointments;
     private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     private MutableLiveData<Boolean> rvVisibility;
+    private MutableLiveData<Boolean> rvHistoryVisibility;
     boolean isFromUpcoming=true;;
 
 
@@ -58,12 +60,9 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         disposable = new CompositeDisposable();
         this.isFromUpcoming=isFromUpcoming;
         rvVisibility=new MutableLiveData<>();
-
-
-    }
-
-    public MutableLiveData<ArrayList<AppointmentResult>> getListAppointments() {
-        return listAppointments;
+        listUpcommingAppointments = new MutableLiveData<>();
+        listHistoryAppointments = new MutableLiveData<>();
+        rvHistoryVisibility =new MutableLiveData<>();
     }
 
     public MutableLiveData<Boolean> getRepoLoadError() {
@@ -79,25 +78,37 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         this.rvVisibility = rvVisibility;
     }
 
-     /*private void fetchRepos() {
-        getLoading().setValue(true);
-        disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
-                    @Override
-                    public void onSuccess(List<Repo> value) {
-                        repoLoadError.setValue(false);
-                        repos.setValue(value);
-                        loading.setValue(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        repoLoadError.setValue(true);
-                        loading.setValue(false);
-                    }
-                }));
+    public MutableLiveData<ArrayList<AppointmentResult>> getListUpcommingAppointments() {
+        return listUpcommingAppointments;
     }
-*/
+
+    public MutableLiveData<ArrayList<AppointmentResult>> getListHistoryAppointments() {
+        return listHistoryAppointments;
+    }
+
+    public MutableLiveData<Boolean> getRvHistoryVisibility() {
+        return rvHistoryVisibility;
+    }
+
+    /*private void fetchRepos() {
+                getLoading().setValue(true);
+                disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
+                            @Override
+                            public void onSuccess(List<Repo> value) {
+                                repoLoadError.setValue(false);
+                                repos.setValue(value);
+                                loading.setValue(false);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                repoLoadError.setValue(true);
+                                loading.setValue(false);
+                            }
+                        }));
+            }
+        */
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -121,9 +132,9 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             listcount = appointmentResponce.getData().getCount();
             ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
             dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
-            listAppointments.setValue(dataArrayList);
+            listUpcommingAppointments.setValue(dataArrayList);
 
-            if (listAppointments.getValue().size() > 0) {
+            if (listUpcommingAppointments.getValue().size() > 0) {
                 rvVisibility.setValue(true);
                 //noVisitNote.setVisibility(View.GONE);
 
@@ -137,7 +148,16 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             listcount = appointmentResponce.getData().getCount();
             ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
             dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
-            listAppointments.setValue(dataArrayList);
+            listHistoryAppointments.setValue(dataArrayList);
+
+
+            if (listHistoryAppointments.getValue().size() > 0) {
+                rvHistoryVisibility.setValue(true);
+                //noVisitNote.setVisibility(View.GONE);
+
+            } else {
+                rvHistoryVisibility.setValue(false);
+            }
 
             /*if (listAppointments.getValue().size() > 0) {
                 if (rvVisitList !=null) {

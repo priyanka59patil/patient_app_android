@@ -67,17 +67,33 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         this.controller = controller;
         this.listAppointments=listAppointments;
         
-        viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentResult>>() {
-            @Override
-            public void onChanged(ArrayList<AppointmentResult> appointmentResults) {
 
+
+        if(isFromUpcoming)
+        {
+            viewModel.getListUpcommingAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentResult>>() {
+                @Override
+                public void onChanged(ArrayList<AppointmentResult> appointmentResults) {
+
+                    if(appointmentResults!=null){
+                        listAppointments.clear();
+                        listAppointments.addAll(appointmentResults);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+        else {
+
+            viewModel.getListHistoryAppointments().observe(lifecycleOwner,appointmentResults -> {
                 if(appointmentResults!=null){
                     listAppointments.clear();
                     listAppointments.addAll(appointmentResults);
                     notifyDataSetChanged();
                 }
-            }
-        });
+            });
+
+        }
 
        /* viewModel.getListAppointments().observe(lifecycleOwner, new Observer<ArrayList<AppointmentData>>() {
             @Override
@@ -110,16 +126,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         holder.tvUseFullName.setText(doctor.getFirstName() + " " + doctor.getLastName());
 
-        controller.statusButtonBackground(mContext, result.getAppointmentStatus(), holder.tvstatus);
-        if(result.getAppointmentStatus().toLowerCase().equals("toconfirm"))
-        {
-
-            holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
-            holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
-
-
-        }
-
         try {
 
             Date date = DateHelper.dateFromUtc(result.getAppintmentDate());
@@ -133,6 +139,47 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
         holder.tvAddress.setText(location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
                 +" "+location.getPostalcode()+" "+ location.getPostalcode()+""+location.getCountry());
         holder.tvSpeciality.setText(doctor.getSpeciality().getName());
+
+
+        if(isFromUpcoming)
+        {
+            if(result.getConfirmByPatient()!=null && result.getConfirmByPatient()){
+                controller.statusButtonBackground(mContext, "confirmed", holder.tvstatus);
+                holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            }
+            else {
+                controller.statusButtonBackground(mContext, "toconfirm", holder.tvstatus);
+                holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+                holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+            }
+        }
+        else {
+
+            /*holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+            holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.white));*/
+
+            if(result.getAppointmentStatus()!=null && !result.getAppointmentStatus().trim().isEmpty()){
+
+                controller.statusButtonBackground(mContext, result.getAppointmentStatus(), holder.tvstatus);
+            }
+            else {
+                holder.tvstatus.setVisibility(View.GONE);
+            }
+
+        }
+
+
+        /*if(holder.tvstatus.getText().toString().toLowerCase().equals("toconfirm"))
+        {
+
+            holder.rl_profile_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+            holder.layout_schedule_view.setBackgroundColor(mContext.getResources().getColor(R.color.toconfirm_bg_color));
+
+
+        }*/
+
+
         /*Picasso.get()
                 .load(provider.getProfile_photo())
                 .error(R.drawable.user_image_placeholder)

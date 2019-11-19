@@ -97,7 +97,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         listAppointments = new ArrayList<>();
         progressDialog=Helper.createProgressDialog(mContext);
         //progressDialog.hide();
-        adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
+        adapter = new AppointmentAdapter(getActivity(), false, listener,listAppointments,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
         rvAppointmentList.setAdapter(adapter);
@@ -108,7 +108,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     public void onclick(int position) {
         Helper.setLog(TAG,listAppointments.get(position).toString());
         Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
-        intent.putExtra("IsFromUpcommming", true);
+        intent.putExtra("IsFromUpcommming", false);
         intent.putExtra("AppointmentData",listAppointments.get(position));
         startActivity(intent);
 
@@ -126,7 +126,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             }
         });
 
-        viewModel.getRvVisibility().observe(this,aBoolean -> {
+        viewModel.getRvHistoryVisibility().observe(this,aBoolean -> {
             if(aBoolean)
             {
                 rvAppointmentList.setVisibility(View.VISIBLE);
@@ -145,6 +145,14 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                     progressDialog.hide();
             }
         });
+
+        /*viewModel.getListHistoryAppointments().observe(this,appointmentResults -> {
+            if(appointmentResults!=null){
+                listAppointments.clear();
+                listAppointments.addAll(appointmentResults);
+                adapter.notifyDataSetChanged();
+            }
+        });*/
 
     }
 

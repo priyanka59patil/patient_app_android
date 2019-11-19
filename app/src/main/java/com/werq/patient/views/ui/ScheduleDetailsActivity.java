@@ -164,6 +164,35 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     protected void onResume() {
         super.onResume();
 
+
+        viewModel.appointmentResultData.observe(this,appointmentResult1 -> {
+            if(isFromUpcoming){
+
+               if( appointmentResult1!=null){
+
+                    if(appointmentResult1.getConfirmByPatient()!=null && appointmentResult1.getConfirmByPatient()){
+                      setStatusButton("confirmed");
+                        btConfirm.setVisibility(View.GONE);
+                    }
+                    else {
+                        setStatusButton("toconfirm");
+                        btConfirm.setVisibility(View.VISIBLE);
+                    }
+                }
+
+            }else {
+                btConfirm.setVisibility(View.GONE);
+                if(appointmentResult1.getAppointmentStatus()!=null && !appointmentResult1.getAppointmentStatus().trim().isEmpty()){
+
+                    setStatusButton(appointmentResult1.getAppointmentStatus());
+                }
+                else {
+                    tvstatus.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
         viewModel.attachmentVisibility.observe(this, aBoolean -> {
             if(aBoolean)
             {
@@ -177,14 +206,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
         });
 
-        viewModel.confirmButtonVisibility.observe(this,aBoolean -> {
-            Log.e(TAG, "onResume: confirmButtonVisibility="+aBoolean );
-            if(aBoolean) {
-                btConfirm.setVisibility(View.GONE);
-            }else {
-                btConfirm.setVisibility(View.VISIBLE);
-            }
-        });
+
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
@@ -195,10 +217,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 if(progressDialog.isShowing())
                     progressDialog.hide();
             }
-        });
-
-        viewModel.appointmentStatus.observe(this,s -> {
-            setStatusButton();
         });
 
         viewModel.doctorProfilePhoto.observe(this,s -> {
@@ -226,8 +244,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         return super.onOptionsItemSelected(item);
     }
 
-    private void setStatusButton() {
-        controller.statusButtonBackground(mContext, appointmentResult.getAppointmentStatus(), tvstatus);
+    private void setStatusButton(String appointmentStatus) {
+        controller.statusButtonBackground(mContext, appointmentStatus, tvstatus);
 
     }
 
@@ -287,9 +305,9 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(appointmentResult,controller)).get(ScheduleDetailsViewModel.class);
+        viewModel= ViewModelProviders.of(this,new ScheduleDeatilsVmFactory(isFromUpcoming,appointmentResult,controller)).get(ScheduleDetailsViewModel.class);
         detailsBinding.setScheduleDetailsViewModel(viewModel);
-
+        viewModel.setFromUpcoming(isFromUpcoming);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         recyclerViewClickListerner = this::onclick;
         attachmentList = new ArrayList<>();
@@ -340,6 +358,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     public void getIntentData() {
 
             isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
+
             appointmentResult = (AppointmentResult) getIntent().getSerializableExtra("AppointmentData");
             Helper.setLog(TAG,appointmentId+"-:"+appointmentResult.toString());
 

@@ -272,7 +272,14 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 
 
                 case R.id.cvMainlayout:
-                    recyclerViewClickListerner.onclick(getAdapterPosition());
+
+                    if(fromVisitNoteDetails)
+                    {
+                        openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
+                    }else {
+                        recyclerViewClickListerner.onclick(getAdapterPosition());
+                    }
+
                     break;
             }
 
