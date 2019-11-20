@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -49,6 +52,13 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileDoctorActivity extends BaseActivity implements BasicActivities {
+
+    @BindView(R.id.tvNoLayout)
+    ConstraintLayout tvNoDoctorDetails;
+    @BindView(R.id.doctorDetailsLayout)
+    CoordinatorLayout doctorDetailsLayout;
+    @BindView(R.id.noDatatoolbar)
+    Toolbar noDatatoolbar;
 
 
     @BindView(R.id.ivUserProfile)
@@ -115,10 +125,10 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         intent = getIntent();
         progressDialog= Helper.createProgressDialog(mContext);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+
         getIntentData();
         tvAbout.setTrimCollapsedText("Read More...");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
         profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
@@ -172,6 +182,21 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     protected void onResume() {
         super.onResume();
 
+        profileDoctorViewModel.getDoctorDetailsResponse().observe(this,doctorDetailsResponse -> {
+            if(doctorDetailsResponse!=null)
+            {
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                doctorDetailsLayout.setVisibility(View.VISIBLE);
+                tvNoDoctorDetails.setVisibility(View.GONE);
+            }else {
+                setSupportActionBar(noDatatoolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                doctorDetailsLayout.setVisibility(View.GONE);
+                tvNoDoctorDetails.setVisibility(View.VISIBLE);
+            }
+        });
+
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
                 if(!progressDialog.isShowing())
@@ -208,6 +233,11 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         profileDoctorViewModel.about.observe(this,s -> {
             tvAbout.setText(s);
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

@@ -52,7 +52,9 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:drawableTop="@drawable/calendar"
                 android:textAlignment="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:visibility="gone"
+                />
 
 
             <ScrollView
@@ -62,7 +64,7 @@
                 tools:layout_editor_absoluteX="277dp"
                 tools:layout_editor_absoluteY="36dp"
                 android:scrollbars="none"
-                android:visibility="gone">
+                >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -180,6 +182,8 @@
                                     android:layout_marginStart="8dp"
                                     android:layout_marginTop="4dp"
                                     android:layout_toRightOf="@+id/ivUseImage"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
                                     android:text="@{tabAppoinmentViewModel.speciality}" />
 
                                 <TextView

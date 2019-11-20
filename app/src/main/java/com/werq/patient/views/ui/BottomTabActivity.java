@@ -135,7 +135,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
 
-        VisibleMenuItem(false, true, true);
+        VisibleMenuItem(false, false, true);
         return true;
     }
 
@@ -196,7 +196,6 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         addFragment(chatFragments);
                         VisibleMenuItem(true, false, false);
 
-
                         break;
                     case "people":
 
@@ -222,6 +221,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         FilesFragment filesFragment = new FilesFragment();
                         addFragment(filesFragment);
                         Helper.setToolbar(getSupportActionBar(), "Files");
+                        VisibleMenuItem(false, false, true);
 
                         break;
                 }

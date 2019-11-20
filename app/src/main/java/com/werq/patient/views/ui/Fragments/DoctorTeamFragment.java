@@ -128,6 +128,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
                 teamList,viewModel,this);
     }
+
     private void setRecyclerView() {
 
       /*  adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
@@ -152,9 +153,11 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     }
 
     private void openProfileDoctorActivity(boolean isMessageDisabled,int position) {
-        Helper.setLog(TAG,teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1).toString());
+        //Helper.setLog(TAG,teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1).toString());
+        Helper.setLog(TAG,teamList.get(position).getDoctors().get(0).toString());
         Intent intent=new Intent(mContext, ProfileDoctorActivity.class);
-        intent.putExtra("doctorData",teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1));
+        //intent.putExtra("doctorData",teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1));
+        intent.putExtra("doctorData",teamList.get(position).getDoctors().get(0));
         intent.putExtra("isMessageDisabled",isMessageDisabled);
         startActivity(intent);
     }

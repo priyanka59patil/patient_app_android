@@ -20,7 +20,7 @@ public class CreateAccountViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, String errorCode) {
+    public void onError(String url, String errorCode,String errorMessage) {
 
     }
 

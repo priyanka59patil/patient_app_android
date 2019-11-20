@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.JsonObject;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -12,6 +13,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
+import com.werq.patient.service.model.ResponeError.ErrorData;
 
 import java.util.ArrayList;
 
@@ -104,58 +106,104 @@ public class ProfileDoctorViewModel extends BaseViewModel {
             if(url.equalsIgnoreCase("DoctorDetails"))
             {
                 DoctorDetailsResponse detailsResponse= Helper.getGsonInstance().fromJson(responseJson,DoctorDetailsResponse.class);
-                Doctor doctor=detailsResponse.getData().getDoctor();
 
-                doctorName.setValue(doctor.getFirstName()+" "+doctor.getMiddleName()+doctor.getLastName());
-                //currently they dont give speciality in json
-                doctorSpeciality.setValue("Dentistry, Hermatology, Cytophatology");
-                about.setValue(doctor.getAboutMe());
+                if(detailsResponse!=null && detailsResponse.getData()!=null && detailsResponse.getData().getDoctor()!=null)
+                {
+                    doctorDetailsResponse.setValue(detailsResponse);
+                    Doctor doctor=detailsResponse.getData().getDoctor();
 
+                    if(doctor!=null){
 
-                profileUrl.setValue(doctor.getProfilePhoto());
-                doctorDetailsResponse.setValue(detailsResponse);
-                ArrayList<Coworker> coworkerArrayList= (ArrayList<Coworker>) detailsResponse.getData().getCoworker();
-                coworkerList.setValue(coworkerArrayList);
+                        doctorName.setValue(doctor.getFirstName()+" "+doctor.getMiddleName()+doctor.getLastName());
 
-                if(coworkerArrayList.size()>0){
-                    rvCoworkerVisibility.setValue(true);
-                }else {
-                    rvCoworkerVisibility.setValue(false);
-                }
-
-                ArrayList<Location> locationsArrayList=(ArrayList<Location>) detailsResponse.getData().getLocations();
-                locationsList.setValue(locationsArrayList);
-                //practiceName.setValue(doctor.get);
-                if(locationsArrayList.size()>0){
-                    rvPracticesVisibility.setValue(true);
-                }else {
-                    rvPracticesVisibility.setValue(false);
-                }
-                
-
-                
-                if(doctor.getContactInfo()!=null){
-
-                    for (int i = 0; i < doctor.getContactInfo().size(); i++) {
-                        //1 means website
-                        // 2 means phone number
-                        if(doctor.getContactInfo().get(i).getType()==1 ){
-                            practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                        if(doctor.getSpeciality()!=null)
+                        {
+                            doctorSpeciality.setValue(doctor.getSpeciality().getName());
+                        }
+                        else {
+                            doctorSpeciality.setValue("Not Available");
                         }
 
-                        if(doctor.getContactInfo().get(i).getType()==2 ){
-                            practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                        if(doctor.getAboutMe()!=null && !doctor.getAboutMe().isEmpty())
+                            about.setValue(doctor.getAboutMe());
+                        else
+                            about.setValue("Not Available");
+
+                        if(doctor.getProfilePhoto()!=null){
+                            profileUrl.setValue(doctor.getProfilePhoto());
+                        }else {
+                            profileUrl.setValue("");
+                        }
+
+
+
+                    }
+
+                    if(detailsResponse.getData().getCoworker()!=null){
+
+                        ArrayList<Coworker> coworkerArrayList= (ArrayList<Coworker>) detailsResponse.getData().getCoworker();
+                        coworkerList.setValue(coworkerArrayList);
+                        if(coworkerArrayList.size()>0){
+                            rvCoworkerVisibility.setValue(true);
+                        }else {
+                            rvCoworkerVisibility.setValue(false);
                         }
                     }
+                    else {
+                        coworkerList.setValue(null);
+                        rvCoworkerVisibility.setValue(false);
+                    }
+
+                    if(detailsResponse.getData().getLocations()!=null){
+
+                        ArrayList<Location> locationsArrayList=(ArrayList<Location>) detailsResponse.getData().getLocations();
+                        locationsList.setValue(locationsArrayList);
+                        //practiceName.setValue(doctor.get);
+                        if(locationsArrayList.size()>0){
+                            rvPracticesVisibility.setValue(true);
+                        }else {
+                            rvPracticesVisibility.setValue(false);
+                        }
+                    }
+                    else {
+                        locationsList.setValue(null);
+                        rvPracticesVisibility.setValue(false);
+                    }
+
+                    if(doctor.getContactInfo()!=null){
+
+                        for (int i = 0; i < doctor.getContactInfo().size(); i++) {
+                            //1 means website
+                            // 2 means phone number
+                            if(doctor.getContactInfo().get(i).getType()==1 ){
+                                practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                            }
+
+                            if(doctor.getContactInfo().get(i).getType()==2 ){
+                                practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                            }
+                        }
+                    }
+                    else {
+                       profileUrl.setValue("");
+                       practicePhoneNumber.setValue("");
+                    }
                 }
+                else {
+                    doctorDetailsResponse.setValue(null);
+                }
+
             }
         }
 
     }
 
     @Override
-    public void onError(String url, String errorCode) {
+    public void onError(String url, String errorCode,String errorMessage) {
         getLoading().setValue(false);
+        Helper.setLog("onError","url-"+url+"  errorMessage-"+errorMessage );
+        getToast().setValue(errorMessage);
+        doctorDetailsResponse.setValue(null);
     }
 
     @Override

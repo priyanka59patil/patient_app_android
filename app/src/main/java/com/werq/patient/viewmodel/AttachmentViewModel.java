@@ -73,7 +73,7 @@ public class AttachmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, String errorCode) {
+    public void onError(String url, String errorCode,String errorMessage) {
         getLoading().setValue(false);
     }
 
