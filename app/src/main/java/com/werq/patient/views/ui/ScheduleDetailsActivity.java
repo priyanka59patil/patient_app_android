@@ -32,6 +32,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.Utils.SessionManager;
@@ -63,6 +65,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ScheduleDetailsActivity extends BaseActivity implements RecyclerViewClickListerner, BasicActivities {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tvday)
@@ -148,7 +155,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     private AppointmentResult appointmentResult;
     private String TAG="schedule_details";
     private  int appointmentId;
-    ProgressDialog progressDialog;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -225,14 +232,12 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+        viewModel.apptDetailsloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+               loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                loadingView.setVisibility(View.GONE);
             }
         });
 
@@ -314,11 +319,12 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         detailsBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
-        progressDialog=Helper.createProgressDialog(mContext);
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
 
         ButterKnife.bind(this);
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         setSupportActionBar(toolbar);
         getIntentData();
 
@@ -413,6 +419,5 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
-        progressDialog.hide();
     }
 }

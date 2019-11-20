@@ -1,7 +1,10 @@
 package com.werq.patient.Utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.werq.patient.views.ui.LoginActivity;
 
 public class SessionManager {
 
@@ -128,6 +131,22 @@ public class SessionManager {
     public static String getRememberPassword() {
         return REMEMBER_PASSWORD;
     }
+
+    public void logoutUser(Context context) {
+
+        clear();
+        editor.putBoolean(IS_LOGIN, false);
+        editor.commit();
+
+            Intent i = new Intent(context, LoginActivity.class);
+
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+           // Helper.startLogin = true;
+
+    }
+
 
     public void clear() {
         editor.clear();

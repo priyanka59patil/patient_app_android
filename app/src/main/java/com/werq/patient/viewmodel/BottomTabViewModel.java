@@ -122,15 +122,16 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
-            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
+            patientRepository.getDocterTeamAppoitment(authToken,"20",""+0,
                     getToast(),apiResponce,"DoctorTeam");
+
         }
     }
 
     private void fetchAttachments() {
         getLoading().setValue(true);
 
-        patientRepository.getAttachments(authToken,"",10+"",page*10+"",getToast(),apiResponce,"AllAttachments");
+        patientRepository.getAttachments(authToken,"","10",10+"",getToast(),apiResponce,"AllAttachments");
     }
 
 

@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -50,6 +53,13 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     RecyclerView rvAppointmentList;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
+
+
     //listner
     RecyclerViewClickListerner listener;
     AppointmentInterface controller;
@@ -61,7 +71,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     FragmentTabAppointmentBinding appointmentBinding;
     private String TAG="TabAppointmentFragment";
 
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
+
 
     @Override
     public void initializeVariables() {
@@ -71,7 +82,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         listener = this::onclick;
         basicActivities=this;
         controller=new AppointmentController(basicActivities);
-        progressDialog=Helper.createProgressDialog(mContext);
+        /*progressDialog=Helper.createProgressDialog(mContext);
+        progressDialog.hide();*/
+
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         //progressDialog.hide();
         setRecyclerView();
 
@@ -111,6 +126,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -164,45 +181,62 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             }
         });
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+        viewModel.upcommingloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                //if(!loadingView.isAnimating())
+                    loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                //if(loadingView.isShowing())
+                loadingView.setVisibility(View.GONE);
             }
         });
 
-       /* viewModel.listUpcommingAppointments.observe(this,appointmentResults -> {
+        viewModel.listUpcommingAppointments.observe(this,appointmentResults -> {
             if(appointmentResults!=null){
-                listAppointments.clear();
-                listAppointments.addAll(appointmentResults);
-                adapter.notifyDataSetChanged();
+                listcount=appointmentResults.size();
             }
-        });*/
+        });
 
 
 
-        /*rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
                 try {
                     if (dy > 0) //check for scroll down
                     {
+                        visibleItemCount = recyclerView.getChildCount();
+                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        //Log.("check",String.valueOf(listcount == totalItemCount));
+                        if (listcount < 4) {
+                            //Log.("check","xzx");
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
 
-                        viewModel.onScrollDown(recyclerView.getChildCount(),
-                                recyclerView.getAdapter().getItemCount(),
-                                ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
+                        if (data == (count * 4)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    //Logv("...", "Last Item Wow !");
+                                    ++page;
+                                    viewModel.fetchUpcomingAppointmentList(page);
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        });*/
+        });
 
 
     }

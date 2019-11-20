@@ -9,11 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
@@ -46,6 +50,13 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
+
+
     //listener
     RecyclerViewClickListerner listener;
     Context mContext;
@@ -55,7 +66,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     private AppointmentResponce data;
     TabAppoinmentViewModel viewModel;
     private String TAG="TabHistoryFragment";
-    ProgressDialog progressDialog;
+   // ProgressDialog progressDialog;
     FragmentTabHistoryBinding fragmentTabHistoryBinding;
 
     /*@Override
@@ -79,6 +90,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
         ButterKnife.bind(this, view);
+
         initializeVariables();
         getData();
         //   setRecyclerViewAdapters();
@@ -88,14 +100,15 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
     @Override
     public void initializeVariables() {
-        //context
 
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         //listner
         listener = this::onclick;
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
         listAppointments = new ArrayList<>();
-        progressDialog=Helper.createProgressDialog(mContext);
+        //progressDialog=Helper.createProgressDialog(mContext);
         //progressDialog.hide();
         adapter = new AppointmentAdapter(getActivity(), false, listener,listAppointments,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
@@ -135,24 +148,55 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                 rvAppointmentList.setVisibility(View.GONE);
             }
         });
-        viewModel.getLoading().observe(this,aBoolean -> {
+
+        viewModel.historyloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                //if(!loadingView.isAnimating())
+                loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                //if(loadingView.isShowing())
+                loadingView.setVisibility(View.GONE);
             }
         });
 
-        /*viewModel.getListHistoryAppointments().observe(this,appointmentResults -> {
-            if(appointmentResults!=null){
-                listAppointments.clear();
-                listAppointments.addAll(appointmentResults);
-                adapter.notifyDataSetChanged();
+        rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = recyclerView.getChildCount();
+                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        //Log.("check",String.valueOf(listcount == totalItemCount));
+                        if (listcount < 10) {
+                            //Log.("check","xzx");
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
+
+                        if (data == (count * 10)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    //Logv("...", "Last Item Wow !");
+                                    ++page;
+                                    viewModel.fetchHistoryAppointmentList(page);
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        });*/
+        });
 
     }
 

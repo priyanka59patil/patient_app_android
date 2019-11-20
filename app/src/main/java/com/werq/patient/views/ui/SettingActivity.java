@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 
 import butterknife.BindView;
@@ -53,6 +54,7 @@ public class SettingActivity extends BaseActivity {
     View view5;
     private Context mContext;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,13 +86,17 @@ public class SettingActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.tvPassword, R.id.tvChangePassword})
+    @OnClick({R.id.tvPassword, R.id.tvChangePassword,R.id.tvLogOut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvPassword:
                 break;
             case R.id.tvChangePassword:
                 startActivity(new Intent(mContext, ChangePasswordActivity.class));
+                break;
+            case R.id.tvLogOut:
+
+                SessionManager.getSessionManager(mContext).logoutUser(mContext);
                 break;
         }
     }

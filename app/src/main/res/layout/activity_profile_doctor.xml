@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             tools:context=".views.ui.ProfileDoctorActivity"
-            android:visibility="gone">
+            >
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar"
@@ -220,7 +220,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".views.ui.ScheduleDetailsActivity"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"

@@ -70,7 +70,7 @@ public class DoctorTeamViewModel  extends BaseViewModel {
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
-            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
+            patientRepository.getDocterTeamAppoitment(authToken,"20",""+0,
                     getToast(),apiResponce,"DoctorTeam");
         }
     }
