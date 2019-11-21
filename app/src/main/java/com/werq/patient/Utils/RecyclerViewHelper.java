@@ -29,6 +29,17 @@ public class RecyclerViewHelper {
         recyclerView.setAdapter(o);
     }
 
+    public static void setStackImageAdapter(Context mContext, RecyclerView recyclerView, RecyclerView.Adapter o){
+        LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager.setReverseLayout(false);
+        layoutManager.setStackFromEnd(false);
+        recyclerView.addItemDecoration(new OverlapDecoration());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(o);
+    }
+
+
     public static void setAdapterToRecylerViewwithanimation(Context mContext, RecyclerView recyclerView){
         final LayoutAnimationController controller =
                 AnimationUtils.loadLayoutAnimation(mContext, R.anim.layout_animatin_from_bottom);

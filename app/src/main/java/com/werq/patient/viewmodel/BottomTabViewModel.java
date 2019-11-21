@@ -29,14 +29,15 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
 
-    int visibleItemCount,totalItemCount,pastVisiblesItems;
-    private int listcount;
-    boolean loading;
-    private int page=0;
     String authToken;
     String refreshTokenId;
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
+
+    public MutableLiveData<Boolean> teamloading;
+    public MutableLiveData<Boolean> doctorDetailsloading;
+    public MutableLiveData<Boolean> attachmentsloading;
+
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
 
@@ -54,6 +55,11 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         rvVisibility=new MutableLiveData<>();
         teamList=new MutableLiveData<>();
         listAttachments=new MutableLiveData<>();
+
+        teamloading=new MutableLiveData<>();
+        doctorDetailsloading=new MutableLiveData<>();
+        attachmentsloading=new MutableLiveData<>();
+
 
     }
 
@@ -117,12 +123,13 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
 
-    public void fetchTeamList(){
+    public void fetchTeamList(/*int page*/){
+
 
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
-            patientRepository.getDocterTeamAppoitment(authToken,"20",""+0,
+            patientRepository.getDocterTeamAppoitment(authToken,"10",""+0,
                     getToast(),apiResponce,"DoctorTeam");
 
         }
@@ -145,7 +152,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
         if(url!=null && url.equals("DoctorTeam"))
         {
-            listcount = doctorTeamResponse.getData().getCount();
             ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
             dataArrayList.addAll(doctorTeamResponse.getData().getResult());
             teamList.setValue(dataArrayList);
@@ -161,7 +167,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("AllAttachments"))
         {
             AttachmentResponse attachmentResponse=Helper.getGsonInstance().fromJson(responseJson,AttachmentResponse.class);
-            listcount = attachmentResponse.getData().getCount();
             ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
             dataArrayList.addAll(attachmentResponse.getData().getResult());
             listAttachments.setValue(dataArrayList);

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.stackimage_header, parent, false);
             return new StackImagesAdapter.HeaderViewHolder(v);
@@ -43,7 +45,6 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_stack_image, parent, false);
             return new ViewHolder(itemView);
         }
-
 
         return null;
 
@@ -53,8 +54,9 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof StackImagesAdapter.HeaderViewHolder) {
             StackImagesAdapter.HeaderViewHolder headerHolder = (StackImagesAdapter.HeaderViewHolder) holder;
-            Log.e( "onBindViewHolder: ", profileUrl.size()-1+"");
-        //    headerHolder.notify_badge.setText(profileUrl.size()-1);
+
+            headerHolder.notify_badge.setText("+"+(profileUrl.size()-2));
+
 
         } else if (holder instanceof ViewHolder) {
 
@@ -80,23 +82,43 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
 
-        //Log.e( "getItemViewType: ",position+"::"+profileUrl.size() );
+        Helper.setLog("profileUrl.size()",profileUrl.size()+"");
+        if(profileUrl.size()>2){
 
-        ///if(position==profileUrl.size()-4){
-        if(position==0){
+            if(position==getItemCount()-1){
+                return TYPE_HEADER;
+            }
+
+            return TYPE_ITEM;
+        }
+        else {
+
+            return TYPE_ITEM;
+        }
+
+       /* if(position==getItemCount()-1){
             return TYPE_HEADER;
         }
 
-        return TYPE_ITEM;
+        return TYPE_ITEM;*/
     }
 
     @Override
     public int getItemCount() {
         if(profileUrl!=null){
-            return profileUrl.size();
+
+            if(profileUrl.size()>2){
+                return 3;
+            }
+            else {
+                profileUrl.size();
+            }
+
         }
         return 0;
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         RoundedImageView ivUserProfile;

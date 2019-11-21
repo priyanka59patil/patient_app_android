@@ -63,6 +63,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     String authToken;
     String refreshTokenId;
     ApiResponce apiResponce=this;
+    int upcommingPageNo=0;
+    int historyPageNo=0;
 
     public TabAppoinmentViewModel(){
         appointmentRepository = new AppointmentRepository();
@@ -238,7 +240,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             upcommingloading.setValue(false);
 
             ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
-            if(listUpcommingAppointments.getValue()!=null){
+            if(listUpcommingAppointments.getValue()!=null && upcommingPageNo!=0){
                 dataArrayList.addAll(listUpcommingAppointments.getValue());
             }
 
@@ -258,7 +260,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         {
             historyloading.setValue(false);
             ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
-            if(listHistoryAppointments.getValue()!=null){
+            if(listHistoryAppointments.getValue()!=null && historyPageNo!=0){
                 dataArrayList.addAll(listHistoryAppointments.getValue());
             }
             dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
@@ -429,7 +431,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public void fetchUpcomingAppointmentList(int page) {
         upcommingloading.setValue(true);
-
+        upcommingPageNo=page;
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "getToken: "+authToken );
 
@@ -441,6 +443,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public void fetchHistoryAppointmentList(int page){
         historyloading.setValue(true);
+        historyPageNo=page;
         appointmentRepository.getHistoryAppoitment(authToken,"10",""+page*10,
                 getToast(),apiResponce,"HistoryAppointment");
     }
@@ -517,10 +520,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
-        if(isFromUpcoming) {
+        /*if(isFromUpcoming) {
             fetchUpcomingAppointmentList(0);
         }
         else
-            fetchHistoryAppointmentList(0);
+            fetchHistoryAppointmentList(0);*/
     }
 }

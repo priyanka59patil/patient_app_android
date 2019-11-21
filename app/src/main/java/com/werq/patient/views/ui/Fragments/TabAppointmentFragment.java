@@ -163,6 +163,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onResume() {
         super.onResume();
 
+
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.fetchUpcomingAppointmentList(0);
+        }
+
         viewModel.getRepoLoadError().observe(this,aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));

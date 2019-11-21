@@ -40,9 +40,9 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
         this.recyclerViewClickListerner=recyclerViewClickListerner;
         this.teamList=teamList;
 
-        viewModel.teamList.observe(lifecycleOwner,doctorTeamResults -> {
+        viewModel.getTeamList().observe(lifecycleOwner,doctorTeamResults -> {
             if(doctorTeamResults!=null ){
-                //this.teamList.clear();
+                this.teamList.clear();
                 this.teamList.addAll(doctorTeamResults);
                 notifyDataSetChanged();
                 Helper.setLog("doctorTeamResults",doctorTeamResults.size()+"");
@@ -66,7 +66,7 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
         }
 
         stackImageView = new StackImagesAdapter(mContext, imageLists);
-        RecyclerViewHelper.setAdapterToStackRecylerView(mContext,  holder.rvUserProfiles,stackImageView);
+        RecyclerViewHelper.setStackImageAdapter(mContext,  holder.rvUserProfiles,stackImageView);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
         //if(teamList.size()>0 && position<teamList.size()){
 

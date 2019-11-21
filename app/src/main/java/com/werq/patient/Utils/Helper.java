@@ -3,6 +3,8 @@ package com.werq.patient.Utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -41,6 +43,13 @@ public class Helper {
     public static void showToast(Context context,String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public static boolean hasNetworkConnection(Context context) {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+        return (activeInfo != null && activeInfo.isConnected());
     }
 
 

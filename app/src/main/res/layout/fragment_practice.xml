@@ -38,7 +38,8 @@
                     android:textSize="@dimen/textSize_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvpracticeabout"
@@ -50,7 +51,8 @@
                     android:padding="@dimen/padding_textview_practice"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvtitlepractice" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvtitlepractice"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/tvtittlePracticeLocation"
