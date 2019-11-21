@@ -42,6 +42,9 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
 
     public  MutableLiveData<String> openFrag;
+    int doctorTeamPageNo=0;
+    int historyPageNo=0;
+
     public BottomTabViewModel() {
         super();
         openFrag=new MutableLiveData<>();
@@ -105,7 +108,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
-        fetchTeamList();
+        //fetchTeamList();
 
         fetchAttachments();
     }
@@ -123,13 +126,13 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
 
-    public void fetchTeamList(/*int page*/){
+    public void fetchTeamList(int page){
 
-
+        getLoading().setValue(true);
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
-            patientRepository.getDocterTeamAppoitment(authToken,"10",""+0,
+            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
                     getToast(),apiResponce,"DoctorTeam");
 
         }
@@ -153,6 +156,10 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("DoctorTeam"))
         {
             ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
+
+            if(teamList.getValue()!=null && doctorTeamPageNo!=0){
+                dataArrayList.addAll(teamList.getValue());
+            }
             dataArrayList.addAll(doctorTeamResponse.getData().getResult());
             teamList.setValue(dataArrayList);
 

@@ -134,6 +134,8 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
         if(Helper.hasNetworkConnection(mContext)){
             viewModel.fetchHistoryAppointmentList(0);
+        }else {
+            Helper.showToast(mContext,"No Network Connection");
         }
 
         viewModel.getRepoLoadError().observe(this,aBoolean -> {

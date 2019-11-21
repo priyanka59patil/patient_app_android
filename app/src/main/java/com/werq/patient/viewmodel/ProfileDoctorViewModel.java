@@ -23,12 +23,8 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
-    private static final String TAG = "TabAppoinmentViewModel";
+    private static final String TAG = "ProfileDoctorViewModel";
 
-    int visibleItemCount,totalItemCount,pastVisiblesItems;
-    private int listcount;
-    boolean loading;
-    private int page=0;
     String authToken;
     String refreshTokenId;
     ApiResponce apiResponce=this;
@@ -50,6 +46,8 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public MutableLiveData<String> practiceName;
     public MutableLiveData<Boolean> rvPracticesVisibility;
 
+    int coworkerPageNo;
+
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }
@@ -61,13 +59,14 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
 
-        getDoctorDetails();
+        //getDoctorDetails();
     }
 
-    private void getDoctorDetails() {
-
+    public void getDoctorDetails(int page) {
+        coworkerPageNo=page;
         getLoading().setValue(true);
         if(doctorId!=0){
+
             patientRepository.getDocterDetails(authToken,doctorId,getToast(),10+"",page*10+"",apiResponce,"DoctorDetails");
         }
     }
@@ -135,13 +134,17 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                             profileUrl.setValue("");
                         }
 
-
-
                     }
 
                     if(detailsResponse.getData().getCoworker()!=null){
 
-                        ArrayList<Coworker> coworkerArrayList= (ArrayList<Coworker>) detailsResponse.getData().getCoworker();
+                        ArrayList<Coworker> coworkerArrayList= new ArrayList<>();
+
+                        if(coworkerList.getValue()!=null && coworkerPageNo!=0){
+
+                            coworkerArrayList.addAll(coworkerList.getValue());
+                        }
+                        coworkerArrayList.addAll(detailsResponse.getData().getCoworker());
                         coworkerList.setValue(coworkerArrayList);
                         if(coworkerArrayList.size()>0){
                             rvCoworkerVisibility.setValue(true);
@@ -178,9 +181,15 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                             if(doctor.getContactInfo().get(i).getType()==1 ){
                                 practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
                             }
+                            else {
+                                practiceWebUrl.setValue("Not Available");
+                            }
 
                             if(doctor.getContactInfo().get(i).getType()==2 ){
                                 practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+
+                            } else {
+                                practicePhoneNumber.setValue("Not Available");
                             }
                         }
                     }

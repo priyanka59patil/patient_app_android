@@ -6,13 +6,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
@@ -35,6 +40,16 @@ import butterknife.ButterKnife;
 
 public class DoctorsListFragment extends BaseFragment {
 
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
+
+
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
     @BindView(R.id.tvNoData)
@@ -43,13 +58,24 @@ public class DoctorsListFragment extends BaseFragment {
     Context mContext;
     ProfileDoctorViewModel viewModel;
     FragmentDoctorsListBinding fragmentDoctorsListBinding;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
     DoctorListAdapter doctorListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       /* if(Helper.hasNetworkConnection(mContext)){
+            viewModel.getDoctorDetails(0);
+        }
+        else {
+            Helper.showToast(mContext,"No Network Connection");
+        }*/
     }
 
     @Override
@@ -68,23 +94,21 @@ public class DoctorsListFragment extends BaseFragment {
         fragmentDoctorsListBinding.setLifecycleOwner(this);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
-        progressDialog=Helper.createProgressDialog(mContext);
+        //progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this,view);
         initializeVariables();
 
        // setRecyclerView();
 
         viewModel.getLoading().observe(this,aBoolean -> {
-
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                //if(!loadingView.isAnimating())
+                loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                //if(loadingView.isShowing())
+                loadingView.setVisibility(View.GONE);
             }
-
         });
 
         viewModel.rvCoworkerVisibility.observe(this,aBoolean -> {
@@ -98,10 +122,52 @@ public class DoctorsListFragment extends BaseFragment {
             }
         });
 
+
+        rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = recyclerView.getChildCount();
+                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        //Log.("check",String.valueOf(listcount == totalItemCount));
+                        if (listcount < 4) {
+                            //Log.("check","xzx");
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
+
+                        if (data == (count * 4)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    //Logv("...", "Last Item Wow !");
+                                    ++page;
+                                    viewModel.getDoctorDetails(page);
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return view;
     }
 
     private void initializeVariables() {
+
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         cowerkerList =new ArrayList<>();
         doctorListAdapter=new DoctorListAdapter(getActivity(),cowerkerList,viewModel,this);
         setRecyclerView();

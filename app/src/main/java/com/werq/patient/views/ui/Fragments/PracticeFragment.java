@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentPracticeBinding;
@@ -31,6 +34,14 @@ import butterknife.ButterKnife;
 
 
 public class PracticeFragment extends BaseFragment /*implements BasicActivities*/ {
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
 
 
     @BindView(R.id.tvtitlepractice)
@@ -122,6 +133,17 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
         });
 
 
+        viewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean ){
+                //if(!loadingView.isAnimating())
+                loadingView.setVisibility(View.VISIBLE);
+            }
+            else {
+                //if(loadingView.isShowing())
+                loadingView.setVisibility(View.GONE);
+            }
+        });
+
        //     getData();
 
 
@@ -129,10 +151,15 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
-
+    }
 
     public void initializeVariables() {
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         profileInterface=new ProfileController(basicActivities);
         locationsList=new ArrayList<>();
         locationpracticeAdapter=new PracticeAdapter(mContext,locationsList,viewModel,this);

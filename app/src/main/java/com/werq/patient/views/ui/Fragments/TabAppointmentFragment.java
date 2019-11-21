@@ -165,7 +165,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
 
         if(Helper.hasNetworkConnection(mContext)){
+
             viewModel.fetchUpcomingAppointmentList(0);
+
+        } else {
+            Helper.showToast(mContext,"No Network Connection");
         }
 
         viewModel.getRepoLoadError().observe(this,aBoolean -> {

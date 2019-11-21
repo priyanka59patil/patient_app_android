@@ -7,13 +7,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
@@ -42,6 +47,14 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @BindView(R.id.tvNoData)
     TextView tvNoData;
 
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
+
     //Context
     Context mContext;
     //adapter
@@ -53,7 +66,8 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     ArrayList<DoctorTeamResult> teamList;
     private String TAG="DoctorTeamFragment";
     FragmentDoctorTeamBinding fragmentDoctorTeamBinding;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
+
 
 
     @Override
@@ -77,10 +91,50 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
-        progressDialog=Helper.createProgressDialog(mContext);
+
+        //progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this, view);
         intializeVariables();
         setRecyclerView();
+
+
+        rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = recyclerView.getChildCount();
+                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        //Log.("check",String.valueOf(listcount == totalItemCount));
+                        if (listcount < 4) {
+                            //Log.("check","xzx");
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
+
+                        if (data == (count * 4)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    //Logv("...", "Last Item Wow !");
+                                    ++page;
+                                    viewModel.fetchTeamList(page);
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
@@ -88,6 +142,14 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void onResume() {
         super.onResume();
+
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.fetchTeamList(0);
+        }
+        else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
+
         viewModel.getRepoLoadError().observe(this,aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
@@ -111,18 +173,19 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         viewModel.getLoading().observe(this,aBoolean -> {
 
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                loadingView.setVisibility(View.GONE);
             }
 
         });
     }
 
     private void intializeVariables() {
+
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         recyclerViewClickListerner=this;
         teamList =new ArrayList<>();
         doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
