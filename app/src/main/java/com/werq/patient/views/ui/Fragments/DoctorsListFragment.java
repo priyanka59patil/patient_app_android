@@ -135,14 +135,14 @@ public class DoctorsListFragment extends BaseFragment {
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                         //Log.("check",String.valueOf(listcount == totalItemCount));
-                        if (listcount < 4) {
+                        if (listcount < 10) {
                             //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
                         int data = totalItemCount;
 
-                        if (data == (count * 4)) {
+                        if (data == (count *10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                                     //                                loading = false;

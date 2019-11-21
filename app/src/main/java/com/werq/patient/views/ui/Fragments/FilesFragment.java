@@ -8,14 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -75,7 +80,15 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     FilesData filesData;
     BottomTabViewModel viewModel;
     FragmentFilesBinding fragmentFilesBinding;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    private boolean loading = true;
+    int page = 0;
+    int listcount = 0;
 
 
     @Override
@@ -109,14 +122,20 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+        if(Helper.hasNetworkConnection(mContext)){
+            loading =true;
+            viewModel.fetchAttachments(0);
+
+        }else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
+
+        viewModel.attachmentsloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
-                    progressDialog.show();
+                loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                loadingView.setVisibility(View.GONE);
             }
         });
 
@@ -126,6 +145,49 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             }
         });
 
+        viewModel.listAttachments.observe(this,attachmentResults -> {
+            if(attachmentResults!=null){
+                listcount=attachmentResults.size();
+            }
+        });
+
+        rvFiles.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = recyclerView.getChildCount();
+                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        //Log.("check",String.valueOf(listcount == totalItemCount));
+                        if (listcount < 10) {
+                            //Log.("check","xzx");
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
+
+                        if (data == (count * 10)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    //Logv("...", "Last Item Wow !");
+                                    ++page;
+                                    viewModel.fetchAttachments(page);
+                                    //Do pagination.. i.e. fetch new data
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         /*viewModel.rvVisibility.observe(this,aBoolean -> {
             if(aBoolean){
                 rvFiles.setVisibility(View.VISIBLE);
@@ -142,10 +204,9 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void initializeVariables() {
-        //context
 
-
-        //listner
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         diologListner=this::onClick;
         recyclerViewClickListerner=this::onclick;
         basicActivities=this;
@@ -153,7 +214,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
         //data
         attachmentList = new ArrayList<>();
-        progressDialog= Helper.createProgressDialog(mContext);
+        //progressDialog= Helper.createProgressDialog(mContext);
         //adapters
 
 

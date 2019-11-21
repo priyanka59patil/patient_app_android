@@ -119,4 +119,10 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(progressDialog.isShowing())
+            progressDialog.hide();
+    }
 }

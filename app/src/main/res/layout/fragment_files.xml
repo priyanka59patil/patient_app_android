@@ -67,5 +67,13 @@
             android:layout_centerInParent="true"
             android:visibility="gone"/>
 
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/loadingView"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            app:SpinKit_Color="@color/colorAccent" />
+
     </RelativeLayout>
 </layout>

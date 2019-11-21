@@ -51,7 +51,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     ProgressBar loadingView;
     Sprite fadingCircle;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
-    private boolean loading = true;
+    boolean loading = true;
     int page = 0;
     int listcount = 0;
 
@@ -110,14 +110,14 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                         //Log.("check",String.valueOf(listcount == totalItemCount));
-                        if (listcount < 4) {
+                        if (listcount < 10) {
                             //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
                         int data = totalItemCount;
 
-                        if (data == (count * 4)) {
+                        if (data == (count * 10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                                     //                                loading = false;

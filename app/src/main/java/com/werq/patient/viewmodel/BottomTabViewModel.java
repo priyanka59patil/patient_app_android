@@ -44,6 +44,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public  MutableLiveData<String> openFrag;
     int doctorTeamPageNo=0;
     int historyPageNo=0;
+    int attachmentPageNo=0;
+
 
     public BottomTabViewModel() {
         super();
@@ -110,7 +112,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         this.authToken = authToken;
         //fetchTeamList();
 
-        fetchAttachments();
+        //fetchAttachments();
     }
 
     public String getRefreshTokenId() {
@@ -128,7 +130,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
     public void fetchTeamList(int page){
 
-        getLoading().setValue(true);
+        teamloading.setValue(true);
         if(authToken!=null&& !authToken.isEmpty()){
             Log.e(TAG, "authToken: "+authToken );
 
@@ -138,10 +140,10 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         }
     }
 
-    private void fetchAttachments() {
-        getLoading().setValue(true);
-
-        patientRepository.getAttachments(authToken,"","10",10+"",getToast(),apiResponce,"AllAttachments");
+    public void fetchAttachments(int page) {
+        attachmentsloading.setValue(true);
+        attachmentPageNo=page;
+        patientRepository.getAttachments(authToken,"","10",page*10+"",getToast(),apiResponce,"AllAttachments");
     }
 
 
@@ -155,6 +157,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
         if(url!=null && url.equals("DoctorTeam"))
         {
+            teamloading.setValue(false);
             ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
 
             if(teamList.getValue()!=null && doctorTeamPageNo!=0){
@@ -173,18 +176,37 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         }
         if(url!=null && url.equals("AllAttachments"))
         {
+
+            attachmentsloading.setValue(false);
             AttachmentResponse attachmentResponse=Helper.getGsonInstance().fromJson(responseJson,AttachmentResponse.class);
-            ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
-            dataArrayList.addAll(attachmentResponse.getData().getResult());
-            listAttachments.setValue(dataArrayList);
 
-            if (listAttachments.getValue().size() > 0) {
-                rvVisibility.setValue(true);
-                //noVisitNote.setVisibility(View.GONE);
+            if(attachmentResponse !=null){
+                ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
+                if(listAttachments.getValue()!=null && attachmentPageNo!=0){
+                    dataArrayList.addAll(listAttachments.getValue());
+                }
+                if(attachmentResponse.getData()!=null && attachmentResponse.getData().getResult()!=null){
+                    dataArrayList.addAll(attachmentResponse.getData().getResult());
+                    listAttachments.setValue(dataArrayList);
 
-            } else {
+                    if (listAttachments.getValue().size() > 0) {
+                        rvVisibility.setValue(true);
+                        //noVisitNote.setVisibility(View.GONE);
+
+                    } else {
+                        rvVisibility.setValue(false);
+                    }
+                }else {
+                    listAttachments.setValue(null);
+                    rvVisibility.setValue(false);
+                }
+
+            }
+            else {
+                listAttachments.setValue(null);
                 rvVisibility.setValue(false);
             }
+
         }
 
     }
@@ -192,10 +214,14 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     @Override
     public void onError(String url, String errorCode,String errorMessage) {
         getLoading().setValue(false);
+        teamloading.setValue(false);
+        attachmentsloading.setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
+        teamloading.setValue(false);
+        attachmentsloading.setValue(false);
         getLoading().setValue(false);
     }
 
