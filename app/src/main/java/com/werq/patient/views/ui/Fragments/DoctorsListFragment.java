@@ -70,7 +70,7 @@ public class DoctorsListFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-       /* if(Helper.hasNetworkConnection(mContext)){
+    /*    if(Helper.hasNetworkConnection(mContext)){
             viewModel.getDoctorDetails(0);
         }
         else {
@@ -122,6 +122,12 @@ public class DoctorsListFragment extends BaseFragment {
             }
         });
 
+        viewModel.coworkerList.observe(this,coworkerArrayList -> {
+            if(coworkerArrayList!=null){
+                listcount=coworkerArrayList.size();
+            }
+        });
+
 
         rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -149,7 +155,7 @@ public class DoctorsListFragment extends BaseFragment {
                                     loading=true;
                                     //Logv("...", "Last Item Wow !");
                                     ++page;
-                                    viewModel.getDoctorDetails(page);
+                                   // viewModel.fetchDoctorDetails(page);
                                     //Do pagination.. i.e. fetch new data
                                 }
                             }

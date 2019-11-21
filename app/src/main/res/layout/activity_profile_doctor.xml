@@ -74,7 +74,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/margin_userProfile"
                                 android:layout_toRightOf="@+id/ivUserProfile"
-                                android:text="@={viewModel.doctorName}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/textSize_title" />
 
@@ -85,8 +84,7 @@
                                 android:textColor="@color/black"
                                 android:layout_below="@+id/tvUsername"
                                 android:layout_marginTop="8dp"
-                                android:layout_toRightOf="@+id/ivUserProfile"
-                                android:text="@={viewModel.doctorSpeciality}" />
+                                android:layout_toRightOf="@+id/ivUserProfile"/>
 
                             <com.borjabravo.readmoretextview.ReadMoreTextView
                                 android:id="@+id/tvAbout"
@@ -98,7 +96,6 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginTop="8dp"
-                                android:text="@={viewModel.about}"
                                 app:colorClickableText="@color/colorPrimary"
                                 />
                             <View

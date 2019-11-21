@@ -59,10 +59,10 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
 
-        //getDoctorDetails();
+        fetchDoctorDetails(0);
     }
 
-    public void getDoctorDetails(int page) {
+    public void fetchDoctorDetails(int page) {
         coworkerPageNo=page;
         getLoading().setValue(true);
         if(doctorId!=0){
@@ -80,6 +80,8 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         this.patientRepository =new PatientRepository();
 
         doctorName=new MutableLiveData<>();
+
+        doctorName.setValue("mera desh");
         doctorSpeciality=new MutableLiveData<>();
         about=new MutableLiveData<>();
         profileUrl=new MutableLiveData<>();
@@ -111,10 +113,13 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                     doctorDetailsResponse.setValue(detailsResponse);
                     Doctor doctor=detailsResponse.getData().getDoctor();
 
+
                     if(doctor!=null){
+                        Helper.setLog(TAG,"doctor"+doctor.toString());
+
 
                         doctorName.setValue(doctor.getFirstName()+" "+doctor.getMiddleName()+doctor.getLastName());
-
+                        Helper.setLog(TAG,"doctorName"+doctorName.getValue().toString());
                         if(doctor.getSpeciality()!=null)
                         {
                             doctorSpeciality.setValue(doctor.getSpeciality().getName());
@@ -195,7 +200,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                     }
                     else {
                        profileUrl.setValue("");
-                       practicePhoneNumber.setValue("");
+                       practicePhoneNumber.setValue("Not Available");
                     }
                 }
                 else {

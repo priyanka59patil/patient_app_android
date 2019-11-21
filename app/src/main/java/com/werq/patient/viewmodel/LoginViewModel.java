@@ -177,6 +177,7 @@ public class LoginViewModel extends BaseViewModel {
                 Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
                 sessionManager.clear();
                 long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
+
                 sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
                         loginResponce.getData().getRefreshToken(),
                         loginResponce.getData().getUser().getUserName(),

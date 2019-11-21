@@ -117,22 +117,22 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_profile_doctor);
+        setContentView(R.layout.activity_profile_doctor);
 
-        ActivityProfileDoctorBinding activityProfileDoctorBinding= DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
+        ActivityProfileDoctorBinding activityProfileDoctorBinding=
+                DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
         activityProfileDoctorBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
         //progressDialog= Helper.createProgressDialog(mContext);
 
         ButterKnife.bind(this);
-
+        setSupportActionBar(toolbar);
         getIntentData();
         tvAbout.setTrimCollapsedText("Read More...");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        /*setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
+        activityProfileDoctorBinding.setViewModel(profileDoctorViewModel);
         profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         profileDoctorViewModel.setDoctorId(doctorData.getiD());
 
@@ -184,30 +184,28 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     protected void onResume() {
         super.onResume();
 
-        if(Helper.hasNetworkConnection(mContext)){
-            profileDoctorViewModel.getDoctorDetails(0);
-        }
-        else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
+
 
         profileDoctorViewModel.getDoctorDetailsResponse().observe(this,doctorDetailsResponse -> {
-            if(doctorDetailsResponse!=null)
+           // Log.e("observe", "doctorDetailsResponse: "+doctorDetailsResponse.toString() );
+           /* if(doctorDetailsResponse!=null)
             {
-                setSupportActionBar(toolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                *//*setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);*//*
                 doctorDetailsLayout.setVisibility(View.VISIBLE);
                 tvNoDoctorDetails.setVisibility(View.GONE);
             }else {
-                setSupportActionBar(noDatatoolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                *//*setSupportActionBar(noDatatoolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);*//*
                 doctorDetailsLayout.setVisibility(View.GONE);
                 tvNoDoctorDetails.setVisibility(View.VISIBLE);
-            }
+            }*/
         });
 
 
         profileDoctorViewModel.profileUrl.observe(this,s -> {
+
+            Log.e("observe", "profileUrl: "+s );
 
             if(s!=null && !s.equals(""))
             {
@@ -234,16 +232,23 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             }
         });
 
-        profileDoctorViewModel.doctorName.observe(this,s -> {
+
+        profileDoctorViewModel.getDoctorName().observe(this,s -> {
+            Helper.setLog("doctorName",s);
             tvUsername.setText(s);
+            tvUsername.setTextColor(R.color.red);
         });
-        profileDoctorViewModel.doctorSpeciality.observe(this,s -> {
+        profileDoctorViewModel.getDoctorSpeciality().observe(this,s -> {
+            Helper.setLog("doctorSpeciality",s);
             tvSpeciality.setText(s);
         });
 
         profileDoctorViewModel.about.observe(this,s -> {
+            Helper.setLog("about",s);
             tvAbout.setText(s);
         });
+
+
     }
 
     @Override

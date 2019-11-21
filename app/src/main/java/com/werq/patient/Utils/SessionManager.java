@@ -71,6 +71,9 @@ public class SessionManager {
     public void creteUserSession(String AccessToken, String IdToken, String Username, String Userid, long tmpstmp) {
         editor.putBoolean(IS_LOGIN, true);
 
+        Helper.setAutoken(AccessToken);
+        Helper.setIdToken(IdToken);
+
         editor.putString(token, AccessToken);
         editor.putString(idToken, IdToken);
         editor.putString(username, Username);

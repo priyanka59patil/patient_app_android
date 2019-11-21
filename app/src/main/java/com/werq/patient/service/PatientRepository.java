@@ -3,6 +3,7 @@ package com.werq.patient.service;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 
 import retrofit2.Call;
@@ -25,7 +26,7 @@ public class PatientRepository {
                                   ApiResponce apiResponce, String url){
 
 
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(authToken,doctorId,coworkerTake,coworkerSkip);
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(Helper.autoken,doctorId,coworkerTake,coworkerSkip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 

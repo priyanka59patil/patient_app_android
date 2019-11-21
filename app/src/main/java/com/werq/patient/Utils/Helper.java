@@ -29,6 +29,16 @@ import java.util.List;
 public class Helper {
     public static Gson gson;
     public static String ContentType ="application/json";
+    public static String autoken ;
+    public static String idToken ;
+
+    public static void setAutoken(String autoken) {
+        Helper.autoken = autoken;
+    }
+
+    public static void setIdToken(String idToken) {
+        Helper.idToken = idToken;
+    }
 
     public static Gson getGsonInstance(){
         if(gson==null)

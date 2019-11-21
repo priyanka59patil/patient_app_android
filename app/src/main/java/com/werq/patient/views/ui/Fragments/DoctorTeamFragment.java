@@ -180,6 +180,12 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
             }
 
         });
+
+        viewModel.teamList.observe(this,doctorTeamResults -> {
+            if(doctorTeamResults!=null){
+                listcount=doctorTeamResults.size();
+            }
+        });
     }
 
     private void intializeVariables() {
