@@ -27,9 +27,9 @@ import com.werq.patient.views.ui.VerifyIdentity;
 public class BaseActivity extends AppCompatActivity {
     BaseViewModel baseViewModel;
     Context mContext;
+    String TAG="BaseActivity";
 
-
-    public void setViewModel(BaseViewModel viewModel) {
+    public void setBaseViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
     }
 
@@ -38,7 +38,6 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-
 
         /*baseViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean)
@@ -74,7 +73,9 @@ public class BaseActivity extends AppCompatActivity {
                     switch (s) {
 
                         case "Login":
+                            Helper.setLog(TAG,"Login");
                             startActivity(new Intent(mContext, LoginActivity.class));
+                            finish();
                             break;
                         case "VerifyIdentity":
                             startActivity(new Intent(mContext, VerifyIdentity.class));
@@ -89,12 +90,15 @@ public class BaseActivity extends AppCompatActivity {
 
                         /*from login intent*/
                         case "DashBoard": startActivity(new Intent(mContext, BottomTabActivity.class));
+                            finish();
                             break;
 
                         case "ForgotPwd":startActivity(new Intent(mContext, ForgotPasswordActivity.class));
+                            finish();
                             break;
 
                         case "SignUp":startActivity(new Intent(mContext, SignUpActivity.class));
+                            finish();
                             break;
                     }
                 }

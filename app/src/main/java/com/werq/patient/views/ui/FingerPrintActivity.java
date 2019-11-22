@@ -44,6 +44,7 @@ public class FingerPrintActivity extends BaseActivity {
         ActivityFingerPrintBinding activityFPBinding= DataBindingUtil.setContentView(this,R.layout.activity_finger_print);
         activityFPBinding.setLifecycleOwner(this);
         fingerPrintViewModel= ViewModelProviders.of(this).get(FingerPrintViewModel.class);
+        setBaseViewModel(fingerPrintViewModel);
         activityFPBinding.setFpViewModel(fingerPrintViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);

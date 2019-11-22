@@ -90,6 +90,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
 
 
         viewModel = ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
+        setBaseViewModel(viewModel);
         fragmentPracticeBinding.setDoctorProfileViewModel(viewModel);
         fragmentPracticeBinding.setLifecycleOwner(this);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());

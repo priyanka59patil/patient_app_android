@@ -90,6 +90,7 @@ public class VerifyIdentity extends BaseActivity {
         ActivityVerifyIdentityBinding activityVIBinding= DataBindingUtil.setContentView(this,R.layout.activity_verify_identity);
         activityVIBinding.setLifecycleOwner(this);
         viViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
+        setBaseViewModel(viViewModel);
         activityVIBinding.setViViewModel(viViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);

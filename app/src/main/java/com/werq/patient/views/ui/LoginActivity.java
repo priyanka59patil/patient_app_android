@@ -60,7 +60,7 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding.setLifecycleOwner(this);
         mContext=this;
         loginViewModel = ViewModelProviders.of(this,new LoginVmProviderFactory(mContext)).get(LoginViewModel.class);
-        setViewModel(loginViewModel);
+        setBaseViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
         progressDialog=new ProgressDialog(mContext);
         progressDialog.setMessage("Please wait");

@@ -53,6 +53,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         //setContentView(R.layout.activity_filter_doctor_list);
         doctorListBinding = DataBindingUtil.setContentView(this,R.layout.activity_filter_doctor_list);
         bottomTabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        setBaseViewModel(bottomTabViewModel);
         doctorListBinding.setLifecycleOwner(this);
         doctorListBinding.setBottomTabViewModel(bottomTabViewModel);
         ButterKnife.bind(this);

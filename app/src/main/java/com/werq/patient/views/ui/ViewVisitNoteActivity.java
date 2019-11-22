@@ -78,6 +78,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         mContext=this;
         viewVisitNoteBinding.setLifecycleOwner(this);
         viewModel= ViewModelProviders.of(this).get(ViewVisitNoteViewModel.class);
+        setBaseViewModel(viewModel);
         viewVisitNoteBinding.setViewVnViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());

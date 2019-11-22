@@ -27,7 +27,7 @@ public abstract class BaseFragment extends Fragment {
     Context mContext;
 
 
-    public void setViewModel(BaseViewModel viewModel){
+    public void setBaseViewModel(BaseViewModel viewModel){
         this.baseViewModel=viewModel;
     }
 

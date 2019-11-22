@@ -86,6 +86,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         fragmentTabHistoryBinding.setLifecycleOwner(this);
         mContext = getContext();
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
+        setBaseViewModel(viewModel);
         fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
@@ -138,13 +139,13 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             Helper.showToast(mContext,"No Network Connection");
         }
 
-        viewModel.getRepoLoadError().observe(this,aBoolean -> {
+      /*  viewModel.getRepoLoadError().observe(this,aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
             }else {
                 viewModel.getToast().setValue(null);
             }
-        });
+        });*/
 
         viewModel.getRvHistoryVisibility().observe(this,aBoolean -> {
             if(aBoolean)

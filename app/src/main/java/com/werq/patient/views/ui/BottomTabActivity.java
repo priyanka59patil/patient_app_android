@@ -169,6 +169,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         ActivityBottomTabBinding bottomTabBinding= DataBindingUtil.setContentView(this,R.layout.activity_bottom_tab);
         bottomTabBinding.setLifecycleOwner(this);
         tabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        setBaseViewModel(tabViewModel);
         bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
         initializeVariables();

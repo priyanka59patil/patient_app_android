@@ -57,10 +57,12 @@ public class SignUpActivity extends BaseActivity {
         ActivitySignUpBinding activitySignUpBinding= DataBindingUtil.setContentView(this,R.layout.activity_sign_up);
         activitySignUpBinding.setLifecycleOwner(this);
         signUpViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
+        setBaseViewModel(signUpViewModel);
         activitySignUpBinding.setSignupViewModel(signUpViewModel);
+
         mContext = this;
         ButterKnife.bind(this);
-        setToolbarTitle(toolbar,"signUp");
+        setToolbarTitle(toolbar,"Sign Up");
 
         signUpViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
             @Override

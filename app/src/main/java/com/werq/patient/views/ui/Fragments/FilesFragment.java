@@ -104,6 +104,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
         viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
         fragmentFilesBinding.setLifecycleOwner(this);
+        setBaseViewModel(viewModel);
         fragmentFilesBinding.setBottomTabViewModel(viewModel);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());

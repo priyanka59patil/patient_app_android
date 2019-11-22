@@ -132,6 +132,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         tvAbout.setTrimCollapsedText("Read More...");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
+        setBaseViewModel(profileDoctorViewModel);
         activityProfileDoctorBinding.setViewModel(profileDoctorViewModel);
         profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         profileDoctorViewModel.setDoctorId(doctorData.getiD());

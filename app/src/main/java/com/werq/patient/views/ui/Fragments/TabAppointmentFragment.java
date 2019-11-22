@@ -143,6 +143,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             }
             viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
             appointmentBinding.setLifecycleOwner(this);
+            setBaseViewModel(viewModel);
             appointmentBinding.setAppontmentViewModel(viewModel);
             viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
             viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
@@ -172,13 +173,13 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             Helper.showToast(mContext,"No Network Connection");
         }
 
-        viewModel.getRepoLoadError().observe(this,aBoolean -> {
+       /* viewModel.getRepoLoadError().observe(this,aBoolean -> {
             if (aBoolean != null && aBoolean) {
                 viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
             }else {
                viewModel.getToast().setValue(null);
             }
-        });
+        });*/
 
         viewModel.getRvVisibility().observe(this,aBoolean -> {
             if(aBoolean)

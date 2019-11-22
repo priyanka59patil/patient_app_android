@@ -65,6 +65,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         ActivityForgotPasswordBinding activityFPBinding = DataBindingUtil.setContentView(this, R.layout.activity_forgot_password);
         activityFPBinding.setLifecycleOwner(this);
         fpViewModel= ViewModelProviders.of(this).get(ForgotPassswordViewModel.class);
+        setBaseViewModel(fpViewModel);
         activityFPBinding.setFpViewModel(fpViewModel);
         mContext=this;
         ButterKnife.bind(this);

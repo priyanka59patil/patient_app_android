@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityChatTopicsBinding;
 import com.werq.patient.viewmodel.ChatTopicsViewModel;
 import com.werq.patient.views.adapter.ChatTopicsAdapter;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChatTopicsActivity extends AppCompatActivity {
+public class ChatTopicsActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -33,13 +34,14 @@ public class ChatTopicsActivity extends AppCompatActivity {
     ChatTopicsViewModel viewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_chat_topics);
         ActivityChatTopicsBinding activityChatTopicsBinding=
                 DataBindingUtil.setContentView(this,R.layout.activity_chat_topics);
 
         viewModel= ViewModelProviders.of(this).get(ChatTopicsViewModel.class);
+        setBaseViewModel(viewModel);
         activityChatTopicsBinding.setLifecycleOwner(this);
         activityChatTopicsBinding.setChatTopicsViewModel(viewModel);
 

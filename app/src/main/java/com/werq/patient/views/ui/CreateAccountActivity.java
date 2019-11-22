@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,6 +14,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.viewmodel.CreateAccountViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
@@ -30,6 +34,10 @@ public class CreateAccountActivity extends BaseActivity {
     SignUpViewModel caViewModel;
     Context mContext;
 
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +55,11 @@ public class CreateAccountActivity extends BaseActivity {
         caViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
         createAccountBinding.setCaViewModel(caViewModel);
         ButterKnife.bind(this);
-        setViewModel(caViewModel);
+        setBaseViewModel(caViewModel);
         mContext=this;
         setSupportActionBar(toolbar);
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
 
         String  invitationCode=getIntent().getStringExtra("invitationCode");
         String dob=getIntent().getStringExtra("dob");
@@ -63,7 +73,18 @@ public class CreateAccountActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-       /* caViewModel.getToast().observe(this, new Observer<String>() {
+
+        caViewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean)
+            {
+                loadingView.setVisibility(View.VISIBLE);
+            }else {
+                loadingView.setVisibility(View.GONE);
+            }
+        });
+
+       /*
+        caViewModel.getToast().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();

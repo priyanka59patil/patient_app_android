@@ -49,6 +49,8 @@ public class AppointmentFragment extends BaseFragment {
             fragmentAppointmentBinding= FragmentAppointmentBinding.bind(view);
             fragmentAppointmentBinding.setLifecycleOwner(this);
             tabViewModel= ViewModelProviders.of(this).get(TabAppoinmentViewModel.class);
+            setBaseViewModel(tabViewModel);
+            fragmentAppointmentBinding.setTabAppoinmentViewModel(tabViewModel);
             unbinder= ButterKnife.bind(this,view);
             setupViewPager(viewpager);
             tabs.setupWithViewPager(viewpager);

@@ -91,6 +91,7 @@ public class DoctorsListFragment extends BaseFragment {
         }
         viewModel= ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
         fragmentDoctorsListBinding.setDoctorProfileViewModel(viewModel);
+        setBaseViewModel(viewModel);
         fragmentDoctorsListBinding.setLifecycleOwner(this);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
