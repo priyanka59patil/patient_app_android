@@ -23,7 +23,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
-    private static final String TAG = "ProfileDoctorViewModel";
+    private static final String TAG = "TabAppoinmentViewModel";
 
     String authToken;
     String refreshTokenId;
@@ -46,7 +46,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public MutableLiveData<String> practiceName;
     public MutableLiveData<Boolean> rvPracticesVisibility;
 
-    int coworkerPageNo;
+    int coworkerPageNo=0;
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
@@ -59,15 +59,15 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
 
-        fetchDoctorDetails(0);
+        getDoctorDetails(0);
     }
 
-    public void fetchDoctorDetails(int page) {
-        coworkerPageNo=page;
+    public void getDoctorDetails( int page) {
+
         getLoading().setValue(true);
         if(doctorId!=0){
-
-            patientRepository.getDocterDetails(authToken,doctorId,getToast(),10+"",page*10+"",apiResponce,"DoctorDetails");
+            coworkerPageNo=0;
+            patientRepository.getDocterDetails(authToken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
         }
     }
 
@@ -80,21 +80,19 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         this.patientRepository =new PatientRepository();
 
         doctorName=new MutableLiveData<>();
-
-        doctorName.setValue("mera desh");
         doctorSpeciality=new MutableLiveData<>();
         about=new MutableLiveData<>();
         profileUrl=new MutableLiveData<>();
         doctorDetailsResponse=new MutableLiveData<>();
-        
+
         coworkerList=new MutableLiveData<>();
         rvCoworkerVisibility=new MutableLiveData<>();
         locationsList=new MutableLiveData<>();
         rvPracticesVisibility=new MutableLiveData<>();
-        
+
         practiceWebUrl=new MutableLiveData<>();
         practicePhoneNumber=new MutableLiveData<>();
-       // aboutPractice=new MutableLiveData<>();
+        // aboutPractice=new MutableLiveData<>();
         practiceName=new MutableLiveData<>();
     }
 
@@ -113,13 +111,10 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                     doctorDetailsResponse.setValue(detailsResponse);
                     Doctor doctor=detailsResponse.getData().getDoctor();
 
-
                     if(doctor!=null){
-                        Helper.setLog(TAG,"doctor"+doctor.toString());
-
 
                         doctorName.setValue(doctor.getFirstName()+" "+doctor.getMiddleName()+doctor.getLastName());
-                        Helper.setLog(TAG,"doctorName"+doctorName.getValue().toString());
+
                         if(doctor.getSpeciality()!=null)
                         {
                             doctorSpeciality.setValue(doctor.getSpeciality().getName());
@@ -139,28 +134,30 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                             profileUrl.setValue("");
                         }
 
+
+
                     }
 
-                    if(detailsResponse.getData().getCoworker()!=null){
+                    //if(detailsResponse.getData().getCoworker()!=null){
 
-                        ArrayList<Coworker> coworkerArrayList= new ArrayList<>();
+                        ArrayList<Coworker> coworkerArrayList=new ArrayList<>();
 
-                        if(coworkerList.getValue()!=null && coworkerPageNo!=0){
-
+                      /*  if(coworkerList.getValue()!=null && coworkerPageNo!=0){
                             coworkerArrayList.addAll(coworkerList.getValue());
-                        }
-                        coworkerArrayList.addAll(detailsResponse.getData().getCoworker());
+                        }*/
+
+                        coworkerArrayList.addAll( detailsResponse.getData().getCoworker());
                         coworkerList.setValue(coworkerArrayList);
                         if(coworkerArrayList.size()>0){
                             rvCoworkerVisibility.setValue(true);
                         }else {
                             rvCoworkerVisibility.setValue(false);
                         }
-                    }
+                   /* }
                     else {
                         coworkerList.setValue(null);
                         rvCoworkerVisibility.setValue(false);
-                    }
+                    }*/
 
                     if(detailsResponse.getData().getLocations()!=null){
 
@@ -186,21 +183,15 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                             if(doctor.getContactInfo().get(i).getType()==1 ){
                                 practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
                             }
-                            else {
-                                practiceWebUrl.setValue("Not Available");
-                            }
 
                             if(doctor.getContactInfo().get(i).getType()==2 ){
                                 practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
-
-                            } else {
-                                practicePhoneNumber.setValue("Not Available");
                             }
                         }
                     }
                     else {
-                       profileUrl.setValue("");
-                       practicePhoneNumber.setValue("Not Available");
+                        profileUrl.setValue("Not Available");
+                        practicePhoneNumber.setValue("Not Available");
                     }
                 }
                 else {
@@ -217,7 +208,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         getLoading().setValue(false);
         Helper.setLog("onError","url-"+url+"  errorMessage-"+errorMessage );
         getToast().setValue(errorMessage);
-        doctorDetailsResponse.setValue(null);
+        //doctorDetailsResponse.setValue(null);
     }
 
     @Override

@@ -35,9 +35,9 @@ import butterknife.ButterKnife;
 
 public class PracticeFragment extends BaseFragment /*implements BasicActivities*/ {
 
-    @BindView(R.id.loadingView)
+    /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
+    Sprite fadingCircle;*/
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -134,7 +134,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
         });
 
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+      /*  viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
                 //if(!loadingView.isAnimating())
                 loadingView.setVisibility(View.VISIBLE);
@@ -143,7 +143,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
                 //if(loadingView.isShowing())
                 loadingView.setVisibility(View.GONE);
             }
-        });
+        });*/
 
        //     getData();
 
@@ -159,8 +159,8 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     }
 
     public void initializeVariables() {
-        fadingCircle=new Circle();
-        loadingView.setIndeterminateDrawable(fadingCircle);
+       /* fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);*/
         profileInterface=new ProfileController(basicActivities);
         locationsList=new ArrayList<>();
         locationpracticeAdapter=new PracticeAdapter(mContext,locationsList,viewModel,this);

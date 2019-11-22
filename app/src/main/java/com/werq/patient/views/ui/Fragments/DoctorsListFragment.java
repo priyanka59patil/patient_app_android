@@ -54,7 +54,7 @@ public class DoctorsListFragment extends BaseFragment {
     RecyclerView rvDoctorTeam;
     @BindView(R.id.tvNoData)
     TextView tvNoData;
-    private ArrayList<Coworker> cowerkerList;
+    private ArrayList<Coworker> coworkerList;
     Context mContext;
     ProfileDoctorViewModel viewModel;
     FragmentDoctorsListBinding fragmentDoctorsListBinding;
@@ -103,11 +103,9 @@ public class DoctorsListFragment extends BaseFragment {
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                //if(!loadingView.isAnimating())
                 loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                //if(loadingView.isShowing())
                 loadingView.setVisibility(View.GONE);
             }
         });
@@ -123,9 +121,12 @@ public class DoctorsListFragment extends BaseFragment {
             }
         });
 
-        viewModel.coworkerList.observe(this,coworkerArrayList -> {
+        viewModel.getCoworkerList().observe(this,coworkerArrayList -> {
             if(coworkerArrayList!=null){
-                listcount=coworkerArrayList.size();
+
+                coworkerList.addAll(coworkerArrayList);
+                listcount=coworkerList.size();
+                doctorListAdapter.notifyDataSetChanged();
             }
         });
 
@@ -142,6 +143,10 @@ public class DoctorsListFragment extends BaseFragment {
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
                         //Log.("check",String.valueOf(listcount == totalItemCount));
+                        Helper.setLog("visibleItemCount",visibleItemCount+"");
+                        Helper.setLog("totalItemCount",totalItemCount+"");
+                        Helper.setLog("pastVisiblesItems",pastVisiblesItems+"");
+                        Helper.setLog("prev data","loading-"+ loading+":::listcount-"+listcount);
                         if (listcount < 10) {
                             //Log.("check","xzx");
                             loading = false;
@@ -149,6 +154,7 @@ public class DoctorsListFragment extends BaseFragment {
                         int count = page + 1;
                         int data = totalItemCount;
 
+                        Helper.setLog("prev data","loading-"+ loading+":::listcount-"+listcount);
                         if (data == (count *10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
@@ -156,11 +162,13 @@ public class DoctorsListFragment extends BaseFragment {
                                     loading=true;
                                     //Logv("...", "Last Item Wow !");
                                     ++page;
-                                   // viewModel.fetchDoctorDetails(page);
+                                    Helper.setLog("call to api=page",page+"");
+                                    viewModel.getDoctorDetails(page);
                                     //Do pagination.. i.e. fetch new data
                                 }
                             }
                         }
+                        Helper.setLog("after data","loading-"+ loading+":::listcount-"+listcount);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -175,8 +183,8 @@ public class DoctorsListFragment extends BaseFragment {
 
         fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        cowerkerList =new ArrayList<>();
-        doctorListAdapter=new DoctorListAdapter(getActivity(),cowerkerList,viewModel,this);
+        coworkerList =new ArrayList<>();
+        doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList,viewModel,this);
         setRecyclerView();
     }
 

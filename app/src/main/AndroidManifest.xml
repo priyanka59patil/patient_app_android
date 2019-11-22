@@ -45,6 +45,10 @@
             android:label="@string/title_activity_chat_topics"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".views.ui.DoctorDetails"
+            android:label="@string/title_activity_chat_topics"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".views.ui.ChatRoomActivity"
             android:label="@string/title_activity_chat_room"
             android:theme="@style/AppTheme.NoActionBar" />

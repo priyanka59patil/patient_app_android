@@ -111,31 +111,34 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     boolean isMessageDisabled;
     Intent intent;
     private  int doctorId;
-    //ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
     Doctor doctorData;
     ProfileDoctorViewModel profileDoctorViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_doctor);
+        //setContentView(R.layout.activity_profile_doctor);
 
-        ActivityProfileDoctorBinding activityProfileDoctorBinding=
-                DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
+        ActivityProfileDoctorBinding activityProfileDoctorBinding= DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
         activityProfileDoctorBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
-        //progressDialog= Helper.createProgressDialog(mContext);
-
+        progressDialog= Helper.createProgressDialog(mContext);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
+
         getIntentData();
         tvAbout.setTrimCollapsedText("Read More...");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
-        setBaseViewModel(profileDoctorViewModel);
-        activityProfileDoctorBinding.setViewModel(profileDoctorViewModel);
         profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        profileDoctorViewModel.setDoctorId(doctorData.getiD());
+
+        if(Helper.hasNetworkConnection(mContext)){
+            profileDoctorViewModel.setDoctorId(doctorData.getiD());
+        }else{
+            Helper.showToast(mContext,getResources().getString(R.string.no_network_conection));
+        }
+
 
         r = mContext.getResources();
 
@@ -185,28 +188,33 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     protected void onResume() {
         super.onResume();
 
-
-
         profileDoctorViewModel.getDoctorDetailsResponse().observe(this,doctorDetailsResponse -> {
-           // Log.e("observe", "doctorDetailsResponse: "+doctorDetailsResponse.toString() );
-           /* if(doctorDetailsResponse!=null)
+            if(doctorDetailsResponse!=null)
             {
-                *//*setSupportActionBar(toolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);*//*
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 doctorDetailsLayout.setVisibility(View.VISIBLE);
                 tvNoDoctorDetails.setVisibility(View.GONE);
             }else {
-                *//*setSupportActionBar(noDatatoolbar);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);*//*
+                setSupportActionBar(noDatatoolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 doctorDetailsLayout.setVisibility(View.GONE);
                 tvNoDoctorDetails.setVisibility(View.VISIBLE);
-            }*/
+            }
         });
 
+        profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean ){
+                if(!progressDialog.isShowing())
+                    progressDialog.show();
+            }
+            else {
+                if(progressDialog.isShowing())
+                    progressDialog.hide();
+            }
+        });
 
         profileDoctorViewModel.profileUrl.observe(this,s -> {
-
-            Log.e("observe", "profileUrl: "+s );
 
             if(s!=null && !s.equals(""))
             {
@@ -219,37 +227,18 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             else {
                 ivUserProfile.setImageResource(R.drawable.user_image_placeholder);
             }
-
-            if(s!=null && !s.equals(""))
-            {
-                String url = null;
-                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
-                Glide.with(mContext).load(url).apply(new RequestOptions()
-                        .placeholder(R.drawable.user_image_placeholder)
-                        .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(tbuserimageview);
-            }
-            else {
-                tbuserimageview.setImageResource(R.drawable.user_image_placeholder);
-            }
         });
 
-
-        profileDoctorViewModel.getDoctorName().observe(this,s -> {
-            Helper.setLog("doctorName",s);
+        profileDoctorViewModel.doctorName.observe(this,s -> {
             tvUsername.setText(s);
-            tvUsername.setTextColor(R.color.red);
         });
-        profileDoctorViewModel.getDoctorSpeciality().observe(this,s -> {
-            Helper.setLog("doctorSpeciality",s);
+        profileDoctorViewModel.doctorSpeciality.observe(this,s -> {
             tvSpeciality.setText(s);
         });
 
         profileDoctorViewModel.about.observe(this,s -> {
-            Helper.setLog("about",s);
             tvAbout.setText(s);
         });
-
-
     }
 
     @Override

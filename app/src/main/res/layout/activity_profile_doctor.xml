@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             tools:context=".views.ui.ProfileDoctorActivity"
-            >
+            android:visibility="gone">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/app_bar"
@@ -74,6 +74,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/margin_userProfile"
                                 android:layout_toRightOf="@+id/ivUserProfile"
+                                android:text="@={viewModel.doctorName}"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/textSize_title" />
 
@@ -84,7 +85,8 @@
                                 android:textColor="@color/black"
                                 android:layout_below="@+id/tvUsername"
                                 android:layout_marginTop="8dp"
-                                android:layout_toRightOf="@+id/ivUserProfile"/>
+                                android:layout_toRightOf="@+id/ivUserProfile"
+                                android:text="@={viewModel.doctorSpeciality}" />
 
                             <com.borjabravo.readmoretextview.ReadMoreTextView
                                 android:id="@+id/tvAbout"
@@ -96,6 +98,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginTop="8dp"
+                                android:text="@={viewModel.about}"
                                 app:colorClickableText="@color/colorPrimary"
                                 />
                             <View
@@ -217,8 +220,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".views.ui.ScheduleDetailsActivity"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -252,8 +254,6 @@
                 android:padding="10dp"
 
                 />
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

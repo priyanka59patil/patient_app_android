@@ -34,6 +34,7 @@ public class LoginViewModel extends BaseViewModel {
     ApiResponce apiResponce=this;
 
     SessionManager sessionManager;
+    Context mContext;
 
     public LoginViewModel() {
     }
@@ -47,6 +48,7 @@ public class LoginViewModel extends BaseViewModel {
         passwordError=new MutableLiveData<>();
         loginRepository=new LoginRepository();
         rememberMe=new MutableLiveData<>();
+        this.mContext=context;
         Helper.setLog("context",context+"");
         /*sessionManager = new SessionManager(context);
         userRememberPref = new SessionManager(context, "");*/
@@ -85,7 +87,13 @@ public class LoginViewModel extends BaseViewModel {
             userCredential.setUsername(userName.getValue());
             userCredential.setPassword(password.getValue());
             getLoading().setValue(true);
-            loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+
+            if(Helper.hasNetworkConnection(mContext)){
+                loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+            }else {
+                getToast().setValue("");
+            }
+
 
         }
         else {

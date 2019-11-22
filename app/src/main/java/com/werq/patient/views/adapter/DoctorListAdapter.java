@@ -48,7 +48,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
                              LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.coworkerArrayList=coworkerArrayList;
-        viewModel.coworkerList.observe(lifecycleOwner,coworkerArrayList1 -> {
+        /*viewModel.coworkerList.observe(lifecycleOwner,coworkerArrayList1 -> {
 
             if(coworkerArrayList!=null)
             {
@@ -57,7 +57,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
                 notifyDataSetChanged();
             }
 
-        });
+        });*/
     }
 
     @NonNull

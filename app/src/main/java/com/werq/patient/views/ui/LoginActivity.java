@@ -13,6 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Factory.LoginVmProviderFactory;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -33,9 +35,9 @@ public class LoginActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-   /* @BindView(R.id.progressBar)
-    ProgressBar progressBar;
-*/
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
     @BindView(R.id.swRememberMe)
     SwitchView swRememberMe;
 
@@ -44,7 +46,7 @@ public class LoginActivity extends BaseActivity {
     LoginViewModel loginViewModel;
     private ActivityLoginBinding activityLoginBinding;
 
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,10 +64,12 @@ public class LoginActivity extends BaseActivity {
         loginViewModel = ViewModelProviders.of(this,new LoginVmProviderFactory(mContext)).get(LoginViewModel.class);
         setBaseViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
-        progressDialog=new ProgressDialog(mContext);
-        progressDialog.setMessage("Please wait");
+        /*progressDialog=new ProgressDialog(mContext);
+        progressDialog.setMessage("Please wait");*/
         ButterKnife.bind(this);
         toolbar.setTitle("Log In");
+        fadingCircle=new Circle();
+        loadingView.setIndeterminateDrawable(fadingCircle);
         loginViewModel.setSessionManager( SessionManager.getSessionManager(mContext));
 
     }
@@ -90,11 +94,12 @@ public class LoginActivity extends BaseActivity {
 
         loginViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing()) progressDialog.show();
+                //if(!loadingView.isAnimating())
+                loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                if(progressDialog.isShowing())
-                    progressDialog.hide();
+                //if(loadingView.isShowing())
+                loadingView.setVisibility(View.GONE);
             }
         });
 
@@ -122,7 +127,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(progressDialog.isShowing())
-            progressDialog.hide();
+        loadingView.setVisibility(View.GONE);
     }
 }

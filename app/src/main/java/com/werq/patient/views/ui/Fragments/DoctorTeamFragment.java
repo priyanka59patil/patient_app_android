@@ -26,7 +26,9 @@ import com.werq.patient.databinding.FragmentDoctorTeamBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.DoctorTeamViewModel;
+import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.AppointmentAdapter;
+import com.werq.patient.views.ui.DoctorDetails;
 import com.werq.patient.views.ui.ProfileDoctorActivity;
 import com.werq.patient.views.adapter.DoctorTeamAdapter;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
@@ -219,6 +221,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         //Helper.setLog(TAG,teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1).toString());
         Helper.setLog(TAG,teamList.get(position).getDoctors().get(0).toString());
         Intent intent=new Intent(mContext, ProfileDoctorActivity.class);
+
         //intent.putExtra("doctorData",teamList.get(position).getDoctors().get(teamList.get(position).getDoctors().size()-1));
         intent.putExtra("doctorData",teamList.get(position).getDoctors().get(0));
         intent.putExtra("isMessageDisabled",isMessageDisabled);

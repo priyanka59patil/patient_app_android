@@ -123,7 +123,7 @@
 
                     app:layout_constraintTop_toBottomOf="@+id/tvtitlepracticeweb" />
 
-                <com.github.ybq.android.spinkit.SpinKitView
+                <!--<com.github.ybq.android.spinkit.SpinKitView
                     android:id="@+id/loadingView"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -132,7 +132,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent"/>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
