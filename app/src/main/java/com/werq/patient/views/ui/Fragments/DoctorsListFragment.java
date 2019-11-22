@@ -184,7 +184,7 @@ public class DoctorsListFragment extends BaseFragment {
         fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
         coworkerList =new ArrayList<>();
-        doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList,viewModel,this);
+        doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList);
         setRecyclerView();
     }
 

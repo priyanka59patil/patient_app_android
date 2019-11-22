@@ -43,9 +43,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
 
 
     public DoctorListAdapter(Context mContext,
-                             ArrayList<Coworker> coworkerArrayList,
-                             ProfileDoctorViewModel viewModel,
-                             LifecycleOwner lifecycleOwner) {
+                             ArrayList<Coworker> coworkerArrayList) {
         this.mContext = mContext;
         this.coworkerArrayList=coworkerArrayList;
         /*viewModel.coworkerList.observe(lifecycleOwner,coworkerArrayList1 -> {
