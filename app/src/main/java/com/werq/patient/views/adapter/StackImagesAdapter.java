@@ -32,12 +32,16 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         this.images = images;
         this.mContext = mContext;
         this.profileUrl=profileUrl;
+        /*Helper.setLog("StackImageAdapter","New Constructor");
+        for (int i = 0; i < profileUrl.size() ; i++) {
+            Helper.setLog("profileUrl"+i,profileUrl.get(i));
+        }*/
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        //Helper.setLog("StackImageAdapter","onCreateViewHolder::viewType"+viewType);
         if (viewType == TYPE_HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.stackimage_header, parent, false);
             return new StackImagesAdapter.HeaderViewHolder(v);
@@ -82,7 +86,7 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public int getItemViewType(int position) {
 
-        Helper.setLog("profileUrl.size()",profileUrl.size()+"");
+        //Helper.setLog("StackImageAdapter","getItemViewType::position"+position);
         if(profileUrl.size()>2){
 
             if(position==getItemCount()-1){
@@ -105,13 +109,16 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
+
         if(profileUrl!=null){
 
             if(profileUrl.size()>2){
+                //Helper.setLog("StackImageAdapter","getItemCount:"+3);
                 return 3;
             }
             else {
-                profileUrl.size();
+                //Helper.setLog("StackImageAdapter","getItemCount:"+3);
+                return profileUrl.size();
             }
 
         }

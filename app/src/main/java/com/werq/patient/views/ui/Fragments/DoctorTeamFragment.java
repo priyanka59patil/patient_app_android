@@ -151,13 +151,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
             Helper.showToast(mContext,"No Network Connection");
         }
 
-        /*viewModel.getRepoLoadError().observe(this,aBoolean -> {
-            if (aBoolean != null && aBoolean) {
-                viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
-            }else {
-                viewModel.getToast().setValue(null);
-            }
-        });*/
 
         viewModel.getRvVisibility().observe(this,aBoolean -> {
             if(aBoolean)

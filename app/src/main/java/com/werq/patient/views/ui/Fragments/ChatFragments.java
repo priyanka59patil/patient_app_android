@@ -54,14 +54,6 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     public void onResume() {
         super.onResume();
 
-        viewModel.getRepoLoadError().observe(this,aBoolean -> {
-            if (aBoolean != null && aBoolean) {
-                viewModel.getToast().setValue(getResources().getString(R.string.something_went_wrong));
-            }else {
-                viewModel.getToast().setValue(null);
-            }
-        });
-
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean !=null && aBoolean)

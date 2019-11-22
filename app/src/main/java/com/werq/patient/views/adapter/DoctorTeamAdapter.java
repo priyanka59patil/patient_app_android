@@ -60,14 +60,14 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ArrayList<String> imageLists = new ArrayList<>();
-        for(int i=0;i<teamList.get(position).getDoctors().size();i++){
-            imageLists.add(teamList.get(position).getDoctors().get(i).getProfilePhoto());
-        }
+            ArrayList<String> imageLists = new ArrayList<>();
+            for(int i=0;i<teamList.get(position).getDoctors().size();i++){
+                imageLists.add(teamList.get(position).getDoctors().get(i).getProfilePhoto());
+            }
+            stackImageView = new StackImagesAdapter(mContext, imageLists);
+            RecyclerViewHelper.setStackImageAdapter(mContext,  holder.rvUserProfiles,stackImageView);
+            RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
 
-        stackImageView = new StackImagesAdapter(mContext, imageLists);
-        RecyclerViewHelper.setStackImageAdapter(mContext,  holder.rvUserProfiles,stackImageView);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,holder.rvUserProfiles);
         //if(teamList.size()>0 && position<teamList.size()){
 
             Location location=teamList.get(position).getLocation();
