@@ -73,7 +73,8 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_centerInParent="true"
-            app:SpinKit_Color="@color/colorAccent" />
+            app:SpinKit_Color="@color/colorAccent"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 </layout>

@@ -32,6 +32,9 @@ public class AppointmentResult implements Serializable
     @SerializedName("ConfirmByPatient")
     private Boolean confirmByPatient;
 
+    @SerializedName("ReferralReason")
+    private String referralReason;
+
     @SerializedName("Doctor")
     private Doctor doctor;
 
@@ -125,6 +128,14 @@ public class AppointmentResult implements Serializable
         this.referralAttachment = referralAttachment;
     }
 
+    public String getReferralReason() {
+        return referralReason;
+    }
+
+    public void setReferralReason(String referralReason) {
+        this.referralReason = referralReason;
+    }
+
     @Override
     public String toString() {
         return "AppointmentResult{" +
@@ -135,6 +146,7 @@ public class AppointmentResult implements Serializable
                 ", appintmentDate='" + appintmentDate + '\'' +
                 ", appointmentStatus='" + appointmentStatus + '\'' +
                 ", confirmByPatient=" + confirmByPatient +
+                ", referralReason='" + referralReason + '\'' +
                 ", doctor=" + doctor +
                 ", location=" + location +
                 ", referralAttachment=" + referralAttachment +

@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
@@ -89,9 +90,12 @@ public class LoginViewModel extends BaseViewModel {
             getLoading().setValue(true);
 
             if(Helper.hasNetworkConnection(mContext)){
+
                 loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+
             }else {
-                getToast().setValue("");
+                getLoading().setValue(false);
+                getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
             }
 
 

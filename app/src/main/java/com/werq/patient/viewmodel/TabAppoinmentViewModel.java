@@ -37,36 +37,34 @@ import okhttp3.internal.http2.ErrorCode;
 
 public class TabAppoinmentViewModel extends BaseViewModel {
 
-    private final AppointmentRepository appointmentRepository;
-    private CompositeDisposable disposable;
-    boolean isFromUpcoming=true;
     private static final String TAG = "TabAppoinmentViewModel";
-
+    public static Boolean toConfirmChanged=false;
+    private final AppointmentRepository appointmentRepository;
+    private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     public MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
     public MutableLiveData<ArrayList<AppointmentResult>> listHistoryAppointments;
     public MutableLiveData<Boolean> upcommingloading;
     public MutableLiveData<Boolean> historyloading;
     public MutableLiveData<Boolean> apptDetailsloading;
-    private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
-    private MutableLiveData<Boolean> rvVisibility;
-    private MutableLiveData<Boolean> rvHistoryVisibility;
-
-
-    MutableLiveData<String> day,month,time,fullUserName,speciality,address, addressOnMap;
     public MutableLiveData<List<AttachmentResult>> attachmentList;
     public MutableLiveData<AppointmentResult> appointmentResultData;
-    private MutableLiveData<Boolean> scheduleDetailsVisibility;
     public MutableLiveData<Boolean> attachmentVisibility;
     public MutableLiveData<String> doctorProfilePhoto;
-    int appointmentId;
-
+    public MutableLiveData<String> appointmentNote;
+    boolean isFromUpcoming = true;
+    MutableLiveData<String> day, month, time, fullUserName, speciality, address, addressOnMap;
+    //int appointmentId;
     String authToken;
     String refreshTokenId;
-    ApiResponce apiResponce=this;
-    int upcommingPageNo=0;
-    int historyPageNo=0;
+    ApiResponce apiResponce = this;
+    int upcommingPageNo = 0;
+    int historyPageNo = 0;
+    private CompositeDisposable disposable;
+    private MutableLiveData<Boolean> rvVisibility;
+    private MutableLiveData<Boolean> rvHistoryVisibility;
+    private MutableLiveData<Boolean> scheduleDetailsVisibility;
 
-    public TabAppoinmentViewModel(){
+    public TabAppoinmentViewModel() {
         appointmentRepository = new AppointmentRepository();
     }
 
@@ -74,37 +72,38 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         appointmentRepository = new AppointmentRepository();
         disposable = new CompositeDisposable();
-        this.isFromUpcoming=isFromUpcoming;
-        rvVisibility=new MutableLiveData<>();
+        this.isFromUpcoming = isFromUpcoming;
+        rvVisibility = new MutableLiveData<>();
         listUpcommingAppointments = new MutableLiveData<>();
         listHistoryAppointments = new MutableLiveData<>();
-        rvHistoryVisibility =new MutableLiveData<>();
+        rvHistoryVisibility = new MutableLiveData<>();
 
-        day=new MutableLiveData<>();
-        month=new MutableLiveData<>();
-        time=new MutableLiveData<>();
-        fullUserName=new MutableLiveData<>();
-        speciality=new MutableLiveData<>();
-        address=new MutableLiveData<>();
-        addressOnMap=new MutableLiveData<>();
-        day=new MutableLiveData<>();
-        attachmentVisibility=new MutableLiveData<Boolean>();
+        day = new MutableLiveData<>();
+        month = new MutableLiveData<>();
+        time = new MutableLiveData<>();
+        fullUserName = new MutableLiveData<>();
+        speciality = new MutableLiveData<>();
+        address = new MutableLiveData<>();
+        addressOnMap = new MutableLiveData<>();
+        day = new MutableLiveData<>();
+        attachmentVisibility = new MutableLiveData<Boolean>();
         //confirmByPatient=new MutableLiveData<Boolean>();
         //appointmentStatus =new MutableLiveData<>();
         attachmentVisibility.setValue(false);
-        attachmentList=new MutableLiveData<>();
-        doctorProfilePhoto =new MutableLiveData<>();
-        scheduleDetailsVisibility=new MutableLiveData<>();
+        attachmentList = new MutableLiveData<>();
+        doctorProfilePhoto = new MutableLiveData<>();
+        scheduleDetailsVisibility = new MutableLiveData<>();
 
         //toolbarTitle =new MutableLiveData<>();
-        appointmentResultData=new MutableLiveData<>();
-        upcommingloading=new MutableLiveData<>();
-        historyloading =new MutableLiveData<>();
-        apptDetailsloading =new MutableLiveData<>();
+        appointmentResultData = new MutableLiveData<>();
+        upcommingloading = new MutableLiveData<>();
+        historyloading = new MutableLiveData<>();
+        apptDetailsloading = new MutableLiveData<>();
+        appointmentNote = new MutableLiveData<>();
 
     }
 
-    public int getAppointmentId() {
+   /* public int getAppointmentId() {
         return appointmentId;
     }
 
@@ -112,7 +111,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         this.appointmentId = appointmentId;
         getAppointmentData(appointmentId);
 
-    }
+    }*/
 
     public MutableLiveData<Boolean> getRepoLoadError() {
         return repoLoadError;
@@ -199,25 +198,29 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         return apptDetailsloading;
     }
 
-    /*private void fetchRepos() {
-                                getLoading().setValue(true);
-                                disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
-                                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
-                                            @Override
-                                            public void onSuccess(List<Repo> value) {
-                                                repoLoadError.setValue(false);
-                                                repos.setValue(value);
-                                                loading.setValue(false);
-                                            }
+    public MutableLiveData<String> getAppointmentNote() {
+        return appointmentNote;
+    }
 
-                                            @Override
-                                            public void onError(Throwable e) {
-                                                repoLoadError.setValue(true);
-                                                loading.setValue(false);
-                                            }
-                                        }));
-                            }
-                        */
+    /*private void fetchRepos() {
+                                    getLoading().setValue(true);
+                                    disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
+                                                @Override
+                                                public void onSuccess(List<Repo> value) {
+                                                    repoLoadError.setValue(false);
+                                                    repos.setValue(value);
+                                                    loading.setValue(false);
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    repoLoadError.setValue(true);
+                                                    loading.setValue(false);
+                                                }
+                                            }));
+                                }
+                            */
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -228,19 +231,17 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onSuccess(String url,String responseJson) {
+    public void onSuccess(String url, String responseJson) {
 
-        Helper.setLog("responseJson",responseJson);
-        AppointmentResponse appointmentResponce=Helper.getGsonInstance().fromJson(responseJson,AppointmentResponse.class);
+        Helper.setLog("responseJson", responseJson);
+        AppointmentResponse appointmentResponce = Helper.getGsonInstance().fromJson(responseJson, AppointmentResponse.class);
 
 
-
-        if(url!=null && url.equals("UpcomingAppointment"))
-        {
+        if (url != null && url.equals("UpcomingAppointment")) {
             upcommingloading.setValue(false);
 
-            ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
-            if(listUpcommingAppointments.getValue()!=null && upcommingPageNo!=0){
+            ArrayList<AppointmentResult> dataArrayList = new ArrayList<>();
+            if (listUpcommingAppointments.getValue() != null && upcommingPageNo != 0) {
                 dataArrayList.addAll(listUpcommingAppointments.getValue());
             }
 
@@ -256,11 +257,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             }
         }
 
-        if(url!=null && url.equals("HistoryAppointment"))
-        {
+        if (url != null && url.equals("HistoryAppointment")) {
             historyloading.setValue(false);
-            ArrayList<AppointmentResult> dataArrayList=new ArrayList<>();
-            if(listHistoryAppointments.getValue()!=null && historyPageNo!=0){
+            ArrayList<AppointmentResult> dataArrayList = new ArrayList<>();
+            if (listHistoryAppointments.getValue() != null && historyPageNo != 0) {
                 dataArrayList.addAll(listHistoryAppointments.getValue());
             }
             dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
@@ -277,11 +277,11 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         }
 
-            if(url!=null && url.equalsIgnoreCase("GetAppointmentDetails")){
+        if (url != null && url.equalsIgnoreCase("GetAppointmentDetails")) {
 
-                apptDetailsloading.setValue(false);
+            apptDetailsloading.setValue(false);
 
-                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+            AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
                 /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
@@ -294,39 +294,38 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 }*/
 
-                if(apptDetailResponse!=null)
-                {
-                    scheduleDetailsVisibility.setValue(true);
-                    appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
-                    prepareAppointmentDetailsData();
-                    doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
-                    attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
-
-                    if(attachmentList.getValue()!=null){
-                        if(attachmentList.getValue().size()>0){
-                            attachmentVisibility.setValue(true);
-
-                        }
-                        else {
-                            attachmentVisibility.setValue(false);
-                        }
-                    }
-
-                }
-                else {
-                    scheduleDetailsVisibility.setValue(false);
-                }
-
-
-            }
-
-            if(url!=null && url.equalsIgnoreCase("ConfirmAppointment")){
-                apptDetailsloading.setValue(false);
-                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-                Log.e(TAG, "onSuccess: "+apptDetailResponse.getData().getAppointment().getConfirmByPatient() );
+            if (apptDetailResponse != null) {
+                scheduleDetailsVisibility.setValue(true);
                 appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                 prepareAppointmentDetailsData();
                 doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
+                attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
+
+
+
+                if (attachmentList.getValue() != null) {
+                    if (attachmentList.getValue().size() > 0) {
+                        attachmentVisibility.setValue(true);
+
+                    } else {
+                        attachmentVisibility.setValue(false);
+                    }
+                }
+
+            } else {
+                scheduleDetailsVisibility.setValue(false);
+            }
+
+
+        }
+
+        if (url != null && url.equalsIgnoreCase("ConfirmAppointment")) {
+            apptDetailsloading.setValue(false);
+            AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+            Log.e(TAG, "onSuccess: " + apptDetailResponse.getData().getAppointment().getConfirmByPatient());
+            appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
+            prepareAppointmentDetailsData();
+            doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
 
                /* if(apptDetailResponse.getData().getAppointment().getConfirmByPatient()==true)
                 {
@@ -338,36 +337,35 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 }*/
 
-                //confirmByPatient.setValue(true);
+            //confirmByPatient.setValue(true);
 
-            }
+        }
 
     }
 
     @Override
-    public void onError(String url, String errorCode,String errorMessage) {
-        if(isFromUpcoming){
+    public void onError(String url, String errorCode, String errorMessage) {
+        if (isFromUpcoming) {
             upcommingloading.setValue(false);
-        }else {
+        } else {
             historyloading.setValue(false);
         }
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
-        if(isFromUpcoming){
+        if (isFromUpcoming) {
             upcommingloading.setValue(false);
-        }else {
+        } else {
             historyloading.setValue(false);
         }
     }
 
-    private void prepareAppointmentDetailsData()
-    {
+    private void prepareAppointmentDetailsData() {
         //toolbar.setValue(data.getProvider().getFirst_name() + " " + data.getProvider().getLast_name());
 
         //this.appointmentResult=apptDetailResponse.getData().getAppointment();
-        AppointmentResult appointmentResult=appointmentResultData.getValue();
+        AppointmentResult appointmentResult = appointmentResultData.getValue();
         fullUserName.setValue(appointmentResult.getDoctor().getFirstName() + " " + appointmentResult.getDoctor().getLastName());
         speciality.setValue(appointmentResult.getDoctor().getSpeciality().getName());
 
@@ -381,14 +379,22 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }
         if (appointmentResultData.getValue().getLocation() != null) {
 
-            Location location=appointmentResult.getLocation();
-            String strAddress =location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
-                    +" "+location.getState()+" "+ location.getPostalcode()+""+location.getCountry();
+            Location location = appointmentResult.getLocation();
+            String strAddress = location.getOrganizationName() + " " + location.getAddress1() + " " + location.getCity()
+                    + " " + location.getState() + " " + location.getPostalcode() + "" + location.getCountry();
             address.setValue(strAddress);
 
             addressOnMap.setValue(strAddress);
         }
-        Log.e(TAG, "prepareData: "+ appointmentResult.getConfirmByPatient());
+        Log.e(TAG, "prepareData: " + appointmentResult.getConfirmByPatient());
+
+        if (appointmentResultData.getValue().getReferralReason() != null) {
+
+            appointmentNote.setValue(appointmentResultData.getValue().getReferralReason());
+
+        }else {
+            appointmentNote.setValue("Not Available");
+        }
 
         // confirmByPatient.setValue(appointmentResult.getConfirmByPatient());
 
@@ -406,116 +412,95 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }*/
 
 
-        //getAttachments();
-        /*ArrayList<Files> filesArrayList=new ArrayList<>();
-        filesArrayList.addAll(Arrays.asList(appointmentResult.get()));
-        filesList.setValue(filesArrayList);
-
-        */
-
-        if(attachmentList.getValue()!=null){
-            if(attachmentList.getValue().size()>0){
+        if (attachmentList.getValue() != null) {
+            if (attachmentList.getValue().size() > 0) {
                 attachmentVisibility.setValue(true);
 
-            }
-            else {
+            } else {
                 attachmentVisibility.setValue(false);
             }
         }
 
-
-        //controller.checkFilesSize(files, basicActivities);
-        // status.setValue();
     }
 
 
     public void fetchUpcomingAppointmentList(int page) {
         upcommingloading.setValue(true);
-        upcommingPageNo=page;
-        if(authToken!=null&& !authToken.isEmpty()){
-            Log.e(TAG, "getToken: "+authToken );
+        upcommingPageNo = page;
+        if (authToken != null && !authToken.isEmpty()) {
+            Log.e(TAG, "getToken: " + authToken);
 
-            appointmentRepository.getUpcommingAppoitment(authToken,"10",""+page*10,
-                    getToast(),apiResponce,"UpcomingAppointment");
+            appointmentRepository.getUpcommingAppoitment(authToken, "10", "" + page * 10,
+                    getToast(), apiResponce, "UpcomingAppointment");
         }
 
     }
 
-    public void fetchHistoryAppointmentList(int page){
+    public void fetchHistoryAppointmentList(int page) {
         historyloading.setValue(true);
-        historyPageNo=page;
-        appointmentRepository.getHistoryAppoitment(authToken,"10",""+page*10,
-                getToast(),apiResponce,"HistoryAppointment");
+        historyPageNo = page;
+        appointmentRepository.getHistoryAppoitment(authToken, "10", "" + page * 10,
+                getToast(), apiResponce, "HistoryAppointment");
     }
 
-    private void getAppointmentData(int appointmentId) {
+    public void getAppointmentData(int appointmentId) {
         apptDetailsloading.setValue(true);
-        appointmentRepository.getAppointmentDetails(authToken,appointmentId,getToast(),apiResponce,"GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(authToken, appointmentId, getToast(), apiResponce, "GetAppointmentDetails");
     }
 
-    public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse)
-    {
-        List<AttachmentResult> attachmentResultList =new ArrayList<>();
+    public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse) {
+        List<AttachmentResult> attachmentResultList = new ArrayList<>();
 
-        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+        Helper.setLog("ReferralAttachment.size()", apptDetailResponse.getData().getAppointment().getReferralAttachment().size() + "");
 
-        try{
-            if(apptDetailResponse.getData().getAppointment().getReferralAttachment()!=null){
+        try {
+            if (apptDetailResponse.getData().getAppointment().getReferralAttachment() != null) {
                 attachmentResultList.addAll(apptDetailResponse.getData().getAppointment().getReferralAttachment());
             }
-        }
-        catch (Exception e){
-            Helper.setLog(TAG+" -Exception",e.getMessage());
+        } catch (Exception e) {
+            Helper.setLog(TAG + " -Exception", e.getMessage());
         }
 
-        Helper.setLog("visitnote size",apptDetailResponse.getData().getVisitNoteAttachment().size()+"");
+        Helper.setLog("visitnote size", apptDetailResponse.getData().getVisitNoteAttachment().size() + "");
 
-        try{
+        try {
 
 
             for (int i = 0; i < apptDetailResponse.getData().getVisitNoteAttachment().size(); i++) {
 
-                Helper.setLog("apptDetailResponse",apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement().size()+"");
+                Helper.setLog("apptDetailResponse", apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement().size() + "");
 
-                List<AttachmentResult> visitNote=apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement();
-                if(visitNote!=null){
+                List<AttachmentResult> visitNote = apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement();
+                if (visitNote != null) {
                     attachmentResultList.addAll(visitNote);
                 }
 
 
             }
-        }catch (Exception e){
-            Helper.setLog(TAG+" -Exception",e.getMessage());
+        } catch (Exception e) {
+            Helper.setLog(TAG + " -Exception", e.getMessage());
         }
 
 
-        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+        Helper.setLog("ReferralAttachment.size()", apptDetailResponse.getData().getAppointment().getReferralAttachment().size() + "");
 
         return attachmentResultList;
     }
 
-    public  void confirmButtonOnClick(){
+    public void confirmButtonOnClick() {
 
-        if(appointmentResultData.getValue().getiD()!=null && appointmentResultData.getValue().getiD()!=0)
-        {
+        if (appointmentResultData.getValue().getiD() != null && appointmentResultData.getValue().getiD() != 0) {
             apptDetailsloading.setValue(true);
-            ConfirmAppointment confirmAppointment=new ConfirmAppointment();
+            ConfirmAppointment confirmAppointment = new ConfirmAppointment();
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
             confirmAppointment.setConfirmByPatient("true");
-            appointmentRepository.setConfirmAppointment(authToken,confirmAppointment,getToast(),apiResponce,"ConfirmAppointment");
+
+            appointmentRepository.setConfirmAppointment(authToken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
         }
     }
 
     public String getAuthToken() {
         return authToken;
-    }
-
-    public String getRefreshTokenId() {
-        return refreshTokenId;
-    }
-
-    public void setRefreshTokenId(String refreshTokenId) {
-        this.refreshTokenId = refreshTokenId;
     }
 
     public void setAuthToken(String authToken) {
@@ -525,5 +510,13 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }
         else
             fetchHistoryAppointmentList(0);*/
+    }
+
+    public String getRefreshTokenId() {
+        return refreshTokenId;
+    }
+
+    public void setRefreshTokenId(String refreshTokenId) {
+        this.refreshTokenId = refreshTokenId;
     }
 }

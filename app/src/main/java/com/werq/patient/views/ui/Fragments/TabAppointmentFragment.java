@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,6 +128,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.e(TAG, "onCreate: " );
+
 
     }
 
@@ -134,7 +137,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Log.e(TAG, "onCreateView: " );
 
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
             mContext = getContext();

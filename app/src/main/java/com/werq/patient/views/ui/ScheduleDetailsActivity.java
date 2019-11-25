@@ -169,6 +169,14 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         layoutScheduleView.requestFocus();
         //getIntentData();
 
+        if (Helper.hasNetworkConnection(mContext)){
+            viewModel.getAppointmentData(appointmentId);
+
+        }else {
+            viewModel.getScheduleDetailsVisibility().setValue(false);
+            viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+        }
+
     }
 
 
@@ -333,7 +341,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         detailsBinding.setTabAppoinmentViewModel(viewModel);
        // viewModel.setFromUpcoming(isFromUpcoming);
         viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setAppointmentId(appointmentId);
+        //viewModel.setAppointmentId(appointmentId);
         recyclerViewClickListerner = this::onclick;
         attachmentList = new ArrayList<>();
         setView(appointmentResult);
@@ -420,5 +428,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
+
+        Log.e(TAG, "onStop: " );
+
     }
 }
