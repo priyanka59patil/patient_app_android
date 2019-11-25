@@ -131,7 +131,6 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
-        profileDoctorViewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
 
         if(Helper.hasNetworkConnection(mContext)){
             profileDoctorViewModel.setDoctorId(doctorData.getiD());

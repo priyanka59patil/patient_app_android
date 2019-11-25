@@ -28,7 +28,6 @@ import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentFilesBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
-import com.werq.patient.viewmodel.AttachmentViewModel;
 import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.ui.FilterDoctorList;
@@ -106,14 +105,22 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         fragmentFilesBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentFilesBinding.setBottomTabViewModel(viewModel);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
+        /*viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
 
         ButterKnife.bind(this, view);
         initializeVariables();
         //getData();
 
         setRecyclerView();
+
+        if(Helper.hasNetworkConnection(mContext)){
+            loading =true;
+            viewModel.fetchAttachments(0);
+
+        }else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
 
         return view;
     }
@@ -123,13 +130,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
 
-        if(Helper.hasNetworkConnection(mContext)){
-            loading =true;
-            viewModel.fetchAttachments(0);
 
-        }else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
 
         viewModel.attachmentsloading.observe(this,aBoolean -> {
             if(aBoolean ){

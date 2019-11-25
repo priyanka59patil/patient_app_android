@@ -92,8 +92,8 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         fragmentDoctorTeamBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
+       /* viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
 
         //progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this, view);
@@ -139,12 +139,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
 
         if(Helper.hasNetworkConnection(mContext)){
             viewModel.fetchTeamList(0);
@@ -152,6 +146,14 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         else {
             Helper.showToast(mContext,"No Network Connection");
         }
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
 
 
         viewModel.getRvVisibility().observe(this,aBoolean -> {

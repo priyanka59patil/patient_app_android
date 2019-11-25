@@ -37,7 +37,6 @@ import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.databinding.FragmentFilesBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
-import com.werq.patient.viewmodel.AttachmentViewModel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

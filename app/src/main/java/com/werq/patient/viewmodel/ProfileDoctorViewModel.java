@@ -25,8 +25,6 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
 
-    String authToken;
-    String refreshTokenId;
     ApiResponce apiResponce=this;
     int doctorId;
 
@@ -48,13 +46,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     int coworkerPageNo=0;
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-    }
 
-    public void setRefreshTokenId(String refreshTokenId) {
-        this.refreshTokenId = refreshTokenId;
-    }
 
     public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
@@ -67,7 +59,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         getLoading().setValue(true);
         if(doctorId!=0){
             coworkerPageNo=0;
-            patientRepository.getDocterDetails(authToken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
+            patientRepository.getDocterDetails(Helper.autoken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
         }
     }
 

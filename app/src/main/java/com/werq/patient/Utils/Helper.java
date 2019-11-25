@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
@@ -25,6 +26,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Helper {
     public static Gson gson;
@@ -139,6 +142,25 @@ public class Helper {
         return false;
     }
 
+    public static boolean isValidEmail(CharSequence target) {
+        if (target == null) {
+            return false;
+        } else {
+            return Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
+
+    public static boolean isValidPhone(CharSequence target) {
+        Pattern pattern = Pattern.compile("^[+][0-9]{11,13}$");
+        Matcher matcher = pattern.matcher(target);
+        return matcher.matches();
+    }
+    public static boolean isValidPhoneUsername(CharSequence target) {
+        Pattern pattern = Pattern.compile("^[0-9]{10,13}$");
+        Matcher matcher = pattern.matcher(target);
+        return matcher.matches();
+    }
+
 
     public static ProgressDialog createProgressDialog(Context context) {
         ProgressDialog dialog = new ProgressDialog(context);
@@ -154,4 +176,6 @@ public class Helper {
         // dialog.setMessage(Message);
         return dialog;
     }
+
+
 }

@@ -56,7 +56,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
         prepareData();
-        getAppointmentData();
+       // getAppointmentData();
     }
 
 

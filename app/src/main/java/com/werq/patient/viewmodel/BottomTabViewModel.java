@@ -29,8 +29,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
 
-    String authToken;
-    String refreshTokenId;
+    /*String authToken;
+    String refreshTokenId;*/
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
 
@@ -104,24 +104,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         return false;
     }
 
-    public String getAuthToken() {
-        return authToken;
-    }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-        //fetchTeamList();
 
-        //fetchAttachments();
-    }
-
-    public String getRefreshTokenId() {
-        return refreshTokenId;
-    }
-
-    public void setRefreshTokenId(String refreshTokenId) {
-        this.refreshTokenId = refreshTokenId;
-    }
 
     public MutableLiveData<Boolean> getRvVisibility() {
         return rvVisibility;
@@ -131,19 +115,16 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public void fetchTeamList(int page){
 
         teamloading.setValue(true);
-        if(authToken!=null&& !authToken.isEmpty()){
-            Log.e(TAG, "authToken: "+authToken );
 
-            patientRepository.getDocterTeamAppoitment(authToken,"10",""+page*10,
+            patientRepository.getDocterTeamAppoitment(Helper.autoken,"10",""+page*10,
                     getToast(),apiResponce,"DoctorTeam");
 
-        }
     }
 
     public void fetchAttachments(int page) {
         attachmentsloading.setValue(true);
         attachmentPageNo=page;
-        patientRepository.getAttachments(authToken,"","10",page*10+"",getToast(),apiResponce,"AllAttachments");
+        patientRepository.getAttachments(Helper.autoken,"","10",page*10+"",getToast(),apiResponce,"AllAttachments");
     }
 
 

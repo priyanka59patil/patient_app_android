@@ -77,15 +77,25 @@ public class SignUpViewModel extends BaseViewModel {
         if (userName.getValue() != null && !userName.getValue().isEmpty() &&
                 newpassword.getValue() != null && !newpassword.getValue().isEmpty()) {
 
-            SignUpJson signUpJson=new SignUpJson();
-            signUpJson.setDOB(dobData);
-            signUpJson.setInvitationCode(invitaionCode);
-            signUpJson.setPassword(newpassword.getValue());
-            signUpJson.setUsername(userName.getValue());
-            getLoading().setValue(true);
-            signUpRepository.signUp(signUpJson,getToast(),apiResponce,SIGNUP);
+            if(signUpDataValidate()){
+                SignUpJson signUpJson=new SignUpJson();
+                signUpJson.setDOB(dobData);
+                signUpJson.setInvitationCode(invitaionCode);
+                signUpJson.setPassword(newpassword.getValue());
+                signUpJson.setUsername(userName.getValue());
+                getLoading().setValue(true);
+                signUpRepository.signUp(signUpJson,getToast(),apiResponce,SIGNUP);
+            }
 
-        } else {
+        } /*else {
+
+            if(userName.getValue() != null && !userName.getValue().trim().equals("")){
+
+               if(!Helper.isValidEmail(userName.getValue() ) || !Helper.isValidPhone(userName.getValue())){
+                   userNameError.setValue("Please enter a valid email or phone");
+               }
+
+            }
             if (userName.getValue() == null || userName.getValue().trim().equals("")) {
                 userNameError.setValue("Email Cannot Be Empty");
 
@@ -94,7 +104,37 @@ public class SignUpViewModel extends BaseViewModel {
                 newpasswordError.setValue("Password can not be empty");
             }
 
+        }*/
+    }
+
+    public boolean signUpDataValidate() {
+        boolean check = true;
+
+        if (userName.getValue().trim().equals("")) {
+            check = false;
+            userNameError.setValue("Email Cannot Be Empty");
         }
+        else if(/*!Helper.isValidEmail(userName.getValue()) */ true ){
+            if(!Helper.isValidPhone(userName.getValue())){
+                check = false;
+                userNameError.setValue("Please enter a valid email or phone");
+            }
+            else {
+                check = false;
+                userNameError.setValue("Please enter a valid email or phone");
+            }
+
+        }
+
+        if(newpassword.getValue().trim().equals("")){
+            check = false;
+            newpasswordError.setValue("Password can not be empty");
+        }
+
+
+
+        return check;
+
     }
 
     public void nextOnClick() {

@@ -420,6 +420,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             }
         }
         else {
+
             Helper.showToast(mContext,"No Details Available");
         }
 
@@ -428,8 +429,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
-
-        Log.e(TAG, "onStop: " );
 
     }
 }

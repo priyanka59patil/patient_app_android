@@ -134,6 +134,13 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.e(TAG, "onActivityResult: "+requestCode+" "+resultCode );
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment

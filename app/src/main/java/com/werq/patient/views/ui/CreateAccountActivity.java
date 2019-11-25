@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.viewmodel.CreateAccountViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
@@ -31,6 +33,8 @@ public class CreateAccountActivity extends BaseActivity {
     Toolbar toolbar;
     @BindView(R.id.tvCreateAccount)
     TextView tvCreateAccount;
+    @BindView(R.id.btSignUp)
+    Button btSignUp;
     SignUpViewModel caViewModel;
     Context mContext;
 
@@ -80,6 +84,17 @@ public class CreateAccountActivity extends BaseActivity {
                 loadingView.setVisibility(View.VISIBLE);
             }else {
                 loadingView.setVisibility(View.GONE);
+            }
+        });
+
+        btSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Helper.hasNetworkConnection(mContext)){
+                    caViewModel.signUpOnClick();
+                }else {
+                    caViewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+                }
             }
         });
 
