@@ -56,6 +56,8 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
+
         if (holder instanceof StackImagesAdapter.HeaderViewHolder) {
             StackImagesAdapter.HeaderViewHolder headerHolder = (StackImagesAdapter.HeaderViewHolder) holder;
 

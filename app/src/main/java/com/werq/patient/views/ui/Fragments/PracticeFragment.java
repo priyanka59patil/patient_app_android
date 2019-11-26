@@ -93,8 +93,8 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
         setBaseViewModel(viewModel);
         fragmentPracticeBinding.setDoctorProfileViewModel(viewModel);
         fragmentPracticeBinding.setLifecycleOwner(this);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
+        /*viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
+        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
         ButterKnife.bind(this,view);
         initializeVariables();
 

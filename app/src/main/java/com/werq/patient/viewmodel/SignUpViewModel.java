@@ -28,7 +28,7 @@ public class SignUpViewModel extends BaseViewModel {
     MutableLiveData<String> pin4Error;
     MutableLiveData<String> pin5Error;
     MutableLiveData<String> pin6Error;
-    MutableLiveData<String> etFocus;
+    public MutableLiveData<String> etFocus;
     MutableLiveData<String> dob;
     MutableLiveData<String> dobError;
     MutableLiveData<String> userName;
@@ -138,6 +138,16 @@ public class SignUpViewModel extends BaseViewModel {
     }
 
     public void nextOnClick() {
+        if(invitaionCode!=null && invitaionCode.length()==6){
+            Bundle bundle =new Bundle();
+            bundle.putString("invitationCode",pin1.getValue()+pin2.getValue()+pin3.getValue()+pin4.getValue()+pin5.getValue()+pin6.getValue());
+
+            getOpenActivitywithBundle().setValue(bundle);
+        }
+        else
+        {
+            pin1Error.setValue("Please Enter Pin Correct Pin");
+        }
         if (pin1.getValue() != null && !pin1.getValue().trim().isEmpty()
                 && pin2.getValue() != null && !pin2.getValue().trim().isEmpty()
                 && pin3.getValue() != null && !pin3.getValue().trim().isEmpty()
@@ -241,15 +251,18 @@ public class SignUpViewModel extends BaseViewModel {
 
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             pin2Error.setValue(null);
+
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
+            Helper.setLog(TAG,"pin2TextWatcher::afterTextChanged"+editable.toString());
             if (editable.toString().length() == 1) {
                 etFocus.setValue("pin3");
             } else if (editable.toString().length() == 0) {

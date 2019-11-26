@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -19,6 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.werq.patient.BuildConfig;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityViewVisitNoteBinding;
@@ -41,6 +45,14 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewClickListerner {
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+    Sprite fadingCircle;
+    int pastVisiblesItems, visibleItemCount, totalItemCount;
+    boolean loading = true;
+    int page = 0;
+    int listcount = 0;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -80,14 +92,25 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         viewModel= ViewModelProviders.of(this).get(ViewVisitNoteViewModel.class);
         setBaseViewModel(viewModel);
         viewVisitNoteBinding.setViewVnViewModel(viewModel);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
         appointmentId=getIntent().getIntExtra("appointmentId",0);
         visitNoteId=getIntent().getIntExtra("visitNoteId",0);
         Helper.setLog("getIntent",appointmentId+" "+visitNoteId );
     /*    viewModel.setAppointmentId(appointmentId);
         viewModel.setVisitNoteId(visitNoteId);*/
-        viewModel.setUrlRequest(appointmentId,visitNoteId);
+
+
+        if(Helper.hasNetworkConnection(mContext)){
+
+            if(appointmentId!=0 && visitNoteId!=0)
+            {
+                loading=true;
+                viewModel.fetchVisitNoteDetails(0,appointmentId,visitNoteId);
+            }
+
+        }else {
+            viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+        }
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         Helper.setToolbarwithBack(getSupportActionBar(),"Visit Note");
@@ -96,20 +119,14 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         viewModel.visitNoteAttachments.observe(this,attachmentResults -> {
             if(attachmentResults!=null)
             {
-                allFiles.clear();
+                if(page==0){
+                    allFiles.clear();
+                }
                 allFiles.addAll(attachmentResults);
+                filesAdapter.notifyDataSetChanged();
             }
 
-        });
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        viewModel.getRvAttachmentsVisibility().observe(this, aBoolean -> {
-            if(aBoolean)
+            if(allFiles!=null && allFiles.size()>0)
             {
                 rvFiles.setVisibility(View.VISIBLE);
                 cvNoAttachments.setVisibility(View.GONE);
@@ -121,12 +138,67 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
 
         });
 
+        rvFiles.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                try {
+                    if (dy > 0) //check for scroll down
+                    {
+                        visibleItemCount = recyclerView.getChildCount();
+                        totalItemCount = recyclerView.getAdapter().getItemCount();
+                        pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        if (listcount < 10) {
+                            loading = false;
+                        }
+                        int count = page + 1;
+                        int data = totalItemCount;
+
+                        if (data == (count * 10)) {
+                            if (loading) {
+                                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                                    //                                loading = false;
+                                    loading=true;
+                                    ++page;
+                                    viewModel.fetchVisitNoteDetails(page,appointmentId,visitNoteId);
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         viewModel.profileUrl.observe(this,s -> {
-            Glide.with(mContext).load(s).apply(new RequestOptions()
+
+            if(s!=null && !s.equals(""))
+            {
+                String url = null;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
+                Glide.with(mContext).load(url).apply(new RequestOptions()
+                        .placeholder(R.drawable.user_image_placeholder)
+                        .error(R.drawable.user_image_placeholder)
+                        .skipMemoryCache(false)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(ivDoctorProfile);
+            }
+            else {
+                ivDoctorProfile.setImageResource(R.drawable.user_image_placeholder);
+            }
+           /* Glide.with(mContext).load(s).apply(new RequestOptions()
                     .placeholder(R.drawable.user_image_placeholder)
                     .error(R.drawable.user_image_placeholder).skipMemoryCache(false)
                     .diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(ivDoctorProfile);
+                    .into(ivDoctorProfile);*/
         });
     }
 

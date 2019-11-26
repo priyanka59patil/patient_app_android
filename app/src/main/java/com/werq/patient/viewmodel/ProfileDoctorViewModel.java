@@ -35,7 +35,6 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
     public MutableLiveData<ArrayList<Coworker>> coworkerList;
-    public MutableLiveData<Boolean> rvCoworkerVisibility;
 
     public MutableLiveData<ArrayList<Location>> locationsList;
     public MutableLiveData<String> practicePhoneNumber;
@@ -58,7 +57,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         getLoading().setValue(true);
         if(doctorId!=0){
-            coworkerPageNo=0;
+            coworkerPageNo=page;
             patientRepository.getDocterDetails(Helper.autoken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
         }
     }
@@ -78,7 +77,6 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         doctorDetailsResponse=new MutableLiveData<>();
 
         coworkerList=new MutableLiveData<>();
-        rvCoworkerVisibility=new MutableLiveData<>();
         locationsList=new MutableLiveData<>();
         rvPracticesVisibility=new MutableLiveData<>();
 
@@ -130,26 +128,14 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
                     }
 
-                    //if(detailsResponse.getData().getCoworker()!=null){
+                    if(detailsResponse.getData().getCoworker()!=null){
 
                         ArrayList<Coworker> coworkerArrayList=new ArrayList<>();
 
-                      /*  if(coworkerList.getValue()!=null && coworkerPageNo!=0){
-                            coworkerArrayList.addAll(coworkerList.getValue());
-                        }*/
-
                         coworkerArrayList.addAll( detailsResponse.getData().getCoworker());
                         coworkerList.setValue(coworkerArrayList);
-                        if(coworkerArrayList.size()>0){
-                            rvCoworkerVisibility.setValue(true);
-                        }else {
-                            rvCoworkerVisibility.setValue(false);
-                        }
-                   /* }
-                    else {
-                        coworkerList.setValue(null);
-                        rvCoworkerVisibility.setValue(false);
-                    }*/
+                   }
+
 
                     if(detailsResponse.getData().getLocations()!=null){
 
@@ -237,9 +223,6 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         return coworkerList;
     }
 
-    public MutableLiveData<Boolean> getRvCoworkerVisibility() {
-        return rvCoworkerVisibility;
-    }
 
     public MutableLiveData<ArrayList<Location>> getLocationsList() {
         return locationsList;

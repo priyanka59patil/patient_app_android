@@ -23,7 +23,7 @@ public class RecyclerViewHelper {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
-        recyclerView.addItemDecoration(new OverlapDecoration());
+        //recyclerView.addItemDecoration(new OverlapDecoration());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(o);
@@ -44,7 +44,7 @@ public class RecyclerViewHelper {
         final LayoutAnimationController controller =
                 AnimationUtils.loadLayoutAnimation(mContext, R.anim.layout_animatin_from_bottom);
         recyclerView.setLayoutAnimation(controller);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        //recyclerView.getAdapter().notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
 
   }

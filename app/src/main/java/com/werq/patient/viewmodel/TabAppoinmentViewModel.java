@@ -53,9 +53,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public MutableLiveData<String> appointmentNote;
     boolean isFromUpcoming = true;
     MutableLiveData<String> day, month, time, fullUserName, speciality, address, addressOnMap;
-    //int appointmentId;
-    String authToken;
-    String refreshTokenId;
     ApiResponce apiResponce = this;
     int upcommingPageNo = 0;
     int historyPageNo = 0;
@@ -103,15 +100,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     }
 
-   /* public int getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(int appointmentId) {
-        this.appointmentId = appointmentId;
-        getAppointmentData(appointmentId);
-
-    }*/
 
     public MutableLiveData<Boolean> getRepoLoadError() {
         return repoLoadError;
@@ -427,25 +415,22 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public void fetchUpcomingAppointmentList(int page) {
         upcommingloading.setValue(true);
         upcommingPageNo = page;
-        if (authToken != null && !authToken.isEmpty()) {
-            Log.e(TAG, "getToken: " + authToken);
 
-            appointmentRepository.getUpcommingAppoitment(authToken, "10", "" + page * 10,
+            appointmentRepository.getUpcommingAppoitment(Helper.autoken, "10", "" + page * 10,
                     getToast(), apiResponce, "UpcomingAppointment");
-        }
 
     }
 
     public void fetchHistoryAppointmentList(int page) {
         historyloading.setValue(true);
         historyPageNo = page;
-        appointmentRepository.getHistoryAppoitment(authToken, "10", "" + page * 10,
+        appointmentRepository.getHistoryAppoitment(Helper.autoken, "10", "" + page * 10,
                 getToast(), apiResponce, "HistoryAppointment");
     }
 
     public void getAppointmentData(int appointmentId) {
         apptDetailsloading.setValue(true);
-        appointmentRepository.getAppointmentDetails(authToken, appointmentId, getToast(), apiResponce, "GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(Helper.autoken, appointmentId, getToast(), apiResponce, "GetAppointmentDetails");
     }
 
     public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse) {
@@ -495,28 +480,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
             confirmAppointment.setConfirmByPatient("true");
 
-            appointmentRepository.setConfirmAppointment(authToken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
+            appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
         }
-    }
-
-    public String getAuthToken() {
-        return authToken;
-    }
-
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-        /*if(isFromUpcoming) {
-            fetchUpcomingAppointmentList(0);
-        }
-        else
-            fetchHistoryAppointmentList(0);*/
-    }
-
-    public String getRefreshTokenId() {
-        return refreshTokenId;
-    }
-
-    public void setRefreshTokenId(String refreshTokenId) {
-        this.refreshTokenId = refreshTokenId;
     }
 }

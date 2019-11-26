@@ -339,9 +339,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(isFromUpcoming)).get(TabAppoinmentViewModel.class);
         setBaseViewModel(viewModel);
         detailsBinding.setTabAppoinmentViewModel(viewModel);
-       // viewModel.setFromUpcoming(isFromUpcoming);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        //viewModel.setAppointmentId(appointmentId);
         recyclerViewClickListerner = this::onclick;
         attachmentList = new ArrayList<>();
         setView(appointmentResult);

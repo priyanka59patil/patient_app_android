@@ -66,13 +66,19 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     private AppointmentResponce data;
     TabAppoinmentViewModel viewModel;
     private String TAG="TabHistoryFragment";
-   // ProgressDialog progressDialog;
     FragmentTabHistoryBinding fragmentTabHistoryBinding;
 
-    /*@Override
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }*/
+        mContext = getContext();
+        fadingCircle=new Circle();
+
+        listener = this::onclick;
+        basicActivities = this;
+        controller = new AppointmentController(basicActivities);
+        listAppointments = new ArrayList<>();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,12 +90,10 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             fragmentTabHistoryBinding=FragmentTabHistoryBinding.bind(view);
         }
         fragmentTabHistoryBinding.setLifecycleOwner(this);
-        mContext = getContext();
+
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
         setBaseViewModel(viewModel);
         fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
         ButterKnife.bind(this, view);
 
         initializeVariables();
@@ -101,16 +105,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
     @Override
     public void initializeVariables() {
-
-        fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        //listner
-        listener = this::onclick;
-        basicActivities = this;
-        controller = new AppointmentController(basicActivities);
-        listAppointments = new ArrayList<>();
-        //progressDialog=Helper.createProgressDialog(mContext);
-        //progressDialog.hide();
         adapter = new AppointmentAdapter(getActivity(), false, listener,listAppointments,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
@@ -152,11 +147,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
         viewModel.historyloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                //if(!loadingView.isAnimating())
                 loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                //if(loadingView.isShowing())
                 loadingView.setVisibility(View.GONE);
             }
         });
@@ -169,12 +162,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                     if (dy > 0) //check for scroll down
                     {
                         visibleItemCount = recyclerView.getChildCount();
-                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                        //Log.("check",String.valueOf(listcount == totalItemCount));
                         if (listcount < 10) {
-                            //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
@@ -183,12 +173,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                         if (data == (count * 10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    //                                loading = false;
                                     loading=true;
-                                    //Logv("...", "Last Item Wow !");
                                     ++page;
                                     viewModel.fetchHistoryAppointmentList(page);
-                                    //Do pagination.. i.e. fetch new data
                                 }
                             }
                         }

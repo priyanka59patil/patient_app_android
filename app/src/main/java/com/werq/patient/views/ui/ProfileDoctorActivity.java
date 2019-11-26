@@ -128,7 +128,8 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
         getIntentData();
         tvAbout.setTrimCollapsedText("Read More...");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
 
@@ -180,13 +181,6 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             }
         });
 
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
         profileDoctorViewModel.getDoctorDetailsResponse().observe(this,doctorDetailsResponse -> {
             if(doctorDetailsResponse!=null)
             {
@@ -201,6 +195,15 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                 tvNoDoctorDetails.setVisibility(View.VISIBLE);
             }
         });
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
 
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){

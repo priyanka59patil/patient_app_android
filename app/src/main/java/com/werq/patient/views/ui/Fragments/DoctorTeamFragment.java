@@ -75,7 +75,33 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity();
+        fadingCircle=new Circle();
+        recyclerViewClickListerner=this;
+        teamList =new ArrayList<>();
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
+                teamList/*,viewModel,this*/);
+        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+            viewModel.getTeamList().observe(this,doctorTeamResults -> {
+                Helper.setLog(TAG,"inside teamList observable page="+page);
+                if(doctorTeamResults!=null && doctorTeamResults.size()>0){
+                    if(page==0){
+                        teamList.clear();
+                    }
+                    listcount=doctorTeamResults.size();
+                    teamList.addAll(doctorTeamResults);
+                    doctorTeamAdapter.notifyDataSetChanged();
+                }
+            });
 
+
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.fetchTeamList(0);
+        }
+        else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
+        Helper.setLog(TAG,"inside oncreateview");
     }
 
     @Override
@@ -83,23 +109,16 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctor_team, container, false);
-        mContext = getActivity();
+
         if(fragmentDoctorTeamBinding==null){
             fragmentDoctorTeamBinding= FragmentDoctorTeamBinding.bind(view);
         }
-
-        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
         fragmentDoctorTeamBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
-       /* viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
-
-        //progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this, view);
         intializeVariables();
         setRecyclerView();
-
 
         rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -109,12 +128,9 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                     if (dy > 0) //check for scroll down
                     {
                         visibleItemCount = recyclerView.getChildCount();
-                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                        //Log.("check",String.valueOf(listcount == totalItemCount));
                         if (listcount < 10) {
-                            //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
@@ -123,12 +139,9 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                         if (data == (count * 10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    //                                loading = false;
                                     loading=true;
-                                    //Logv("...", "Last Item Wow !");
                                     ++page;
                                     viewModel.fetchTeamList(page);
-                                    //Do pagination.. i.e. fetch new data
                                 }
                             }
                         }
@@ -140,12 +153,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         });
 
 
-        if(Helper.hasNetworkConnection(mContext)){
-            viewModel.fetchTeamList(0);
-        }
-        else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
 
         return view;
     }
@@ -153,8 +160,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void onResume() {
         super.onResume();
-
-
 
         viewModel.getRvVisibility().observe(this,aBoolean -> {
             if(aBoolean)
@@ -179,21 +184,13 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
 
         });
 
-        viewModel.teamList.observe(this,doctorTeamResults -> {
-            if(doctorTeamResults!=null){
-                listcount=doctorTeamResults.size();
-            }
-        });
+
     }
 
     private void intializeVariables() {
 
-        fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        recyclerViewClickListerner=this;
-        teamList =new ArrayList<>();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
-                teamList,viewModel,this);
+
     }
 
     private void setRecyclerView() {
@@ -228,5 +225,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         intent.putExtra("doctorData",teamList.get(position).getDoctors().get(0));
         intent.putExtra("isMessageDisabled",isMessageDisabled);
         startActivity(intent);
+
     }
 }

@@ -21,22 +21,13 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
 
-    int visibleItemCount,totalItemCount,pastVisiblesItems;
-    private int listcount;
-    boolean loading;
-    private int page=0;
-    String authToken;
-    String refreshTokenId;
     ApiResponce apiResponce=this;
-    private MutableLiveData<Boolean> rvAttachmentsVisibility;
     //public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public MutableLiveData<String> doctorName;
     public MutableLiveData<String> speciality;
     public MutableLiveData<String> visitNoteText;
     public MutableLiveData<String> profileUrl;
     public MutableLiveData<ArrayList<AttachmentResult>> visitNoteAttachments ;
-    int appointmentId;
-    int visitNoteId;
 
     public ViewVisitNoteViewModel() {
         super();
@@ -44,7 +35,6 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
         patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
         this.patientRepository =new PatientRepository();
-        rvAttachmentsVisibility=new MutableLiveData<>();
         visitNoteAttachments=new MutableLiveData<>();
         doctorName =new MutableLiveData<>();
         speciality =new MutableLiveData<>();
@@ -72,23 +62,11 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
             if(visitNoteResponse.getData()!=null
                     && visitNoteResponse.getData().getVisitNoteResult()!=null
                     && visitNoteResponse.getData().getVisitNoteResult().getAttachement()!=null){
+
                 dataArrayList.addAll(visitNoteResponse.getData().getVisitNoteResult().getAttachement());
             }
 
             visitNoteAttachments.setValue(dataArrayList);
-            if(visitNoteAttachments.getValue()!=null){
-
-                if (visitNoteAttachments.getValue().size() > 0) {
-                    rvAttachmentsVisibility.setValue(true);
-                    //noVisitNote.setVisibility(View.GONE);
-
-                } else {
-                    rvAttachmentsVisibility.setValue(false);
-                }
-
-            }else {
-                rvAttachmentsVisibility.setValue(false);
-            }
 
         }
 
@@ -102,18 +80,6 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     @Override
     public void onTokenRefersh(String responseJson) {
 
-    }
-
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
-    }
-
-    public void setRefreshTokenId(String refreshTokenId) {
-        this.refreshTokenId = refreshTokenId;
-    }
-
-    public MutableLiveData<Boolean> getRvAttachmentsVisibility() {
-        return rvAttachmentsVisibility;
     }
 
     public MutableLiveData<String> getDoctorName() {
@@ -132,16 +98,9 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
         return visitNoteAttachments;
     }
 
-    public void setUrlRequest(int appointmentId, int visitNoteId) {
-        this.appointmentId = appointmentId;
-        this.visitNoteId = visitNoteId;
-        if(visitNoteId!=0) {
-            fetchVisitNoteDetails();
-        }
-    }
 
-    public  void fetchVisitNoteDetails(){
-        patientRepository.getVisitNoteDetails(authToken,appointmentId,visitNoteId,
+    public  void fetchVisitNoteDetails(int page,int appointmentId,int visitNoteId){
+        patientRepository.getVisitNoteDetails(Helper.autoken,appointmentId,visitNoteId,
                 10+"",page*10+"",getToast(),apiResponce,"VisitNoteDetails");
     }
 }

@@ -77,18 +77,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
     @Override
     public void initializeVariables() {
-        //context
 
-        listAppointments=new ArrayList<>();
-        listener = this::onclick;
-        basicActivities=this;
-        controller=new AppointmentController(basicActivities);
-        /*progressDialog=Helper.createProgressDialog(mContext);
-        progressDialog.hide();*/
-
-        fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        //progressDialog.hide();
         setRecyclerView();
 
     }
@@ -129,6 +119,12 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         super.onCreate(savedInstanceState);
 
         Log.e(TAG, "onCreate: " );
+        listAppointments=new ArrayList<>();
+        listener = this::onclick;
+        basicActivities=this;
+        controller=new AppointmentController(basicActivities);
+        fadingCircle=new Circle();
+        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
 
 
     }
@@ -143,20 +139,15 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         Log.e(TAG, "onCreateView: " );
-
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
             mContext = getContext();
             if(appointmentBinding==null){
                 appointmentBinding=FragmentTabAppointmentBinding.bind(view);
             }
-            viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
             appointmentBinding.setLifecycleOwner(this);
             setBaseViewModel(viewModel);
             appointmentBinding.setAppontmentViewModel(viewModel);
-            viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-            viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
 
             ButterKnife.bind(this, view);
             initializeVariables();
@@ -165,7 +156,6 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
             rvAppointmentList.setAdapter(adapter);
 
-        //getData();
 
         return view;
     }
@@ -196,11 +186,9 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
         viewModel.upcommingloading.observe(this,aBoolean -> {
             if(aBoolean ){
-                //if(!loadingView.isAnimating())
                     loadingView.setVisibility(View.VISIBLE);
             }
             else {
-                //if(loadingView.isShowing())
                 loadingView.setVisibility(View.GONE);
             }
         });
@@ -221,12 +209,9 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                     if (dy > 0) //check for scroll down
                     {
                         visibleItemCount = recyclerView.getChildCount();
-                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                        //Log.("check",String.valueOf(listcount == totalItemCount));
                         if (listcount < 4) {
-                            //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
@@ -235,12 +220,9 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                         if (data == (count * 4)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    //                                loading = false;
                                     loading=true;
-                                    //Logv("...", "Last Item Wow !");
                                     ++page;
                                     viewModel.fetchUpcomingAppointmentList(page);
-                                    //Do pagination.. i.e. fetch new data
                                 }
                             }
                         }

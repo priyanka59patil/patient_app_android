@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -89,6 +90,20 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     int page = 0;
     int listcount = 0;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fadingCircle=new Circle();
+        mContext = getActivity();
+        diologListner=this::onClick;
+        recyclerViewClickListerner=this::onclick;
+        basicActivities=this;
+        controller= new FilesController(basicActivities);
+        attachmentList = new ArrayList<>();
+        attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList,recyclerViewClickListerner,true);
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
+        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,17 +111,15 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
        // Helper.setLog("in","FilesFragment");
-        mContext = getActivity();
+
         if(fragmentFilesBinding==null){
             fragmentFilesBinding= FragmentFilesBinding.bind(view);
         }
 
-        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+
         fragmentFilesBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentFilesBinding.setBottomTabViewModel(viewModel);
-        /*viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
 
         ButterKnife.bind(this, view);
         initializeVariables();
@@ -122,6 +135,27 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             Helper.showToast(mContext,"No Network Connection");
         }
 
+        viewModel.listAttachments.observe(this,attachmentResults -> {
+            if(attachmentResults!=null){
+                if(page==0){
+                    attachmentList.clear();
+                }
+                listcount=attachmentResults.size();
+                attachmentList.addAll(attachmentResults);
+                attachmentsAdapter.notifyDataSetChanged();
+            }
+
+            if(attachmentList!=null && attachmentList.size()>0){
+
+                rvFiles.setVisibility(View.VISIBLE);
+                tvNoData.setVisibility(View.GONE);
+
+            }else {
+                rvFiles.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
+            }
+        });
+
         return view;
     }
 
@@ -130,26 +164,12 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
 
-
-
         viewModel.attachmentsloading.observe(this,aBoolean -> {
             if(aBoolean ){
                 loadingView.setVisibility(View.VISIBLE);
             }
             else {
                 loadingView.setVisibility(View.GONE);
-            }
-        });
-
-        viewModel.getTeamList().observe(this,doctorTeamResults -> {
-            for (int i = 0; i <doctorTeamResults.size() ; i++) {
-                Helper.setLog("doctorTeamResults",doctorTeamResults.get(i).toString());
-            }
-        });
-
-        viewModel.listAttachments.observe(this,attachmentResults -> {
-            if(attachmentResults!=null){
-                listcount=attachmentResults.size();
             }
         });
 
@@ -190,44 +210,21 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 }
             }
         });
-        /*viewModel.rvVisibility.observe(this,aBoolean -> {
-            if(aBoolean){
-                rvFiles.setVisibility(View.VISIBLE);
-                tvNoData.setVisibility(View.GONE);
-            }
-            else {
-                rvFiles.setVisibility(View.GONE);
-                tvNoData.setVisibility(View.VISIBLE);
-            }
-        });*/
+
+
+
 
 
     }
 
     @Override
     public void initializeVariables() {
-
-        fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        diologListner=this::onClick;
-        recyclerViewClickListerner=this::onclick;
-        basicActivities=this;
-        controller= new FilesController(basicActivities);
-
-        //data
-        attachmentList = new ArrayList<>();
-        //progressDialog= Helper.createProgressDialog(mContext);
-        //adapters
-
-
-        //dialog
-        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
-
     }
 
     @Override
     public void setRecyclerView() {
-        attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList,recyclerViewClickListerner,true,viewModel,this);
+
         RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,attachmentsAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
     }
@@ -299,13 +296,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         else {
             Helper.showToast(mContext,"No Details Available");
         }
-        /*else {
-            mContext.startActivity(new Intent(mContext, ViewFileActivity.class));
-        }*/
 
-       /* if(allFiles.get(position).getFileType().equals("visitNote")){
-
-        }*/
 
 
     }

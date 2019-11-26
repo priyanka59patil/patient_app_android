@@ -19,7 +19,6 @@ import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.viewmodel.BottomTabViewModel;
-import com.werq.patient.viewmodel.DoctorTeamViewModel;
 
 import java.util.ArrayList;
 
@@ -32,22 +31,22 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
 
     public DoctorTeamAdapter(Context mContext, boolean fromSearchName,
                              RecyclerViewClickListerner recyclerViewClickListerner,
-                             ArrayList<DoctorTeamResult> teamList,
+                             ArrayList<DoctorTeamResult> teamList/*,
                              BottomTabViewModel viewModel,
-                             LifecycleOwner lifecycleOwner) {
+                             LifecycleOwner lifecycleOwner*/) {
         this.mContext = mContext;
         this.fromSearchName=fromSearchName;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
         this.teamList=teamList;
 
-        viewModel.getTeamList().observe(lifecycleOwner,doctorTeamResults -> {
+       /* viewModel.getTeamList().observe(lifecycleOwner,doctorTeamResults -> {
             if(doctorTeamResults!=null ){
                 this.teamList.clear();
                 this.teamList.addAll(doctorTeamResults);
                 notifyDataSetChanged();
                 Helper.setLog("doctorTeamResults",doctorTeamResults.size()+"");
             }
-        });
+        });*/
     }
 
     @NonNull

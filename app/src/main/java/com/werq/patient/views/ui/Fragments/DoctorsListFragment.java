@@ -64,18 +64,16 @@ public class DoctorsListFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mContext = getActivity();
+        fadingCircle=new Circle();
+        coworkerList =new ArrayList<>();
+        doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList);
+        viewModel= ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-    /*    if(Helper.hasNetworkConnection(mContext)){
-            viewModel.getDoctorDetails(0);
-        }
-        else {
-            Helper.showToast(mContext,"No Network Connection");
-        }*/
     }
 
     @Override
@@ -83,23 +81,17 @@ public class DoctorsListFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctors_list, container, false);
-        //viewModel = ViewModelProviders.of(this,)
-        mContext = getActivity();
+
 
         if(fragmentDoctorsListBinding==null){
             fragmentDoctorsListBinding=FragmentDoctorsListBinding.bind(view);
         }
-        viewModel= ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
+
         fragmentDoctorsListBinding.setDoctorProfileViewModel(viewModel);
         setBaseViewModel(viewModel);
         fragmentDoctorsListBinding.setLifecycleOwner(this);
-        viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
-        viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());
-        //progressDialog=Helper.createProgressDialog(mContext);
         ButterKnife.bind(this,view);
         initializeVariables();
-
-       // setRecyclerView();
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
@@ -110,16 +102,6 @@ public class DoctorsListFragment extends BaseFragment {
             }
         });
 
-        viewModel.rvCoworkerVisibility.observe(this,aBoolean -> {
-            if(aBoolean)
-            {
-                rvDoctorTeam.setVisibility(View.VISIBLE);
-                tvNoData.setVisibility(View.GONE);
-            }else {
-                tvNoData.setVisibility(View.VISIBLE);
-                rvDoctorTeam.setVisibility(View.GONE);
-            }
-        });
 
         viewModel.getCoworkerList().observe(this,coworkerArrayList -> {
             if(coworkerArrayList!=null){
@@ -127,6 +109,15 @@ public class DoctorsListFragment extends BaseFragment {
                 coworkerList.addAll(coworkerArrayList);
                 listcount=coworkerList.size();
                 doctorListAdapter.notifyDataSetChanged();
+            }
+
+            if(coworkerList!=null && coworkerList.size()>0)
+            {
+                rvDoctorTeam.setVisibility(View.VISIBLE);
+                tvNoData.setVisibility(View.GONE);
+            }else {
+                tvNoData.setVisibility(View.VISIBLE);
+                rvDoctorTeam.setVisibility(View.GONE);
             }
         });
 
@@ -139,36 +130,23 @@ public class DoctorsListFragment extends BaseFragment {
                     if (dy > 0) //check for scroll down
                     {
                         visibleItemCount = recyclerView.getChildCount();
-                        //                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-                        //Log.("check",String.valueOf(listcount == totalItemCount));
-                        Helper.setLog("visibleItemCount",visibleItemCount+"");
-                        Helper.setLog("totalItemCount",totalItemCount+"");
-                        Helper.setLog("pastVisiblesItems",pastVisiblesItems+"");
-                        Helper.setLog("prev data","loading-"+ loading+":::listcount-"+listcount);
                         if (listcount < 10) {
-                            //Log.("check","xzx");
                             loading = false;
                         }
                         int count = page + 1;
                         int data = totalItemCount;
 
-                        Helper.setLog("prev data","loading-"+ loading+":::listcount-"+listcount);
                         if (data == (count *10)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    //                                loading = false;
                                     loading=true;
-                                    //Logv("...", "Last Item Wow !");
                                     ++page;
-                                    Helper.setLog("call to api=page",page+"");
                                     viewModel.getDoctorDetails(page);
-                                    //Do pagination.. i.e. fetch new data
                                 }
                             }
                         }
-                        Helper.setLog("after data","loading-"+ loading+":::listcount-"+listcount);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -181,10 +159,7 @@ public class DoctorsListFragment extends BaseFragment {
 
     private void initializeVariables() {
 
-        fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        coworkerList =new ArrayList<>();
-        doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList);
         setRecyclerView();
     }
 

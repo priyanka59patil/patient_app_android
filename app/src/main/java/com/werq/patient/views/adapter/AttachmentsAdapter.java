@@ -56,15 +56,15 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
     public AttachmentsAdapter(Context mContext,
                               ArrayList<AttachmentResult> attachmentResultArrayList,
                               RecyclerViewClickListerner recyclerViewClickListerner,
-                              boolean fileTab,
+                              boolean fileTab/*,
                               BottomTabViewModel viewModel,
-                              LifecycleOwner lifecycleOwner) {
+                              LifecycleOwner lifecycleOwner*/) {
         this.mContext = mContext;
         this.attachmentResultArrayList = attachmentResultArrayList;
         this.recyclerViewClickListerner = recyclerViewClickListerner;
         this.fileTab = fileTab;
 
-
+/*
         viewModel.getListAttachments().observe(lifecycleOwner, attachmentResultArrayList1 -> {
             if (attachmentResultArrayList1 != null) {
                 Helper.setLog("attachmentList1", attachmentResultArrayList1.size() + "");
@@ -72,7 +72,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
                 attachmentResultArrayList.addAll(attachmentResultArrayList1);
                 notifyDataSetChanged();
             }
-        });
+        });*/
 
     }
 
