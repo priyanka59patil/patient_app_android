@@ -202,4 +202,8 @@
     <string name="no_appt_details">Sorry, something went wrong and we are looking into it. Please try again in a few minutes</string>
     <string name="not_able_to_fetch_data">Sorry, something went wrong and we are looking into it. Please try again in a few minutes</string>
     <string name="no_network_conection">No network connection</string>
+
+
+
+    <string name="CONFIRMED_APPOINTMENT_BROADCAST">confirmed_appointment</string>
 </resources>

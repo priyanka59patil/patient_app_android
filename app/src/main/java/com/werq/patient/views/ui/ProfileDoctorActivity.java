@@ -205,18 +205,26 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
 
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
-                if(progressDialog!=null && !progressDialog.isShowing()){
-                    progressDialog.show();
-                }else {
-                    progressDialog=Helper.createProgressDialog(mContext);
+            try{
+                if(aBoolean ){
+                    if(progressDialog!=null && !progressDialog.isShowing()){
+                        progressDialog.show();
+                    }else {
+                        progressDialog=Helper.createProgressDialog(mContext);
+                    }
                 }
-            }
-            else {
+                else {
+                    if(progressDialog!=null && progressDialog.isShowing()){
+                        progressDialog.hide();
+                    }
+                }
+            }catch (Exception e){
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+
             }
+
         });
 
         profileDoctorViewModel.profileUrl.observe(this,s -> {
@@ -228,6 +236,12 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                 Glide.with(mContext).load(url).apply(new RequestOptions()
                         .placeholder(R.drawable.user_image_placeholder)
                         .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(ivUserProfile);
+
+                Glide.with(mContext).load(url).apply(new RequestOptions()
+                        .placeholder(R.drawable.user_image_placeholder)
+                        .error(R.drawable.user_image_placeholder).skipMemoryCache(false)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(tbuserimageview);
             }
             else {
                 ivUserProfile.setImageResource(R.drawable.user_image_placeholder);

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -51,6 +52,15 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     LinearLayout layoutNewInvitation;
     LinearLayout layoutDoctorBase;
     BottomTabViewModel tabViewModel;
+
+    final Fragment appointmentFragment = new AppointmentFragment();
+    final Fragment chatFragment = new ChatFragments();
+    final Fragment doctorTeamFragment = new DoctorTeamFragment();
+    final Fragment profileFragment = new ProfileFragment();
+    final Fragment filesFragment = new FilesFragment();
+    Fragment active = appointmentFragment;
+    final FragmentManager fm = getSupportFragmentManager();
+
 
 /*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -176,13 +186,21 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setSelectedItemId(R.id.calendar);
         Helper.setToolbar(getSupportActionBar(), "Appointments");
+
+        fm.beginTransaction().add(R.id.mainLayout, profileFragment, "3").hide(profileFragment).commit();
+        fm.beginTransaction().add(R.id.mainLayout, filesFragment, "2").hide(filesFragment).commit();
+        fm.beginTransaction().add(R.id.mainLayout, doctorTeamFragment, "3").hide(doctorTeamFragment).commit();
+        fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(chatFragment).commit();
+        fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();
         tabViewModel.getOpenFrag().observe(this,s -> {
             if(s!=null)
             {
                 switch (s) {
                     case "calendar":
-                        AppointmentFragment appointmentFragment = new AppointmentFragment();
-                        addFragment(appointmentFragment);
+                        /*AppointmentFragment appointmentFragment = new AppointmentFragment();
+                        addFragment(appointmentFragment);*/
+                        fm.beginTransaction().hide(active).show(appointmentFragment).commit();
+                        active = appointmentFragment;
                         if (add != null && setting != null && search != null) {
                             Helper.setToolbar(getSupportActionBar(), "Appointments");
                             VisibleMenuItem(false, false, true);
@@ -192,25 +210,31 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "messages":
                         title = "Chats";
+                        fm.beginTransaction().hide(active).show(chatFragment).commit();
+                        active = chatFragment;
                         setToolbarForbottom(title, true, false);
-                        ChatFragments chatFragments = new ChatFragments();
-                        addFragment(chatFragments);
+                       /* ChatFragments chatFragments = new ChatFragments();
+                        addFragment(chatFragments);*/
                         VisibleMenuItem(true, false, false);
 
                         break;
                     case "people":
 
                         title = "My Doctor Teams";
+                        fm.beginTransaction().hide(active).show(doctorTeamFragment).commit();
+                        active = doctorTeamFragment;
                         setToolbarForbottom(title, true, false);
-                        DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
-                        addFragment(doctorTeamFragment);
+                        /*DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
+                        addFragment(doctorTeamFragment);*/
                         VisibleMenuItem(true, false, false);
 
                         break;
                     case "profile":
                         title = "My Profile";
-                        ProfileFragment profileFragment = new ProfileFragment();
-                        addFragment(profileFragment);
+                        fm.beginTransaction().hide(active).show(profileFragment).commit();
+                        active = profileFragment;
+                        /*ProfileFragment profileFragment = new ProfileFragment();
+                        addFragment(profileFragment);*/
                         Helper.setToolbar(getSupportActionBar(), "My Profile");
                         VisibleMenuItem(false, true, false);
 
@@ -218,9 +242,11 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
                     case "folder":
                         title = "Files";
+                        fm.beginTransaction().hide(active).show(filesFragment).commit();
+                        active = filesFragment;
                         Helper.setLog("folder","FilesFragment");
-                        FilesFragment filesFragment = new FilesFragment();
-                        addFragment(filesFragment);
+                        /*FilesFragment filesFragment = new FilesFragment();
+                        addFragment(filesFragment);*/
                         Helper.setToolbar(getSupportActionBar(), "Files");
                         VisibleMenuItem(false, false, true);
 

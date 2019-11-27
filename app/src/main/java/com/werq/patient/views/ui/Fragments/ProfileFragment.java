@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -15,6 +17,10 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentProfileBinding;
+import com.werq.patient.viewmodel.PatientProfileViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
@@ -30,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class ProfileFragment extends Fragment implements BasicActivities, DiologListner {
+public class ProfileFragment extends BaseFragment implements BasicActivities, DiologListner {
 
     public PagerAdapter adapter;
     private OnFragmentInteractionListener mListener;
@@ -40,7 +46,7 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
     ViewPager viewpager;
     Unbinder unbinder;
 
-    ProfileInterface profileInterface;
+    //ProfileInterface profileInterface;
 
     BasicFragments basicFragments;
 
@@ -60,12 +66,22 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
 
     DiologListner diologListner;
     private BottomSheetDialog mBottomSheetDialog;
-
+    FragmentProfileBinding fragmentProfileBinding;
+    PatientProfileViewModel viewModel;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initializeVariables();
 
+        viewModel= ViewModelProviders.of(this).get(PatientProfileViewModel.class);
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.fetchPatientProfileData();
+
+        }else {
+            Helper.showToast(mContext,getString(R.string.no_network_conection));
+        }
     }
 
     @Override
@@ -73,27 +89,54 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_profile, container, false);
-
+        if(fragmentProfileBinding==null){
+            fragmentProfileBinding=FragmentProfileBinding.bind(view);
+        }
         unbinder=ButterKnife.bind(this,view);
-        initializeVariables();
-        getData();
+        fragmentProfileBinding.setLifecycleOwner(this);
+        setBaseViewModel(viewModel);
+        fragmentProfileBinding.setPatientProfileViewModel(viewModel);
 
-        viewpager.addOnAdapterChangeListener(new ViewPager.OnAdapterChangeListener() {
+        setupViewPager(viewpager);
+        tabs.setupWithViewPager(viewpager);
+        //getData();
+
+       /* viewpager.addOnAdapterChangeListener(new ViewPager.OnAdapterChangeListener() {
             @Override
             public void onAdapterChanged(@NonNull ViewPager viewPager, @Nullable androidx.viewpager.widget.PagerAdapter oldAdapter, @Nullable androidx.viewpager.widget.PagerAdapter newAdapter) {
 
             }
-        });
+        });*/
+        viewModel.getLoading().observe(this,aBoolean -> {
+            try{
+                if(aBoolean ){
+                    if(progressDialog!=null && !progressDialog.isShowing()){
+                        progressDialog.show();
+                    }else {
+                        progressDialog=Helper.createProgressDialog(mContext);
+                    }
+                }
+                else {
+                    if(progressDialog!=null && progressDialog.isShowing()){
+                        progressDialog.hide();
+                    }
+                }
+            }catch (Exception e){
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
+            }
 
+        });
         return view;
     }
 
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(medicalInfoFragment, getString(R.string.medical_info) );
-        adapter.addFragment(insuranceFragment, getString(R.string.insurance) );
-        adapter.addFragment(medicationsFragment, getString(R.string.medications) );
+        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
+        adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
+        //adapter.addFragment(medicationsFragment, getString(R.string.medications) );
         viewpager.setAdapter(adapter);
 
 
@@ -103,6 +146,9 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 
     @Override
@@ -112,7 +158,7 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
 
         //interface
         basicActivities=this;
-        profileInterface=new ProfileController(basicActivities);
+        //profileInterface=new ProfileController(basicActivities);
         diologListner=this;
 
         //other
@@ -134,9 +180,9 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
         this.data=(Responce)data;
 
 
-        medicalBundle=profileInterface.bundle(this.data,"medical_info");
+       /* medicalBundle=profileInterface.bundle(this.data,"medical_info");
         insuranceBundle=profileInterface.bundle(this.data,"insurance_info");
-        medicationBundle=profileInterface.bundle(this.data,"medications");
+        medicationBundle=profileInterface.bundle(this.data,"medications");*/
 
 
         medicalInfoFragment= (MedicalInfoFragment) basicFragments.newInstance(mContext,medicalBundle,new MedicalInfoFragment());
@@ -156,7 +202,7 @@ public class ProfileFragment extends Fragment implements BasicActivities, Diolog
 
     @Override
     public void getData() {
-        profileInterface.getData();
+     //   profileInterface.getData();
 
     }
 

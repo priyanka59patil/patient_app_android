@@ -70,6 +70,9 @@ public interface ApiInterface {
                                      @Query("visit_note_id") int visitNoteId,
                                      @Query("take") String take,
                                      @Query("skip") String skip);
+
+    @GET("Patient")
+    Call<Object> getPatientProfileData(@Header("Authorization") String authToken);
 }
 
 

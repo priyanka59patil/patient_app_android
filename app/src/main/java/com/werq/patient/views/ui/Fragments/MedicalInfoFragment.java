@@ -12,11 +12,16 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.Guideline;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentMedicalInfoBinding;
+import com.werq.patient.viewmodel.PatientProfileViewModel;
+import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.MedicalInfoAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
@@ -36,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MedicalInfoFragment extends Fragment implements BasicActivities, DiologListner {
+public class MedicalInfoFragment extends BaseFragment implements BasicActivities, DiologListner {
 
     MedicalInfoAdapter adapter;
     @BindView(R.id.rvMedicalInfo)
@@ -84,11 +89,15 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities, Di
 
     Gson gson;
     private BottomSheetDialog mBottomSheetDialog;
+    FragmentMedicalInfoBinding fragmentMedicalInfoBinding;
+    PatientProfileViewModel viewModel;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initializeVariables();
+        viewModel= ViewModelProviders.of(getParentFragment()).get(PatientProfileViewModel.class);
     }
 
     @Override
@@ -96,8 +105,14 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities, Di
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medical_info, container, false);
+        if(fragmentMedicalInfoBinding==null){
+            fragmentMedicalInfoBinding=FragmentMedicalInfoBinding.bind(view);
+        }
+        fragmentMedicalInfoBinding.setLifecycleOwner(getParentFragment());
+        setBaseViewModel(viewModel);
+        fragmentMedicalInfoBinding.setPatientProfileViewModel(viewModel);
         ButterKnife.bind(this, view);
-        initializeVariables();
+
         getIntentData();
         setRecyclerView();
 
@@ -144,11 +159,11 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities, Di
     public void setView(Object data) {
         personal_info = gson.fromJson(bundle.getString("personal_info"), Personal_info.class);
         medical_info = gson.fromJson(bundle.getString("medical_info"), Medical_info[].class);
-        medical_infos.addAll(Arrays.asList(medical_info));
+       // medical_infos.addAll(Arrays.asList(medical_info));
 
-        tvPatientName.setText(personal_info.getFirst_name() + " " + personal_info.getLast_name());
+        /*tvPatientName.setText(personal_info.getFirst_name() + " " + personal_info.getLast_name());
         tvDob.setText(personal_info.getDob());
-        tvContact.setText(personal_info.getPhone_number());
+        tvContact.setText(personal_info.getPhone_number());*/
      //   tvLocation.setText(personal_info.getAddress().toString());
 
 
@@ -157,7 +172,7 @@ public class MedicalInfoFragment extends Fragment implements BasicActivities, Di
     @Override
     public void getIntentData() {
         bundle = this.getArguments();
-        setView(bundle);
+       // setView(bundle);
 
     }
 

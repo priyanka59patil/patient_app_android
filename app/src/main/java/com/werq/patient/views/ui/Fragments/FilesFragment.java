@@ -118,7 +118,6 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             fragmentFilesBinding= FragmentFilesBinding.bind(view);
         }
 
-
         fragmentFilesBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentFilesBinding.setBottomTabViewModel(viewModel);

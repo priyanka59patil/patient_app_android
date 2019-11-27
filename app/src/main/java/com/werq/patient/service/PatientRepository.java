@@ -53,4 +53,13 @@ public class PatientRepository {
 
     }
 
+    public void  getPatientProfile(String authToken, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
 }

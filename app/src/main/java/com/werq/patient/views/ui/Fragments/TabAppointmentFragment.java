@@ -1,8 +1,10 @@
 package com.werq.patient.views.ui.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -132,6 +135,10 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         } else {
             Helper.showToast(mContext,"No Network Connection");
         }
+
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                confirmedAppointmentBR,
+                new IntentFilter(getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST)));
 
     }
 
@@ -253,6 +260,36 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         startActivity(intent);
 
     }
+
+
+    private BroadcastReceiver confirmedAppointmentBR = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Helper.setLog("listening","confirmedAppointmentBR");
+            if(Helper.hasNetworkConnection(mContext)){
+
+                viewModel.fetchUpcomingAppointmentList(0);
+
+            } else {
+                Helper.showToast(mContext,"No Network Connection");
+            }
+           /* Log.e(TAG, "unreadCountReceiver: "+ intent.getStringExtra("type"));
+
+                if (intent.getStringExtra("type").equals("UnreadCount"))
+
+                    try {
+                        if (adapter != null && rvAvailableChatUser != null) {
+                            sortRecentChatList();
+                            adapter.notifyDataSetChanged();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
+
+
+        }
+    };
 
     @Override
     public void onDestroyView() {

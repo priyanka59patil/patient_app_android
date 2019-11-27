@@ -27,6 +27,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -187,6 +188,14 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     protected void onResume() {
         super.onResume();
 
+        viewModel.getConfirmedAppointment().observe(this,aBoolean -> {
+            if(aBoolean){
+                viewModel.getConfirmedAppointment().setValue(false);
+                Intent intent=new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+            }
+        });
+
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,6 +205,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 }else {
                     viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
                 }
+
             }
         });
 
@@ -447,4 +457,5 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             progressDialog.hide();
         }
     }
+
 }

@@ -25,6 +25,8 @@ import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityLoginBinding;
 
+import java.security.spec.ECField;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.luongvo.widget.iosswitchview.SwitchView;
@@ -92,18 +94,25 @@ public class LoginActivity extends BaseActivity {
         });
 
         loginViewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
-                if(progressDialog!=null && !progressDialog.isShowing()){
-                    progressDialog.show();
-                }else {
-                    progressDialog=Helper.createProgressDialog(mContext);
+            try{
+                if(aBoolean ){
+                    if(progressDialog!=null && !progressDialog.isShowing()){
+                        progressDialog.show();
+                    }else {
+                        progressDialog=Helper.createProgressDialog(mContext);
+                    }
                 }
-            }
-            else {
+                else {
+                    if(progressDialog!=null && progressDialog.isShowing()){
+                        progressDialog.hide();
+                    }
+                }
+            }catch (Exception e){
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
             }
+
         });
 
 

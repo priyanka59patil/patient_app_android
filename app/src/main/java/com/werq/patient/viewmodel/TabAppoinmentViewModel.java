@@ -1,17 +1,22 @@
 package com.werq.patient.viewmodel;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.MockData.JsonData;
+import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -38,9 +43,7 @@ import okhttp3.internal.http2.ErrorCode;
 public class TabAppoinmentViewModel extends BaseViewModel {
 
     private static final String TAG = "TabAppoinmentViewModel";
-    public static Boolean toConfirmChanged=false;
     private final AppointmentRepository appointmentRepository;
-    private final MutableLiveData<Boolean> repoLoadError = new MutableLiveData<>();
     public MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
     public MutableLiveData<ArrayList<AppointmentResult>> listHistoryAppointments;
     public MutableLiveData<List<AttachmentResult>> attachmentList;
@@ -57,6 +60,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> rvVisibility;
     private MutableLiveData<Boolean> rvHistoryVisibility;
     private MutableLiveData<Boolean> scheduleDetailsVisibility;
+    MutableLiveData<Boolean> confirmedAppointment;
 
     public TabAppoinmentViewModel() {
         appointmentRepository = new AppointmentRepository();
@@ -87,18 +91,16 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         attachmentList = new MutableLiveData<>();
         doctorProfilePhoto = new MutableLiveData<>();
         scheduleDetailsVisibility = new MutableLiveData<>();
+        confirmedAppointment=new MutableLiveData<>();
 
         //toolbarTitle =new MutableLiveData<>();
         appointmentResultData = new MutableLiveData<>();
         appointmentNote = new MutableLiveData<>();
 
+
+
+
     }
-
-
-    public MutableLiveData<Boolean> getRepoLoadError() {
-        return repoLoadError;
-    }
-
 
     public MutableLiveData<Boolean> getRvVisibility() {
         return rvVisibility;
@@ -162,6 +164,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public MutableLiveData<String> getDoctorProfilePhoto() {
         return doctorProfilePhoto;
+    }
+
+    public MutableLiveData<Boolean> getConfirmedAppointment() {
+        return confirmedAppointment;
     }
 
     public MutableLiveData<Boolean> getScheduleDetailsVisibility() {
@@ -292,6 +298,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         if (url != null && url.equalsIgnoreCase("ConfirmAppointment")) {
             //apptDetailsloading.setValue(false);
+            confirmedAppointment.setValue(true);
             AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
             Log.e(TAG, "onSuccess: " + apptDetailResponse.getData().getAppointment().getConfirmByPatient());
             appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
@@ -368,21 +375,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }else {
             appointmentNote.setValue("Not Available");
         }
-
-        // confirmByPatient.setValue(appointmentResult.getConfirmByPatient());
-
-       /* if(isFromUpcoming)
-        {
-            if(appointmentResult.getConfirmByPatient()!=null && appointmentResult.getConfirmByPatient()){
-                appointmentStatus.setValue("confirmed");
-            }
-            else {
-                appointmentStatus.setValue("toconfirm");
-            }
-        }
-        else {
-            appointmentStatus.setValue(appointmentResult.getAppointmentStatus());
-        }*/
 
 
         if (attachmentList.getValue() != null) {
@@ -461,7 +453,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public void setConfirmStatus() {
 
         if (appointmentResultData.getValue().getiD() != null && appointmentResultData.getValue().getiD() != 0) {
-           // apptDetailsloading.setValue(true);
 
             ConfirmAppointment confirmAppointment = new ConfirmAppointment();
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
@@ -470,4 +461,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
         }
     }
+
+
+
 }

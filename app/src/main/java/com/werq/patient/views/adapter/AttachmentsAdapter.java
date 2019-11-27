@@ -244,7 +244,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            cvMainlayout.setOnClickListener(this);
+            cvMainlayout.setOnClickListener(this::onClick);
             file_view.setOnClickListener(this::onClick);
 
         }
