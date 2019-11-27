@@ -87,10 +87,10 @@ public class LoginViewModel extends BaseViewModel {
             UserCredential userCredential=new UserCredential();
             userCredential.setUsername(userName.getValue());
             userCredential.setPassword(password.getValue());
-            getLoading().setValue(true);
+
 
             if(Helper.hasNetworkConnection(mContext)){
-
+                getLoading().setValue(true);
                 loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
 
             }else {
@@ -228,7 +228,7 @@ public class LoginViewModel extends BaseViewModel {
 
     @Override
     public void onTokenRefersh(String responseJson) {
-
+        getLoading().setValue(false);
     }
 
     private void setPrefilledUsername() {

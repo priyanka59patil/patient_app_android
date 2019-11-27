@@ -16,7 +16,7 @@ import okhttp3.internal.http2.ErrorCode;
 
 public class SignUpViewModel extends BaseViewModel {
 
-    MutableLiveData<String> pin1;
+    /*MutableLiveData<String> pin1;
     MutableLiveData<String> pin2;
     MutableLiveData<String> pin3;
     MutableLiveData<String> pin4;
@@ -28,7 +28,7 @@ public class SignUpViewModel extends BaseViewModel {
     MutableLiveData<String> pin4Error;
     MutableLiveData<String> pin5Error;
     MutableLiveData<String> pin6Error;
-    public MutableLiveData<String> etFocus;
+    public MutableLiveData<String> etFocus;*/
     MutableLiveData<String> dob;
     MutableLiveData<String> dobError;
     MutableLiveData<String> userName;
@@ -46,7 +46,7 @@ public class SignUpViewModel extends BaseViewModel {
     private final String SIGNUP="SignUp";
 
     public SignUpViewModel() {
-        pin1 = new MutableLiveData<>();
+        /*pin1 = new MutableLiveData<>();
         pin2 = new MutableLiveData<>();
         pin3 = new MutableLiveData<>();
         pin4 = new MutableLiveData<>();
@@ -58,7 +58,7 @@ public class SignUpViewModel extends BaseViewModel {
         pin4Error = new MutableLiveData<>();
         pin5Error=new MutableLiveData<>();
         pin6Error=new MutableLiveData<>();
-        etFocus = new MutableLiveData<>();
+        etFocus = new MutableLiveData<>();*/
         dob = new MutableLiveData<>();
         dobError = new MutableLiveData<>();
         userName = new MutableLiveData<>();
@@ -68,7 +68,7 @@ public class SignUpViewModel extends BaseViewModel {
         openActivitywithBundle=new MutableLiveData<>();
         signUpRepository=new SignUpRepository();
 
-        etFocus.setValue("pin1");
+        //etFocus.setValue("pin1");
     }
 
 
@@ -137,7 +137,7 @@ public class SignUpViewModel extends BaseViewModel {
 
     }
 
-    public void nextOnClick() {
+    /*public void nextOnClick() {
         if(invitaionCode!=null && invitaionCode.length()==6){
             Bundle bundle =new Bundle();
             bundle.putString("invitationCode",pin1.getValue()+pin2.getValue()+pin3.getValue()+pin4.getValue()+pin5.getValue()+pin6.getValue());
@@ -184,7 +184,7 @@ public class SignUpViewModel extends BaseViewModel {
 
         }
 
-    }
+    }*/
 
     public void DobnextOnClick() {
         if (dob.getValue() != null && !dob.getValue().trim().isEmpty()) {
@@ -224,7 +224,7 @@ public class SignUpViewModel extends BaseViewModel {
 
 
 
-    public TextWatcher pin1TextWatcher = new TextWatcher() {
+/*    public TextWatcher pin1TextWatcher = new TextWatcher() {
 
         private final String TAG = "in-un";
 
@@ -356,7 +356,7 @@ public class SignUpViewModel extends BaseViewModel {
             if (editable.toString().length() == 0)
                 etFocus.setValue("pin5");
         }
-    };
+    };*/
 
 
     @Override
@@ -410,24 +410,6 @@ public class SignUpViewModel extends BaseViewModel {
     }
 
 
-
-    public MutableLiveData<String> getPin5() {
-        return pin5;
-    }
-
-
-
-    public MutableLiveData<String> getPin6() {
-        return pin6;
-    }
-
-    public MutableLiveData<String> getPin5Error() {
-        return pin5Error;
-    }
-    public MutableLiveData<String> getPin6Error() {
-        return pin6Error;
-    }
-
     public MutableLiveData<String> getUserName() {
         return userName;
     }
@@ -444,41 +426,6 @@ public class SignUpViewModel extends BaseViewModel {
         return newpasswordError;
     }
 
-    public MutableLiveData<String> getPin1() {
-        return pin1;
-    }
-
-    public MutableLiveData<String> getPin2() {
-        return pin2;
-    }
-
-    public MutableLiveData<String> getPin3() {
-        return pin3;
-    }
-
-    public MutableLiveData<String> getPin4() {
-        return pin4;
-    }
-
-    public MutableLiveData<String> getPin1Error() {
-        return pin1Error;
-    }
-
-    public MutableLiveData<String> getPin2Error() {
-        return pin2Error;
-    }
-
-    public MutableLiveData<String> getPin3Error() {
-        return pin3Error;
-    }
-
-    public MutableLiveData<String> getPin4Error() {
-        return pin4Error;
-    }
-
-    public MutableLiveData<String> getEtFocus() {
-        return etFocus;
-    }
 
     public MutableLiveData<String> getDob() {
         return dob;

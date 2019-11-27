@@ -30,8 +30,8 @@ public class SignUpActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.constraintLayout)
-    ConstraintLayout constraintLayout;
+    /*@BindView(R.id.constraintLayout)
+    ConstraintLayout constraintLayout;*/
     @BindView(R.id.Tv_already_have_account)
     TextView TvAlreadyHaveAccount;
     @BindView(R.id.etOTP)
@@ -40,7 +40,7 @@ public class SignUpActivity extends BaseActivity {
     @BindView(R.id.btNext)
     Button btNext;
 
-    @BindView(R.id.etPin1)
+   /* @BindView(R.id.etPin1)
     EditText etPin1;
     @BindView(R.id.etPin2)
     EditText etPin2;
@@ -51,7 +51,7 @@ public class SignUpActivity extends BaseActivity {
     @BindView(R.id.etPin5)
     EditText etPin5;
     @BindView(R.id.etPin6)
-    EditText etPin6;
+    EditText etPin6;*/
 
     Context mContext;
     SignUpViewModel signUpViewModel;
@@ -74,13 +74,29 @@ public class SignUpActivity extends BaseActivity {
         ButterKnife.bind(this);
         setToolbarTitle(toolbar,"Sign Up");
 
+        btNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(otpTextView.getOtp()!=null && otpTextView.getOtp().length()==6){
+                    Bundle bundle =new Bundle();
+                    bundle.putString("invitationCode",otpTextView.getOtp());
+                    Intent  intent=new Intent(mContext,VerifyIdentity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+                else
+                {
+                    otpTextView.showError(/*"Please Enter Pin Correct Pin"*/);
+                }
+            }
+        });
+
         signUpViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
             @Override
             public void onChanged(Bundle bundle) {
                 if(bundle!=null){
-                    Intent  intent=new Intent(mContext,VerifyIdentity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+
 
                 }
             }
@@ -93,109 +109,7 @@ public class SignUpActivity extends BaseActivity {
 
 
 
-        signUpViewModel.getEtFocus().observe(this,s -> {
-            if(s!=null)
-            {
-                switch (s)
-                {
-                    case "pin1":
-                            etPin1.requestFocus();
-                        break;
-                    case "pin2":
-                            etPin2.requestFocus();
-                        break;
-                    case "pin3":
-                            etPin3.requestFocus();
-                        break;
-                    case "pin4":
-                            etPin4.requestFocus();
-                        break;
-                    case "pin5":
-                        etPin5.requestFocus();
-                        break;
-                    case "pin6":
-                        etPin6.requestFocus();
-                        break;
-                }
-            }
-        });
-
-        etPin2.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
-                   // Helper.setLog("getPin1",signUpViewModel.getPin1().getValue());
-                    if(signUpViewModel.getPin2().getValue()==null){
-                        signUpViewModel.etFocus.setValue("pin1");
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-        });
-
-        etPin3.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
-                    // Helper.setLog("getPin1",signUpViewModel.getPin1().getValue());
-                    if(signUpViewModel.getPin3().getValue()==null){
-                        signUpViewModel.etFocus.setValue("pin2");
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-        });
-
-        etPin4.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
-                    // Helper.setLog("getPin1",signUpViewModel.getPin1().getValue());
-                    if(signUpViewModel.getPin4().getValue()==null){
-                        signUpViewModel.etFocus.setValue("pin3");
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-        });
-
-        etPin5.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
-                    // Helper.setLog("getPin1",signUpViewModel.getPin1().getValue());
-                    if(signUpViewModel.getPin5().getValue()==null){
-                        signUpViewModel.etFocus.setValue("pin4");
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-        });
-
-        etPin6.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if(keyCode == KeyEvent.KEYCODE_DEL) {
-                    // Helper.setLog("getPin1",signUpViewModel.getPin1().getValue());
-                    if(signUpViewModel.getPin6().getValue()==null){
-                        signUpViewModel.etFocus.setValue("pin5");
-                        return true;
-                    }
-
-                }
-                return false;
-            }
-        });
-
-        otpTextView.setOtpListener(new OTPListener() {
+       /* otpTextView.setOtpListener(new OTPListener() {
             @Override
             public void onInteractionListener() {
                 // fired when user types something in the Otpbox
@@ -204,26 +118,10 @@ public class SignUpActivity extends BaseActivity {
             @Override
             public void onOTPComplete(String otp) {
                 // fired when user has entered the OTP fully.
-                signUpViewModel.setInvitaionCode(otp);
-                Helper.setLog("setOtpListener","onOTPComplete::"+otp);
             }
         });
+*/
 
-        btNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(signUpViewModel.getInvitaionCode()!=null && signUpViewModel.getInvitaionCode().length()==6){
-                    Bundle bundle =new Bundle();
-                    bundle.putString("invitationCode",signUpViewModel.getInvitaionCode());
-                    signUpViewModel.getOpenActivitywithBundle().setValue(bundle);
-                }
-                else
-                {
-                    otpTextView.showError(/*"Please Enter Pin Correct Pin"*/);
-                }
-            }
-        });
 
 
     }

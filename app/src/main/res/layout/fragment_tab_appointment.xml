@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>-->
 
-    <com.github.ybq.android.spinkit.SpinKitView
+    <!--<com.github.ybq.android.spinkit.SpinKitView
         android:id="@+id/loadingView"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
     <!--android:visibility="@={appontmentViewModel.loading}"-->
   </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

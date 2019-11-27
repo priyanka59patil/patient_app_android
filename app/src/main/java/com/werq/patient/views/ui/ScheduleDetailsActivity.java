@@ -66,9 +66,9 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
 
-    @BindView(R.id.loadingView)
+    /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
+    Sprite fadingCircle;*/
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -155,6 +155,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     private AppointmentResult appointmentResult;
     private String TAG="schedule_details";
     private  int appointmentId;
+    ProgressDialog progressDialog;
 
 
 
@@ -185,6 +186,18 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onResume() {
         super.onResume();
+
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Helper.hasNetworkConnection(mContext)){
+
+                    viewModel.setConfirmStatus();
+                }else {
+                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+                }
+            }
+        });
 
         viewModel.getScheduleDetailsVisibility().observe(this,aBoolean -> {
             if(aBoolean){
@@ -240,12 +253,18 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
 
-        viewModel.apptDetailsloading.observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-               loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
         });
 
@@ -331,8 +350,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         controller = new AppointmentController(basicActivities);
 
         ButterKnife.bind(this);
-        fadingCircle=new Circle();
-        loadingView.setIndeterminateDrawable(fadingCircle);
         setSupportActionBar(toolbar);
         getIntentData();
 
@@ -426,6 +443,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
-
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

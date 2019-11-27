@@ -52,9 +52,9 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     Context mContext;
     @BindView(R.id.rvAppointmentList)
     RecyclerView rvAppointmentList;
-    @BindView(R.id.loadingView)
+    /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
+    Sprite fadingCircle;*/
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -72,13 +72,12 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     FragmentTabAppointmentBinding appointmentBinding;
     private String TAG="TabAppointmentFragment";
 
-    //ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
 
     @Override
     public void initializeVariables() {
 
-        loadingView.setIndeterminateDrawable(fadingCircle);
         setRecyclerView();
 
     }
@@ -119,13 +118,20 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         super.onCreate(savedInstanceState);
 
         Log.e(TAG, "onCreate: " );
+        mContext = getContext();
         listAppointments=new ArrayList<>();
         listener = this::onclick;
         basicActivities=this;
         controller=new AppointmentController(basicActivities);
-        fadingCircle=new Circle();
         viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
 
+        if(Helper.hasNetworkConnection(mContext)){
+
+            viewModel.fetchUpcomingAppointmentList(0);
+
+        } else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
 
     }
 
@@ -141,7 +147,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                              Bundle savedInstanceState) {
         Log.e(TAG, "onCreateView: " );
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
-            mContext = getContext();
+
             if(appointmentBinding==null){
                 appointmentBinding=FragmentTabAppointmentBinding.bind(view);
             }
@@ -165,15 +171,6 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         super.onResume();
 
 
-        if(Helper.hasNetworkConnection(mContext)){
-
-            viewModel.fetchUpcomingAppointmentList(0);
-
-        } else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
-
-
         viewModel.getRvVisibility().observe(this,aBoolean -> {
             if(aBoolean)
             {
@@ -184,12 +181,18 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             }
         });
 
-        viewModel.upcommingloading.observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                    loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
         });
 
@@ -251,4 +254,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
 }

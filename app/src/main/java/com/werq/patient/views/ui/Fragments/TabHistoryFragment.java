@@ -48,9 +48,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     RecyclerView rvAppointmentList;
     private AppointmentAdapter adapter;
 
-    @BindView(R.id.loadingView)
+    /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
+    Sprite fadingCircle;*/
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -67,17 +67,23 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     TabAppoinmentViewModel viewModel;
     private String TAG="TabHistoryFragment";
     FragmentTabHistoryBinding fragmentTabHistoryBinding;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext = getContext();
-        fadingCircle=new Circle();
 
+        mContext = getContext();
         listener = this::onclick;
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
         listAppointments = new ArrayList<>();
+        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.fetchHistoryAppointmentList(0);
+        }else {
+            Helper.showToast(mContext,"No Network Connection");
+        }
     }
 
     @Override
@@ -91,7 +97,6 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         }
         fragmentTabHistoryBinding.setLifecycleOwner(this);
 
-        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
         setBaseViewModel(viewModel);
         fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
         ButterKnife.bind(this, view);
@@ -105,7 +110,6 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
 
     @Override
     public void initializeVariables() {
-        loadingView.setIndeterminateDrawable(fadingCircle);
         adapter = new AppointmentAdapter(getActivity(), false, listener,listAppointments,controller,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
@@ -128,11 +132,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         super.onResume();
 
 
-        if(Helper.hasNetworkConnection(mContext)){
-            viewModel.fetchHistoryAppointmentList(0);
-        }else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
+
 
 
         viewModel.getRvHistoryVisibility().observe(this,aBoolean -> {
@@ -145,12 +145,18 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             }
         });
 
-        viewModel.historyloading.observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
         });
 
@@ -217,5 +223,13 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void setToolbar() {
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

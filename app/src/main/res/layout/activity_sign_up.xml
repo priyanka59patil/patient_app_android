@@ -53,7 +53,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!--<androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -159,21 +159,24 @@
                     android:text="@={signupViewModel.pin6}"
                     app:error="@{signupViewModel.pin6Error}"
                     android:addTextChangedListener="@{signupViewModel.pin6TextWatcher}"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>-->
 
             <in.aabhasjindal.otptextview.OtpTextView
                 android:id="@+id/etOTP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:bar_active_color="@color/colorPrimaryDark"
+                app:box_margin="1dp"
                 app:height="40dp"
                 app:width="40dp"
+                app:bar_error_color="@color/red"
                 app:bar_enabled="true"
-                app:bar_height="2dp"
                 app:length="6"
-                app:otp_text_size="24dp"
+                app:otp_text_size="20dp"
+                android:layout_marginTop="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
+                app:layout_constraintTop_toBottomOf="@+id/textSignUp"/>
 
             <!--<com.broooapps.otpedittext2.OtpEditText
                 android:id="@+id/etOTP"
@@ -197,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="35dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:text="Next"
