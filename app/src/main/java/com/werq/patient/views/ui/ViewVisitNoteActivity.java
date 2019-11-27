@@ -1,5 +1,6 @@
 package com.werq.patient.views.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,6 +82,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
     ViewVisitNoteViewModel viewModel;
     int appointmentId;
     int visitNoteId;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -138,6 +140,8 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
 
         });
 
+
+
         rvFiles.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -148,6 +152,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
                         visibleItemCount = recyclerView.getChildCount();
                         totalItemCount = recyclerView.getAdapter().getItemCount();
                         pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                        listcount=allFiles.size();
                         if (listcount < 10) {
                             loading = false;
                         }
@@ -177,6 +182,21 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
     @Override
     protected void onResume() {
         super.onResume();
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+            if(aBoolean ){
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
+            }
+            else {
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
+            }
+        });
 
         viewModel.profileUrl.observe(this,s -> {
 
@@ -241,5 +261,13 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
     @Override
     public void onclick(int position) {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

@@ -48,6 +48,7 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     @Override
     public void onSuccess(String url, String responseJson) {
         Helper.setLog("responseJson",responseJson);
+        getLoading().setValue(false);
         if(url!=null && url.equals("VisitNoteDetails")) {
 
             VisitNoteResponse visitNoteResponse= Helper.getGsonInstance().fromJson(responseJson,VisitNoteResponse.class);
@@ -74,12 +75,12 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
 
     @Override
     public void onError(String url, String errorCode,String errorMessage) {
-
+        getLoading().setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
-
+        getLoading().setValue(false);
     }
 
     public MutableLiveData<String> getDoctorName() {
@@ -100,6 +101,7 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
 
 
     public  void fetchVisitNoteDetails(int page,int appointmentId,int visitNoteId){
+        getLoading().setValue(true);
         patientRepository.getVisitNoteDetails(Helper.autoken,appointmentId,visitNoteId,
                 10+"",page*10+"",getToast(),apiResponce,"VisitNoteDetails");
     }

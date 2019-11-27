@@ -80,11 +80,8 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     FilesData filesData;
     BottomTabViewModel viewModel;
     FragmentFilesBinding fragmentFilesBinding;
-    //ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
-    @BindView(R.id.loadingView)
-    ProgressBar loadingView;
-    Sprite fadingCircle;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -93,7 +90,6 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fadingCircle=new Circle();
         mContext = getActivity();
         diologListner=this::onClick;
         recyclerViewClickListerner=this::onclick;
@@ -103,6 +99,13 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList,recyclerViewClickListerner,true);
         mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
         viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+        if(Helper.hasNetworkConnection(mContext)){
+            loading =true;
+            viewModel.fetchAttachments(0);
+
+        }else {
+            Helper.showToast(mContext,getString(R.string.no_network_conection));
+        }
     }
 
     @Override
@@ -110,7 +113,6 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
-       // Helper.setLog("in","FilesFragment");
 
         if(fragmentFilesBinding==null){
             fragmentFilesBinding= FragmentFilesBinding.bind(view);
@@ -127,21 +129,16 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
         setRecyclerView();
 
-        if(Helper.hasNetworkConnection(mContext)){
-            loading =true;
-            viewModel.fetchAttachments(0);
 
-        }else {
-            Helper.showToast(mContext,"No Network Connection");
-        }
 
         viewModel.listAttachments.observe(this,attachmentResults -> {
             if(attachmentResults!=null){
                 if(page==0){
                     attachmentList.clear();
                 }
-                listcount=attachmentResults.size();
+
                 attachmentList.addAll(attachmentResults);
+                listcount=attachmentList.size();
                 attachmentsAdapter.notifyDataSetChanged();
             }
 
@@ -164,12 +161,18 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
 
-        viewModel.attachmentsloading.observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
         });
 
@@ -219,7 +222,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
 
     @Override
     public void initializeVariables() {
-        loadingView.setIndeterminateDrawable(fadingCircle);
+
     }
 
     @Override
@@ -315,5 +318,21 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         iv_all_check.setVisibility(View.VISIBLE);
         iv_received_check.setVisibility(View.GONE);
         iv_sent_check.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

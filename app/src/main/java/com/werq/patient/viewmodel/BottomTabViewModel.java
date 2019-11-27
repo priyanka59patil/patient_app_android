@@ -34,9 +34,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
 
-    public MutableLiveData<Boolean> teamloading;
+   // public MutableLiveData<Boolean> teamloading;
     public MutableLiveData<Boolean> doctorDetailsloading;
-    public MutableLiveData<Boolean> attachmentsloading;
 
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
@@ -55,10 +54,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         rvVisibility=new MutableLiveData<>();
         teamList=new MutableLiveData<>();
         listAttachments=new MutableLiveData<>();
-
-        teamloading=new MutableLiveData<>();
         doctorDetailsloading=new MutableLiveData<>();
-        attachmentsloading=new MutableLiveData<>();
 
 
     }
@@ -108,7 +104,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
 
     public void fetchTeamList(int page){
-        teamloading.setValue(true);
+        getLoading().setValue(true);
 
         patientRepository.getDocterTeamAppoitment(Helper.autoken,"10",""+page*10,
                     getToast(),apiResponce,"DoctorTeam");
@@ -116,7 +112,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
     public void fetchAttachments(int page) {
-        attachmentsloading.setValue(true);
+        getLoading().setValue(true);
         patientRepository.getAttachments(Helper.autoken,"","10",page*10+"",getToast(),apiResponce,"AllAttachments");
     }
 
@@ -130,7 +126,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
         if(url!=null && url.equals("DoctorTeam"))
         {
-            teamloading.setValue(false);
             if (teamList.getValue()!=null)
             Helper.setLog(TAG,"onSuccess"+teamList.getValue().size()+"");
 
@@ -155,7 +150,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("AllAttachments"))
         {
 
-            attachmentsloading.setValue(false);
             AttachmentResponse attachmentResponse=Helper.getGsonInstance().fromJson(responseJson,AttachmentResponse.class);
 
             if(attachmentResponse !=null){
@@ -180,15 +174,12 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     @Override
     public void onError(String url, String errorCode,String errorMessage) {
         getLoading().setValue(false);
-        teamloading.setValue(false);
-        attachmentsloading.setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
-        teamloading.setValue(false);
-        attachmentsloading.setValue(false);
         getLoading().setValue(false);
+
     }
 
     public MutableLiveData<ArrayList<AttachmentResult>> getListAttachments() {

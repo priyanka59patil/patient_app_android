@@ -49,9 +49,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @BindView(R.id.tvNoData)
     TextView tvNoData;
 
-    @BindView(R.id.loadingView)
-    ProgressBar loadingView;
-    Sprite fadingCircle;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     boolean loading = true;
     int page = 0;
@@ -68,7 +65,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     ArrayList<DoctorTeamResult> teamList;
     private String TAG="DoctorTeamFragment";
     FragmentDoctorTeamBinding fragmentDoctorTeamBinding;
-    //ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
 
 
 
@@ -76,7 +73,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        fadingCircle=new Circle();
         recyclerViewClickListerner=this;
         teamList =new ArrayList<>();
         doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
@@ -88,8 +84,9 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                     if(page==0){
                         teamList.clear();
                     }
-                    listcount=doctorTeamResults.size();
+
                     teamList.addAll(doctorTeamResults);
+                    listcount=teamList.size();
                     doctorTeamAdapter.notifyDataSetChanged();
                 }
             });
@@ -117,7 +114,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         setBaseViewModel(viewModel);
         fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
         ButterKnife.bind(this, view);
-        intializeVariables();
         setRecyclerView();
 
         rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -174,12 +170,17 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         });
 
         viewModel.getLoading().observe(this,aBoolean -> {
-
             if(aBoolean ){
-                loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
 
         });
@@ -187,11 +188,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
 
     }
 
-    private void intializeVariables() {
-
-        loadingView.setIndeterminateDrawable(fadingCircle);
-
-    }
 
     private void setRecyclerView() {
 
@@ -226,5 +222,21 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         intent.putExtra("isMessageDisabled",isMessageDisabled);
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

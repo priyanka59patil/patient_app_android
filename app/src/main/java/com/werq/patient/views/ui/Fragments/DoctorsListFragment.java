@@ -58,7 +58,7 @@ public class DoctorsListFragment extends BaseFragment {
     Context mContext;
     ProfileDoctorViewModel viewModel;
     FragmentDoctorsListBinding fragmentDoctorsListBinding;
-    //ProgressDialog progressDialog;
+    ProgressDialog progressDialog;
     DoctorListAdapter doctorListAdapter;
 
     @Override
@@ -95,10 +95,16 @@ public class DoctorsListFragment extends BaseFragment {
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                loadingView.setVisibility(View.VISIBLE);
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                loadingView.setVisibility(View.GONE);
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
             }
         });
 
@@ -173,5 +179,19 @@ public class DoctorsListFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
 }

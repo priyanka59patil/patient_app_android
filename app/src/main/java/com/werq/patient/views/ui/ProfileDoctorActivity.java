@@ -123,7 +123,6 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         activityProfileDoctorBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
-        progressDialog= Helper.createProgressDialog(mContext);
         ButterKnife.bind(this);
 
         getIntentData();
@@ -207,12 +206,16 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
-                if(!progressDialog.isShowing())
+                if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
             }
             else {
-                if(progressDialog.isShowing())
+                if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
+                }
             }
         });
 
@@ -330,5 +333,13 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     @Override
     public void setToolbar() {
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
     }
 }

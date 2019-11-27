@@ -131,10 +131,6 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     public void onResume() {
         super.onResume();
 
-
-
-
-
         viewModel.getRvHistoryVisibility().observe(this,aBoolean -> {
             if(aBoolean)
             {
@@ -158,6 +154,10 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                     progressDialog.hide();
                 }
             }
+        });
+
+        viewModel.getListHistoryAppointments().observe(this,appointmentResults -> {
+            listcount=appointmentResults.size();
         });
 
         rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -226,10 +226,16 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
         if(progressDialog!=null && progressDialog.isShowing()){
             progressDialog.hide();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 }

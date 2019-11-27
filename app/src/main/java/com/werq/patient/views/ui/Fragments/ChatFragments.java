@@ -29,8 +29,6 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
 
     @BindView(R.id.rv_chats)
     RecyclerView rvChats;
-    @BindView(R.id.loadingView)
-    ProgressBar loadingView;
 
     ChatAdapters chatAdapters;
     Context mContext;
@@ -53,14 +51,6 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     @Override
     public void onResume() {
         super.onResume();
-
-
-        viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean !=null && aBoolean)
-                loadingView.setVisibility(View.VISIBLE);
-            else
-                loadingView.setVisibility(View.INVISIBLE);
-        });
 
 
     }

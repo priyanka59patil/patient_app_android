@@ -169,7 +169,7 @@ public class Helper {
         } catch (WindowManager.BadTokenException e) {
 
         }
-        dialog.setCancelable(false);
+        //dialog.setCancelable(false);
         dialog.getWindow()
                 .setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.custom_progress_bar);

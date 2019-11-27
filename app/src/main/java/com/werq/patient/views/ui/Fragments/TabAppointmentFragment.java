@@ -255,6 +255,14 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(progressDialog!=null && progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if(progressDialog!=null && progressDialog.isShowing()){

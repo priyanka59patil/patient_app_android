@@ -55,9 +55,10 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     public void getDoctorDetails( int page) {
 
-        getLoading().setValue(true);
+
         if(doctorId!=0){
             coworkerPageNo=page;
+            getLoading().setValue(true);
             patientRepository.getDocterDetails(Helper.autoken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
         }
     }
