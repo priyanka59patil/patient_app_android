@@ -90,11 +90,11 @@ public class LoginViewModel extends BaseViewModel {
 
 
             if(Helper.hasNetworkConnection(mContext)){
+
                 getLoading().setValue(true);
                 loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
 
             }else {
-                getLoading().setValue(false);
                 getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
             }
 

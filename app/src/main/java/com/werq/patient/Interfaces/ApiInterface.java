@@ -73,6 +73,11 @@ public interface ApiInterface {
 
     @GET("Patient")
     Call<Object> getPatientProfileData(@Header("Authorization") String authToken);
+
+    @GET("PatientData?filter=medication")
+    Call<Object> getMedicationList(@Header("Authorization") String authToken,
+                                   @Query("take") String take,
+                                   @Query("skip") String skip );
 }
 
 

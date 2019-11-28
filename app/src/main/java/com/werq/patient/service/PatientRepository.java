@@ -14,7 +14,6 @@ public class PatientRepository {
     public void  getDocterTeamAppoitment(String authToken, String take, String skip , MutableLiveData<String> toast,
                                          ApiResponce apiResponce, String url){
 
-
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorTeams(authToken,take,skip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
@@ -35,7 +34,7 @@ public class PatientRepository {
     public void  getAttachments(String authToken,String doctor, String take, String skip , MutableLiveData<String> toast,
                                 ApiResponce apiResponce, String url){
 
-
+        Helper.setLog("authToken :- ",authToken);
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,take,skip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
@@ -55,10 +54,19 @@ public class PatientRepository {
 
     public void  getPatientProfile(String authToken, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
 
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
 
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
+        RetrofitClient.callApi(call,url,apiResponce,toast);
 
-        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+    }
+
+    public void  getMedicationList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicationList(authToken,take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
 
     }
 

@@ -11,8 +11,11 @@ import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class PatientProfileViewModel extends BaseViewModel {
@@ -27,6 +30,7 @@ public class PatientProfileViewModel extends BaseViewModel {
     public MutableLiveData<String> patientDOB;
     public MutableLiveData<String> phoneNumber;
     public MutableLiveData<String> address;
+    int medicationPage=0;
 
 
     public PatientProfileViewModel() {
@@ -54,6 +58,12 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     }
 
+    public void fetchMedicationList(int page){
+        getLoading().setValue(true);
+        patientRepository.getMedicationList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "MedicationList");
+        medicationPage=page;
+    }
+
     @Override
     public void onSuccess(String url, String responseJson) {
         getLoading().setValue(false);
@@ -64,11 +74,22 @@ public class PatientProfileViewModel extends BaseViewModel {
                     .getGsonInstance().fromJson(responseJson,PatientProfileResponse.class);
 
             if(patientProfileResponse!=null){
+                Helper.setLog("PatientProfileResponse",patientProfileResponse.toString());
                 if(patientProfileResponse.getData()!=null && patientProfileResponse.getData().getPatient()!=null ){
 
                     Patient patient=patientProfileResponse.getData().getPatient();
                     patientName.setValue(patient.getFirstName()+" "+patient.getLastName());
-                    patientDOB.setValue(patient.getDOB());
+                    Date patDob=null;
+                    try {
+                        patDob= new SimpleDateFormat("yyyy-MM-dd").parse(patient.getDOB());
+
+                        patientDOB.setValue(new SimpleDateFormat("MMMM dd, yyyy").format(patDob));
+
+                    } catch (ParseException e) {
+                        patientDOB.setValue("");
+                        e.printStackTrace();
+                    }
+
                     for (int i = 0; i <patient.getContactInfo().size() ; i++) {
                         if(patient.getContactInfo().get(i).getType()==2){
                             phoneNumber.setValue(patient.getContactInfo().get(i).getDetails());
@@ -90,10 +111,14 @@ public class PatientProfileViewModel extends BaseViewModel {
 
                     ArrayList<Insurance> insuranceArrayList=new ArrayList<>();
                     insuranceArrayList.addAll(patientProfileResponse.getData().getInsurance());
+                    insuranceList.setValue(null);
                     insuranceList.setValue(insuranceArrayList);
                 }
 
             }
+        }
+        if(url!=null && url.equals("MedicationList")){
+
         }
 
     }

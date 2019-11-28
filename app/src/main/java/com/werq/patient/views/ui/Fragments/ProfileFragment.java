@@ -69,6 +69,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
     FragmentProfileBinding fragmentProfileBinding;
     PatientProfileViewModel viewModel;
     ProgressDialog progressDialog;
+    private String TAG="ProfileMainFrag";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +78,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
 
         viewModel= ViewModelProviders.of(this).get(PatientProfileViewModel.class);
         if(Helper.hasNetworkConnection(mContext)){
+            Helper.setLog(TAG,"Call to api");
             viewModel.fetchPatientProfileData();
 
         }else {
@@ -136,7 +138,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
         adapter = new PagerAdapter(getChildFragmentManager());
         adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
         adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
-        //adapter.addFragment(medicationsFragment, getString(R.string.medications) );
+        adapter.addFragment(new MedicationsFragment(),getString(R.string.medications));
         viewpager.setAdapter(adapter);
 
 

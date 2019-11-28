@@ -31,4 +31,14 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
+    <style name="TitleBadgeTitle" parent="AppTheme">
+        <item name="android:textColor">@color/titleBadgeTitle</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TitleBadgeText" parent="AppTheme">
+        <item name="android:textColor">@color/titleBadgeText</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
 </resources>

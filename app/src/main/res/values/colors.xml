@@ -19,5 +19,8 @@
     <color name="backgroundgrey">#EBEEF1</color>
     <color name="gray_text_color">#9B9B9B</color>
     <color name="toconfirm_bg_color">#F4F9FE</color>
+    <color name="contentDividerLine">#e0e0e0</color>
+    <color name="titleBadgeTitle">#949596</color>
+    <color name="titleBadgeText">#686767</color>
 
 </resources>
