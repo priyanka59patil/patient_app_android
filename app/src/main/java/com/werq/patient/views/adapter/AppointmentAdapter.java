@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.Provider;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -136,8 +137,9 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             e.printStackTrace();
         }
         Location location=result.getLocation();
-        holder.tvAddress.setText(location.getOrganizationName()+" "+location.getAddress1()+" "+location.getCity()
-                +" "+location.getPostalcode()+" "+ location.getPostalcode()+""+location.getCountry());
+        //Helper.setLog("Location",location.toString());
+        holder.tvAddress.setText(location.getOrganizationName()+"\n "+location.getAddress1()+", "+location.getCity()
+                +", "+location.getState()+", "+ location.getCountry()+", "+location.getPostalcode());
         holder.tvSpeciality.setText(doctor.getSpeciality().getName());
 
 

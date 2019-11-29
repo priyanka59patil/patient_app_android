@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentMedicalInfoBinding;
 import com.werq.patient.viewmodel.PatientProfileViewModel;
@@ -98,6 +99,9 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
         super.onCreate(savedInstanceState);
         initializeVariables();
         viewModel= ViewModelProviders.of(getParentFragment()).get(PatientProfileViewModel.class);
+
+
+
     }
 
     @Override
@@ -108,7 +112,7 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
         if(fragmentMedicalInfoBinding==null){
             fragmentMedicalInfoBinding=FragmentMedicalInfoBinding.bind(view);
         }
-        fragmentMedicalInfoBinding.setLifecycleOwner(getParentFragment());
+        fragmentMedicalInfoBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentMedicalInfoBinding.setPatientProfileViewModel(viewModel);
         ButterKnife.bind(this, view);
@@ -116,8 +120,25 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
         getIntentData();
         setRecyclerView();
 
+        viewModel.patientName.observe(this,s -> {
+            tvPatientName.setText(s);
+        });
+
+        viewModel.patientDOB.observe(this,s -> {
+            tvDob.setText(s);
+        });
+
+        viewModel.phoneNumber.observe(this,s -> {
+            tvContact.setText(s);
+        });
+
+        viewModel.address.observe(this,s -> {
+
+            tvLocation.setText(s);
+        });
         return view;
     }
+
 
 
     @Override
@@ -127,11 +148,17 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
 
         //data
         ArrayList<String> titleList = new ArrayList<>();
-        titleList.add("Summery Of Care");
+        /*titleList.add("Summery Of Care");
         titleList.add("Immunization And Results");
         titleList.add("Functional And Cognitive Status");
         titleList.add("Vital sign");
-        titleList.add("Problem list");
+        titleList.add("Problem list");*/
+
+        titleList.add(getResources().getString(R.string.summery_of_care));
+        titleList.add(getResources().getString(R.string.allergies));
+        titleList.add(getResources().getString(R.string.history_of_care));
+        titleList.add(getResources().getString(R.string.social_history));
+        titleList.add(getResources().getString(R.string.problem));
 
         //listner
         basicActivities = this;
@@ -143,7 +170,7 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
 
         gson = new Gson();
         medical_infos = new ArrayList<>();
-        adapter = new MedicalInfoAdapter(getActivity(), titleList);
+        adapter = new MedicalInfoAdapter(getActivity(), titleList,false);
 
 
     }

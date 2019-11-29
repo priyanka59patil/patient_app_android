@@ -60,16 +60,19 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
     Bundle insuranceBundle;
     Bundle medicationBundle;
 
-    MedicalInfoFragment medicalInfoFragment;
+    /*MedicalInfoFragment medicalInfoFragment;
     InsuranceFragment insuranceFragment;
     MedicationsFragment medicationsFragment;
-
+*/
     DiologListner diologListner;
     private BottomSheetDialog mBottomSheetDialog;
     FragmentProfileBinding fragmentProfileBinding;
     PatientProfileViewModel viewModel;
     ProgressDialog progressDialog;
     private String TAG="ProfileMainFrag";
+
+    Fragment medicalInfoFragment=new MedicalInfoFragment();
+    Fragment insuranceFragment =new InsuranceFragment();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -136,8 +139,8 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
-        adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
+        adapter.addFragment(/*new MedicalInfoFragment()*/medicalInfoFragment, getString(R.string.medical_info) );
+        adapter.addFragment(/*new InsuranceFragment()*/insuranceFragment, getString(R.string.insurance) );
         adapter.addFragment(new MedicationsFragment(),getString(R.string.medications));
         viewpager.setAdapter(adapter);
 
@@ -187,10 +190,10 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
         medicationBundle=profileInterface.bundle(this.data,"medications");*/
 
 
-        medicalInfoFragment= (MedicalInfoFragment) basicFragments.newInstance(mContext,medicalBundle,new MedicalInfoFragment());
+       /* medicalInfoFragment= (MedicalInfoFragment) basicFragments.newInstance(mContext,medicalBundle,new MedicalInfoFragment());
         insuranceFragment=(InsuranceFragment)basicFragments.newInstance(mContext,insuranceBundle,new InsuranceFragment());
         medicationsFragment=(MedicationsFragment)basicFragments.newInstance(mContext,insuranceBundle,new MedicationsFragment());
-
+*/
         setupViewPager(viewpager);
         tabs.setupWithViewPager(viewpager);
 

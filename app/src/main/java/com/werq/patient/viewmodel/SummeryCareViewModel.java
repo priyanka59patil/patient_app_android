@@ -9,7 +9,6 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
-import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
@@ -18,11 +17,9 @@ import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
-public class PatientProfileViewModel extends BaseViewModel {
+public class SummeryCareViewModel extends BaseViewModel {
     private static final String TAG = "PatientProfileViewModel";
     private final PatientRepository patientRepository;
     ApiResponce apiResponce = this;
@@ -41,7 +38,7 @@ public class PatientProfileViewModel extends BaseViewModel {
     Context mContext;
 
 
-    public PatientProfileViewModel() {
+    public SummeryCareViewModel() {
         patientRepository = new PatientRepository();
         insuranceList=new MutableLiveData<>();
         rvInsuranceVisibility=new MutableLiveData<>();

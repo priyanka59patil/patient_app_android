@@ -12,14 +12,14 @@
       xmlns:tools="http://schemas.android.com/tools"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-
+      android:background="@color/colorLightGreyBackground"
       tools:context=".views.ui.Fragments.TabAppointmentFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAppointmentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_corner_rec_white"
+        android:background="@color/colorLightGreyBackground"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layoutAnimation="@anim/layout_animatin_from_right"

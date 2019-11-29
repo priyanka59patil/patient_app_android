@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class PatientProfileResponse implements Serializable {
+public class EncounterListResponse implements Serializable {
 
 
     @SerializedName("StatusCode")
@@ -14,7 +14,7 @@ public class PatientProfileResponse implements Serializable {
     private String message;
 
     @SerializedName("Data")
-    private PatientProfileData data;
+    private EncounterData data;
 
     public Integer getStatusCode() {
         return statusCode;
@@ -32,17 +32,17 @@ public class PatientProfileResponse implements Serializable {
         this.message = message;
     }
 
-    public PatientProfileData getData() {
+    public EncounterData getData() {
         return data;
     }
 
-    public void setData(PatientProfileData data) {
+    public void setData(EncounterData data) {
         this.data = data;
     }
 
     @Override
     public String toString() {
-        return "PatientProfileResponse{" +
+        return "EncounterListResponse{" +
                 "statusCode=" + statusCode +
                 ", message='" + message + '\'' +
                 ", data=" + data +

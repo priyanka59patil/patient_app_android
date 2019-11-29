@@ -6,12 +6,14 @@
             type="com.werq.patient.viewmodel.PatientProfileViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".views.ui.Fragments.MedicationsFragment">
+        tools:context=".views.ui.Fragments.MedicationsFragment"
+        >
 
         <ScrollView
             android:layout_width="match_parent"
@@ -22,400 +24,32 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/conMain"
-                >
+                android:background="@color/colorLightGreyBackground">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvMedicationList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-                <!--<androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conMedication1"
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    app:layout_constraintTop_toBottomOf="@+id/conLayoutProvider">
-
-                    <TextView
-                        android:id="@+id/lblMedication1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Medication"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        android:textColor="@color/sub_heding"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValMedication1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblMedication1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view1"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conMedication1"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conInstruction1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    app:layout_constraintTop_toBottomOf="@+id/conMedication1">
-
-                    <TextView
-                        android:id="@+id/lblInstruction1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Instructions"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tvValInstruction"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblInstruction1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conInstruction1"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conDosage1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    app:layout_constraintTop_toBottomOf="@+id/conInstruction1">
-
-                    <TextView
-                        android:id="@+id/lblDosage1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dosage"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValDosage1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblDosage1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conDosage1"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conEffectiveDate1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conDosage1">
-
-                    <TextView
-                        android:id="@+id/lblEffectiveDate1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Effective Dates"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValEffectiveDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="TextView"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblEffectiveDate1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conEffectiveDate1"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conStatus1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conEffectiveDate1">
-
-                    <TextView
-                        android:id="@+id/lblStatus1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Status"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValStatus1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Active"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblStatus1"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view5"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conStatus1"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conMedication2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conStatus1">
-
-                    <TextView
-                        android:id="@+id/lblMedication2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Medication"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValMedication2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblMedication2"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view6"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conMedication2"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conInstruction2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conMedication2">
-
-                    <TextView
-                        android:id="@+id/lblInstruction2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Instruction"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValInstruction2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Self"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblInstruction2"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view7"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conInstruction2"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conDosage2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conInstruction2">
-
-                    <TextView
-                        android:id="@+id/lblDosage2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Dosage"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValDosage2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblDosage2"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view8"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conDosage2"/>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conEffectiveDate2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conDosage2">
-
-                    <TextView
-                        android:id="@+id/lblEffectiveDate2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Effective Dates"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValEffectiveDate2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Self"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblEffectiveDate2"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view9"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conEffectiveDate2"/>
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/conStatus2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-                    android:padding="@dimen/constraint_layout_padding_medication"
-                    app:layout_constraintTop_toBottomOf="@+id/conEffectiveDate2">
-
-                    <TextView
-                        android:id="@+id/lblStatus2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Status"
-                        android:textColor="@color/sub_heding"
-                        android:textSize="@dimen/mediation_Heding_text_size"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tvValStatus2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Past"
-                        android:textColor="@color/color_text"
-                        android:layout_marginTop="@dimen/mediation_SubHeding_margin_top"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/lblStatus2"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view10"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/view_height_insurance"
-                    android:background="@android:color/black"
-                    app:layout_constraintTop_toBottomOf="@+id/conStatus2"/>
-    -->
-
+                    />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
 
-
+        <TextView
+            android:id="@+id/tvNoDataLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_appt_details"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:drawableTop="@drawable/calendar"
+            android:textAlignment="center"
+            android:padding="10dp"
+            android:visibility="visible"
+            />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

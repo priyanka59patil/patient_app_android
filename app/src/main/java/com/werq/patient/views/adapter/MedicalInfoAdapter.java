@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.views.ui.EncounterActivity;
 import com.werq.patient.views.ui.SummaryCareActivity;
 import com.werq.patient.R;
 
@@ -23,14 +24,14 @@ import java.util.ArrayList;
 public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.ChipHolder> {
     Activity context;
     ArrayList<String> titleList;
+    Boolean fromSummeryCare;
 
 
 
-
-    public MedicalInfoAdapter(Activity context,   ArrayList<String> titleList) {
+    public MedicalInfoAdapter(Activity context,   ArrayList<String> titleList,Boolean fromSummeryCare) {
         this.context = context;
         this.titleList = titleList;
-
+        this.fromSummeryCare=fromSummeryCare;
     }
 
 
@@ -45,13 +46,28 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
         String medical_info = titleList.get(position);
 
         holder.tvTitle.setText(medical_info);
-        holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(context, SummaryCareActivity.class);
-                context.startActivity(intent1);
-            }
-        });
+
+        if(fromSummeryCare){
+            holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent1 = new Intent(context, EncounterActivity.class);
+                    context.startActivity(intent1);
+                }
+            });
+        }
+        else {
+            holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent1 = new Intent(context, SummaryCareActivity.class);
+                    context.startActivity(intent1);
+                }
+            });
+        }
+
+
+
 
     /*    holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
             @Override

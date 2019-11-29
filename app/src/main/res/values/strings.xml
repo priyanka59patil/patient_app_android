@@ -204,6 +204,18 @@
     <string name="no_network_conection">No network connection</string>
 
 
-
     <string name="CONFIRMED_APPOINTMENT_BROADCAST">confirmed_appointment</string>
+
+    <string name="summery_of_care">Summery of Care</string>
+    <string name="allergies">Allergies</string>
+    <string name="history_of_care">History of Pastillness</string>
+    <string name="social_history">Social History</string>
+    <string name="problem">Problem List</string>
+
+
+    <string name="encounter">Encounter</string>
+    <string name="assesssment">Assessment</string>
+    <string name="instruction">Instruction</string>
+    <string name="plan_of_care">Plan of Care</string>
+    <string name="history_of_procedure">History of Procedure</string>
 </resources>

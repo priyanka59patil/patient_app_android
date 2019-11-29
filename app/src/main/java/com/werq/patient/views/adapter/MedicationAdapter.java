@@ -45,7 +45,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.insurance_cell, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.medication_cell, parent, false);
         return new AppointmentViewHolder(itemView);
     }
 
@@ -60,17 +60,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
             holder.tvMedication.setText("-");
         }
 
-        if(medication.getGenericCode()!=null && !medication.getGenericCode().isEmpty()){
-            holder.tvGenericCode.setText(medication.getGenericCode());
-        }else {
-            holder.tvGenericCode.setText("-");
-        }
 
-        if(medication.getRxNorm()!=null && !medication.getRxNorm().isEmpty()){
-            holder.tvRxnorm.setText(medication.getRxNorm());
-        }else {
-            holder.tvRxnorm.setText("-");
-        }
 
         if(medication.getStrength()!=null && !medication.getStrength().isEmpty()){
             holder.tvStrenght.setText(medication.getStrength());
@@ -84,17 +74,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
             holder.tvStrenghtUnit.setText("-");
         }
 
-        if(medication.getRoute()!=null && !medication.getRoute().isEmpty()){
-            holder.tvRoute.setText(medication.getRoute());
-        }else {
-            holder.tvRoute.setText("-");
-        }
 
-        if(medication.getDose()!=null && !medication.getDose().isEmpty()){
-            holder.tvDose.setText(medication.getDose());
-        }else {
-            holder.tvDose.setText("-");
-        }
 
         if(medication.getDoseForm()!=null && !medication.getDoseForm().isEmpty()){
             holder.tvDoseForm.setText(medication.getDoseForm());
@@ -102,11 +82,7 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
             holder.tvDoseForm.setText("-");
         }
 
-        if(medication.getFrequency()!=null && !medication.getFrequency().isEmpty()){
-            holder.tvFrequency.setText(medication.getFrequency());
-        }else {
-            holder.tvFrequency.setText("-");
-        }
+
         if(medication.getDateStarted()!=null && !medication.getDateStarted().isEmpty()){
             holder.tvDateStarted.setText(medication.getDateStarted());
         }else {
@@ -131,7 +107,34 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
             holder.tvSig.setText("-");
         }
 
+       /* if(medication.getRoute()!=null && !medication.getRoute().isEmpty()){
+            holder.tvRoute.setText(medication.getRoute());
+        }else {
+            holder.tvRoute.setText("-");
+        }
 
+        if(medication.getDose()!=null && !medication.getDose().isEmpty()){
+            holder.tvDose.setText(medication.getDose());
+        }else {
+            holder.tvDose.setText("-");
+        }
+        if(medication.getFrequency()!=null && !medication.getFrequency().isEmpty()){
+            holder.tvFrequency.setText(medication.getFrequency());
+        }else {
+            holder.tvFrequency.setText("-");
+        }
+
+        if(medication.getGenericCode()!=null && !medication.getGenericCode().isEmpty()){
+            holder.tvGenericCode.setText(medication.getGenericCode());
+        }else {
+            holder.tvGenericCode.setText("-");
+        }
+
+        if(medication.getRxNorm()!=null && !medication.getRxNorm().isEmpty()){
+            holder.tvRxnorm.setText(medication.getRxNorm());
+        }else {
+            holder.tvRxnorm.setText("-");
+        }*/
     }
 
 
@@ -142,20 +145,20 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Ap
 
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvCompanyName) TextView tvMedication;
-        @BindView(R.id.tvInsuranceName) TextView tvGenericCode;
-        @BindView(R.id.tvInsuranceType) TextView tvRxnorm;
-        @BindView(R.id.tvMemberNumber) TextView tvStrenght;
-        @BindView(R.id.tvMemberNumber) TextView tvStrenghtUnit;
+        @BindView(R.id.tvMedication) TextView tvMedication;
+        //@BindView(R.id.tvInsuranceName) TextView tvGenericCode;
+        //@BindView(R.id.tvInsuranceType) TextView tvRxnorm;
+        @BindView(R.id.tvStrenght) TextView tvStrenght;
+        @BindView(R.id.tvStrengthUnit) TextView tvStrenghtUnit;
 
-        @BindView(R.id.tvCompanyName) TextView tvRoute;
-        @BindView(R.id.tvInsuranceName) TextView tvDose;
-        @BindView(R.id.tvInsuranceName) TextView tvDoseForm;
-        @BindView(R.id.tvInsuranceType) TextView tvFrequency;
-        @BindView(R.id.tvMemberNumber) TextView tvDateStarted;
-        @BindView(R.id.tvMemberNumber) TextView tvDateEnded;
-        @BindView(R.id.tvMemberNumber) TextView tvStatus;
-        @BindView(R.id.tvMemberNumber) TextView tvSig;
+       // @BindView(R.id.tvCompanyName) TextView tvRoute;
+        //@BindView(R.id.tvInsuranceName) TextView tvDose;
+        @BindView(R.id.tvDoseForm) TextView tvDoseForm;
+        //@BindView(R.id.tvInsuranceType) TextView tvFrequency;
+        @BindView(R.id.tvStartDate) TextView tvDateStarted;
+        @BindView(R.id.tvEndDate) TextView tvDateEnded;
+        @BindView(R.id.tvStatus) TextView tvStatus;
+        @BindView(R.id.tvSig) TextView tvSig;
 
 
         public AppointmentViewHolder(@NonNull View itemView) {
