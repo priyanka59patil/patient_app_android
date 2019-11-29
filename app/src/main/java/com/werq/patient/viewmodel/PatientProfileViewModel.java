@@ -8,6 +8,8 @@ import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
+import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
+import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 
@@ -23,7 +25,9 @@ public class PatientProfileViewModel extends BaseViewModel {
     private final PatientRepository patientRepository;
     ApiResponce apiResponce = this;
     public MutableLiveData<ArrayList<Insurance>> insuranceList;
+    public MutableLiveData<ArrayList<MedicationDatum>> medicationList;
     private MutableLiveData<Boolean> rvInsuranceVisibility;
+    private MutableLiveData<Boolean> rvMedicationVisibility;
 
     public MutableLiveData<String> patientProfileUrl;
     public MutableLiveData<String> patientName;
@@ -37,13 +41,14 @@ public class PatientProfileViewModel extends BaseViewModel {
         patientRepository = new PatientRepository();
         insuranceList=new MutableLiveData<>();
         rvInsuranceVisibility=new MutableLiveData<>();
-
+        rvMedicationVisibility=new MutableLiveData<>();
 
         patientProfileUrl=new MutableLiveData<>();
         patientName=new MutableLiveData<>();
         patientDOB=new MutableLiveData<>();
         phoneNumber=new MutableLiveData<>();
         address=new MutableLiveData<>();
+        medicationList =new MutableLiveData<>();
     }
 
 
@@ -113,11 +118,41 @@ public class PatientProfileViewModel extends BaseViewModel {
                     insuranceArrayList.addAll(patientProfileResponse.getData().getInsurance());
                     insuranceList.setValue(null);
                     insuranceList.setValue(insuranceArrayList);
+
+                    if(insuranceList.getValue().size()>0){
+                        rvInsuranceVisibility.setValue(true);
+                    }else {
+                        rvInsuranceVisibility.setValue(false);
+                    }
                 }
 
             }
         }
         if(url!=null && url.equals("MedicationList")){
+
+            MedicationResponse medicationResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, MedicationResponse.class);
+
+            if(medicationResponse!=null && medicationResponse.getData()!=null){
+
+                if(medicationResponse.getData().getMedicationDataList()!=null){
+
+                    ArrayList<MedicationDatum> medicationArrayList=new ArrayList<>();
+
+                    if(medicationList.getValue()!=null && medicationPage!=0){
+                        medicationArrayList.addAll(medicationList.getValue());
+                    }
+                    medicationArrayList.addAll(medicationResponse.getData().getMedicationDataList());
+                    medicationList.setValue(medicationArrayList);
+
+                    if(medicationList.getValue().size()>0){
+                        rvMedicationVisibility.setValue(true);
+                    }else {
+                        rvMedicationVisibility.setValue(false);
+                    }
+
+                }
+            }
 
         }
 
@@ -151,5 +186,21 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     public MutableLiveData<String> getAddress() {
         return address;
+    }
+
+    public MutableLiveData<ArrayList<Insurance>> getInsuranceList() {
+        return insuranceList;
+    }
+
+    public MutableLiveData<ArrayList<MedicationDatum>> getMedicationList() {
+        return medicationList;
+    }
+
+    public MutableLiveData<Boolean> getRvInsuranceVisibility() {
+        return rvInsuranceVisibility;
+    }
+
+    public MutableLiveData<Boolean> getRvMedicationVisibility() {
+        return rvMedicationVisibility;
     }
 }

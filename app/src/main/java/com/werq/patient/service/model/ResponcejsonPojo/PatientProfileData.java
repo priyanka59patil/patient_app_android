@@ -13,8 +13,8 @@ public class PatientProfileData implements Serializable {
     @SerializedName("Insurance")
     private List<Insurance> insurance = null;
 
-    @SerializedName("MedicationData")
-    private List<MedicationDatum> medicationData = null;
+/*    @SerializedName("MedicationData")
+    private List<MedicationDatum> medicationData = null;*/
 
 
     public Patient getPatient() {
@@ -33,20 +33,20 @@ public class PatientProfileData implements Serializable {
         this.insurance = insurance;
     }
 
-    public List<MedicationDatum> getMedicationData() {
+    /*public List<MedicationDatum> getMedicationData() {
         return medicationData;
     }
 
     public void setMedicationData(List<MedicationDatum> medicationData) {
         this.medicationData = medicationData;
-    }
+    }*/
 
     @Override
     public String toString() {
         return "PatientProfileData{" +
                 "patient=" + patient +
                 ", insurance=" + insurance +
-                ", medicationData=" + medicationData +
+              //  ", medicationData=" + medicationData +
                 '}';
     }
 }
