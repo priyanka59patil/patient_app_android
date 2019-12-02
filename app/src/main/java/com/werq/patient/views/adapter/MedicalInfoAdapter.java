@@ -12,6 +12,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.views.ui.EncounterActivity;
+import com.werq.patient.views.ui.AssessmentActivity;
+import com.werq.patient.views.ui.InstructionActivity;
 import com.werq.patient.views.ui.SummaryCareActivity;
 import com.werq.patient.R;
 
@@ -47,14 +49,40 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
         holder.tvTitle.setText(medical_info);
 
-       /* if(fromSummeryCare){
-            holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent1 = new Intent(context, EncounterActivity.class);
-                    context.startActivity(intent1);
-                }
-            });
+        if(fromSummeryCare){
+
+
+            if(medical_info.equals(context.getResources().getString(R.string.encounter))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent1 = new Intent(context, EncounterActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+            }else if(medical_info.equals(context.getResources().getString(R.string.assesssment))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent1 = new Intent(context, AssessmentActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }else if(medical_info.equals(context.getResources().getString(R.string.instruction))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent1 = new Intent(context, InstructionActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }
+
         }
         else {
             holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +92,7 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
                     context.startActivity(intent1);
                 }
             });
-        }*/
+        }
 
 
 

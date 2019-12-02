@@ -1,6 +1,7 @@
 package com.werq.patient.views.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,56 +15,70 @@ import android.widget.TextView;
 
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityAssessmentBinding;
 import com.werq.patient.databinding.ActivityEncounterBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.viewmodel.SummeryCareViewModel;
 import com.werq.patient.views.adapter.EncounterAdapter;
-import com.werq.patient.views.adapter.MedicalInfoAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EncounterActivity extends BaseActivity {
+public class AssessmentActivity extends BaseActivity {
 
-    @BindView(R.id.rvEncounterList)
-    RecyclerView rvEncounterList;
+    @BindView(R.id.tvAssessments)
+    TextView tvAssessments;
+
+    @BindView(R.id.conLayAssessment)
+    ConstraintLayout conLayAssessment;
+
     @BindView(R.id.tvNoData)
     TextView tvNoData;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    ActivityEncounterBinding encounterBinding;
-    ArrayList<Encounter> encounterArrayList;
+    ActivityAssessmentBinding assessmentBinding;
     Context mContext;
     SummeryCareViewModel viewModel;
-    EncounterAdapter encounterAdapter;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_encounter);
+      //  setContentView(R.layout.activity_assessment);
+
         mContext=this;
 
-        encounterBinding = DataBindingUtil.setContentView(this,R.layout.activity_encounter);
+        assessmentBinding = DataBindingUtil.setContentView(this,R.layout.activity_assessment);
         ButterKnife.bind(this);
+        getSupportActionBar().setTitle("Assessments");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
-        encounterBinding.setLifecycleOwner(this);
+        assessmentBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        encounterBinding.setSummeryCareViewModel(viewModel);
-        initializeVariables();
-        encounterAdapter=new EncounterAdapter(mContext,encounterArrayList,viewModel,this);
-        setRecyclerView();
+        assessmentBinding.setSummeryCareViewModel(viewModel);
+        loadingView.setIndeterminateDrawable(fadingCircle);
+
+        viewModel.assessments.observe(this,s -> {
+            if(s!=null && !s.isEmpty()){
+                conLayAssessment.setVisibility(View.VISIBLE);
+                tvAssessments.setVisibility(View.VISIBLE);
+                tvNoData.setVisibility(View.GONE);
+            }
+            else {
+                conLayAssessment.setVisibility(View.GONE);
+                tvAssessments.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
+            }
+        });
 
         if(Helper.hasNetworkConnection(mContext)){
-                viewModel.fetchEncounterList(0);
+            viewModel.fetchAssessments();
         }else {
             Helper.showToast(mContext,getResources().getString(R.string.no_network_conection));
         }
+
 
         viewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean ){
@@ -75,15 +90,8 @@ public class EncounterActivity extends BaseActivity {
             }
         });
 
-        viewModel.getRvEnountersVisibility().observe(this,aBoolean -> {
-            if(aBoolean){
-                rvEncounterList.setVisibility(View.VISIBLE);
-                tvNoData.setVisibility(View.GONE);
-            }else {
-                rvEncounterList.setVisibility(View.GONE);
-                tvNoData.setVisibility(View.VISIBLE);
-            }
-        });
+
+
 
     }
 
@@ -97,26 +105,10 @@ public class EncounterActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void setRecyclerView() {
-
-        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvEncounterList, encounterAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvEncounterList);
-    }
-
-    public void initializeVariables() {
-
-        encounterArrayList = new ArrayList<>();
-        loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Encounters");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
         hideProgressBar(loadingView);
     }
+
 }

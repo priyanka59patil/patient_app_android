@@ -17,50 +17,51 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityEncounterBinding;
+import com.werq.patient.databinding.ActivityInstructionBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
+import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
 import com.werq.patient.viewmodel.SummeryCareViewModel;
 import com.werq.patient.views.adapter.EncounterAdapter;
-import com.werq.patient.views.adapter.MedicalInfoAdapter;
+import com.werq.patient.views.adapter.InstructionAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EncounterActivity extends BaseActivity {
+public class InstructionActivity extends BaseActivity {
 
-    @BindView(R.id.rvEncounterList)
-    RecyclerView rvEncounterList;
+    @BindView(R.id.rvInstructionList)
+    RecyclerView rvInstructionList;
     @BindView(R.id.tvNoData)
     TextView tvNoData;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    ActivityEncounterBinding encounterBinding;
-    ArrayList<Encounter> encounterArrayList;
+    ActivityInstructionBinding instructionActivityBinding;
+    ArrayList<Instruction> instructionArrayList;
     Context mContext;
     SummeryCareViewModel viewModel;
-    EncounterAdapter encounterAdapter;
-
-
+    InstructionAdapter encounterAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_encounter);
+        //setContentView(R.layout.activity_instruction);
+
         mContext=this;
 
-        encounterBinding = DataBindingUtil.setContentView(this,R.layout.activity_encounter);
+        instructionActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_instruction);
         ButterKnife.bind(this);
         viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
-        encounterBinding.setLifecycleOwner(this);
+        instructionActivityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        encounterBinding.setSummeryCareViewModel(viewModel);
+        instructionActivityBinding.setSummeryCareViewModel(viewModel);
         initializeVariables();
-        encounterAdapter=new EncounterAdapter(mContext,encounterArrayList,viewModel,this);
+        encounterAdapter=new InstructionAdapter(mContext,instructionArrayList,viewModel,this);
         setRecyclerView();
 
         if(Helper.hasNetworkConnection(mContext)){
-                viewModel.fetchEncounterList(0);
+            viewModel.fetchInstruction(0);
         }else {
             Helper.showToast(mContext,getResources().getString(R.string.no_network_conection));
         }
@@ -75,17 +76,17 @@ public class EncounterActivity extends BaseActivity {
             }
         });
 
-        viewModel.getRvEnountersVisibility().observe(this,aBoolean -> {
+        viewModel.getRvInstructionVisibility().observe(this,aBoolean -> {
             if(aBoolean){
-                rvEncounterList.setVisibility(View.VISIBLE);
+                rvInstructionList.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
             }else {
-                rvEncounterList.setVisibility(View.GONE);
+                rvInstructionList.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
         });
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -100,15 +101,15 @@ public class EncounterActivity extends BaseActivity {
 
     public void setRecyclerView() {
 
-        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvEncounterList, encounterAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvEncounterList);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvInstructionList, encounterAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvInstructionList);
     }
 
     public void initializeVariables() {
 
-        encounterArrayList = new ArrayList<>();
+        instructionArrayList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Encounters");
+        getSupportActionBar().setTitle("Instructions");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

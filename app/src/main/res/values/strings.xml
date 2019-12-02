@@ -50,6 +50,7 @@
     <string name="label_location">Location</string>
     <string name="address">558,Clayton St,San Francisco,CA 94117,Usa</string>
     <string name="value_username">Jeffery S. Cripping</string>
+    <string name="date_dd_mm_yyyy">31-10-2019</string>
     <string name="value_time">Yesterday 02:12:32 PM</string>
     <string name="intent_is_from_upcoming">IsFromUpcoming</string>
     <string name="title_activity_change_password">ChangePasswordActivity</string>
@@ -208,7 +209,7 @@
 
     <string name="summery_of_care">Summery of Care</string>
     <string name="allergies">Allergies</string>
-    <string name="history_of_care">History of Pastillness</string>
+    <string name="history_of_pastillness">History of Pastillness</string>
     <string name="social_history">Social History</string>
     <string name="problem">Problem List</string>
 

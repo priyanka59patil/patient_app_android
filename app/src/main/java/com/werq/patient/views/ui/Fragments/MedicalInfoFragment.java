@@ -184,7 +184,7 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
 
         titleList.add(getResources().getString(R.string.summery_of_care));
         titleList.add(getResources().getString(R.string.allergies));
-        titleList.add(getResources().getString(R.string.history_of_care));
+        titleList.add(getResources().getString(R.string.history_of_pastillness));
         titleList.add(getResources().getString(R.string.social_history));
         titleList.add(getResources().getString(R.string.problem));
 

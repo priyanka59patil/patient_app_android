@@ -63,8 +63,7 @@ public class SummaryCareActivity extends AppCompatActivity {
         titleList.add(getResources().getString(R.string.assesssment));
         titleList.add(getResources().getString(R.string.instruction));
         titleList.add(getResources().getString(R.string.plan_of_care));
-        titleList.add(getResources().getString(R.string.history_of_care));
-
+        titleList.add(getResources().getString(R.string.history_of_procedure));
         adapter = new MedicalInfoAdapter(this, titleList,true);
 
 

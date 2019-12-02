@@ -12,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorLightGreyBackground"
-        tools:context="com.werq.patient.views.ui.EncounterActivity">
+        tools:context="com.werq.patient.views.ui.InstructionActivity">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvEncounterList"
+            android:id="@+id/rvInstructionList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"/>
@@ -52,4 +52,5 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+
 

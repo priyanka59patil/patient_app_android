@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="replace">
-        <activity android:name=".views.ui.EncounterActivity"></activity>
+        <activity android:name=".views.ui.InstructionActivity"></activity>
+        <activity android:name=".views.ui.AssessmentActivity" />
+        <activity android:name=".views.ui.EncounterActivity" />
         <activity
             android:name=".views.ui.ViewFileActivity"
             android:label="@string/title_activity_view_file"

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,7 +17,10 @@ import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.viewmodel.PatientProfileViewModel;
 import com.werq.patient.viewmodel.SummeryCareViewModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +28,7 @@ import butterknife.ButterKnife;
 public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.AppointmentViewHolder> {
     Context mContext;
     ArrayList<Encounter> encounterArrayList ;
+    String address="";
 
 
     public EncounterAdapter(Context mContext,
@@ -33,6 +38,15 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
     {
         this.mContext = mContext;
         this.encounterArrayList=encounterArrayList;
+
+        viewModel.encounterList.observe(lifecycleOwner,encounters -> {
+            if(encounterArrayList!=null){
+                encounterArrayList.clear();
+                encounterArrayList.addAll(encounters);
+                notifyDataSetChanged();
+            }
+        });
+
 
         /*viewModel.medicationList.observe(lifecycleOwner,medicationList -> {
             medicationDatumArrayList.clear();
@@ -46,7 +60,7 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
     @NonNull
     @Override
     public AppointmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.medication_cell, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.encounter_cell, parent, false);
         return new AppointmentViewHolder(itemView);
     }
 
@@ -55,11 +69,34 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
 
         Encounter encounter = encounterArrayList.get(position);
 
-        if(encounter.getParagraph()!=null && !encounter.getParagraph().isEmpty()){
-            holder.tvParagraph.setText(encounter.getParagraph());
+
+
+        if(position==0){
+            address=encounter.getParagraph();
+            holder.conLayAddress.setVisibility(View.VISIBLE);
+            if(encounter.getParagraph()!=null && !encounter.getParagraph().isEmpty()){
+                holder.tvParagraph.setText(encounter.getParagraph());
+            }else {
+                holder.tvParagraph.setText("Not Available");
+            }
+
         }else {
-            holder.tvParagraph.setText("-");
+
+            if(address.equalsIgnoreCase(encounter.getParagraph())){
+                holder.conLayAddress.setVisibility(View.GONE);
+
+            }else {
+                address=encounter.getParagraph();
+                holder.conLayAddress.setVisibility(View.VISIBLE);
+                if(encounter.getParagraph()!=null && !encounter.getParagraph().isEmpty()){
+                    holder.tvParagraph.setText(encounter.getParagraph());
+                }else {
+                    holder.tvParagraph.setText("Not Available");
+                }
+            }
+
         }
+
 
         if(encounter.getDiagnosis()!=null && !encounter.getDiagnosis().isEmpty()){
             holder.tvDignosis.setText(encounter.getDiagnosis());
@@ -75,7 +112,17 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
         }
 
         if(encounter.getEncounterDate()!=null && !encounter.getEncounterDate().isEmpty()){
-            holder.tvEncounterDate.setText(encounter.getEncounterDate());
+            Date encounterDate=null;
+            try {
+                encounterDate= new SimpleDateFormat("MM/dd/yyyy").parse(encounter.getEncounterDate());
+
+                holder.tvEncounterDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(encounterDate));
+
+            } catch (ParseException e) {
+                holder.tvEncounterDate.setText("-");
+                e.printStackTrace();
+            }
+            //holder.tvEncounterDate.setText(encounter.getEncounterDate());
         }else {
             holder.tvEncounterDate.setText("-");
         }
@@ -93,10 +140,12 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
 
     public class AppointmentViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvMedication) TextView tvParagraph;
-        @BindView(R.id.tvStrenght) TextView tvDignosis;
-        @BindView(R.id.tvStrengthUnit) TextView tvLocation;
-        @BindView(R.id.tvDoseForm) TextView tvEncounterDate;
+        @BindView(R.id.tvAddress) TextView tvParagraph;
+        @BindView(R.id.tvDignosis) TextView tvDignosis;
+        @BindView(R.id.tvLocation) TextView tvLocation;
+        @BindView(R.id.tvDate) TextView tvEncounterDate;
+        @BindView(R.id.conLayAddress)
+        ConstraintLayout conLayAddress;
 
 
         public AppointmentViewHolder(@NonNull View itemView) {
