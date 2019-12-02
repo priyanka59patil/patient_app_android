@@ -79,4 +79,6 @@
     <dimen name="layout16dp">16dp</dimen>
     <dimen name="textheader15dp">15dp</dimen>
     <dimen name="textnormal12dp">12dp</dimen>
+    <dimen name="progressbar_height">40dp</dimen>
+    <dimen name="progressbar_width">40dp</dimen>
 </resources>

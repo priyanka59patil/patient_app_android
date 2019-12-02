@@ -43,7 +43,6 @@ public class DoctorsListFragment extends BaseFragment {
 
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -58,14 +57,13 @@ public class DoctorsListFragment extends BaseFragment {
     Context mContext;
     ProfileDoctorViewModel viewModel;
     FragmentDoctorsListBinding fragmentDoctorsListBinding;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
     DoctorListAdapter doctorListAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        fadingCircle=new Circle();
         coworkerList =new ArrayList<>();
         doctorListAdapter=new DoctorListAdapter(getActivity(),coworkerList);
         viewModel= ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
@@ -93,8 +91,8 @@ public class DoctorsListFragment extends BaseFragment {
         ButterKnife.bind(this,view);
         initializeVariables();
 
-        viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+        viewModel.coworkerLoading.observe(this,aBoolean -> {
+            /*if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -105,6 +103,13 @@ public class DoctorsListFragment extends BaseFragment {
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
         });
 
@@ -165,7 +170,7 @@ public class DoctorsListFragment extends BaseFragment {
 
     private void initializeVariables() {
 
-        loadingView.setIndeterminateDrawable(fadingCircle);
+        loadingView.setIndeterminateDrawable(fadingcircle);
         setRecyclerView();
     }
 
@@ -182,16 +187,14 @@ public class DoctorsListFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
+
     }
 }

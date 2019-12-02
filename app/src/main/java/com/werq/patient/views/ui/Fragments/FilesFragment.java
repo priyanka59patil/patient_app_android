@@ -63,6 +63,8 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     TextView tvNoData;
     @BindView(R.id.rvFiles)
     RecyclerView rvFiles;
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
 
     Context mContext;
     ArrayList<Files> allFiles;
@@ -123,6 +125,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         fragmentFilesBinding.setBottomTabViewModel(viewModel);
 
         ButterKnife.bind(this, view);
+        loadingView.setIndeterminateDrawable(fadingcircle);
         initializeVariables();
         //getData();
 
@@ -161,7 +164,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         super.onResume();
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+            /*if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -172,6 +175,13 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
         });
 
@@ -322,16 +332,12 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 }

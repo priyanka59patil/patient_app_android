@@ -49,7 +49,6 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
 
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     boolean loading = true;
     int page = 0;
@@ -82,7 +81,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
     ViewVisitNoteViewModel viewModel;
     int appointmentId;
     int visitNoteId;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -184,7 +183,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         super.onResume();
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+           /* if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -195,6 +194,13 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
         });
 
@@ -240,6 +246,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
 
     private void initializevariables() {
 
+        loadingView.setIndeterminateDrawable(fadingCircle);
         allFiles=new ArrayList<>();
         recyclerViewClickListerner=this::onclick;
         filesAdapter = new AttachmentsAdapter(mContext, allFiles,recyclerViewClickListerner,viewModel,this);
@@ -266,8 +273,6 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
     @Override
     protected void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 }

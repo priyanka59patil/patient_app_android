@@ -47,10 +47,9 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     @BindView(R.id.rvAppointmentList)
     RecyclerView rvAppointmentList;
     private AppointmentAdapter adapter;
-
-    /*@BindView(R.id.loadingView)
+    @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;*/
+
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -100,7 +99,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         setBaseViewModel(viewModel);
         fragmentTabHistoryBinding.setAppontmentViewModel(viewModel);
         ButterKnife.bind(this, view);
-
+        loadingView.setIndeterminateDrawable(fadingcircle);
         initializeVariables();
         getData();
         //   setRecyclerViewAdapters();
@@ -142,7 +141,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         });
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+           /* if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -153,6 +152,13 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
         });
 
@@ -228,9 +234,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 
     @Override

@@ -49,6 +49,9 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @BindView(R.id.tvNoData)
     TextView tvNoData;
 
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     boolean loading = true;
     int page = 0;
@@ -114,6 +117,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         setBaseViewModel(viewModel);
         fragmentDoctorTeamBinding.setBottomTabViewModel(viewModel);
         ButterKnife.bind(this, view);
+        loadingView.setIndeterminateDrawable(fadingcircle);
         setRecyclerView();
 
         rvDoctorTeam.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -170,7 +174,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         });
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+            /*if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -181,6 +185,14 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
 
         });
@@ -227,16 +239,12 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 }

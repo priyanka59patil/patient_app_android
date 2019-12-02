@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -45,6 +46,9 @@ public class InsuranceFragment extends BaseFragment implements DiologListner{
     ViewPager imageViewPager;
     @BindView(R.id.rvInsuranceList)
     RecyclerView rvInsuranceList;
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
 
     @BindView(R.id.SliderDots)
     LinearLayout sliderDotspanel;
@@ -87,7 +91,7 @@ public class InsuranceFragment extends BaseFragment implements DiologListner{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_insurance, container, false);
         ButterKnife.bind(this, view);
-
+        loadingView.setIndeterminateDrawable(fadingcircle);
         if(fragmentInsuranceBinding== null){
             fragmentInsuranceBinding=FragmentInsuranceBinding.bind(view);
         }
@@ -168,6 +172,28 @@ public class InsuranceFragment extends BaseFragment implements DiologListner{
 
             }
         });
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+           /* if(aBoolean ){
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
+            }
+            else {
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
+            }
+        });
     }
 
     @OnClick({R.id.lblInsuranceCard, R.id.tvEdit})
@@ -194,5 +220,11 @@ public class InsuranceFragment extends BaseFragment implements DiologListner{
     @Override
     public void setdiologview(View view) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideProgressBar(loadingView);
     }
 }

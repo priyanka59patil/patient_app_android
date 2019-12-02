@@ -50,7 +50,9 @@
                     android:textColor="@android:color/holo_green_dark"
                     android:layout_marginTop="@dimen/insurance_text_margin_top"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAllCaps="true"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

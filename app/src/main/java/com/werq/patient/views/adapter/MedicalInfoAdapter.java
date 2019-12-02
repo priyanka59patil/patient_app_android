@@ -47,7 +47,7 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
         holder.tvTitle.setText(medical_info);
 
-        if(fromSummeryCare){
+       /* if(fromSummeryCare){
             holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -64,7 +64,7 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
                     context.startActivity(intent1);
                 }
             });
-        }
+        }*/
 
 
 

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.views.ui.BottomTabActivity;
@@ -28,6 +32,7 @@ public class BaseActivity extends AppCompatActivity {
     BaseViewModel baseViewModel;
     Context mContext;
     String TAG="BaseActivity";
+    public Sprite fadingCircle;
 
     public void setBaseViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
@@ -38,6 +43,9 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        if(fadingCircle==null){
+            fadingCircle= new Circle();
+        }
 
         /*baseViewModel.getLoading().observe(this,aBoolean -> {
             if(aBoolean)
@@ -116,4 +124,16 @@ public class BaseActivity extends AppCompatActivity {
         Helper.setToolbar(getSupportActionBar(), title);
     }
 
+    public void showProgressBar(ProgressBar progressBar){
+
+        if(progressBar!=null){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void hideProgressBar(ProgressBar progressBar){
+        if(progressBar!=null){
+            progressBar.setVisibility(View.GONE);
+        }
+    }
 }

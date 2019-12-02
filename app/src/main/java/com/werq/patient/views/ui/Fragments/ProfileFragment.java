@@ -68,7 +68,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
     private BottomSheetDialog mBottomSheetDialog;
     FragmentProfileBinding fragmentProfileBinding;
     PatientProfileViewModel viewModel;
-    ProgressDialog progressDialog;
+    //ProgressDialog progressDialog;
     private String TAG="ProfileMainFrag";
 
     Fragment medicalInfoFragment=new MedicalInfoFragment();
@@ -112,7 +112,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
 
             }
         });*/
-        viewModel.getLoading().observe(this,aBoolean -> {
+      /*  viewModel.getLoading().observe(this,aBoolean -> {
             try{
                 if(aBoolean ){
                     if(progressDialog!=null && !progressDialog.isShowing()){
@@ -132,7 +132,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
                 }
             }
 
-        });
+        });*/
         return view;
     }
 
@@ -151,9 +151,6 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
     }
 
     @Override

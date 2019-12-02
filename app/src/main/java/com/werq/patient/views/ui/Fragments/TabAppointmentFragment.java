@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
-import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -55,9 +54,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     Context mContext;
     @BindView(R.id.rvAppointmentList)
     RecyclerView rvAppointmentList;
-    /*@BindView(R.id.loadingView)
+    @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    Sprite fadingCircle;*/
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -163,6 +161,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
             appointmentBinding.setAppontmentViewModel(viewModel);
 
             ButterKnife.bind(this, view);
+            loadingView.setIndeterminateDrawable(fadingcircle);
             initializeVariables();
             adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
             RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
@@ -189,7 +188,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         });
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
+           /* if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
                 }else {
@@ -200,6 +199,13 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
             }
         });
 
@@ -294,16 +300,12 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
-            progressDialog.hide();
-        }
+        hideProgressBar(loadingView);
     }
 }

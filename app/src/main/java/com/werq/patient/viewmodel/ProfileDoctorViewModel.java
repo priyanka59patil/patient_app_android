@@ -42,6 +42,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     //public MutableLiveData<String> aboutPractice;
     public MutableLiveData<String> practiceName;
     public MutableLiveData<Boolean> rvPracticesVisibility;
+    public MutableLiveData<Boolean> coworkerLoading;
 
     int coworkerPageNo=0;
 
@@ -58,6 +59,9 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         if(doctorId!=0){
             coworkerPageNo=page;
+            if(coworkerPageNo!=0){
+                coworkerLoading.setValue(true);
+            }else
             getLoading().setValue(true);
             patientRepository.getDocterDetails(Helper.autoken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
         }
@@ -83,14 +87,16 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
         practiceWebUrl=new MutableLiveData<>();
         practicePhoneNumber=new MutableLiveData<>();
-        // aboutPractice=new MutableLiveData<>();
+        coworkerLoading=new MutableLiveData<>();
         practiceName=new MutableLiveData<>();
     }
 
     @Override
     public void onSuccess(String url, String responseJson) {
-
-        getLoading().setValue(false);
+        if(coworkerPageNo!=0){
+            coworkerLoading.setValue(false);
+        }else
+            getLoading().setValue(false);
         if(url!=null && !url.isEmpty()){
 
             if(url.equalsIgnoreCase("DoctorDetails"))
@@ -184,7 +190,10 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     @Override
     public void onError(String url, String errorCode,String errorMessage) {
-        getLoading().setValue(false);
+        if(coworkerPageNo!=0){
+            coworkerLoading.setValue(false);
+        }else
+            getLoading().setValue(false);
         Helper.setLog("onError","url-"+url+"  errorMessage-"+errorMessage );
         getToast().setValue(errorMessage);
         //doctorDetailsResponse.setValue(null);
@@ -244,5 +253,9 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     public MutableLiveData<String> getPracticeName() {
         return practiceName;
+    }
+
+    public MutableLiveData<Boolean> getcoworkerLoading() {
+        return coworkerLoading;
     }
 }

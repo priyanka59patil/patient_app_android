@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -43,6 +44,11 @@ import butterknife.OnClick;
 
 
 public class MedicalInfoFragment extends BaseFragment implements BasicActivities, DiologListner {
+
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
+
 
     MedicalInfoAdapter adapter;
     @BindView(R.id.rvMedicalInfo)
@@ -116,7 +122,7 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
         setBaseViewModel(viewModel);
         fragmentMedicalInfoBinding.setPatientProfileViewModel(viewModel);
         ButterKnife.bind(this, view);
-
+        loadingView.setIndeterminateDrawable(fadingcircle);
         getIntentData();
         setRecyclerView();
 
@@ -135,6 +141,28 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
         viewModel.address.observe(this,s -> {
 
             tvLocation.setText(s);
+        });
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+           /* if(aBoolean ){
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
+            }
+            else {
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
+            }
         });
         return view;
     }
@@ -221,5 +249,11 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
     @OnClick(R.id.ivProfilePhoto)
     public void onViewClicked() {
         mBottomSheetDialog.show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideProgressBar(loadingView);
     }
 }

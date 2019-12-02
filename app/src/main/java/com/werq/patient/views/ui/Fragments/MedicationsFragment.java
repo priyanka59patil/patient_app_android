@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.werq.patient.R;
@@ -33,6 +34,8 @@ public class MedicationsFragment extends BaseFragment {
     RecyclerView rvMedicationList;
     @BindView(R.id.tvNoDataLayout)
     TextView tvNoDataLayout;
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
 
     FragmentMedicationsBinding fragmentMedicationsBinding;
     PatientProfileViewModel viewModel;
@@ -73,6 +76,7 @@ public class MedicationsFragment extends BaseFragment {
         fragmentMedicationsBinding.setPatientProfileViewModel(viewModel);
 
         ButterKnife.bind(this,view);
+        loadingView.setIndeterminateDrawable(fadingcircle);
         setRecyclerView();
 
 
@@ -94,11 +98,40 @@ public class MedicationsFragment extends BaseFragment {
                 tvNoDataLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        viewModel.getLoading().observe(this,aBoolean -> {
+           /* if(aBoolean ){
+                if(progressDialog!=null && !progressDialog.isShowing()){
+                    progressDialog.show();
+                }else {
+                    progressDialog=Helper.createProgressDialog(mContext);
+                }
+            }
+            else {
+                if(progressDialog!=null && progressDialog.isShowing()){
+                    progressDialog.hide();
+                }
+            }*/
+            if(aBoolean ){
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
+            }
+            else {
+                hideProgressBar(loadingView);
+            }
+        });
+
     }
 
     public void setRecyclerView() {
         medicationAdapter=new MedicationAdapter(mContext,medicationList,viewModel,this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext,rvMedicationList,medicationAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvMedicationList);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        hideProgressBar(loadingView);
     }
 }
