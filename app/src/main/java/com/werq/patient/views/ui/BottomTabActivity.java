@@ -161,7 +161,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         mBottomSheetDialog.show();
                         break;
                     case "Chats":
-                        startActivity(new Intent(mContext, NewChatActivity.class));
+                        //startActivity(new Intent(mContext, NewChatActivity.class));
                         break;
                 }
 

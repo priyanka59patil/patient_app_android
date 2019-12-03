@@ -11,6 +11,7 @@ import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.service.model.ResponcejsonPojo.EncounterListResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.HistoryOfProcedure;
 import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
 import com.werq.patient.service.model.ResponcejsonPojo.InstructionResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
@@ -18,6 +19,9 @@ import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
+import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCareResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ProcedureHistoryResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,10 +36,14 @@ public class SummeryCareViewModel extends BaseViewModel {
     public MutableLiveData<ArrayList<MedicationDatum>> medicationList;
     public MutableLiveData<ArrayList<Encounter>> encounterList;
     public MutableLiveData<ArrayList<Instruction>> instructionList;
+    public MutableLiveData<ArrayList<PlanOfCare>> planOfCareList;
+    public MutableLiveData<ArrayList<HistoryOfProcedure>> historyProcedureList;
     private MutableLiveData<Boolean> rvInsuranceVisibility;
     private MutableLiveData<Boolean> rvMedicationVisibility;
     private MutableLiveData<Boolean> rvEnountersVisibility;
     private MutableLiveData<Boolean> rvInstructionVisibility;
+    private MutableLiveData<Boolean> rvPlanOfCareVisibility;
+    private MutableLiveData<Boolean> rvHistoryOfProcedureVisibility;
 
 
     public MutableLiveData<String> patientProfileUrl;
@@ -49,6 +57,8 @@ public class SummeryCareViewModel extends BaseViewModel {
     int medicationPage=0;
     int encounterPage=0;
     int instructionPage=0;
+    int planCarePage=0;
+    int historyProcedurePage=0;
 
     Context mContext;
 
@@ -60,6 +70,8 @@ public class SummeryCareViewModel extends BaseViewModel {
         rvMedicationVisibility=new MutableLiveData<>();
         rvEnountersVisibility=new MutableLiveData<>();
         rvInstructionVisibility=new MutableLiveData<>();
+        rvPlanOfCareVisibility=new MutableLiveData<>();
+        rvHistoryOfProcedureVisibility=new MutableLiveData<>();
 
         patientProfileUrl=new MutableLiveData<>();
         patientName=new MutableLiveData<>();
@@ -70,6 +82,8 @@ public class SummeryCareViewModel extends BaseViewModel {
         encounterList =new MutableLiveData<>();
         assessments =new MutableLiveData<>();
         instructionList=new MutableLiveData<>();
+        planOfCareList=new MutableLiveData<>();
+        historyProcedureList=new MutableLiveData<>();
 
     }
 
@@ -106,6 +120,17 @@ public class SummeryCareViewModel extends BaseViewModel {
         getLoading().setValue(true);
         patientRepository.getInstructionList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "Instructions");
         instructionPage=page;
+    }
+    public void fetchPlanOfCareList(int page){
+        getLoading().setValue(true);
+        patientRepository.getPlanOfCareList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "PlanOfCare");
+        planCarePage=page;
+    }
+
+    public void fetchHistoryOfProcedureList(int page){
+        getLoading().setValue(true);
+        patientRepository.getHistoryOfProcedureList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "HistoryOfProcedure");
+        historyProcedurePage=page;
     }
 
     @Override
@@ -260,6 +285,58 @@ public class SummeryCareViewModel extends BaseViewModel {
             }
         }
 
+        if(url!=null && url.equals("PlanOfCare")){
+            PlanOfCareResponse planOfCareResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, PlanOfCareResponse.class);
+
+            if(planOfCareResponse!=null && planOfCareResponse.getData()!=null){
+
+                if(planOfCareResponse.getData().getPlanOfCareList()!=null){
+
+                    ArrayList<PlanOfCare> planCareList=new ArrayList<>();
+
+                    if(planOfCareList.getValue()!=null && planCarePage!=0){
+                        planCareList.addAll(planOfCareList.getValue());
+                    }
+                    planCareList.addAll(planOfCareResponse.getData().getPlanOfCareList());
+                    planOfCareList.setValue(planCareList);
+
+                    if(planOfCareList.getValue().size()>0){
+                        rvPlanOfCareVisibility.setValue(true);
+                    }else {
+                        rvPlanOfCareVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
+        if(url!=null && url.equals("HistoryOfProcedure")){
+            ProcedureHistoryResponse procHistoryResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, ProcedureHistoryResponse.class);
+
+            if(procHistoryResponse!=null && procHistoryResponse.getData()!=null){
+
+                if(procHistoryResponse.getData().getHistoryOfProcedureList()!=null){
+
+                    ArrayList<HistoryOfProcedure> procHistoryList=new ArrayList<>();
+
+                    if(historyProcedureList.getValue()!=null && historyProcedurePage!=0){
+                        procHistoryList.addAll(historyProcedureList.getValue());
+                    }
+                    procHistoryList.addAll(procHistoryResponse.getData().getHistoryOfProcedureList());
+                    historyProcedureList.setValue(procHistoryList);
+
+                    if(historyProcedureList.getValue().size()>0){
+                        rvHistoryOfProcedureVisibility.setValue(true);
+                    }else {
+                        rvHistoryOfProcedureVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
     }
 
     @Override
@@ -334,5 +411,13 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public MutableLiveData<String> getAssessments() {
         return assessments;
+    }
+
+    public MutableLiveData<ArrayList<PlanOfCare>> getPlanOfCareList() {
+        return planOfCareList;
+    }
+
+    public MutableLiveData<Boolean> getRvPlanOfCareVisibility() {
+        return rvPlanOfCareVisibility;
     }
 }

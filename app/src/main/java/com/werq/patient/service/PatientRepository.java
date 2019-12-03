@@ -96,4 +96,22 @@ public class PatientRepository {
 
     }
 
+    public void  getPlanOfCareList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"planofcare",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  getHistoryOfProcedureList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"historyofproc",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
 }

@@ -67,7 +67,7 @@ public class ChatRoomActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.action_info:
-                startActivity(new Intent(mContext, ChatInfoActivity.class));
+                //startActivity(new Intent(mContext, ChatInfoActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

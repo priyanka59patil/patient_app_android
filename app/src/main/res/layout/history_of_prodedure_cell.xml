@@ -15,22 +15,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/conLayDetails"
+            android:id="@+id/conLayCode"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/constraint_layout_padding_insurance"
             android:paddingRight="@dimen/constraint_layout_padding_insurance"
             android:paddingTop="@dimen/constraint_layout_padding_insurance"
-
             android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
             app:layout_constraintTop_toBottomOf="@+id/conLayoutProvider"
-            android:visibility="gone">
+            >
 
             <TextView
-                android:id="@+id/lblDetails"
+                android:id="@+id/lblCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Details"
+                android:text="Code"
                 android:textColor="@color/titleBadgeTitle"
                 android:textSize="12dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -38,7 +37,7 @@
                 app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
-                android:id="@+id/tvDetails"
+                android:id="@+id/tvCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -47,7 +46,7 @@
                 android:textSize="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblDetails"/>
+                app:layout_constraintTop_toBottomOf="@id/lblCode"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -61,7 +60,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/conLayInstruction"
+            android:id="@+id/conLaySite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingLeft="@dimen/constraint_layout_padding_insurance"
@@ -69,13 +68,13 @@
             android:paddingTop="5dp"
             android:paddingBottom="@dimen/constraint_layout_padding_insurance"
             android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
-            app:layout_constraintTop_toBottomOf="@+id/conLayDetails">
+            app:layout_constraintTop_toBottomOf="@+id/conLayCode">
 
             <TextView
-                android:id="@+id/lblInstruction"
+                android:id="@+id/lblSite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Instructions"
+                android:text="Site"
                 android:textColor="@color/titleBadgeTitle"
                 android:textSize="12dp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -83,7 +82,7 @@
                 app:layout_constraintRight_toRightOf="parent"/>
 
             <TextView
-                android:id="@+id/tvInstruction"
+                android:id="@+id/tvSite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="-"
@@ -92,14 +91,84 @@
                 android:textSize="14dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lblInstruction"/>
+                app:layout_constraintTop_toBottomOf="@id/lblSite"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <View
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conLayDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/constraint_layout_padding_insurance"
+            android:paddingRight="@dimen/constraint_layout_padding_insurance"
+            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/constraint_layout_padding_insurance"
+            android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+            app:layout_constraintTop_toBottomOf="@+id/conLaySite">
+
+            <TextView
+                android:id="@+id/lblDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date Diagnosed"
+                android:textColor="@color/titleBadgeTitle"
+                android:textSize="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/titleBadgeText"
+                android:layout_marginTop="@dimen/insurance_text_margin_top"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblDate"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conLayStatus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/constraint_layout_padding_insurance"
+            android:paddingRight="@dimen/constraint_layout_padding_insurance"
+            android:paddingTop="5dp"
+            android:paddingBottom="@dimen/constraint_layout_padding_insurance"
+            android:layout_marginLeft="@dimen/constraint_layout_margin_left_insurance"
+            app:layout_constraintTop_toBottomOf="@+id/conLayDate">
+
+            <TextView
+                android:id="@+id/lblStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textColor="@color/titleBadgeTitle"
+                android:textSize="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textColor="@color/titleBadgeText"
+                android:layout_marginTop="@dimen/insurance_text_margin_top"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lblStatus"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      <!--  <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_height_insurance"
             android:background="@color/contentDividerLine"
-            app:layout_constraintTop_toBottomOf="@+id/conLayInstruction"/>
+            app:layout_constraintTop_toBottomOf="@+id/conLayInstruction"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
 

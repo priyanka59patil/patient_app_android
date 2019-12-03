@@ -16,52 +16,51 @@ import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
-import com.werq.patient.databinding.ActivityEncounterBinding;
 import com.werq.patient.databinding.ActivityInstructionBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
+import com.werq.patient.databinding.ActivityPlanOfCareBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
+import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
 import com.werq.patient.viewmodel.SummeryCareViewModel;
-import com.werq.patient.views.adapter.EncounterAdapter;
 import com.werq.patient.views.adapter.InstructionAdapter;
+import com.werq.patient.views.adapter.PlanOfCareAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InstructionActivity extends BaseActivity {
+public class PlanOfCareActivity extends BaseActivity {
 
-    @BindView(R.id.rvInstructionList)
-    RecyclerView rvInstructionList;
+    @BindView(R.id.rvPlanCareList)
+    RecyclerView rvPlanCareList;
     @BindView(R.id.tvNoData)
     TextView tvNoData;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-    ActivityInstructionBinding instructionActivityBinding;
-    ArrayList<Instruction> instructionArrayList;
+    ActivityPlanOfCareBinding activityBinding;
+    ArrayList<PlanOfCare> planCareList;
     Context mContext;
     SummeryCareViewModel viewModel;
-    InstructionAdapter instructionAdapter;
-
+    PlanOfCareAdapter planOfCareAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_instruction);
+        //setContentView(R.layout.activity_plan_of_care);
 
         mContext=this;
 
-        instructionActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_instruction);
+        activityBinding = DataBindingUtil.setContentView(this,R.layout.activity_plan_of_care);
         ButterKnife.bind(this);
         viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
-        instructionActivityBinding.setLifecycleOwner(this);
+        activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        instructionActivityBinding.setSummeryCareViewModel(viewModel);
+        activityBinding.setSummeryCareViewModel(viewModel);
         initializeVariables();
-        instructionAdapter=new InstructionAdapter(mContext,instructionArrayList,viewModel,this);
+        planOfCareAdapter=new PlanOfCareAdapter(mContext,planCareList,viewModel,this);
         setRecyclerView();
 
         if(Helper.hasNetworkConnection(mContext)){
-            viewModel.fetchInstruction(0);
+            viewModel.fetchPlanOfCareList(0);
         }else {
             Helper.showToast(mContext,getResources().getString(R.string.no_network_conection));
         }
@@ -76,17 +75,16 @@ public class InstructionActivity extends BaseActivity {
             }
         });
 
-        viewModel.getRvInstructionVisibility().observe(this,aBoolean -> {
+        viewModel.getRvPlanOfCareVisibility().observe(this,aBoolean -> {
             if(aBoolean){
-                rvInstructionList.setVisibility(View.VISIBLE);
+                rvPlanCareList.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
             }else {
-                rvInstructionList.setVisibility(View.GONE);
+                rvPlanCareList.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
         });
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -101,15 +99,15 @@ public class InstructionActivity extends BaseActivity {
 
     public void setRecyclerView() {
 
-        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvInstructionList, instructionAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvInstructionList);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvPlanCareList, planOfCareAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvPlanCareList);
     }
 
     public void initializeVariables() {
 
-        instructionArrayList = new ArrayList<>();
+        planCareList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Instructions");
+        getSupportActionBar().setTitle("Plan Of Care");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
