@@ -20,7 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="replace">
-        <activity android:name=".views.ui.ProcedureHistoryActivity"></activity>
+        <activity android:name=".views.ui.ProblemListActivity"></activity>
+        <activity android:name=".views.ui.SocialHistoryActivity" />
+        <activity android:name=".views.ui.PastillnessHistoryActivity" />
+        <activity android:name=".views.ui.AllergyListActivity" />
+        <activity android:name=".views.ui.ProcedureHistoryActivity" />
         <activity android:name=".views.ui.PlanOfCareActivity" />
         <activity android:name=".views.ui.InstructionActivity" />
         <activity android:name=".views.ui.AssessmentActivity" />

@@ -114,4 +114,40 @@ public class PatientRepository {
 
     }
 
+    public void  getAllergyList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"allergies",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  getPastillnessHistoryList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"historyofpastillness",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  getSocialHistoryList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"socialhistory",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  getProblemList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"problems",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
 }

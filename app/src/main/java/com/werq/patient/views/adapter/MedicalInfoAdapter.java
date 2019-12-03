@@ -12,11 +12,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.service.model.ResponcejsonPojo.HistoryOfProcedure;
+import com.werq.patient.views.ui.AllergyListActivity;
 import com.werq.patient.views.ui.EncounterActivity;
 import com.werq.patient.views.ui.AssessmentActivity;
 import com.werq.patient.views.ui.InstructionActivity;
+import com.werq.patient.views.ui.PastillnessHistoryActivity;
 import com.werq.patient.views.ui.PlanOfCareActivity;
+import com.werq.patient.views.ui.ProblemListActivity;
 import com.werq.patient.views.ui.ProcedureHistoryActivity;
+import com.werq.patient.views.ui.SocialHistoryActivity;
 import com.werq.patient.views.ui.SummaryCareActivity;
 import com.werq.patient.R;
 
@@ -109,13 +113,62 @@ public class MedicalInfoAdapter extends RecyclerView.Adapter<MedicalInfoAdapter.
 
         }
         else {
-            holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent1 = new Intent(context, SummaryCareActivity.class);
-                    context.startActivity(intent1);
-                }
-            });
+
+            if(medical_info.equals(context.getResources().getString(R.string.summery_of_care))){
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent1 = new Intent(context, SummaryCareActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }else if(medical_info.equals(context.getResources().getString(R.string.allergies))) {
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent intent1 = new Intent(context, AllergyListActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+            }
+            else if(medical_info.equals(context.getResources().getString(R.string.history_of_pastillness))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent intent1 = new Intent(context, PastillnessHistoryActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }else if(medical_info.equals(context.getResources().getString(R.string.social_history))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent intent1 = new Intent(context, SocialHistoryActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }else if(medical_info.equals(context.getResources().getString(R.string.problem))){
+
+                holder.ll_item_medical.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Intent intent1 = new Intent(context, ProblemListActivity.class);
+                        context.startActivity(intent1);
+                    }
+                });
+
+            }
+
         }
 
 

@@ -8,6 +8,8 @@ import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.Allergy;
+import com.werq.patient.service.model.ResponcejsonPojo.AllergyResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.service.model.ResponcejsonPojo.EncounterListResponse;
@@ -17,11 +19,17 @@ import com.werq.patient.service.model.ResponcejsonPojo.InstructionResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.PastillnessHistory;
+import com.werq.patient.service.model.ResponcejsonPojo.PastillnessHistoryResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCareResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.Problem;
+import com.werq.patient.service.model.ResponcejsonPojo.ProblemListResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.ProcedureHistoryResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.SocialHistory;
+import com.werq.patient.service.model.ResponcejsonPojo.SocialHistoryResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,12 +46,20 @@ public class SummeryCareViewModel extends BaseViewModel {
     public MutableLiveData<ArrayList<Instruction>> instructionList;
     public MutableLiveData<ArrayList<PlanOfCare>> planOfCareList;
     public MutableLiveData<ArrayList<HistoryOfProcedure>> historyProcedureList;
+    public MutableLiveData<ArrayList<Allergy>> allergyList;
+    public MutableLiveData<ArrayList<PastillnessHistory>> pastillnessHistoryList;
+    public MutableLiveData<ArrayList<SocialHistory>> socialHistoryList;
+    public MutableLiveData<ArrayList<Problem>> problemList;
     private MutableLiveData<Boolean> rvInsuranceVisibility;
     private MutableLiveData<Boolean> rvMedicationVisibility;
     private MutableLiveData<Boolean> rvEnountersVisibility;
     private MutableLiveData<Boolean> rvInstructionVisibility;
     private MutableLiveData<Boolean> rvPlanOfCareVisibility;
     private MutableLiveData<Boolean> rvHistoryOfProcedureVisibility;
+    private MutableLiveData<Boolean> rvAllergyVisibility;
+    private MutableLiveData<Boolean> rvPastillnessHistoryVisibility;
+    private MutableLiveData<Boolean> rvSocialHistoryVisibility;
+    private MutableLiveData<Boolean> rvProblemListVisibility;
 
 
     public MutableLiveData<String> patientProfileUrl;
@@ -59,6 +75,10 @@ public class SummeryCareViewModel extends BaseViewModel {
     int instructionPage=0;
     int planCarePage=0;
     int historyProcedurePage=0;
+    int allergyPage=0;
+    int pastillnessHistoryPage=0;
+    int socialHistoryPage=0;
+    int problemListPage=0;
 
     Context mContext;
 
@@ -72,6 +92,10 @@ public class SummeryCareViewModel extends BaseViewModel {
         rvInstructionVisibility=new MutableLiveData<>();
         rvPlanOfCareVisibility=new MutableLiveData<>();
         rvHistoryOfProcedureVisibility=new MutableLiveData<>();
+        rvAllergyVisibility=new MutableLiveData<>();
+        rvPastillnessHistoryVisibility=new MutableLiveData<>();
+        rvSocialHistoryVisibility=new MutableLiveData<>();
+        rvProblemListVisibility=new MutableLiveData<>();
 
         patientProfileUrl=new MutableLiveData<>();
         patientName=new MutableLiveData<>();
@@ -84,6 +108,10 @@ public class SummeryCareViewModel extends BaseViewModel {
         instructionList=new MutableLiveData<>();
         planOfCareList=new MutableLiveData<>();
         historyProcedureList=new MutableLiveData<>();
+        allergyList=new MutableLiveData<>();
+        pastillnessHistoryList=new MutableLiveData<>();
+        socialHistoryList=new MutableLiveData<>();
+        problemList=new MutableLiveData<>();
 
     }
 
@@ -121,6 +149,7 @@ public class SummeryCareViewModel extends BaseViewModel {
         patientRepository.getInstructionList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "Instructions");
         instructionPage=page;
     }
+
     public void fetchPlanOfCareList(int page){
         getLoading().setValue(true);
         patientRepository.getPlanOfCareList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "PlanOfCare");
@@ -131,6 +160,30 @@ public class SummeryCareViewModel extends BaseViewModel {
         getLoading().setValue(true);
         patientRepository.getHistoryOfProcedureList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "HistoryOfProcedure");
         historyProcedurePage=page;
+    }
+
+    public void fetchAllergyList(int page){
+        getLoading().setValue(true);
+        patientRepository.getAllergyList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "AllergyList");
+        allergyPage=page;
+    }
+
+    public void fetchPastillnessHistoryList(int page){
+        getLoading().setValue(true);
+        patientRepository.getPastillnessHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "PastillnessHistoryList");
+        allergyPage=page;
+    }
+
+    public void fetchSocialHistoryList(int page){
+        getLoading().setValue(true);
+        patientRepository.getSocialHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "SocialHistoryList");
+        allergyPage=page;
+    }
+
+    public void fetchProblemList(int page){
+        getLoading().setValue(true);
+        patientRepository.getProblemList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "ProblemList");
+        allergyPage=page;
     }
 
     @Override
@@ -337,6 +390,110 @@ public class SummeryCareViewModel extends BaseViewModel {
             }
         }
 
+        if(url!=null && url.equals("AllergyList")){
+            AllergyResponse allergyResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, AllergyResponse.class);
+
+            if(allergyResponse!=null && allergyResponse.getData()!=null){
+
+                if(allergyResponse.getData().getAllergyList()!=null){
+
+                    ArrayList<Allergy> list=new ArrayList<>();
+
+                    if(allergyList.getValue()!=null && allergyPage!=0){
+                        list.addAll(allergyList.getValue());
+                    }
+                    list.addAll(allergyResponse.getData().getAllergyList());
+                    allergyList.setValue(list);
+
+                    if(allergyList.getValue().size()>0){
+                        rvAllergyVisibility.setValue(true);
+                    }else {
+                        rvAllergyVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
+        if(url!=null && url.equals("PastillnessHistoryList")){
+            PastillnessHistoryResponse pastillnessResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, PastillnessHistoryResponse.class);
+
+            if(pastillnessResponse!=null && pastillnessResponse.getData()!=null){
+
+                if(pastillnessResponse.getData().getHistoryOfPastIllnessList()!=null){
+
+                    ArrayList<PastillnessHistory> list=new ArrayList<>();
+
+                    if(pastillnessHistoryList.getValue()!=null && pastillnessHistoryPage!=0){
+                        list.addAll(pastillnessHistoryList.getValue());
+                    }
+                    list.addAll(pastillnessResponse.getData().getHistoryOfPastIllnessList());
+                    pastillnessHistoryList.setValue(list);
+
+                    if(pastillnessHistoryList.getValue().size()>0){
+                        rvPastillnessHistoryVisibility.setValue(true);
+                    }else {
+                        rvPastillnessHistoryVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
+        if(url!=null && url.equals("SocialHistoryList")){
+            SocialHistoryResponse socialHistoryResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, SocialHistoryResponse.class);
+
+            if(socialHistoryResponse!=null && socialHistoryResponse.getData()!=null){
+
+                if(socialHistoryResponse.getData().getSocialHistoryList()!=null){
+
+                    ArrayList<SocialHistory> list=new ArrayList<>();
+
+                    if(socialHistoryList.getValue()!=null && socialHistoryPage!=0){
+                        list.addAll(socialHistoryList.getValue());
+                    }
+                    list.addAll(socialHistoryResponse.getData().getSocialHistoryList());
+                    socialHistoryList.setValue(list);
+
+                    if(socialHistoryList.getValue().size()>0){
+                        rvSocialHistoryVisibility.setValue(true);
+                    }else {
+                        rvSocialHistoryVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
+        if(url!=null && url.equals("ProblemList")){
+            ProblemListResponse problemListResponse=Helper.getGsonInstance()
+                    .fromJson(responseJson, ProblemListResponse.class);
+
+            if(problemListResponse!=null && problemListResponse.getData()!=null){
+
+                if(problemListResponse.getData().getProblemsList()!=null){
+
+                    ArrayList<Problem> list=new ArrayList<>();
+
+                    if(problemList.getValue()!=null && problemListPage!=0){
+                        list.addAll(problemList.getValue());
+                    }
+                    list.addAll(problemListResponse.getData().getProblemsList());
+                    problemList.setValue(list);
+
+                    if(problemList.getValue().size()>0){
+                        rvProblemListVisibility.setValue(true);
+                    }else {
+                        rvProblemListVisibility.setValue(false);
+                    }
+                }
+
+            }
+        }
+
     }
 
     @Override
@@ -419,5 +576,45 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getRvPlanOfCareVisibility() {
         return rvPlanOfCareVisibility;
+    }
+
+    public MutableLiveData<ArrayList<HistoryOfProcedure>> getHistoryProcedureList() {
+        return historyProcedureList;
+    }
+
+    public MutableLiveData<ArrayList<Allergy>> getAllergyList() {
+        return allergyList;
+    }
+
+    public MutableLiveData<Boolean> getRvHistoryOfProcedureVisibility() {
+        return rvHistoryOfProcedureVisibility;
+    }
+
+    public MutableLiveData<Boolean> getRvAllergyVisibility() {
+        return rvAllergyVisibility;
+    }
+
+    public MutableLiveData<ArrayList<PastillnessHistory>> getPastillnessHistoryList() {
+        return pastillnessHistoryList;
+    }
+
+    public MutableLiveData<ArrayList<SocialHistory>> getSocialHistoryList() {
+        return socialHistoryList;
+    }
+
+    public MutableLiveData<ArrayList<Problem>> getProblemList() {
+        return problemList;
+    }
+
+    public MutableLiveData<Boolean> getRvPastillnessHistoryVisibility() {
+        return rvPastillnessHistoryVisibility;
+    }
+
+    public MutableLiveData<Boolean> getRvSocialHistoryVisibility() {
+        return rvSocialHistoryVisibility;
+    }
+
+    public MutableLiveData<Boolean> getRvProblemListVisibility() {
+        return rvProblemListVisibility;
     }
 }

@@ -116,9 +116,16 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     };*/
 
     private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
-        add.setVisible(addValue);
-        setting.setVisible(settingValue);
-        search.setVisible(searchValue);
+        if(add!=null){
+            add.setVisible(addValue);
+        }
+        if(setting!=null) {
+            setting.setVisible(settingValue);
+        }
+        if(search!=null){
+            search.setVisible(searchValue);
+        }
+
     }
 
     private MenuItem setting;
