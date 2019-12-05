@@ -61,6 +61,7 @@ public interface ApiInterface {
     @GET("Attachments")
     Call<Object> getAttachments(@Header("Authorization") String authToken,
                                 @Query("doctors") String doctors,
+                                @Query("filter") String filter,
                                 @Query("take") String take,
                                 @Query("skip") String skip);
 

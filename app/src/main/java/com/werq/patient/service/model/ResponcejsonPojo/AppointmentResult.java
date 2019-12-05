@@ -23,7 +23,7 @@ public class AppointmentResult implements Serializable
     @SerializedName("LocationId")
     private Integer locationId;
 
-    @SerializedName("AppintmentDate")
+    @SerializedName("AppointmentDate")
     private String appintmentDate;
 
     @SerializedName("AppointmentStatus")
