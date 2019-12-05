@@ -35,21 +35,27 @@ public class DateHelper {
 
     public static String dayFromDate(Date date, String returnFormat) {
         String getString = null;
-        switch (returnFormat) {
+        try {
+            switch (returnFormat) {
 
 
-            case "day":
-                getString = (String) DateFormat.format("dd", date);
+                case "day":
+                    getString = (String) DateFormat.format("dd", date);
 
-            break;
-            case "month":
-                getString = (String) DateFormat.format("MMM", date);
-            break;
-            case "time":
-                getString = (String) DateFormat.format("hh:mm a", date);
-                break;
+                    break;
+                case "month":
+                    getString = (String) DateFormat.format("MMM", date);
+                    break;
+                case "time":
+                    getString = (String) DateFormat.format("hh:mm a", date);
+                    break;
 
+            }
         }
+        catch (Exception e){
+            getString="";
+        }
+
         return getString;
 
     }

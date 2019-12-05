@@ -35,7 +35,7 @@ public class PatientRepository {
                                 ApiResponce apiResponce, String url){
 
         Helper.setLog("authToken :- ",authToken);
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,take,skip);
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,"all",take,skip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 
