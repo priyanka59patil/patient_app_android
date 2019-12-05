@@ -15,8 +15,11 @@ import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorListResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
+import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
 
 import java.util.ArrayList;
 
@@ -33,13 +36,16 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     String refreshTokenId;*/
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
-
+    private MutableLiveData<Boolean> rvDoctorListVisibility;
    // public MutableLiveData<Boolean> teamloading;
     public MutableLiveData<Boolean> doctorDetailsloading;
-
+    public MutableLiveData<Boolean> isAllCheckedState;
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
+    public  MutableLiveData<ArrayList<Doctor>> filterDoctorsList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
     public  MutableLiveData<String> openFrag;
+    int doctorListPage=0;
+
 
     public BottomTabViewModel() {
         super();
@@ -55,6 +61,9 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         teamList=new MutableLiveData<>();
         listAttachments=new MutableLiveData<>();
         doctorDetailsloading=new MutableLiveData<>();
+        filterDoctorsList=new MutableLiveData<>();
+        rvDoctorListVisibility=new MutableLiveData<>();
+        isAllCheckedState=new MutableLiveData<>();
 
 
     }
@@ -111,9 +120,15 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
     }
 
-    public void fetchAttachments(int page) {
+    public void fetchAttachments(int page,String doctors,String filter) {
         getLoading().setValue(true);
-        patientRepository.getAttachments(Helper.autoken,"","10",page*10+"",getToast(),apiResponce,"AllAttachments");
+        patientRepository.getAttachments(Helper.autoken,doctors,filter,"10",page*10+"",getToast(),apiResponce,"AllAttachments");
+    }
+
+    public void fetchFilterDoctorList(int page) {
+        getLoading().setValue(true);
+        doctorListPage=page;
+        patientRepository.getFilterDoctorList(Helper.autoken,"10",page*10+"",getToast(),apiResponce,"FilterDoctorList");
     }
 
 
@@ -168,7 +183,40 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
             }
 
         }
+        if(url!=null && url.equals("FilterDoctorList"))
+        {
 
+            DoctorListResponse doctorListResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorListResponse.class);
+
+            if(doctorListResponse !=null && doctorListResponse.getData()!=null){
+
+                ArrayList<Doctor> doctorList=new ArrayList<>();
+
+                if(doctorListResponse.getData().getAppointment()!=null){
+                    if(filterDoctorsList.getValue()!=null && doctorListPage!=0){
+                        doctorList.addAll(filterDoctorsList.getValue());
+                    }
+
+                    for (int i = 0; i < doctorListResponse.getData().getAppointment().size(); i++) {
+                        if(doctorListResponse.getData().getAppointment().get(i).getDoctor()!=null)
+                            doctorList.add(doctorListResponse.getData().getAppointment().get(i).getDoctor());
+                    }
+                }
+
+                filterDoctorsList.setValue(doctorList);
+
+                if(filterDoctorsList.getValue().size()>0){
+                    rvDoctorListVisibility.setValue(true);
+                }else {
+                    rvDoctorListVisibility.setValue(false);
+                }
+
+            }
+            else {
+                listAttachments.setValue(null);
+            }
+
+        }
     }
 
     @Override
@@ -190,7 +238,13 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         return teamList;
     }
 
+    public MutableLiveData<ArrayList<Doctor>> getFilterDoctorsList() {
+        return filterDoctorsList;
+    }
 
+    public MutableLiveData<Boolean> getRvDoctorListVisibility() {
+        return rvDoctorListVisibility;
+    }
 
     @Override
     protected void onCleared() {

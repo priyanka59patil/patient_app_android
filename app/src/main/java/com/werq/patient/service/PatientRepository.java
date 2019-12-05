@@ -31,11 +31,11 @@ public class PatientRepository {
 
     }
 
-    public void  getAttachments(String authToken,String doctor, String take, String skip , MutableLiveData<String> toast,
+    public void  getAttachments(String authToken,String doctor,String filter, String take, String skip , MutableLiveData<String> toast,
                                 ApiResponce apiResponce, String url){
 
         Helper.setLog("authToken :- ",authToken);
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,"all",take,skip);
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,filter,take,skip);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 
@@ -145,6 +145,16 @@ public class PatientRepository {
 
         Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"problems",take,skip);
+
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+
+    public void  getFilterDoctorList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().getDoctorList(authToken,take,skip);
 
         RetrofitClient.callApi(call,url,apiResponce,toast);
 

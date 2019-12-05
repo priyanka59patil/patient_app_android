@@ -33,7 +33,6 @@
             android:id="@+id/cbFilter"
             android:layout_width="25dp"
             android:layout_height="25dp"
-
             android:layout_alignParentRight="true"
             app:color_checked="@color/colorPrimary"
             android:layout_marginEnd="@dimen/main_layout_padding"

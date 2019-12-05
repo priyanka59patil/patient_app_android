@@ -246,6 +246,7 @@ public class MedicalInfoFragment extends BaseFragment implements BasicActivities
 
     }
 
+
     @OnClick(R.id.ivProfilePhoto)
     public void onViewClicked() {
         mBottomSheetDialog.show();

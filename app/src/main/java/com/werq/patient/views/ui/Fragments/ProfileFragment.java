@@ -219,6 +219,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
     }
 
 
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

@@ -222,6 +222,7 @@ public class InsuranceFragment extends BaseFragment implements DiologListner{
 
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

@@ -194,6 +194,10 @@
     <string name="label_all">All</string>
     <string name="label_received">Received</string>
     <string name="label_sent">Sent</string>
+    <string name="all_files">All Files</string>
+    <string name="reset">Reset</string>
+    <string name="label_visit_note_attachment">Visit Note Attachments</string>
+    <string name="label_referral_attachments">Referral Attachments</string>
     <string name="title_activity_view_visit_note">ViewVisitNoteActivity</string>
     <string name="title_activity_medical_info">MedicalInfoActivity</string>
     <string name="label_to_confirmed">To Confirm</string>

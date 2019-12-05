@@ -90,6 +90,11 @@ public interface ApiInterface {
     @GET("PatientData/assessment")
     Call<Object> getAssessments(@Header("Authorization") String authToken);
 
+    @GET("Doctors?")
+    Call<Object> getDoctorList(@Header("Authorization") String authToken,
+                                    @Query("take") String take,
+                                    @Query("skip") String skip );
+
 }
 
 

@@ -7,10 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -35,7 +37,7 @@ import com.werq.patient.databinding.ActivityBottomTabBinding;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BottomTabActivity extends BaseActivity implements View.OnClickListener, DiologListner {
+public class BottomTabActivity extends BaseActivity implements View.OnClickListener, DiologListner/*, GetSheetViewFromFragment*/ {
     @BindView(R.id.mainLayout)
     FrameLayout mainLayout;
     @BindView(R.id.nav_view)
@@ -47,17 +49,22 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     BottomSheetDialog mBottomSheetDialog;
     String title;
     DiologListner diologListner;
+   // GetSheetViewFromFragment  getSheetViewFromFragment=this;
 
 
     LinearLayout layoutNewInvitation;
     LinearLayout layoutDoctorBase;
     BottomTabViewModel tabViewModel;
+    private RelativeLayout layout_filter_allDoctors;
+    private RelativeLayout layout_filter_received;
+    private RelativeLayout layout_filter_sent;
+    ImageView iv_visitnote_check,iv_referral_check,iv_all_check;
 
     final Fragment appointmentFragment = new AppointmentFragment();
     final Fragment chatFragment = new ChatFragments();
     final Fragment doctorTeamFragment = new DoctorTeamFragment();
     final Fragment profileFragment = new ProfileFragment();
-    final Fragment filesFragment = new FilesFragment();
+    final Fragment filesFragment = new FilesFragment(/*getSheetViewFromFragment*/);
     Fragment active = appointmentFragment;
     final FragmentManager fm = getSupportFragmentManager();
 
@@ -254,6 +261,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         Helper.setLog("folder","FilesFragment");
                         /*FilesFragment filesFragment = new FilesFragment();
                         addFragment(filesFragment);*/
+                        //mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner,"file");
                         Helper.setToolbar(getSupportActionBar(), "Files");
                         VisibleMenuItem(false, false, true);
 
@@ -270,7 +278,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //listner
         diologListner = this;
 
-        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.doctor_name_diolog_layout, diologListner);
+       mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.doctor_name_diolog_layout, diologListner);
 
 
         // mBottomSheetDialog.setContentView(sheetView);
@@ -301,5 +309,14 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         layoutDoctorBase = (LinearLayout) view.findViewById(R.id.layout_doctor_base);
         layoutNewInvitation.setOnClickListener(this::onClick);
         layoutDoctorBase.setOnClickListener(this::onClick);
+
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
 }

@@ -7,7 +7,8 @@
             type="com.werq.patient.viewmodel.BottomTabViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -29,8 +30,60 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <include layout="@layout/content_filter_doctor_list" />
+        <!--<androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/main_layout_padding"
+                android:paddingRight="@dimen/main_layout_padding"
+                android:paddingLeft="@dimen/main_layout_padding">
+                <TextView
+                    android:id="@+id/tvlabelallDoctors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/textheader15dp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/main_layout_padding"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/label_all_doctors"/>
+                <net.igenius.customcheckbox.CustomCheckBox
+                    android:id="@+id/cbFilter"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+
+                    android:layout_alignParentRight="true"
+                    app:color_checked="@color/colorPrimary"
+                    android:layout_marginEnd="@dimen/main_layout_padding"
+                    app:color_tick="@color/white"
+                    app:color_unchecked_stroke="@color/colorAccent"
+                    app:small_tick="false"
+                    />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/cbFilter"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="@dimen/main_layout_padding"
+                    android:background="@color/colorLightGreyBackground" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvDoctorTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/view"
+                    android:layout_marginTop="4dp">
 
 
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

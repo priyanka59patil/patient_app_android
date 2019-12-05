@@ -29,6 +29,8 @@ import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 
+import net.igenius.customcheckbox.CustomCheckBox;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -125,10 +127,13 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
         @BindView(R.id.ivDoctorProfile)
         CircleImageView ivDoctorProfile;
 
+        @BindView(R.id.cbFilter)
+        CustomCheckBox cbFilter;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ButterKnife.bind(this,itemView);
+            cbFilter.setVisibility(View.GONE);
         }
     }
 }

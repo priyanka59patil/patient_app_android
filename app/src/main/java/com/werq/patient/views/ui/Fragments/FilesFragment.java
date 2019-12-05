@@ -14,37 +14,29 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
-import com.werq.patient.base.BaseFragment;
-import com.werq.patient.databinding.FragmentFilesBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
-import com.werq.patient.viewmodel.BottomTabViewModel;
-import com.werq.patient.views.adapter.AttachmentsAdapter;
-import com.werq.patient.views.ui.FilterDoctorList;
-import com.werq.patient.views.ui.ViewFileActivity;
-import com.werq.patient.views.ui.ViewVisitNoteActivity;
-import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.Controller.FilesController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.DiologListner;
 import com.werq.patient.Interfaces.FilesInteface;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.service.model.Files;
-import com.werq.patient.service.model.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentFilesBinding;
+import com.werq.patient.service.model.Files;
+import com.werq.patient.service.model.FilesData;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.viewmodel.BottomTabViewModel;
+import com.werq.patient.views.adapter.AttachmentsAdapter;
+import com.werq.patient.views.ui.FilterDoctorList;
+import com.werq.patient.views.ui.ViewVisitNoteActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +45,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FilesFragment extends BaseFragment implements View.OnClickListener, RecyclerViewClickListerner, DiologListner, BasicActivities {
+public class FilesFragment extends BaseFragment implements View.OnClickListener,
+        RecyclerViewClickListerner, DiologListner, BasicActivities {
 
     @BindView(R.id.tvFilterDoctors)
     TextView tvFilterDoctors;
@@ -69,12 +62,13 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     Context mContext;
     ArrayList<Files> allFiles;
     ArrayList<AttachmentResult> attachmentList;
+
     private AttachmentsAdapter attachmentsAdapter;
     private BottomSheetDialog mBottomSheetDialog;
     private RelativeLayout layout_filter_allDoctors;
     private RelativeLayout layout_filter_received;
     private RelativeLayout layout_filter_sent;
-    ImageView iv_sent_check,iv_received_check,iv_all_check;
+    ImageView iv_visitnote_check, iv_referral_check, iv_all_check;
     RecyclerViewClickListerner recyclerViewClickListerner;
     DiologListner diologListner;
     FilesInteface controller;
@@ -88,26 +82,31 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     private boolean loading = true;
     int page = 0;
     int listcount = 0;
+    String selectedDoctors = "";
+    String selectedFileFilter = "all";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        diologListner=this::onClick;
-        recyclerViewClickListerner=this::onclick;
-        basicActivities=this;
-        controller= new FilesController(basicActivities);
+        diologListner = this;
+        recyclerViewClickListerner = this::onclick;
+        basicActivities = this;
+        controller = new FilesController(basicActivities);
         attachmentList = new ArrayList<>();
-        attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList,recyclerViewClickListerner,true);
-        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner);
-        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
-        if(Helper.hasNetworkConnection(mContext)){
-            loading =true;
-            viewModel.fetchAttachments(0);
+        attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList, recyclerViewClickListerner, true);
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.filter_diolog_layout, diologListner);
+        viewModel = ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
 
-        }else {
-            Helper.showToast(mContext,getString(R.string.no_network_conection));
+        if (Helper.hasNetworkConnection(mContext)) {
+            loading = true;
+            page = 0;
+            viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+        } else {
+            Helper.showToast(mContext, getString(R.string.no_network_conection));
         }
+
     }
 
     @Override
@@ -116,8 +115,8 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
-        if(fragmentFilesBinding==null){
-            fragmentFilesBinding= FragmentFilesBinding.bind(view);
+        if (fragmentFilesBinding == null) {
+            fragmentFilesBinding = FragmentFilesBinding.bind(view);
         }
 
         fragmentFilesBinding.setLifecycleOwner(this);
@@ -132,30 +131,30 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         setRecyclerView();
 
 
-
-        viewModel.listAttachments.observe(this,attachmentResults -> {
-            if(attachmentResults!=null){
-                if(page==0){
+        viewModel.listAttachments.observe(this, attachmentResults -> {
+            if (attachmentResults != null) {
+                if (page == 0) {
                     attachmentList.clear();
                 }
 
                 attachmentList.addAll(attachmentResults);
-                listcount=attachmentList.size();
+                listcount = attachmentList.size();
                 attachmentsAdapter.notifyDataSetChanged();
             }
 
-            if(attachmentList!=null && attachmentList.size()>0){
+            if (attachmentList != null && attachmentList.size() > 0) {
 
                 rvFiles.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);
 
-            }else {
+            } else {
                 rvFiles.setVisibility(View.GONE);
                 tvNoData.setVisibility(View.VISIBLE);
             }
         });
 
         return view;
+
     }
 
 
@@ -163,7 +162,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onResume() {
         super.onResume();
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this, aBoolean -> {
             /*if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
@@ -176,11 +175,10 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                     progressDialog.hide();
                 }
             }*/
-            if(aBoolean ){
+            if (aBoolean) {
                 showProgressBar(loadingView);
                 loadingView.bringToFront();
-            }
-            else {
+            } else {
                 hideProgressBar(loadingView);
             }
         });
@@ -208,10 +206,10 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                                     //                                loading = false;
-                                    loading=true;
+                                    loading = true;
                                     //Logv("...", "Last Item Wow !");
                                     ++page;
-                                    viewModel.fetchAttachments(page);
+                                    viewModel.fetchAttachments(page, selectedDoctors, selectedFileFilter);
                                     //Do pagination.. i.e. fetch new data
                                 }
                             }
@@ -224,9 +222,6 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         });
 
 
-
-
-
     }
 
     @Override
@@ -237,19 +232,21 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void setRecyclerView() {
 
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvFiles,attachmentsAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvFiles);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, attachmentsAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvFiles);
     }
 
     @Override
     public void setView(Object data) {
-        filesData=(FilesData)data;
+        filesData = (FilesData) data;
         allFiles.addAll(Arrays.asList(filesData.getResponse()));
         setRecyclerView();
 
-}
+    }
+
     @Override
     public void getIntentData() {
+
 
     }
 
@@ -266,67 +263,134 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     }
 
 
-
-    @OnClick({R.id.tvFilterDoctors, R.id.tvFilterFiles})
+    @OnClick({R.id.tvFilterDoctors, R.id.tvFilterFiles,R.id.tvResetFilter})
     public void onViewClicked(View view) {
+        Helper.setLog("inside", "onViewClicked");
         switch (view.getId()) {
             case R.id.tvFilterDoctors:
-                startActivity(new Intent(mContext, FilterDoctorList.class));
+                Intent intent = new Intent(mContext, FilterDoctorList.class);
+                startActivityForResult(intent, 2);
                 break;
             case R.id.tvFilterFiles:
                 mBottomSheetDialog.show();
+
+                break;
+
+            case R.id.tvResetFilter:
+                selectedDoctors="";
+                selectedFileFilter="all";
+                iv_visitnote_check.setVisibility(View.GONE);
+                iv_referral_check.setVisibility(View.GONE);
+                iv_all_check.setVisibility(View.VISIBLE);
+                tvFilterFiles.setText(getResources().getString(R.string.all_files));
+
+                if (Helper.hasNetworkConnection(mContext)) {
+                    loading = true;
+                    page = 0;
+                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+                } else {
+                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                }
+
                 break;
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case  R.id.layout_filter_allDoctors:
+        Helper.setLog("inside", "onClick");
+        switch (view.getId()) {
+            case R.id.layout_filter_allDoctors:
+                Helper.setLog("inside", "layout_filter_allDoctors");
+                selectedFileFilter = "all";
+                if (Helper.hasNetworkConnection(mContext)) {
+                    loading = true;
+                    page = 0;
+                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+                } else {
+                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                }
+                iv_visitnote_check.setVisibility(View.GONE);
+                iv_referral_check.setVisibility(View.GONE);
+                iv_all_check.setVisibility(View.VISIBLE);
+                tvFilterFiles.setText(getResources().getString(R.string.all_files));
+                mBottomSheetDialog.dismiss();
                 break;
             case R.id.layout_filter_received:
+                Helper.setLog("inside", "layout_filter_received");
+                selectedFileFilter = "visitnote_attach";
+                if (Helper.hasNetworkConnection(mContext)) {
+                    loading = true;
+                    page = 0;
+                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+                } else {
+                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                }
+                iv_visitnote_check.setVisibility(View.VISIBLE);
+                iv_referral_check.setVisibility(View.GONE);
+                iv_all_check.setVisibility(View.GONE);
+                tvFilterFiles.setText(getResources().getString(R.string.label_visit_note_attachment));
+                mBottomSheetDialog.dismiss();
                 break;
-            case  R.id.layout_filter_sent:
+            case R.id.layout_filter_sent:
+                Helper.setLog("inside", "layout_filter_sent");
+                selectedFileFilter = "referral_attach";
+                if (Helper.hasNetworkConnection(mContext)) {
+                    loading = true;
+                    page = 0;
+                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+                } else {
+                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                }
+                iv_visitnote_check.setVisibility(View.GONE);
+                iv_referral_check.setVisibility(View.VISIBLE);
+                iv_all_check.setVisibility(View.GONE);
+                tvFilterFiles.setText(getResources().getString(R.string.label_referral_attachments));
+                mBottomSheetDialog.dismiss();
                 break;
         }
     }
 
     @Override
     public void onclick(int position) {
+        Helper.setLog("inside", "onClick position");
 
+        if (attachmentList.get(position).getVisitNoteId() != 0) {
+            Helper.setLog("aaaa", attachmentList.get(position).toString());
+            Helper.setLog("getAppointmentId", attachmentList.get(position).getAppointmentId() + "");
+            Helper.setLog("getVisitNoteId", attachmentList.get(position).getVisitNoteId() + "");
 
-        if(attachmentList.get(position).getVisitNoteId()!=0){
-            Helper.setLog("aaaa",attachmentList.get(position).toString());
-            Helper.setLog("getAppointmentId",attachmentList.get(position).getAppointmentId()+"" );
-            Helper.setLog("getVisitNoteId",attachmentList.get(position).getVisitNoteId()+"" );
-
-            Intent intent =new Intent(mContext, ViewVisitNoteActivity.class);
-            intent.putExtra("appointmentId",attachmentList.get(position).getAppointmentId());
-            intent.putExtra("visitNoteId",attachmentList.get(position).getVisitNoteId());
+            Intent intent = new Intent(mContext, ViewVisitNoteActivity.class);
+            intent.putExtra("appointmentId", attachmentList.get(position).getAppointmentId());
+            intent.putExtra("visitNoteId", attachmentList.get(position).getVisitNoteId());
             startActivity(intent);
+        } else {
+            Helper.showToast(mContext, "No Details Available");
         }
-        else {
-            Helper.showToast(mContext,"No Details Available");
-        }
-
 
 
     }
 
     @Override
     public void setdiologview(View view) {
-        layout_filter_allDoctors=(RelativeLayout)view.findViewById(R.id.layout_filter_allDoctors);
-        layout_filter_received=(RelativeLayout)view.findViewById(R.id.layout_filter_received);
-        layout_filter_sent=(RelativeLayout)view.findViewById(R.id.layout_filter_sent);
-        iv_sent_check=(ImageView)view.findViewById(R.id.iv_sent_check);
-        iv_received_check=(ImageView)view.findViewById(R.id.iv_received_check);
-        iv_all_check=(ImageView)view.findViewById(R.id.iv_all_check);
+
+
+        layout_filter_allDoctors = (RelativeLayout) view.findViewById(R.id.layout_filter_allDoctors);
+        layout_filter_received = (RelativeLayout) view.findViewById(R.id.layout_filter_received);
+        layout_filter_sent = (RelativeLayout) view.findViewById(R.id.layout_filter_sent);
+        iv_visitnote_check = (ImageView) view.findViewById(R.id.iv_visitnote_check);
+        iv_referral_check = (ImageView) view.findViewById(R.id.iv_referral_check);
+        iv_all_check = (ImageView) view.findViewById(R.id.iv_all_check);
         layout_filter_allDoctors.setOnClickListener(this::onClick);
         layout_filter_received.setOnClickListener(this::onClick);
         layout_filter_sent.setOnClickListener(this::onClick);
         iv_all_check.setVisibility(View.VISIBLE);
-        iv_received_check.setVisibility(View.GONE);
-        iv_sent_check.setVisibility(View.GONE);
+        iv_visitnote_check.setVisibility(View.GONE);
+        iv_referral_check.setVisibility(View.GONE);
     }
 
     @Override
@@ -339,5 +403,26 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     public void onStop() {
         super.onStop();
         hideProgressBar(loadingView);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1) {
+            selectedDoctors = data.getStringExtra("doctors");
+            if (Helper.hasNetworkConnection(mContext)) {
+                loading = true;
+                page = 0;
+                viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+            } else {
+                Helper.showToast(mContext, getString(R.string.no_network_conection));
+            }
+        }
+        Helper.setLog("File Frag", "onActivityResult" + requestCode + " " + resultCode);
+        if (data != null) {
+            Helper.setLog("File Frag", data.getStringExtra("doctors"));
+        }
     }
 }
