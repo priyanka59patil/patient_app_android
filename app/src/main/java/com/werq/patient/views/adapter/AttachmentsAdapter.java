@@ -141,8 +141,7 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
 
         holder.tvprefix.setText("From :");
 
-        Helper.setLog("FileType", result.getFileType());
-            Log.e( position+"onBindViewHolder: ", result.getFileUrl());
+       // Helper.setLog("FileType", result.getFileType());
         switch (result.getFileType()) {
             case "image/png":
                 Glide.with(mContext).load(result.getFileUrl()).apply(new RequestOptions()

@@ -63,8 +63,8 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     final Fragment appointmentFragment = new AppointmentFragment();
     final Fragment chatFragment = new ChatFragments();
     final Fragment doctorTeamFragment = new DoctorTeamFragment();
-    final Fragment profileFragment = new ProfileFragment();
     final Fragment filesFragment = new FilesFragment(/*getSheetViewFromFragment*/);
+    final Fragment profileFragment = new ProfileFragment();
     Fragment active = appointmentFragment;
     final FragmentManager fm = getSupportFragmentManager();
 

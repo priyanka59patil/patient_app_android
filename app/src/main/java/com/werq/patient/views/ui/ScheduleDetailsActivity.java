@@ -264,18 +264,25 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
         viewModel.getLoading().observe(this,aBoolean -> {
-            if(aBoolean ){
-                if(progressDialog!=null && !progressDialog.isShowing()){
-                    progressDialog.show();
-                }else {
-                    progressDialog=Helper.createProgressDialog(mContext);
+            try {
+                if(aBoolean ){
+                    if(progressDialog!=null && !progressDialog.isShowing()){
+                        progressDialog.show();
+                    }else {
+                        progressDialog=Helper.createProgressDialog(mContext);
+                    }
                 }
-            }
-            else {
-                if(progressDialog!=null && progressDialog.isShowing()){
+                else {
+                    if(progressDialog!=null && progressDialog.isShowing()){
+                        progressDialog.hide();
+                    }
+                }
+            }catch (Exception e){
+                if( !this.isFinishing()&&progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }
             }
+
         });
 
         viewModel.doctorProfilePhoto.observe(this,s -> {
@@ -453,7 +460,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
+        if(!isFinishing()&& progressDialog!=null && progressDialog.isShowing()){
             progressDialog.hide();
         }
     }

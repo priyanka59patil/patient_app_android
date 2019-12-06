@@ -202,8 +202,6 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     protected void onResume() {
         super.onResume();
 
-
-
         profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
             try{
                 if(aBoolean ){

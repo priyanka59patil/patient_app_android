@@ -90,22 +90,23 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
 
 
         viewModel = ViewModelProviders.of(getActivity()).get(ProfileDoctorViewModel.class);
+        fragmentPracticeBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         fragmentPracticeBinding.setDoctorProfileViewModel(viewModel);
-        fragmentPracticeBinding.setLifecycleOwner(this);
+
         /*viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
         ButterKnife.bind(this,view);
         initializeVariables();
 
 
-        viewModel.about.observe(this,s -> {
+       /* viewModel.about.observe(this,s -> {
             if(s!=null && !s.isEmpty()){
                 tvpracticeabout.setText(s);
             }else {
                 tvpracticeabout.setText("Not Available");
             }
-        });
+        });*/
 
         viewModel.practiceWebUrl.observe(this,s -> {
             if(s!=null && !s.isEmpty()){
@@ -126,12 +127,12 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
             }
         });
 
-        viewModel.locationsList.observe(this,locations -> {
+        /*viewModel.locationsList.observe(this,locations -> {
             if(locations!=null){
                 tvtitlepractice.setText(locations.get(0).getOrganizationName());
 
             }
-        });
+        });*/
 
 
       /*  viewModel.getLoading().observe(this,aBoolean -> {

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,14 +99,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.filter_diolog_layout, diologListner);
         viewModel = ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
 
-        if (Helper.hasNetworkConnection(mContext)) {
-            loading = true;
-            page = 0;
-            viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-        } else {
-            Helper.showToast(mContext, getString(R.string.no_network_conection));
-        }
+        refreshData();
 
     }
 
@@ -277,20 +271,15 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 break;
 
             case R.id.tvResetFilter:
-                selectedDoctors="";
-                selectedFileFilter="all";
-                iv_visitnote_check.setVisibility(View.GONE);
-                iv_referral_check.setVisibility(View.GONE);
-                iv_all_check.setVisibility(View.VISIBLE);
-                tvFilterFiles.setText(getResources().getString(R.string.all_files));
+                if(!TextUtils.isEmpty(selectedDoctors) || !selectedFileFilter.equals("all")){
+                    selectedDoctors="";
+                    selectedFileFilter="all";
+                    iv_visitnote_check.setVisibility(View.GONE);
+                    iv_referral_check.setVisibility(View.GONE);
+                    iv_all_check.setVisibility(View.VISIBLE);
+                    tvFilterFiles.setText(getResources().getString(R.string.all_files));
 
-                if (Helper.hasNetworkConnection(mContext)) {
-                    loading = true;
-                    page = 0;
-                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-                } else {
-                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                    refreshData();
                 }
 
                 break;
@@ -304,14 +293,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             case R.id.layout_filter_allDoctors:
                 Helper.setLog("inside", "layout_filter_allDoctors");
                 selectedFileFilter = "all";
-                if (Helper.hasNetworkConnection(mContext)) {
-                    loading = true;
-                    page = 0;
-                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-                } else {
-                    Helper.showToast(mContext, getString(R.string.no_network_conection));
-                }
+                refreshData();
                 iv_visitnote_check.setVisibility(View.GONE);
                 iv_referral_check.setVisibility(View.GONE);
                 iv_all_check.setVisibility(View.VISIBLE);
@@ -321,14 +303,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             case R.id.layout_filter_received:
                 Helper.setLog("inside", "layout_filter_received");
                 selectedFileFilter = "visitnote_attach";
-                if (Helper.hasNetworkConnection(mContext)) {
-                    loading = true;
-                    page = 0;
-                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-                } else {
-                    Helper.showToast(mContext, getString(R.string.no_network_conection));
-                }
+                refreshData();
                 iv_visitnote_check.setVisibility(View.VISIBLE);
                 iv_referral_check.setVisibility(View.GONE);
                 iv_all_check.setVisibility(View.GONE);
@@ -338,14 +313,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             case R.id.layout_filter_sent:
                 Helper.setLog("inside", "layout_filter_sent");
                 selectedFileFilter = "referral_attach";
-                if (Helper.hasNetworkConnection(mContext)) {
-                    loading = true;
-                    page = 0;
-                    viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-                } else {
-                    Helper.showToast(mContext, getString(R.string.no_network_conection));
-                }
+                refreshData();
                 iv_visitnote_check.setVisibility(View.GONE);
                 iv_referral_check.setVisibility(View.VISIBLE);
                 iv_all_check.setVisibility(View.GONE);
@@ -411,18 +379,23 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
             selectedDoctors = data.getStringExtra("doctors");
-            if (Helper.hasNetworkConnection(mContext)) {
-                loading = true;
-                page = 0;
-                viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
-
-            } else {
-                Helper.showToast(mContext, getString(R.string.no_network_conection));
-            }
+            refreshData();
         }
         Helper.setLog("File Frag", "onActivityResult" + requestCode + " " + resultCode);
         if (data != null) {
             Helper.setLog("File Frag", data.getStringExtra("doctors"));
+        }
+    }
+
+
+    public void refreshData(){
+        if (Helper.hasNetworkConnection(mContext)) {
+            loading = true;
+            page = 0;
+            viewModel.fetchAttachments(0, selectedDoctors, selectedFileFilter);
+
+        } else {
+            Helper.showToast(mContext, getString(R.string.no_network_conection));
         }
     }
 }

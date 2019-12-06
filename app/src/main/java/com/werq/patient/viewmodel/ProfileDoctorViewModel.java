@@ -1,5 +1,6 @@
 package com.werq.patient.viewmodel;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -97,6 +98,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
             coworkerLoading.setValue(false);
         }else
             getLoading().setValue(false);
+        Helper.setLog("onSuccess=responseJson",responseJson);
         if(url!=null && !url.isEmpty()){
 
             if(url.equalsIgnoreCase("DoctorDetails"))
@@ -105,6 +107,8 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
                 if(detailsResponse!=null && detailsResponse.getData()!=null && detailsResponse.getData().getDoctor()!=null)
                 {
+
+                    Helper.setLog("onSuccess=responseJson",detailsResponse.toString());
                     doctorDetailsResponse.setValue(detailsResponse);
                     Doctor doctor=detailsResponse.getData().getDoctor();
 
@@ -160,22 +164,35 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                         rvPracticesVisibility.setValue(false);
                     }
 
+
                     if(doctor.getContactInfo()!=null){
+                       // Helper.setLog("inside","doctor.getContactInfo()");
 
                         for (int i = 0; i < doctor.getContactInfo().size(); i++) {
                             //1 means website
                             // 2 means phone number
                             if(doctor.getContactInfo().get(i).getType()==1 ){
-                                practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                                if(!TextUtils.isEmpty(doctor.getContactInfo().get(i).getDetails())){
+                                    practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                                }else {
+                                    practiceWebUrl.setValue("Not Available");
+                                }
+
                             }
 
-                            if(doctor.getContactInfo().get(i).getType()==2 ){
+                            else if(doctor.getContactInfo().get(i).getType()==2 ){
                                 practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                            }
+
+                            else if(doctor.getContactInfo().get(i).getType()==0){
+                                practiceWebUrl.setValue("Not Available");
+                                practicePhoneNumber.setValue("Not Available");
                             }
                         }
                     }
                     else {
-                        profileUrl.setValue("Not Available");
+                        Helper.setLog("inside practiceWebUrl","Not Available");
+                        practiceWebUrl.setValue("Not Available");
                         practicePhoneNumber.setValue("Not Available");
                     }
                 }
