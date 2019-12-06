@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.werq.patient.BuildConfig;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
-import com.werq.patient.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +52,10 @@ public class SettingActivity extends AppCompatActivity {
     TextView tvLogOut;
     @BindView(R.id.view5)
     View view5;
+    @BindView(R.id.tvAppVersion)
+    TextView tvAppVersion;
+    @BindView(R.id.view6)
+    View view6;
     private Context mContext;
 
 
@@ -63,12 +67,13 @@ public class SettingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initializevariable();
         setToolbar();
+        tvAppVersion.setText(BuildConfig.app_version);
 
 
     }
 
     private void setToolbar() {
-        Helper.setToolbarwithCross(getSupportActionBar(),"Setting");
+        Helper.setToolbarwithCross(getSupportActionBar(), "Setting");
     }
 
     private void initializevariable() {
@@ -86,7 +91,7 @@ public class SettingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.tvPassword, R.id.tvChangePassword,R.id.tvLogOut})
+    @OnClick({R.id.tvPassword, R.id.tvChangePassword, R.id.tvLogOut})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvPassword:

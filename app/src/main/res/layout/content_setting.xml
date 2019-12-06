@@ -135,21 +135,53 @@
         tools:layout_editor_absoluteX="16dp" />
 
     <TextView
+        android:id="@+id/lblAppVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="App Version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+
+    <TextView
+        android:id="@+id/tvAppVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_layout_padding"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblAppVersion" />
+
+    <View
+        android:id="@+id/view6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorLightGreyBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvAppVersion"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <TextView
         android:id="@+id/tvLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginStart="@dimen/main_layout_padding"
         android:text="Log Out"
         android:textColor="@color/red"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4" />
+        app:layout_constraintTop_toBottomOf="@+id/view6" />
     <View
         android:id="@+id/view5"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-
         android:background="@color/colorLightGreyBackground"
         app:layout_constraintTop_toBottomOf="@+id/tvLogOut"
-        tools:layout_editor_absoluteX="16dp" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

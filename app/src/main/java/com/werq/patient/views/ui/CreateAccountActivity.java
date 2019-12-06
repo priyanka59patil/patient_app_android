@@ -120,7 +120,6 @@ public class CreateAccountActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
     }
 
   /*  @OnClick({R.id.btSignUp})

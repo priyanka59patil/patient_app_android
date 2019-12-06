@@ -22,13 +22,9 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentDoctorsListBinding;
-import com.werq.patient.databinding.FragmentTabAppointmentBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
-import com.werq.patient.viewmodel.DoctorTeamViewModel;
 import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.DoctorListAdapter;
-import com.werq.patient.views.adapter.DoctorUserList;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
 

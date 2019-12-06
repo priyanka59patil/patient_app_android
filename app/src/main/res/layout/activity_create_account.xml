@@ -43,7 +43,7 @@
                 android:layout_marginTop="40dp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize_title"
-                android:text="Check your email or phone number and create new password"
+                android:text="Check your email and create new password"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
                 android:id="@+id/txtInputUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter Email or Phone Number"
+                android:hint="Enter Email"
                 app:boxStrokeColor="@android:color/holo_blue_dark"
                 android:layout_marginTop="@dimen/layout16dp"
                 app:errorEnabled="true"

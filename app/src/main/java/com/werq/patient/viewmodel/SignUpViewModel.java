@@ -74,8 +74,6 @@ public class SignUpViewModel extends BaseViewModel {
 
 
     public void signUpOnClick() {
-        if (userName.getValue() != null && !userName.getValue().isEmpty() &&
-                newpassword.getValue() != null && !newpassword.getValue().isEmpty()) {
 
             if(signUpDataValidate()){
                 SignUpJson signUpJson=new SignUpJson();
@@ -87,7 +85,7 @@ public class SignUpViewModel extends BaseViewModel {
                 signUpRepository.signUp(signUpJson,getToast(),apiResponce,SIGNUP);
             }
 
-        } /*else {
+         /*else {
 
             if(userName.getValue() != null && !userName.getValue().trim().equals("")){
 
@@ -110,28 +108,35 @@ public class SignUpViewModel extends BaseViewModel {
     public boolean signUpDataValidate() {
         boolean check = true;
 
-        if (userName.getValue().trim().equals("")) {
+        if(userName.getValue()!=null){
+
+            if (userName.getValue().trim().equals("")) {
+                check = false;
+                userNameError.setValue("Email Cannot Be Empty");
+            }else {
+                if(!Helper.isValidEmail(userName.getValue())){
+                    check = false;
+                    userNameError.setValue("Please enter valid email");
+                }
+            }
+
+        }
+        else {
             check = false;
             userNameError.setValue("Email Cannot Be Empty");
         }
-        else if(/*!Helper.isValidEmail(userName.getValue()) */ true ){
-            if(!Helper.isValidPhone(userName.getValue())){
+
+        if(newpassword.getValue()!=null){
+
+            if(newpassword.getValue().trim().equals("")){
                 check = false;
-                userNameError.setValue("Please enter a valid email or phone");
-            }
-            else {
-                check = false;
-                userNameError.setValue("Please enter a valid email or phone");
+                newpasswordError.setValue("Password can not be empty");
             }
 
-        }
-
-        if(newpassword.getValue().trim().equals("")){
+        }else {
             check = false;
             newpasswordError.setValue("Password can not be empty");
         }
-
-
 
         return check;
 

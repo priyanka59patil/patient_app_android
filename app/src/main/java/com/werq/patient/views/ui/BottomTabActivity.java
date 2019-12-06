@@ -69,58 +69,6 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     final FragmentManager fm = getSupportFragmentManager();
 
 
-/*    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.calendar:
-                    AppointmentFragment appointmentFragment = new AppointmentFragment();
-                    addFragment(appointmentFragment);
-                    if (add != null && setting != null && search != null) {
-                        Helper.setToolbar(getSupportActionBar(), "Appointments");
-                        VisibleMenuItem(false, false, true);
-
-                    }
-
-                    return true;
-                case R.id.messages:
-                    title = "Chats";
-                    setToolbarForbottom(title, true, false);
-                    ChatFragments chatFragments = new ChatFragments();
-                    addFragment(chatFragments);
-                    VisibleMenuItem(true, false, false);
-
-
-                    return true;
-                case R.id.people:
-
-                    title = "My Doctor Teams";
-                    setToolbarForbottom(title, true, false);
-                    DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
-                    addFragment(doctorTeamFragment);
-                    VisibleMenuItem(true, false, false);
-
-                    return true;
-                case R.id.profile:
-                    ProfileFragment profileFragment = new ProfileFragment();
-                    addFragment(profileFragment);
-                    Helper.setToolbar(getSupportActionBar(), "My Profile");
-                    VisibleMenuItem(false, true, false);
-
-                    return true;
-                case R.id.folder:
-                    Helper.setToolbar(getSupportActionBar(), "Files");
-                    FilesFragment filesFragment = new FilesFragment();
-                    addFragment(filesFragment);
-                    VisibleMenuItem(false, false, true);
-
-                    return true;
-            }
-            return false;
-        }
-    };*/
 
     private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
         if(add!=null){
@@ -159,7 +107,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
 
-        VisibleMenuItem(false, false, true);
+        VisibleMenuItem(false, false, false);
         return true;
     }
 
@@ -217,7 +165,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         active = appointmentFragment;
                         if (add != null && setting != null && search != null) {
                             Helper.setToolbar(getSupportActionBar(), "Appointments");
-                            VisibleMenuItem(false, false, true);
+                            VisibleMenuItem(false, false, false);
 
                         }
 
@@ -263,7 +211,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         addFragment(filesFragment);*/
                         //mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner,"file");
                         Helper.setToolbar(getSupportActionBar(), "Files");
-                        VisibleMenuItem(false, false, true);
+                        VisibleMenuItem(false, false, false);
 
                         break;
                 }
