@@ -1,18 +1,22 @@
 package com.werq.patient.views.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
-import com.werq.patient.views.ui.Fragments.ChangePasswordFragment;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityChangePasswordBinding;
+import com.werq.patient.viewmodel.ChangePasswordViewModel;
 import com.werq.patient.views.ui.Fragments.EnterNewPassword;
 import com.werq.patient.views.ui.Fragments.RepeateFragmentFragment;
 
@@ -24,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChangePasswordActivity extends AppCompatActivity {
+public class ChangePasswordActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -40,20 +44,31 @@ public class ChangePasswordActivity extends AppCompatActivity {
     TextInputEditText etRenteredPwd;
     @BindView(R.id.tilReenterPwd)
     TextInputLayout tilReenterPwd;
-    @BindView(R.id.btSubmit)
-    Button btSubmit;
+
+    ActivityChangePasswordBinding activityBinding;
+    ChangePasswordViewModel viewModel;
+    Context mContext;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
+        //setContentView(R.layout.activity_change_password);
+        mContext = this;
+        if (activityBinding == null) {
+            activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_change_password);
+        }
+        viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
+        activityBinding.setLifecycleOwner(this);
+        setBaseViewModel(viewModel);
+        activityBinding.setCpViewModel(viewModel);
         ButterKnife.bind(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Change Password");
-        ChangePasswordFragment fra = new ChangePasswordFragment();
-        addFragment(fra);
+        /*ChangePasswordFragment fra = new ChangePasswordFragment();
+        addFragment(fra);*/
 
     }
 
@@ -94,7 +109,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     }
 
-    ;
 
     public void addFragment(Fragment fra) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -102,7 +116,13 @@ public class ChangePasswordActivity extends AppCompatActivity {
         transaction.commitNow();
     }
 
-    @OnClick(R.id.btSubmit)
+    @OnClick(R.id.btUpdate)
     public void onViewClicked() {
+
+        if(Helper.hasNetworkConnection(mContext)){
+            viewModel.updateOnClick();
+        }else {
+            viewModel.getToast().setValue(getResources().getString(R.string.no_network_conection));
+        }
     }
 }

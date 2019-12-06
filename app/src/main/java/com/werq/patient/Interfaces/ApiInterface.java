@@ -1,5 +1,6 @@
 package com.werq.patient.Interfaces;
 
+import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
@@ -95,6 +96,10 @@ public interface ApiInterface {
                                     @Query("take") String take,
                                     @Query("skip") String skip );
 
+    @POST("Auth/changepassword")
+    Call<Object> changePassword(@Header("Content-Type") String contentType,
+                                @Header("Authorization") String authToken,
+                                @Body ChangePassword changePassword);
 }
 
 

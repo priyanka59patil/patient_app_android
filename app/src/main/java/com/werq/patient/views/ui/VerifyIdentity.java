@@ -109,8 +109,6 @@ public class VerifyIdentity extends BaseActivity {
             }
         });
 
-
-
     }
 
     @Override

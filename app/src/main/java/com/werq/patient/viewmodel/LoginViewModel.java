@@ -130,18 +130,15 @@ public class LoginViewModel extends BaseViewModel {
         private final String TAG = "in-un";
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            //Log.e(TAG, "beforeTextChanged: ");
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            //Log.e(TAG, "onTextChanged: ");
             userNameError.setValue(null);
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
-           // Log.e(TAG, "afterTextChanged: ");
 
         }
     };
