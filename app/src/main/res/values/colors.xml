@@ -25,5 +25,5 @@
     <color name="contentDividerLine">#e0e0e0</color>
     <color name="titleBadgeTitle">#949596</color>
     <color name="titleBadgeText">#686767</color>
-
+    <color name="titleBadgeTextDark">#686767</color>
 </resources>

@@ -11,6 +11,7 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
+import com.werq.patient.service.model.ResponcejsonPojo.ChangePasswordResponse;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -27,6 +28,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
     MutableLiveData<String> currentPasswordError;
     MutableLiveData<String> newPasswordError;
     MutableLiveData<String> reenteredPasswordError;
+    MutableLiveData<Boolean> changePasswordStatus;
 
 
     public ChangePasswordViewModel() {
@@ -43,6 +45,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
         currentPasswordError=new MutableLiveData<>();
         newPasswordError =new MutableLiveData<>();
         reenteredPasswordError =new MutableLiveData<>();
+        changePasswordStatus =new MutableLiveData<>();
 
 
     }
@@ -50,8 +53,15 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
     @Override
     public void onSuccess(String url, String responseJson) {
+        getLoading().setValue(false);
 
         if(!TextUtils.isEmpty(url) && url.equals("ChangePassword")){
+
+            ChangePasswordResponse changePasswordResponse
+                    =Helper.getGsonInstance().fromJson(responseJson,ChangePasswordResponse.class);
+            getToast().setValue("Your password has been set successfully");
+            changePasswordStatus.setValue(true);
+            Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
 
 
 
@@ -61,12 +71,14 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
     @Override
     public void onError(String url, String errorCode,String errorMessage) {
-
+        getLoading().setValue(false);
+        changePasswordStatus.setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
-
+        getLoading().setValue(false);
+        changePasswordStatus.setValue(false);
     }
 
     private void setNewPasswordApiCall(){
@@ -74,6 +86,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
         changePassword.setCurrentPassword(currentPassword.getValue());
         changePassword.setNewPassword(newPassword.getValue());
 
+        getLoading().setValue(true);
         patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiResponce,"ChangePassword");
     }
 
@@ -87,7 +100,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
                 setNewPasswordApiCall();
             }
             else {
-                getToast().setValue("Entered password and re-entered passwords are not same");
+                getToast().setValue("New password and re-entered passwords are not same");
             }
 
         }
@@ -206,7 +219,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
         this.reenteredPasswordError = reenteredPasswordError;
     }
 
-
-
-
+    public MutableLiveData<Boolean> getChangePasswordStatus() {
+        return changePasswordStatus;
+    }
 }

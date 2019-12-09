@@ -81,4 +81,6 @@
     <dimen name="textnormal12dp">12dp</dimen>
     <dimen name="progressbar_height">40dp</dimen>
     <dimen name="progressbar_width">40dp</dimen>
+    <dimen name="hint">14sp</dimen>
+    <dimen name="edit_text">16sp</dimen>
 </resources>

@@ -70,6 +70,12 @@ public class ChangePasswordActivity extends BaseActivity {
         /*ChangePasswordFragment fra = new ChangePasswordFragment();
         addFragment(fra);*/
 
+        viewModel.getChangePasswordStatus().observe(this,aBoolean -> {
+            if(aBoolean){
+                finish();
+            }
+        });
+
     }
 
     @Override
