@@ -68,7 +68,6 @@ public class SignUpViewModel extends BaseViewModel {
         getLoading().setValue(true);
         signUpRepository.signUp(signUpJson,getToast(),apiResponce,SIGNUP);
 
-
          /*else {
 
             if(userName.getValue() != null && !userName.getValue().trim().equals("")){

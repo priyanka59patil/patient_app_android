@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -126,6 +128,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     ScrollView apptDetailsLayout;
     @BindView(R.id.tvNoApptDetails)
     TextView tvNoApptDetails;
+    @BindView(R.id.rlReschedule)
+    RelativeLayout rlReschedule;
     //context
     Context mContext;
 
@@ -194,18 +198,28 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 Intent intent=new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
+
         });
+
 
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Helper.setLog("Clicked","btConfirm");
                 if (Helper.hasNetworkConnection(mContext)){
 
                     viewModel.setConfirmStatus();
+
                 }else {
                     viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
                 }
 
+            }
+        });
+        btReSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Helper.setLog("Clicked","btReSchedule");
             }
         });
 
@@ -227,16 +241,43 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
                     if(appointmentResult1.getConfirmByPatient()!=null && appointmentResult1.getConfirmByPatient()){
                       setStatusButton("confirmed");
-                        btConfirm.setVisibility(View.GONE);
+                        //btConfirm.setVisibility(View.GONE);
+                        btConfirm.setEnabled(false);
+                        btConfirm.setAlpha(0.5f);
+
+                        rlReschedule.setAlpha(1);
+                        btReSchedule.setEnabled(true);
+                        //rlReschedule.setVisibility(View.VISIBLE);
                     }
                     else {
                         setStatusButton("toconfirm");
-                        btConfirm.setVisibility(View.VISIBLE);
+                       // btConfirm.setVisibility(View.VISIBLE);
+                        btConfirm.setEnabled(true);
+                        btConfirm.setAlpha(1);
+                        rlReschedule.setAlpha(0.5f);
+                        btReSchedule.setEnabled(false);
+                        //rlReschedule.setVisibility(View.GONE);
                     }
                 }
 
             }else {
-                btConfirm.setVisibility(View.GONE);
+
+
+                if(appointmentResult1.getAppointmentStatus().equalsIgnoreCase("visited"))
+                {
+                    rlReschedule.setAlpha(0.5f);
+                    btReSchedule.setEnabled(false);
+
+                }else if(appointmentResult1.getAppointmentStatus().equalsIgnoreCase("Missed")){
+                    rlReschedule.setAlpha(1);
+                    btReSchedule.setEnabled(true);
+                }
+                else {
+                    rlReschedule.setAlpha(0.5f);
+                    btReSchedule.setEnabled(false);
+                }
+                btConfirm.setEnabled(false);
+                btConfirm.setAlpha(0.5f);
                 if(appointmentResult1.getAppointmentStatus()!=null && !appointmentResult1.getAppointmentStatus().trim().isEmpty()){
 
                     setStatusButton(appointmentResult1.getAppointmentStatus());

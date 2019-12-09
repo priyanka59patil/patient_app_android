@@ -256,9 +256,11 @@
                                 </RelativeLayout>
 
                                 <RelativeLayout
+                                    android:id="@+id/rlReschedule"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1">
+                                    android:layout_weight="1"
+                                    android:alpha="0.5">
 
                                     <ImageButton
                                         android:id="@+id/btReSchedule"
@@ -302,7 +304,8 @@
                                 android:background="@color/colorPrimary"
                                 android:text="@string/label_confirm"
                                 android:textColor="@color/white"
-                                android:visibility="gone"
+                                android:enabled="false"
+                                android:alpha="0.5"
                                 />
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>

@@ -44,6 +44,7 @@ public class CreateAccountActivity extends BaseActivity {
     ProgressBar loadingView;
     Sprite fadingCircle;
     AlertDialog.Builder alertDialog;
+    AlertDialog.Builder postAlertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,9 +57,10 @@ public class CreateAccountActivity extends BaseActivity {
         alertDialog = new AlertDialog.Builder(this);
         caViewModel.getIsSuccessfull().observe(this,aBoolean -> {
             if(aBoolean){
+                postAlertDialog = new AlertDialog.Builder(this);
 
-                alertDialog.setMessage("Please check your email for temporary password ");
-                alertDialog.setPositiveButton("OK",
+                postAlertDialog.setMessage("Please check your email for temporary password ");
+                postAlertDialog.setPositiveButton("OK",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,
                                                 int which) {
@@ -67,7 +69,7 @@ public class CreateAccountActivity extends BaseActivity {
                                 finish();
                             }
                         });
-                alertDialog.show();
+                postAlertDialog.show();
             }
         });
 

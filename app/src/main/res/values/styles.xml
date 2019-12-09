@@ -51,6 +51,12 @@
         <item name="android:textSize">@dimen/edit_text</item>
     </style>
 
+    <style name="AccentButton" parent="ThemeOverlay.AppCompat.Dark">
+
+        <!-- customize colorButtonNormal for the disable color -->
+        <!-- customize colorAccent for the enabled color -->
+    </style>
+
 </resources>
 
 
