@@ -81,8 +81,9 @@ public class LoginViewModel extends BaseViewModel {
     public void loginOnClick()
     {
         Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
-        if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
+      /*  if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
         password.getValue()!=null && !password.getValue().isEmpty() ) {
+
 
             UserCredential userCredential=new UserCredential();
             userCredential.setUsername(userName.getValue());
@@ -111,7 +112,61 @@ public class LoginViewModel extends BaseViewModel {
                 passwordError.setValue("Password Cannot Be Empty");
             }
 
+        }*/
+
+
+        if(validateData()){
+            UserCredential userCredential=new UserCredential();
+            userCredential.setUsername(userName.getValue());
+            userCredential.setPassword(password.getValue());
+
+
+            if(Helper.hasNetworkConnection(mContext)){
+
+                getLoading().setValue(true);
+                loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+
+            }else {
+                getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+            }
         }
+    }
+
+    public boolean validateData() {
+        boolean check = true;
+
+        if(userName.getValue()!=null){
+
+            if (userName.getValue().trim().equals("")) {
+                check = false;
+                userNameError.setValue("Email Cannot Be Empty");
+            }else {
+                if(!Helper.isValidEmail(userName.getValue())){
+                    check = false;
+                    userNameError.setValue("Please enter valid email");
+                }
+            }
+
+        }
+        else {
+            check = false;
+            userNameError.setValue("Email Cannot Be Empty");
+        }
+
+        if(password.getValue()!=null){
+
+            if(password.getValue().trim().equals("")){
+                check = false;
+                password.setValue("Password can not be empty");
+            }
+
+        }else {
+            check = false;
+            password.setValue("Password can not be empty");
+        }
+
+        return check;
+
     }
 
     public void signUpOnClick()

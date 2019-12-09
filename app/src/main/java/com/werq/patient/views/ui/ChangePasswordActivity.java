@@ -2,7 +2,9 @@ package com.werq.patient.views.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -50,6 +52,8 @@ public class ChangePasswordActivity extends BaseActivity {
     Context mContext;
 
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +66,7 @@ public class ChangePasswordActivity extends BaseActivity {
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         activityBinding.setCpViewModel(viewModel);
+        viewModel.setmContext(mContext);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
@@ -75,6 +80,32 @@ public class ChangePasswordActivity extends BaseActivity {
                 finish();
             }
         });
+
+        /*etNewPwd.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+
+                if(!b){
+
+                    Helper.setLog("onFocusChangee","lostFocus");
+
+                    if(!TextUtils.isEmpty(etNewPwd.getText().toString())
+                            && !Helper.isValidPassword(etNewPwd.getText().toString())){
+
+
+                        viewModel.getToast().setValue(getResources().getString(R.string.password_pattern_msg));
+
+                        viewModel.setValidPassword(false);
+
+
+                    }
+                    else {
+                        viewModel.setValidPassword(true);
+                    }
+                }
+            }
+        });*/
 
     }
 

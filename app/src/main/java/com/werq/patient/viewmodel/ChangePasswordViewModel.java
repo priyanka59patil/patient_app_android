@@ -1,5 +1,6 @@
 package com.werq.patient.viewmodel;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -7,6 +8,7 @@ import android.text.TextWatcher;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
@@ -29,6 +31,8 @@ public class ChangePasswordViewModel extends BaseViewModel {
     MutableLiveData<String> newPasswordError;
     MutableLiveData<String> reenteredPasswordError;
     MutableLiveData<Boolean> changePasswordStatus;
+    boolean isValidPassword=false;
+    Context mContext;
 
 
     public ChangePasswordViewModel() {
@@ -95,13 +99,21 @@ public class ChangePasswordViewModel extends BaseViewModel {
         if(!TextUtils.isEmpty(currentPassword.getValue()) && !TextUtils.isEmpty(newPassword.getValue())
                 && !TextUtils.isEmpty(reenteredPassword.getValue()) ){
 
-            if(newPassword.getValue().equals(reenteredPassword.getValue())){
+            if(Helper.isValidPassword(newPassword.getValue())){
+                if(newPassword.getValue().equals(reenteredPassword.getValue())){
 
-                setNewPasswordApiCall();
+                    Helper.setLog("updateOnClick","setNewPasswordApiCall");
+                    setNewPasswordApiCall();
+                }
+                else {
+                    getToast().setValue("Passwords don't match");
+                }
             }
             else {
-                getToast().setValue("New password and re-entered passwords are not same");
+
+                Helper.showToast(mContext,mContext.getResources().getString(R.string.password_pattern_msg));
             }
+
 
         }
         else {
@@ -113,7 +125,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
             }
 
             if(TextUtils.isEmpty(reenteredPassword.getValue())){
-                reenteredPasswordError.setValue("Re-entered password cannot be empty");
+                reenteredPasswordError.setValue("Confirm password cannot be empty");
             }
         }
 
@@ -133,6 +145,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
         @Override
         public void afterTextChanged(Editable editable) {
+
 
         }
     };
@@ -221,5 +234,17 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getChangePasswordStatus() {
         return changePasswordStatus;
+    }
+
+    public boolean isValidPassword() {
+        return isValidPassword;
+    }
+
+    public void setValidPassword(boolean validPassword) {
+        isValidPassword = validPassword;
+    }
+
+    public void setmContext(Context mContext) {
+        this.mContext = mContext;
     }
 }

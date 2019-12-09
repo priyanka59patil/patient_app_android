@@ -177,5 +177,12 @@ public class Helper {
         return dialog;
     }
 
+    public static boolean isValidPassword(String password){
+        String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{0,8})";
+        Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+    }
+
 
 }

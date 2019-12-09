@@ -77,6 +77,16 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
 
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        Helper.setLog(TAG,"On Attach");
+    }
+
+    public TabAppointmentFragment() {
+        Helper.setLog(TAG,"TabAppointmentFragment");
+    }
+
+    @Override
     public void initializeVariables() {
 
         setRecyclerView();

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.viewmodel.SignUpViewModel;
 import com.werq.patient.viewmodel.VerifyIdentityViewModel;
 import com.werq.patient.R;
@@ -101,10 +102,15 @@ public class VerifyIdentity extends BaseActivity {
         viViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
             @Override
             public void onChanged(Bundle bundle) {
+
                 if(bundle!=null){
+
+                    Helper.setLog("VI-OpenActivitywith",bundle.getString("dob"));
+                    Helper.setLog("VI-OpenActivitywith",bundle.getString("dob"));
                     Intent intent=new Intent(mContext,CreateAccountActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
+
                 }
             }
         });

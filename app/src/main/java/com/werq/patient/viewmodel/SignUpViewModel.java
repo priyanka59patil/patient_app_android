@@ -196,9 +196,10 @@ public class SignUpViewModel extends BaseViewModel {
             Bundle bundle=new Bundle();
             bundle.putString("dob",dob.getValue());
             bundle.putString("invitationCode",invitaionCode);
+          //  bundle.putString("invitationCode",invitaionCode);
             getOpenActivitywithBundle().setValue(bundle);
 
-            getActivity().setValue("CreateAccountActivity");
+           // getActivity().setValue("CreateAccountActivity");
         } else {
             dobError.setValue("Please Select Dob");
         }
