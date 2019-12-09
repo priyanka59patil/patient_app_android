@@ -1,6 +1,8 @@
 package com.werq.patient.views.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -41,6 +43,7 @@ public class CreateAccountActivity extends BaseActivity {
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
     Sprite fadingCircle;
+    AlertDialog.Builder alertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,24 @@ public class CreateAccountActivity extends BaseActivity {
         initBinding();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Create an Account");
+
+        alertDialog = new AlertDialog.Builder(this);
+        caViewModel.getIsSuccessfull().observe(this,aBoolean -> {
+            if(aBoolean){
+
+                alertDialog.setMessage("Please check your email for temporary password ");
+                alertDialog.setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+
+                                startActivity(new Intent(mContext,LoginActivity.class));
+                                finish();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
 
 
     }
@@ -91,7 +112,10 @@ public class CreateAccountActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(Helper.hasNetworkConnection(mContext)){
-                    caViewModel.signUpOnClick();
+                    if(caViewModel.signUpDataValidate()){
+                            showPreAlert();
+                    }
+
                 }else {
                     caViewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
                 }
@@ -120,6 +144,27 @@ public class CreateAccountActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void showPreAlert(){
+        alertDialog.setMessage("Would you like to continue if you entered email id is correct?");
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        caViewModel.signUpOnClick();
+                    }
+                });
+        alertDialog.setNeutralButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                caViewModel.getUserName().setValue(null);
+                caViewModel.getUserNameError().setValue(null);
+
+            }
+        });
+        alertDialog.show();
     }
 
   /*  @OnClick({R.id.btSignUp})
