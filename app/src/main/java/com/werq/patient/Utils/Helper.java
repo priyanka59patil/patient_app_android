@@ -1,19 +1,25 @@
 package com.werq.patient.Utils;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.werq.patient.R;
 
@@ -34,6 +40,9 @@ public class Helper {
     public static String ContentType ="application/json";
     public static String autoken ;
     public static String idToken ;
+
+    public static String MMM_DD_YYYY="MMM dd, yyyy";
+    public static String YYYY_MM_DD="yyyy-MM-dd";
 
     public static void setAutoken(String autoken) {
         Helper.autoken = autoken;
@@ -56,6 +65,30 @@ public class Helper {
     public static void showToast(Context context,String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        view.clearFocus();
+    }
+
+    public static void setSnackbarWithMsg(String msg, View view) {
+        Snackbar snackbar = Snackbar
+                .make(view, msg , Snackbar.LENGTH_SHORT)
+                .setAction("Setting", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Context context = view.getContext();
+                        Intent myAppSettings = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.parse("package:" + context.getPackageName()));
+                        myAppSettings.addCategory(Intent.CATEGORY_DEFAULT);
+                        myAppSettings.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(myAppSettings);
+                    }
+                });
+
+        snackbar.show();
     }
 
     public static boolean hasNetworkConnection(Context context) {

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -27,13 +28,17 @@ import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.base.BaseViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,11 +52,13 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
     public MutableLiveData<ArrayList<AppointmentResult>> listHistoryAppointments;
     public MutableLiveData<List<AttachmentResult>> attachmentList;
+    public MutableLiveData<List<AvailableTimeSlot>> availableTimeSlot;
     public MutableLiveData<AppointmentResult> appointmentResultData;
     public MutableLiveData<Boolean> attachmentVisibility;
     public MutableLiveData<String> doctorProfilePhoto;
     public MutableLiveData<String> appointmentNote;
     boolean isFromUpcoming = true;
+    MutableLiveData<String> currentAppointmentDate;
     MutableLiveData<String> day, month, time, fullUserName, speciality, address, addressOnMap;
     ApiResponce apiResponce = this;
     int upcommingPageNo = 0;
@@ -61,6 +68,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> rvHistoryVisibility;
     private MutableLiveData<Boolean> scheduleDetailsVisibility;
     MutableLiveData<Boolean> confirmedAppointment;
+    MutableLiveData<Integer> selectTimeSlotItem;
+    String selectedTimeSlot="";
+    private Calendar myCalendar = Calendar.getInstance();
+
 
     public TabAppoinmentViewModel() {
         appointmentRepository = new AppointmentRepository();
@@ -93,11 +104,11 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         scheduleDetailsVisibility = new MutableLiveData<>();
         confirmedAppointment=new MutableLiveData<>();
 
-        //toolbarTitle =new MutableLiveData<>();
+        availableTimeSlot =new MutableLiveData<>();
         appointmentResultData = new MutableLiveData<>();
         appointmentNote = new MutableLiveData<>();
-
-
+        selectTimeSlotItem = new MutableLiveData<>();
+        currentAppointmentDate = new MutableLiveData<>();
 
 
     }
@@ -178,25 +189,45 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         return appointmentNote;
     }
 
-    /*private void fetchRepos() {
-                                    getLoading().setValue(true);
-                                    disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
-                                            .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
-                                                @Override
-                                                public void onSuccess(List<Repo> value) {
-                                                    repoLoadError.setValue(false);
-                                                    repos.setValue(value);
-                                                    loading.setValue(false);
-                                                }
+    public MutableLiveData<List<AvailableTimeSlot>> getAvailableTimeSlot() {
+        return availableTimeSlot;
+    }
 
-                                                @Override
-                                                public void onError(Throwable e) {
-                                                    repoLoadError.setValue(true);
-                                                    loading.setValue(false);
-                                                }
-                                            }));
-                                }
-                            */
+    public MutableLiveData<Integer> getSelectTimeSlotItem() {
+        return selectTimeSlotItem;
+    }
+
+    public MutableLiveData<String> getCurrentAppointmentDate() {
+        return currentAppointmentDate;
+    }
+
+    public String getSelectedTimeSlot() {
+        return selectedTimeSlot;
+    }
+
+    public void setSelectedTimeSlot(String selectedTimeSlot) {
+        this.selectedTimeSlot = selectedTimeSlot;
+    }
+
+    /*private void fetchRepos() {
+                                                        getLoading().setValue(true);
+                                                        disposable.add(repoRepository.getRepositories().subscribeOn(Schedulers.io())
+                                                                .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<List<Repo>>() {
+                                                                    @Override
+                                                                    public void onSuccess(List<Repo> value) {
+                                                                        repoLoadError.setValue(false);
+                                                                        repos.setValue(value);
+                                                                        loading.setValue(false);
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onError(Throwable e) {
+                                                                        repoLoadError.setValue(true);
+                                                                        loading.setValue(false);
+                                                                    }
+                                                                }));
+                                                    }
+                                                */
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -298,7 +329,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         if (url != null && url.equalsIgnoreCase("ConfirmAppointment")) {
             //apptDetailsloading.setValue(false);
-            confirmedAppointment.setValue(true);
+            confirmedAppointment.setValue(false);
             AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
             Log.e(TAG, "onSuccess: " + apptDetailResponse.getData().getAppointment().getConfirmByPatient());
             appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
@@ -316,6 +347,33 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 }*/
 
             //confirmByPatient.setValue(true);
+
+        }
+
+        if (url != null && url.equalsIgnoreCase("TimeSlots")) {
+            //apptDetailsloading.setValue(false);
+            getLoading().setValue(false);
+            TimeSlotResponse timeSlotResponse=Helper.getGsonInstance().fromJson(responseJson,TimeSlotResponse.class);
+            if(timeSlotResponse!=null && timeSlotResponse.getData()!=null
+                    && timeSlotResponse.getData().getAvailableTimeSlot()!=null){
+
+                ArrayList<AvailableTimeSlot> availableTimeSlots=new ArrayList<>();
+                availableTimeSlots.addAll(timeSlotResponse.getData().getAvailableTimeSlot());
+                availableTimeSlot.setValue(availableTimeSlots);
+
+                if (!TextUtils.isEmpty(selectedTimeSlot)) {
+                    for (int i = 0; i < availableTimeSlots.size(); i++) {
+                        AvailableTimeSlot a = availableTimeSlots.get(i);
+                        Log.e("onResponse: ", a.getStartTime());
+                        if ( a.getStartTime().equals(selectedTimeSlot)) {
+                            selectTimeSlotItem.setValue(i);
+                        }
+                    }
+                }
+
+            }else {
+                availableTimeSlot.setValue(null);
+            }
 
         }
 
@@ -351,12 +409,16 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         try {
             Date date = DateHelper.dateFromUtc(appointmentResult.getAppintmentDate());
+
+            currentAppointmentDate.setValue(DateHelper.dateFormatMMMddyyyy(date));
+            selectedTimeSlot = new SimpleDateFormat("hh:mmaa").format(date);
             day.setValue(DateHelper.dayFromDate(date, "day"));
             month.setValue(DateHelper.dayFromDate(date, "month"));
             time.setValue(DateHelper.dayFromDate(date, "time"));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (appointmentResultData.getValue().getLocation() != null) {
 
             Location location = appointmentResult.getLocation();
@@ -459,6 +521,19 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             confirmAppointment.setConfirmByPatient("true");
             getLoading().setValue(true);
             appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
+        }
+    }
+
+    public void fetchTimeSlots(String date) {
+
+        if (appointmentResultData.getValue().getLocation().getiD() != null &&
+                appointmentResultData.getValue().getLocation().getiD() != 0) {
+
+            getLoading().setValue(false);
+
+
+            appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
+                    ,date, getToast(), apiResponce, "TimeSlots");
         }
     }
 

@@ -1,9 +1,14 @@
 package com.werq.patient.views.ui;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,15 +30,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -37,12 +50,33 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Factory.ViewModelProviderFactory;
+import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.Utils.SpacesItemDecoration;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.adapter.FilesAdapter;
@@ -58,14 +92,22 @@ import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.databinding.ActivityScheduleDetailsBinding;
+import com.werq.patient.views.adapter.NewTimeSlotAdapter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ScheduleDetailsActivity extends BaseActivity implements RecyclerViewClickListerner, BasicActivities {
+public class ScheduleDetailsActivity extends BaseActivity implements RecyclerViewClickListerner, BasicActivities,
+        DiologListner {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
 
@@ -153,14 +195,24 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     RecyclerViewClickListerner recyclerViewClickListerner;
     @BindView(R.id.tvAddressonMap)
     TextView tvAddressonMap;
-    @BindView(R.id.map)
-    ImageView map;
     ActivityScheduleDetailsBinding detailsBinding;
     TabAppoinmentViewModel viewModel;
     private AppointmentResult appointmentResult;
     private String TAG="schedule_details";
     private  int appointmentId;
     ProgressDialog progressDialog;
+
+    //time slot dialog
+    private Dialog dgAppointment;
+    private RecyclerView rvdateslot;
+    private TextView tvNoTimeSlot;
+    private EditText et_selectDate;
+    private TextView tvOk;
+    private TextView tvCancel;
+    private Calendar myCalendar = Calendar.getInstance();
+    private String selectAppoinrmentDate;
+    private NewTimeSlotAdapter adapter;
+    private List<AvailableTimeSlot> timeSlotList;
 
 
 
@@ -183,15 +235,48 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
         }
 
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+            Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                @Override
+                public void onPermissionGranted(PermissionGrantedResponse response) {
+                    // permission is granted
+                    //startActivity(callIntent);
+                }
+
+                @Override
+                public void onPermissionDenied(PermissionDeniedResponse response) {
+                    // check for permanent denial of permission
+                    if (response.isPermanentlyDenied()) {
+
+                        Helper.setSnackbarWithMsg("Phone access is needed to make call", toolbar);
+                    }
+                }
+
+                @Override
+                public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                    token.continuePermissionRequest();
+                }
+            }).check();
+
+            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+            return;
+        }
+        else {
+
+           // startActivity(callIntent);
+        }
+
+        dgAppointment=DiologHelper.createDialogWithLayout(mContext,R.layout.new_appointmentdate,this);
+
+
     }
-
-
 
 
     @Override
     protected void onResume() {
         super.onResume();
-
         viewModel.getConfirmedAppointment().observe(this,aBoolean -> {
             if(aBoolean){
                 viewModel.getConfirmedAppointment().setValue(false);
@@ -220,6 +305,23 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             @Override
             public void onClick(View view) {
                 Helper.setLog("Clicked","btReSchedule");
+                if (Helper.hasNetworkConnection(mContext)){
+                    showTimeSlot();
+                    dgAppointment.show();
+                    try {
+
+                        Date d=new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
+                        Helper.setLog("after",new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                        viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }else {
+                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+                }
+
             }
         });
 
@@ -399,10 +501,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
     @Override
     public void initializeVariables() {
-
+        mContext = this;
         detailsBinding= DataBindingUtil.setContentView(this,R.layout.activity_schedule_details);
         detailsBinding.setLifecycleOwner(this);
-        mContext = this;
+
         intent = getIntent();
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
@@ -506,4 +608,164 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         }
     }
 
+
+    void showTimeSlot() {
+
+        dgAppointment = new Dialog(mContext, R.style.Theme_Dialog);
+        dgAppointment.setContentView(R.layout.new_appointmentdate);
+        dgAppointment.setCancelable(false);
+        Window window = dgAppointment.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        rvdateslot = (RecyclerView) dgAppointment.findViewById(R.id.rvdateslot);
+        tvNoTimeSlot = (TextView) dgAppointment.findViewById(R.id.tvNoData);
+        et_selectDate = (EditText) dgAppointment.findViewById(R.id.et_selectDate);
+        et_selectDate.setFocusable(false);
+        tvOk = (TextView) dgAppointment.findViewById(R.id.tvOk);
+        tvCancel = (TextView) dgAppointment.findViewById(R.id.tvCancel);
+        rvdateslot.setLayoutManager(new GridLayoutManager(mContext, 4));
+        rvdateslot.addItemDecoration(new SpacesItemDecoration(2));
+        rvdateslot.setHasFixedSize(true);
+
+        et_selectDate.setText(viewModel.getCurrentAppointmentDate().getValue());
+
+
+        viewModel.getAvailableTimeSlot().observe(this,availableTimeSlots -> {
+
+            if(availableTimeSlots==null || availableTimeSlots.size()==0){
+                tvNoTimeSlot.setVisibility(View.VISIBLE);
+                rlReschedule.setVisibility(View.GONE);
+            }else {
+                tvNoTimeSlot.setVisibility(View.GONE);
+                rlReschedule.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+        timeSlotList=new ArrayList<>();
+        adapter = new NewTimeSlotAdapter(timeSlotList,viewModel,this);
+        adapter.notifyDataSetChanged();
+        rvdateslot.setAdapter(adapter);
+
+        et_selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et_selectDate.setError(null);
+                Helper.hideKeyboardFrom(mContext, et_selectDate);
+                DatePickerDialog dg = new DatePickerDialog(mContext, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                dg.getDatePicker().setMinDate(System.currentTimeMillis());
+                dg.show();
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                et_selectDate.setText("");
+                et_selectDate.setError(null);
+                viewModel.getSelectTimeSlotItem().setValue(null);
+                if (adapter != null)
+                    adapter.notifyDataSetChanged();
+                dgAppointment.cancel();
+
+
+            }
+        });
+        tvOk.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+             /*   if (Helper.selectedItem == null) {
+                    Helper.makeToast(mContext, "Please select time slot");
+                } else {
+                    String appdate = et_selectDate.getText().toString();
+                    String time = "";
+                    if (lst != null && Helper.selectedItem != null)
+                        time = lst.get(Helper.selectedItem).getStartTime();
+
+                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+                    //DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
+                    DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    time = time.replace("AM", " AM");
+                    time = time.replace("PM", " PM");
+
+                    appdate = appdate + " " + time;
+                    Log.e("Appdate", appdate);
+                    String output = "null";
+                    try {
+                        Date dt = df.parse(appdate);
+                        output = df1.format(dt);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    output = output.replace(" ", "T");
+                    output = output + ":00";
+                    Log.e("Appdate2", output);
+                    if (appointment == null) {
+                        appointment = new Appointment();
+                        appointment.setID("0");
+                        appointment.setIsDeleted("false");
+                        appointment.setPatientId(patid);
+                        appointment.setReferralId(refid);
+                        Log.e("onClick: ", output);
+                        appointment.setAppintmentDate(output);
+                    } else {
+                        appointment.setID("0");
+                        appointment.setIsDeleted("false");
+                        appointment.setPatientId(patid);
+                        appointment.setReferralId(refid);
+                        Log.e("onClick: ", output);
+                        appointment.setAppintmentDate(output);
+                    }
+
+
+                    //dialogWithNote();
+                    addStatus();
+                    dgAppointment.cancel();
+                }*/
+
+            }
+        });
+
+    }
+
+    @Override
+    public void setdiologview(View view) {
+
+    }
+
+    final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year);
+            myCalendar.set(Calendar.MONTH, monthOfYear);
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(myCalendar.getTime());
+
+            Log.e("AppointMent Date", date);
+            et_selectDate.setText(date);
+
+            if (Helper.hasNetworkConnection(mContext)){
+                try {
+                    Date d=new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
+
+                    Helper.setLog("after",new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                    viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Helper.setLog("ParseException", e.getMessage());
+                }
+
+            }else {
+                viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+            }
+        }
+
+    };
 }

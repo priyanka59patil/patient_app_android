@@ -44,7 +44,7 @@ public class AppointmentRepository  {
     public void  getAppointmentDetails(String authToken, int appointmentId, MutableLiveData<String> toast,
                                       ApiResponce apiResponce, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken);
+        Helper.setLog(TAG,"authToken:- "+authToken+"");
 
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().getAppointmentDetails(authToken,appointmentId);
 
@@ -55,10 +55,20 @@ public class AppointmentRepository  {
     public void  setConfirmAppointment(String authToken, ConfirmAppointment confirmAppointment, MutableLiveData<String> toast,
                                        ApiResponce apiResponce, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken);
+        Helper.setLog(TAG,"authToken:- "+authToken+"");
 
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().
                                             setConfirmAppointment(authToken,Helper.ContentType,confirmAppointment);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
+    public void  getTimeSlots(String authToken, int organizationId,String date, MutableLiveData<String> toast,
+                                       ApiResponce apiResponce, String url){
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit()
+                .getTimeSlots(authToken,organizationId,date);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 

@@ -171,4 +171,9 @@ dependencies {
     /*implementation 'com.github.swapnil1104:OtpEditText:0.1.5'*/
     implementation 'com.github.aabhasr1:OtpView:1.1.2-ktx'
 
+    compile 'com.google.android.gms:play-services:8.4.0'
+
+    //android permissions library
+    implementation 'com.karumi:dexter:4.2.0'
+
 }

@@ -51,10 +51,9 @@
         <item name="android:textSize">@dimen/edit_text</item>
     </style>
 
-    <style name="AccentButton" parent="ThemeOverlay.AppCompat.Dark">
-
-        <!-- customize colorButtonNormal for the disable color -->
-        <!-- customize colorAccent for the enabled color -->
+    <style name="Theme_Dialog" parent="android:Theme.Holo.Light.Dialog.NoActionBar">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
 </resources>

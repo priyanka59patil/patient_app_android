@@ -1,6 +1,7 @@
 package com.werq.patient.Utils;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
 
@@ -16,6 +17,14 @@ public class DiologHelper {
        mBottomSheetDialog.setContentView(sheetView);
        return mBottomSheetDialog;
    }
+
+    public static Dialog createDialogWithLayout(Context context, int layout, DiologListner listner){
+        Dialog  dilog = new Dialog(context);
+        View sheetView = ((Activity)context).getLayoutInflater().inflate(layout, null);
+        listner.setdiologview(sheetView);
+        dilog.setContentView(sheetView);
+        return dilog;
+    }
     /*public static BottomSheetDialog createDialogFromBottom1(Context context, int layout, DiologListner1 listner, String currentFragment){
         BottomSheetDialog  mBottomSheetDialog = new BottomSheetDialog(context);
         View sheetView = ((Activity)context).getLayoutInflater().inflate(layout, null);

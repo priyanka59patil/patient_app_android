@@ -100,6 +100,12 @@ public interface ApiInterface {
     Call<Object> changePassword(@Header("Content-Type") String contentType,
                                 @Header("Authorization") String authToken,
                                 @Body ChangePassword changePassword);
+
+    @GET("Office/availability/{orgnizationId}/{date}")
+    Call<Object> getTimeSlots(@Header("Authorization") String authToken,
+                              @Path("orgnizationId") int orgnizationId,
+                              @Path("date") String date);
+
 }
 
 

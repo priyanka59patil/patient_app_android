@@ -18,6 +18,15 @@ public class DateHelper {
         return cdate;
     }
 
+    public static String dateFormatMMMddyyyy(Date date) throws ParseException {
+
+        String outputPattern = "MMM dd, yyyy";
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        //Date date1=outputFormat.parse(dateString);
+        String cdate = outputFormat.format(date);
+        return cdate;
+    }
+
     public static Date dateFromUtc(String dateString) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date date = null;
