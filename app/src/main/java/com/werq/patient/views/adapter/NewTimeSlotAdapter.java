@@ -20,13 +20,14 @@ import java.util.List;
 
 public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.TimeSlotViewHolder> {
     List<AvailableTimeSlot> timeSlotList;
-    LayoutInflater inflater;
     private Context context;
     TabAppoinmentViewModel viewModel;
 
-    public NewTimeSlotAdapter(List<AvailableTimeSlot> timeSlotList,
+    public NewTimeSlotAdapter(Context mContext,
+                              List<AvailableTimeSlot> timeSlotList,
                               TabAppoinmentViewModel viewModel,
                               LifecycleOwner lifecycleOwner) {
+        this.context=mContext;
         this.timeSlotList = timeSlotList;
         this.viewModel=viewModel;
         viewModel.getAvailableTimeSlot().observe(lifecycleOwner,availableTimeSlots -> {
@@ -36,22 +37,21 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
                 notifyDataSetChanged();
             }
         });
-         viewModel.getSelectTimeSlotItem().setValue(null) ;
+         //viewModel.getSelectTimeSlotItem().setValue(null) ;
     }
 
     @NonNull
     @Override
     public TimeSlotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.slotslayout, parent, false);
-        context = parent.getContext();
-        return new TimeSlotViewHolder(v);
+
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.slotslayout, parent, false);
+        return new NewTimeSlotAdapter.TimeSlotViewHolder(itemView);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull TimeSlotViewHolder holder, final int position) {
-        AvailableTimeSlot al = timeSlotList.get(position);
+       /* AvailableTimeSlot al = timeSlotList.get(position);
         holder.tvFrom.setText(al.getStartTime());
         holder.tvTo.setText(al.getEndTime());
 
@@ -66,12 +66,12 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
                 viewModel.getSelectTimeSlotItem().setValue(position) ;
                 notifyDataSetChanged();
             }
-        });
+        });*/
     }
 
     @Override
     public int getItemCount() {
-        return timeSlotList.size();
+        return /*timeSlotList.size();*/2;
     }
 
     class TimeSlotViewHolder extends RecyclerView.ViewHolder {
@@ -80,9 +80,9 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
 
         public TimeSlotViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvFrom = itemView.findViewById(R.id.tvFrom);
+          /*  tvFrom = itemView.findViewById(R.id.tvFrom);
             tvTo = itemView.findViewById(R.id.tvTo);
-            lltimeslot = itemView.findViewById(R.id.lltimeslot);
+            lltimeslot = itemView.findViewById(R.id.lltimeslot);*/
 
         }
     }

@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -213,7 +214,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     private String selectAppoinrmentDate;
     private NewTimeSlotAdapter adapter;
     private List<AvailableTimeSlot> timeSlotList;
-
+    private EditText etReason;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -313,6 +314,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                         Date d=new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
                         Helper.setLog("after",new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
                         viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                        
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -620,6 +622,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         tvNoTimeSlot = (TextView) dgAppointment.findViewById(R.id.tvNoData);
         et_selectDate = (EditText) dgAppointment.findViewById(R.id.et_selectDate);
         et_selectDate.setFocusable(false);
+        etReason =(EditText) dgAppointment.findViewById(R.id.etReason);
         tvOk = (TextView) dgAppointment.findViewById(R.id.tvOk);
         tvCancel = (TextView) dgAppointment.findViewById(R.id.tvCancel);
         rvdateslot.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -642,7 +645,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
         timeSlotList=new ArrayList<>();
-        adapter = new NewTimeSlotAdapter(timeSlotList,viewModel,this);
+        adapter = new NewTimeSlotAdapter(mContext,timeSlotList,viewModel,this);
         adapter.notifyDataSetChanged();
         rvdateslot.setAdapter(adapter);
 
@@ -676,13 +679,18 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             @Override
             public void onClick(View v) {
 
-             /*   if (Helper.selectedItem == null) {
-                    Helper.makeToast(mContext, "Please select time slot");
+             /*   if (viewModel.getSelectTimeSlotItem().getValue() == null) {
+                    Helper.showToast(mContext, "Please select time slot");
                 } else {
-                    String appdate = et_selectDate.getText().toString();
+
+
+                    viewModel.sendRescheduleRequest(et_selectDate.getText().toString()
+                            ,etReason.getText().toString());
+
+                   *//* String appdate = et_selectDate.getText().toString();
                     String time = "";
-                    if (lst != null && Helper.selectedItem != null)
-                        time = lst.get(Helper.selectedItem).getStartTime();
+                    if (lst != null && viewModel.getSelectTimeSlotItem().getValue()!= null)
+                        time = vi.get(viewModel.getSelectTimeSlotItem().getValue()).getStartTime();
 
                     DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
                     //DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
@@ -722,7 +730,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
                     //dialogWithNote();
-                    addStatus();
+                    addStatus();*//*
                     dgAppointment.cancel();
                 }*/
 

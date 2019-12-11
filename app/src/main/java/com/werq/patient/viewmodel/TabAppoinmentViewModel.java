@@ -35,6 +35,8 @@ import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.base.BaseViewModel;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -339,7 +341,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "TimeSlots":
 
-                    getLoading().setValue(false);
+                   // getLoading().setValue(false);
                     TimeSlotResponse timeSlotResponse=Helper.getGsonInstance().fromJson(responseJson,TimeSlotResponse.class);
                     if(timeSlotResponse!=null && timeSlotResponse.getData()!=null
                             && timeSlotResponse.getData().getAvailableTimeSlot()!=null){
@@ -351,7 +353,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                         if (!TextUtils.isEmpty(selectedTimeSlot)) {
                             for (int i = 0; i < availableTimeSlots.size(); i++) {
                                 AvailableTimeSlot a = availableTimeSlots.get(i);
-                                Log.e("onResponse: ", a.getStartTime());
+                               // Log.e("onResponse: ", a.getStartTime());
                                 if ( a.getStartTime().equals(selectedTimeSlot)) {
                                     selectTimeSlotItem.setValue(i);
                                 }
@@ -658,7 +660,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         if (appointmentResultData.getValue().getLocation().getiD() != null &&
                 appointmentResultData.getValue().getLocation().getiD() != 0) {
 
-            getLoading().setValue(true);
+            //getLoading().setValue(true);
 
 
             appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
@@ -666,6 +668,38 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }
     }
 
+    public void sendRescheduleRequest(String date,String reason) {
+
+        if (appointmentResultData.getValue().getLocation().getiD() != null &&
+                appointmentResultData.getValue().getLocation().getiD() != 0) {
+            String appdate=date;
+            String time = "";
+
+            if(availableTimeSlot.getValue()!=null && availableTimeSlot.getValue().size()>0
+                    && selectTimeSlotItem.getValue()!=null){
+                time = availableTimeSlot.getValue().get(selectTimeSlotItem.getValue()).getStartTime();
+                time = time.replace("AM", " AM");
+                time = time.replace("PM", " PM");
+                appdate = appdate + " " + time;
+                Helper.setLog("final date",appdate);
+                /*String output = "null";
+                try {
+                    Date dt = new SimpleDateFormat(MMM).parse(appdate);
+                    output = df1.format(dt);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+*/
+
+            }
+           /* getLoading().setValue(true);
+
+
+            appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
+                    ,date, getToast(), apiResponce, "TimeSlots");*/
+        }
+    }
 
 
 }
