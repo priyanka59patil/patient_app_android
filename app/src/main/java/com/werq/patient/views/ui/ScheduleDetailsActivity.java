@@ -679,7 +679,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             @Override
             public void onClick(View v) {
 
-             /*   if (viewModel.getSelectTimeSlotItem().getValue() == null) {
+                if (viewModel.getSelectTimeSlotItem().getValue() == null) {
                     Helper.showToast(mContext, "Please select time slot");
                 } else {
 
@@ -687,7 +687,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                     viewModel.sendRescheduleRequest(et_selectDate.getText().toString()
                             ,etReason.getText().toString());
 
-                   *//* String appdate = et_selectDate.getText().toString();
+                    /*String appdate = et_selectDate.getText().toString();
                     String time = "";
                     if (lst != null && viewModel.getSelectTimeSlotItem().getValue()!= null)
                         time = vi.get(viewModel.getSelectTimeSlotItem().getValue()).getStartTime();
@@ -730,9 +730,9 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
                     //dialogWithNote();
-                    addStatus();*//*
+                    addStatus();*/
                     dgAppointment.cancel();
-                }*/
+                }
 
             }
         });

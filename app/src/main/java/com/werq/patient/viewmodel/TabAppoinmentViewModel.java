@@ -24,6 +24,7 @@ import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.AppointmentData;
 import com.werq.patient.service.model.AppointmentResponce;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -366,6 +367,13 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                     break;
 
+                case "RescheduleRequest":
+                    getLoading().setValue(false);
+                    Helper.setLog("response",responseJson);
+
+
+                    break;
+
                 default:
                     break;
             }
@@ -670,27 +678,49 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public void sendRescheduleRequest(String date,String reason) {
 
-        if (appointmentResultData.getValue().getLocation().getiD() != null &&
-                appointmentResultData.getValue().getLocation().getiD() != 0) {
+        if (appointmentResultData.getValue().getiD() != null && appointmentResultData.getValue().getiD() != 0) {
             String appdate=date;
             String time = "";
 
             if(availableTimeSlot.getValue()!=null && availableTimeSlot.getValue().size()>0
                     && selectTimeSlotItem.getValue()!=null){
+
                 time = availableTimeSlot.getValue().get(selectTimeSlotItem.getValue()).getStartTime();
                 time = time.replace("AM", " AM");
                 time = time.replace("PM", " PM");
                 appdate = appdate + " " + time;
                 Helper.setLog("final date",appdate);
-                /*String output = "null";
+                String output = "null";
                 try {
-                    Date dt = new SimpleDateFormat(MMM).parse(appdate);
-                    output = df1.format(dt);
+
+                    Date dt = new SimpleDateFormat(Helper.MMM_DD_YYYY+" hh:mm aa").parse(appdate);
+                    /*DateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                    output = df.format(dt);
+                    output=output.replace(" ","T");
+                    Helper.setLog("db date",output);*/
+
+                    RescheduleAppointment rescheduleAppointment=new RescheduleAppointment();
+
+                    rescheduleAppointment.setAppointmentId(appointmentResultData.getValue().getiD());
+                    rescheduleAppointment.setRescheduleApptReqDate(dt);
+                    if(!TextUtils.isEmpty(reason)){
+                        rescheduleAppointment.setRescheduleApptRequestReason(reason);
+                    }
+                    else {
+                        rescheduleAppointment.setRescheduleApptRequestReason("");
+                    }
+
+                    Helper.setLog("rescheduleAppointment",rescheduleAppointment.toString());
+                    getLoading().setValue(true);
+
+                    appointmentRepository.sendRescheduleRequest(Helper.autoken,rescheduleAppointment
+                            ,getToast(),apiResponce,"RescheduleRequest");
+
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    Helper.setLog("ParseException",e.getMessage());
                 }
-                DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
-*/
+
 
             }
            /* getLoading().setValue(true);

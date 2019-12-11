@@ -9,6 +9,7 @@ import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentData;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 
@@ -69,6 +70,17 @@ public class AppointmentRepository  {
 
         Call<Object> appointmentDataCall= RetrofitClient.getRetrofit()
                 .getTimeSlots(authToken,organizationId,date);
+
+        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+
+    }
+
+    public void  sendRescheduleRequest(String authToken, RescheduleAppointment rescheduleAppointment, MutableLiveData<String> toast,
+                                       ApiResponce apiResponce, String url){
+
+        Helper.setLog(TAG,"authToken:- "+authToken+"");
+
+        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
 
         RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
 

@@ -27,7 +27,7 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
                               List<AvailableTimeSlot> timeSlotList,
                               TabAppoinmentViewModel viewModel,
                               LifecycleOwner lifecycleOwner) {
-        this.context=mContext;
+        //this.context=mContext;
         this.timeSlotList = timeSlotList;
         this.viewModel=viewModel;
         viewModel.getAvailableTimeSlot().observe(lifecycleOwner,availableTimeSlots -> {
@@ -37,21 +37,21 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
                 notifyDataSetChanged();
             }
         });
-         //viewModel.getSelectTimeSlotItem().setValue(null) ;
     }
 
     @NonNull
     @Override
     public TimeSlotViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.slotslayout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_slot_cell, parent, false);
+        context =parent.getContext();
         return new NewTimeSlotAdapter.TimeSlotViewHolder(itemView);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull TimeSlotViewHolder holder, final int position) {
-       /* AvailableTimeSlot al = timeSlotList.get(position);
+        AvailableTimeSlot al = timeSlotList.get(position);
         holder.tvFrom.setText(al.getStartTime());
         holder.tvTo.setText(al.getEndTime());
 
@@ -60,18 +60,21 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
 
             holder.lltimeslot.setBackground(context.getResources().getDrawable(R.drawable.timeslotselect));
         }
+        else {
+            holder.lltimeslot.setBackground(context.getResources().getDrawable(R.drawable.circletimeslot));
+        }
         holder.lltimeslot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.getSelectTimeSlotItem().setValue(position) ;
                 notifyDataSetChanged();
             }
-        });*/
+        });
     }
 
     @Override
     public int getItemCount() {
-        return /*timeSlotList.size();*/2;
+        return timeSlotList.size();
     }
 
     class TimeSlotViewHolder extends RecyclerView.ViewHolder {
@@ -80,9 +83,9 @@ public class NewTimeSlotAdapter extends RecyclerView.Adapter<NewTimeSlotAdapter.
 
         public TimeSlotViewHolder(@NonNull View itemView) {
             super(itemView);
-          /*  tvFrom = itemView.findViewById(R.id.tvFrom);
+            tvFrom = itemView.findViewById(R.id.tvFrom);
             tvTo = itemView.findViewById(R.id.tvTo);
-            lltimeslot = itemView.findViewById(R.id.lltimeslot);*/
+            lltimeslot = itemView.findViewById(R.id.lltimeslot);
 
         }
     }

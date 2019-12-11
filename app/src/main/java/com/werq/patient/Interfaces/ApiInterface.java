@@ -2,6 +2,7 @@ package com.werq.patient.Interfaces;
 
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
@@ -105,6 +106,11 @@ public interface ApiInterface {
     Call<Object> getTimeSlots(@Header("Authorization") String authToken,
                               @Path("orgnizationId") int orgnizationId,
                               @Path("date") String date);
+
+    @PUT("Appointments/RescheduleAppt")
+    Call<Object> sendRescheduleRequest(@Header("Content-Type") String contentType,
+                                @Header("Authorization") String authToken,
+                                @Body RescheduleAppointment rescheduleAppointment);
 
 }
 
