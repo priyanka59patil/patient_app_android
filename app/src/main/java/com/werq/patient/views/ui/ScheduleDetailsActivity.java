@@ -235,7 +235,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
         }
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
             Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
                 @Override
@@ -266,7 +266,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         else {
 
            // startActivity(callIntent);
-        }
+        }*/
 
         dgAppointment=DiologHelper.createDialogWithLayout(mContext,R.layout.new_appointmentdate,this);
 
@@ -277,9 +277,9 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.getConfirmedAppointment().observe(this,aBoolean -> {
+        viewModel.getOnSuccessConfirmAppt().observe(this,aBoolean -> {
             if(aBoolean){
-                viewModel.getConfirmedAppointment().setValue(false);
+                viewModel.getOnSuccessConfirmAppt().setValue(false);
                 Intent intent=new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
