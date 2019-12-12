@@ -12,7 +12,7 @@ public class RescheduleAppointment implements Serializable {
     private int appointmentId;
 
     @SerializedName("RescheduleApptReqDate")
-    private Date rescheduleApptReqDate;
+    private String rescheduleApptReqDate;
 
     @SerializedName("RescheduleApptRequestReason")
     private String rescheduleApptRequestReason;
@@ -25,11 +25,11 @@ public class RescheduleAppointment implements Serializable {
         this.appointmentId = appointmentId;
     }
 
-    public Date getRescheduleApptReqDate() {
+    public String getRescheduleApptReqDate() {
         return rescheduleApptReqDate;
     }
 
-    public void setRescheduleApptReqDate(Date rescheduleApptReqDate) {
+    public void setRescheduleApptReqDate(String rescheduleApptReqDate) {
         this.rescheduleApptReqDate = rescheduleApptReqDate;
     }
 

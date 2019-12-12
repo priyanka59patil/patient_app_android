@@ -280,7 +280,8 @@ public class RetrofitClient  {
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-
+                Helper.setLog(TAG,"Retrofit onFailure Url :- "+call.request().url());
+                Helper.setLog(TAG,"Retrofit onFailure :- "+t.getMessage());
             }
         });
     }

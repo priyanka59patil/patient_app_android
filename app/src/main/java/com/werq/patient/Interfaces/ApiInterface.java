@@ -108,9 +108,9 @@ public interface ApiInterface {
                               @Path("date") String date);
 
     @PUT("Appointments/RescheduleAppt")
-    Call<Object> sendRescheduleRequest(@Header("Content-Type") String contentType,
-                                @Header("Authorization") String authToken,
-                                @Body RescheduleAppointment rescheduleAppointment);
+    Call<Object> sendRescheduleRequest(@Header("Authorization") String authToken,
+                                       @Header("Content-Type") String contentType,
+                                       @Body RescheduleAppointment rescheduleAppointment);
 
 }
 

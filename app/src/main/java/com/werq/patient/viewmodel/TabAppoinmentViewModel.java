@@ -370,6 +370,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 case "RescheduleRequest":
                     getLoading().setValue(false);
                     Helper.setLog("response",responseJson);
+                    getToast().setValue("Success! Your request has been sent!");
 
 
                     break;
@@ -694,15 +695,15 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 try {
 
                     Date dt = new SimpleDateFormat(Helper.MMM_DD_YYYY+" hh:mm aa").parse(appdate);
-                    /*DateFormat df = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     output = df.format(dt);
                     output=output.replace(" ","T");
-                    Helper.setLog("db date",output);*/
+                    Helper.setLog("db date",output);
 
                     RescheduleAppointment rescheduleAppointment=new RescheduleAppointment();
 
                     rescheduleAppointment.setAppointmentId(appointmentResultData.getValue().getiD());
-                    rescheduleAppointment.setRescheduleApptReqDate(dt);
+                    rescheduleAppointment.setRescheduleApptReqDate(output);
                     if(!TextUtils.isEmpty(reason)){
                         rescheduleAppointment.setRescheduleApptRequestReason(reason);
                     }
@@ -720,14 +721,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     e.printStackTrace();
                     Helper.setLog("ParseException",e.getMessage());
                 }
-
-
             }
-           /* getLoading().setValue(true);
-
-
-            appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
-                    ,date, getToast(), apiResponce, "TimeSlots");*/
         }
     }
 

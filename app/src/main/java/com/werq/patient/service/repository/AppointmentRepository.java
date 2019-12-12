@@ -80,9 +80,9 @@ public class AppointmentRepository  {
 
         Helper.setLog(TAG,"authToken:- "+authToken+"");
 
-        Call<Object> appointmentDataCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
+        Call<Object> rescheduleRequestCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
 
-        RetrofitClient.callApi(appointmentDataCall,url,apiResponce,toast);
+        RetrofitClient.callApi(rescheduleRequestCall,url,apiResponce,toast);
 
     }
 
