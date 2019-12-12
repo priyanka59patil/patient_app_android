@@ -220,7 +220,6 @@ public class SignUpViewModel extends BaseViewModel {
             }
         }
 
-        Helper.setLog("SignUpVM OnSuccess","successfull login intent to fingerprint");
 
     }
 

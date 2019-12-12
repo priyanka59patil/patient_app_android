@@ -2,9 +2,13 @@ package com.werq.patient.views.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -72,7 +76,9 @@ public class SignUpActivity extends BaseActivity {
 
         mContext = this;
         ButterKnife.bind(this);
-        setToolbarTitle(toolbar,"Sign Up");
+
+        setToolbarTitleWithBack(toolbar,"Sign Up");
+
 
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +130,17 @@ public class SignUpActivity extends BaseActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                signUpViewModel.getActivity().setValue("Login");
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

@@ -123,6 +123,11 @@ public class BaseActivity extends AppCompatActivity {
         Helper.setToolbar(getSupportActionBar(), title);
     }
 
+    public void setToolbarTitleWithBack(Toolbar toolbar, String title) {
+        setSupportActionBar(toolbar);
+        Helper.setToolbarwithBack(getSupportActionBar(), title);
+    }
+
     public void showProgressBar(ProgressBar progressBar){
 
         if(progressBar!=null){
