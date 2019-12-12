@@ -372,7 +372,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     Helper.setLog("response",responseJson);
                     getToast().setValue("Success! Your request has been sent!");
 
-
                     break;
 
                 default:

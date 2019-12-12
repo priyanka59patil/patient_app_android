@@ -94,11 +94,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/ivUserProfile"
                                 android:textColor="@color/darkGray"
-                                app:trimCollapsedText="Read more..."
+                                app:trimCollapsedText=" Read more"
                                 android:layout_marginLeft="20dp"
                                 android:layout_marginRight="20dp"
                                 android:layout_marginTop="8dp"
                                 android:text="@={viewModel.about}"
+                                app:trimLength="60"
+                                app:trimMode="trimModeLength"
                                 app:colorClickableText="@color/colorPrimary"
                                 />
                             <View

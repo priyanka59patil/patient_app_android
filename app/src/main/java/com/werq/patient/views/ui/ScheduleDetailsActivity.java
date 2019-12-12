@@ -1,20 +1,14 @@
 package com.werq.patient.views.ui;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -22,25 +16,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.Bindable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -49,53 +39,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
 import com.werq.patient.BuildConfig;
+import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Factory.ViewModelProviderFactory;
+import com.werq.patient.Interfaces.AppointmentInterface;
+import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
-import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.Utils.SpacesItemDecoration;
 import com.werq.patient.base.BaseActivity;
+import com.werq.patient.databinding.ActivityScheduleDetailsBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
-import com.werq.patient.views.adapter.FilesAdapter;
-import com.werq.patient.Controller.AppointmentController;
-import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.Interfaces.BasicActivities;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Factory.ScheduleDeatilsVmFactory;
-import com.werq.patient.service.model.AppointmentData;
-import com.werq.patient.service.model.Files;
-import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
-import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.databinding.ActivityScheduleDetailsBinding;
 import com.werq.patient.views.adapter.NewTimeSlotAdapter;
+import com.werq.patient.views.ui.Fragments.MapFragment;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -198,9 +170,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     TextView tvAddressonMap;
     ActivityScheduleDetailsBinding detailsBinding;
     TabAppoinmentViewModel viewModel;
+    SupportMapFragment mapFragment;
     private AppointmentResult appointmentResult;
-    private String TAG="schedule_details";
-    private  int appointmentId;
+    private String TAG = "schedule_details";
+    private int appointmentId;
     ProgressDialog progressDialog;
 
     //time slot dialog
@@ -223,15 +196,14 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_schedule_details);
 
-        initializeVariables();
 
+        initializeVariables();
         layoutScheduleView.requestFocus();
         //getIntentData();
 
-        if (Helper.hasNetworkConnection(mContext)){
+        if (Helper.hasNetworkConnection(mContext)) {
             viewModel.getAppointmentData(appointmentId);
-
-        }else {
+        } else {
             viewModel.getScheduleDetailsVisibility().setValue(false);
             viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
         }
@@ -269,19 +241,24 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
            // startActivity(callIntent);
         }*/
 
-        dgAppointment=DiologHelper.createDialogWithLayout(mContext,R.layout.new_appointmentdate,this);
+        dgAppointment = DiologHelper.createDialogWithLayout(mContext, R.layout.new_appointmentdate, this);
 
-
+        /*FragmentManager fm=getSupportFragmentManager();
+        fm.beginTransaction().add(R.id.mapframe,new MapFragment()).commit()*/;
+        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.mapframe, new MapFragment());
+        transaction.commitNow();*/
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapframe);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.getOnSuccessConfirmAppt().observe(this,aBoolean -> {
-            if(aBoolean){
+        viewModel.getOnSuccessConfirmAppt().observe(this, aBoolean -> {
+            if (aBoolean) {
                 viewModel.getOnSuccessConfirmAppt().setValue(false);
-                Intent intent=new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
+                Intent intent = new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
 
@@ -291,12 +268,12 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         btConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Helper.setLog("Clicked","btConfirm");
-                if (Helper.hasNetworkConnection(mContext)){
+                Helper.setLog("Clicked", "btConfirm");
+                if (Helper.hasNetworkConnection(mContext)) {
 
                     viewModel.setConfirmStatus();
 
-                }else {
+                } else {
                     viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
                 }
 
@@ -305,46 +282,54 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         btReSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Helper.setLog("Clicked","btReSchedule");
-                if (Helper.hasNetworkConnection(mContext)){
+                Helper.setLog("Clicked", "btReSchedule");
+                if (Helper.hasNetworkConnection(mContext)) {
                     showTimeSlot();
                     dgAppointment.show();
                     try {
 
-                        Date d=new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
-                        Helper.setLog("after",new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                        Date d = new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
                         viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
-                        
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
 
-                }else {
+                } else {
                     viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
                 }
 
             }
         });
 
-        viewModel.getScheduleDetailsVisibility().observe(this,aBoolean -> {
-            if(aBoolean){
+        viewModel.getScheduleDetailsVisibility().observe(this, aBoolean -> {
+            if (aBoolean) {
                 apptDetailsLayout.setVisibility(View.VISIBLE);
                 tvNoApptDetails.setVisibility(View.GONE);
-            }else {
+            } else {
                 apptDetailsLayout.setVisibility(View.GONE);
                 tvNoApptDetails.setVisibility(View.VISIBLE);
             }
         });
 
 
-        viewModel.appointmentResultData.observe(this,appointmentResult1 -> {
-            if(isFromUpcoming){
+        viewModel.appointmentResultData.observe(this, appointmentResult1 -> {
 
-               if( appointmentResult1!=null){
 
-                    if(appointmentResult1.getConfirmByPatient()!=null && appointmentResult1.getConfirmByPatient()){
-                      setStatusButton("confirmed");
+            double mLat, mLong;
+
+            mLat = Double.parseDouble(appointmentResult1.getLocation().getLatitude());
+            mLong = Double.parseDouble(appointmentResult1.getLocation().getLongitude());
+
+            showMapOnFragment(mLat, mLong, appointmentResult1.getLocation().getOrganizationName());
+
+            if (isFromUpcoming) {
+
+                if (appointmentResult1 != null) {
+
+                    if (appointmentResult1.getConfirmByPatient() != null && appointmentResult1.getConfirmByPatient()) {
+                        setStatusButton("confirmed");
                         //btConfirm.setVisibility(View.GONE);
                         btConfirm.setEnabled(false);
                         btConfirm.setAlpha(0.5f);
@@ -352,10 +337,9 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                         rlReschedule.setAlpha(1);
                         btReSchedule.setEnabled(true);
                         //rlReschedule.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    } else {
                         setStatusButton("toconfirm");
-                       // btConfirm.setVisibility(View.VISIBLE);
+                        // btConfirm.setVisibility(View.VISIBLE);
                         btConfirm.setEnabled(true);
                         btConfirm.setAlpha(1);
                         rlReschedule.setAlpha(0.5f);
@@ -364,29 +348,26 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                     }
                 }
 
-            }else {
+            } else {
 
 
-                if(appointmentResult1.getAppointmentStatus().equalsIgnoreCase("visited"))
-                {
+                if (appointmentResult1.getAppointmentStatus().equalsIgnoreCase("visited")) {
                     rlReschedule.setAlpha(0.5f);
                     btReSchedule.setEnabled(false);
 
-                }else if(appointmentResult1.getAppointmentStatus().equalsIgnoreCase("Missed")){
+                } else if (appointmentResult1.getAppointmentStatus().equalsIgnoreCase("Missed")) {
                     rlReschedule.setAlpha(1);
                     btReSchedule.setEnabled(true);
-                }
-                else {
+                } else {
                     rlReschedule.setAlpha(0.5f);
                     btReSchedule.setEnabled(false);
                 }
                 btConfirm.setEnabled(false);
                 btConfirm.setAlpha(0.5f);
-                if(appointmentResult1.getAppointmentStatus()!=null && !appointmentResult1.getAppointmentStatus().trim().isEmpty()){
+                if (appointmentResult1.getAppointmentStatus() != null && !appointmentResult1.getAppointmentStatus().trim().isEmpty()) {
 
                     setStatusButton(appointmentResult1.getAppointmentStatus());
-                }
-                else {
+                } else {
                     tvstatus.setVisibility(View.GONE);
                 }
             }
@@ -394,12 +375,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
 
         viewModel.attachmentVisibility.observe(this, aBoolean -> {
-            if(aBoolean)
-            {
+            if (aBoolean) {
                 rvFiles.setVisibility(View.VISIBLE);
                 cvNoAttachments.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 rvFiles.setVisibility(View.GONE);
                 cvNoAttachments.setVisibility(View.VISIBLE);
             }
@@ -407,40 +386,37 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         });
 
 
-
-        viewModel.getLoading().observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this, aBoolean -> {
             try {
-                if(aBoolean ){
-                    if(progressDialog!=null && !progressDialog.isShowing()){
+                if (aBoolean) {
+                    if (progressDialog != null && !progressDialog.isShowing()) {
                         progressDialog.show();
-                    }else {
-                        progressDialog=Helper.createProgressDialog(mContext);
+                    } else {
+                        progressDialog = Helper.createProgressDialog(mContext);
                     }
-                }
-                else {
-                    if(progressDialog!=null && progressDialog.isShowing()){
+                } else {
+                    if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                 }
-            }catch (Exception e){
-                if( !this.isFinishing()&&progressDialog!=null && progressDialog.isShowing()){
+            } catch (Exception e) {
+                if (!this.isFinishing() && progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.hide();
                 }
             }
 
         });
 
-        viewModel.doctorProfilePhoto.observe(this,s -> {
+        viewModel.doctorProfilePhoto.observe(this, s -> {
 
-            if(s!=null){
+            if (s != null) {
                 String url = null;
-                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile + s;
                 Glide.with(mContext).load(url).apply(new RequestOptions()
                         .placeholder(R.drawable.user_image_placeholder)
                         .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(ivUseImage);
 
-            }
-            else {
+            } else {
                 ivUseImage.setImageResource(R.drawable.user_image_placeholder);
             }
         });
@@ -479,7 +455,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
             }
         });*/
-       Helper.setToolbarwithCross(getSupportActionBar(), appointmentResult.getDoctor().getFirstName()+" "+appointmentResult.getDoctor().getLastName());
+        Helper.setToolbarwithCross(getSupportActionBar(), appointmentResult.getDoctor().getFirstName() + " " + appointmentResult.getDoctor().getLastName());
 
     }
 
@@ -504,7 +480,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     public void initializeVariables() {
         mContext = this;
-        detailsBinding= DataBindingUtil.setContentView(this,R.layout.activity_schedule_details);
+        detailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_schedule_details);
         detailsBinding.setLifecycleOwner(this);
 
         intent = getIntent();
@@ -515,7 +491,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(isFromUpcoming)).get(TabAppoinmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, new ViewModelProviderFactory(isFromUpcoming)).get(TabAppoinmentViewModel.class);
         setBaseViewModel(viewModel);
         detailsBinding.setTabAppoinmentViewModel(viewModel);
         recyclerViewClickListerner = this::onclick;
@@ -529,7 +505,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
         /*tvTextAttachedFiles.setVisibility(View.VISIBLE);
         rvFiles.setVisibility(View.VISIBLE);*/
-        attachmentListAdapter = new AttachmentsAdapter(mContext, attachmentList, recyclerViewClickListerner,controller,viewModel,this);
+        attachmentListAdapter = new AttachmentsAdapter(mContext, attachmentList, recyclerViewClickListerner, controller, viewModel, this);
         RecyclerViewHelper.setAdapterToRecylerView(mContext, rvFiles, attachmentListAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvFiles);
 
@@ -566,11 +542,11 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     public void getIntentData() {
 
-            isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
+        isFromUpcoming = getIntent().getBooleanExtra("IsFromUpcommming", false);
 
-            appointmentResult = (AppointmentResult) getIntent().getSerializableExtra("AppointmentData");
-            appointmentId=appointmentResult.getiD();
-            Helper.setLog(TAG,appointmentId+"-:"+appointmentResult.toString());
+        appointmentResult = (AppointmentResult) getIntent().getSerializableExtra("AppointmentData");
+        appointmentId = appointmentResult.getiD();
+        Helper.setLog(TAG, appointmentId + "-:" + appointmentResult.toString());
 
     }
 
@@ -578,26 +554,24 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     public void onclick(int position) {
 
-        Helper.setLog("aaaa",attachmentList.get(position).toString());
+        Helper.setLog("aaaa", attachmentList.get(position).toString());
 
-        if(attachmentList.get(position).getVisitNoteId()!=null){
-            if(attachmentList.get(position).getVisitNoteId()!=0){
+        if (attachmentList.get(position).getVisitNoteId() != null) {
+            if (attachmentList.get(position).getVisitNoteId() != 0) {
 
-                Helper.setLog("getAppointmentId",attachmentList.get(position).getAppointmentId()+"" );
-                Helper.setLog("getVisitNoteId",attachmentList.get(position).getVisitNoteId()+"" );
+                Helper.setLog("getAppointmentId", attachmentList.get(position).getAppointmentId() + "");
+                Helper.setLog("getVisitNoteId", attachmentList.get(position).getVisitNoteId() + "");
 
-                Intent intent =new Intent(mContext, ViewVisitNoteActivity.class);
-                intent.putExtra("appointmentId",attachmentList.get(position).getAppointmentId());
-                intent.putExtra("visitNoteId",attachmentList.get(position).getVisitNoteId());
+                Intent intent = new Intent(mContext, ViewVisitNoteActivity.class);
+                intent.putExtra("appointmentId", attachmentList.get(position).getAppointmentId());
+                intent.putExtra("visitNoteId", attachmentList.get(position).getVisitNoteId());
                 startActivity(intent);
+            } else {
+                Helper.showToast(mContext, "No Details Available");
             }
-            else {
-                Helper.showToast(mContext,"No Details Available");
-            }
-        }
-        else {
+        } else {
 
-            Helper.showToast(mContext,"No Details Available");
+            Helper.showToast(mContext, "No Details Available");
         }
 
     }
@@ -605,7 +579,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onStop() {
         super.onStop();
-        if(!isFinishing()&& progressDialog!=null && progressDialog.isShowing()){
+        if (!isFinishing() && progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
         }
     }
@@ -622,7 +596,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         tvNoTimeSlot = (TextView) dgAppointment.findViewById(R.id.tvNoData);
         et_selectDate = (EditText) dgAppointment.findViewById(R.id.et_selectDate);
         et_selectDate.setFocusable(false);
-        etReason =(EditText) dgAppointment.findViewById(R.id.etReason);
+        etReason = (EditText) dgAppointment.findViewById(R.id.etReason);
         tvOk = (TextView) dgAppointment.findViewById(R.id.tvOk);
         tvCancel = (TextView) dgAppointment.findViewById(R.id.tvCancel);
         rvdateslot.setLayoutManager(new GridLayoutManager(mContext, 4));
@@ -632,20 +606,20 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         et_selectDate.setText(viewModel.getCurrentAppointmentDate().getValue());
 
 
-        viewModel.getAvailableTimeSlot().observe(this,availableTimeSlots -> {
+        viewModel.getAvailableTimeSlot().observe(this, availableTimeSlots -> {
 
-            if(availableTimeSlots==null || availableTimeSlots.size()==0){
+            if (availableTimeSlots == null || availableTimeSlots.size() == 0) {
                 tvNoTimeSlot.setVisibility(View.VISIBLE);
                 rlReschedule.setVisibility(View.GONE);
-            }else {
+            } else {
                 tvNoTimeSlot.setVisibility(View.GONE);
                 rlReschedule.setVisibility(View.VISIBLE);
             }
         });
 
 
-        timeSlotList=new ArrayList<>();
-        adapter = new NewTimeSlotAdapter(mContext,timeSlotList,viewModel,this);
+        timeSlotList = new ArrayList<>();
+        adapter = new NewTimeSlotAdapter(mContext, timeSlotList, viewModel, this);
         adapter.notifyDataSetChanged();
         rvdateslot.setAdapter(adapter);
 
@@ -684,53 +658,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 } else {
 
 
-                    viewModel.sendRescheduleRequest(et_selectDate.getText().toString()
-                            ,etReason.getText().toString());
+                    viewModel.sendRescheduleRequest(et_selectDate.getText().toString(), etReason.getText().toString());
 
-                    /*String appdate = et_selectDate.getText().toString();
-                    String time = "";
-                    if (lst != null && viewModel.getSelectTimeSlotItem().getValue()!= null)
-                        time = vi.get(viewModel.getSelectTimeSlotItem().getValue()).getStartTime();
-
-                    DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
-                    //DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm aa");
-                    DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                    time = time.replace("AM", " AM");
-                    time = time.replace("PM", " PM");
-
-                    appdate = appdate + " " + time;
-                    Log.e("Appdate", appdate);
-                    String output = "null";
-                    try {
-                        Date dt = df.parse(appdate);
-                        output = df1.format(dt);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    output = output.replace(" ", "T");
-                    output = output + ":00";
-                    Log.e("Appdate2", output);
-                    if (appointment == null) {
-                        appointment = new Appointment();
-                        appointment.setID("0");
-                        appointment.setIsDeleted("false");
-                        appointment.setPatientId(patid);
-                        appointment.setReferralId(refid);
-                        Log.e("onClick: ", output);
-                        appointment.setAppintmentDate(output);
-                    } else {
-                        appointment.setID("0");
-                        appointment.setIsDeleted("false");
-                        appointment.setPatientId(patid);
-                        appointment.setReferralId(refid);
-                        Log.e("onClick: ", output);
-                        appointment.setAppintmentDate(output);
-                    }
-
-
-                    //dialogWithNote();
-                    addStatus();*/
                     dgAppointment.cancel();
                 }
 
@@ -753,16 +682,16 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-            String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(myCalendar.getTime());
+            String date = new SimpleDateFormat(Helper.MMM_DD_YYYY).format(myCalendar.getTime());
 
             Log.e("AppointMent Date", date);
             et_selectDate.setText(date);
 
-            if (Helper.hasNetworkConnection(mContext)){
+            if (Helper.hasNetworkConnection(mContext)) {
                 try {
-                    Date d=new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
+                    Date d = new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
 
-                    Helper.setLog("after",new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+                    Helper.setLog("after", new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
                     viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
 
                 } catch (ParseException e) {
@@ -770,10 +699,48 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                     Helper.setLog("ParseException", e.getMessage());
                 }
 
-            }else {
+            } else {
                 viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
             }
         }
 
     };
+
+    public void showMapOnFragment(double latitude, double longitude, String locationName) {
+
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap mMap) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+                mMap.clear(); //clear old markers
+
+
+                CameraPosition googlePlex = CameraPosition.builder()
+                        .target(new LatLng(latitude, longitude))
+                        .zoom(15)
+                        .bearing(0)
+                        .tilt(45)
+                        .build();
+
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+
+               /* mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(37.4219999, -122.0862462))
+                        .title("Spider Man")
+                        .icon(bitmapDescriptorFromVector(getActivity(),R.drawable.spider)));
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(37.4629101,-122.2449094))
+                        .title("Iron Man")
+                        .snippet("His Talent : Plenty of money"));
+                        */
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(latitude, longitude))
+                        .title(locationName));
+            }
+        });
+    }
 }

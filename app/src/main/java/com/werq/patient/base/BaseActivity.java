@@ -69,8 +69,7 @@ public class BaseActivity extends AppCompatActivity {
                 @Override
                 public void onChanged(String s) {
 
-
-                    Toast.makeText(mContext, s, Toast.LENGTH_SHORT).show();
+                    Helper.showToast(mContext, s);
 
                 }
             });

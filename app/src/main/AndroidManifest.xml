@@ -12,10 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
 
- <!--   <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="@string/google_maps_key" />-->
 
 
     <application
@@ -30,7 +30,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_places_api_key" />
+            android:value="@string/google_maps_key" />
+
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.karumi.dexter.DexterActivity"
@@ -153,13 +157,6 @@
         </activity>
 
 
-        <!--<meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
-
-
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />-->
     </application>
 
 </manifest>

@@ -420,14 +420,13 @@
                                 android:layout_height="wrap_content"
                                 android:text="@{tabAppoinmentViewModel.addressOnMap}"
                                 />
-                            <ImageView
-                                android:id="@+id/map"
+
+                            <fragment
+                                android:id="@+id/mapframe"
+                                android:name="com.google.android.gms.maps.SupportMapFragment"
                                 android:layout_below="@+id/tvAddressonMap"
                                 android:layout_width="match_parent"
-                                android:layout_height="300dp"
-                                android:scaleType="centerCrop"
-                                android:layout_marginTop="8dp"
-                                android:src="@drawable/mapview"
+                                android:layout_height="400dp"
                                 />
 
                         </RelativeLayout>

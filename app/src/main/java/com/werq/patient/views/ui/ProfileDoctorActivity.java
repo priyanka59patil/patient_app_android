@@ -126,7 +126,6 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         ButterKnife.bind(this);
 
         getIntentData();
-        tvAbout.setTrimCollapsedText("Read More...");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

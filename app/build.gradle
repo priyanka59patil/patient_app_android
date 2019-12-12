@@ -11,7 +11,6 @@ android {
         versionName "0.11"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
 
     }
     dataBinding {
@@ -61,7 +60,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".dev"
 
-            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyA0F_mzmchYXl7AOkFqbzqSV1Lnqy1q6Xo"]
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
             //signingConfig signingConfigs.debug
         }
@@ -171,8 +170,8 @@ dependencies {
     /*implementation 'com.github.swapnil1104:OtpEditText:0.1.5'*/
     implementation 'com.github.aabhasr1:OtpView:1.1.2-ktx'
 
-    compile 'com.google.android.gms:play-services:8.4.0'
-
+    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.android.support:multidex:1.0.3'
     //android permissions library
     implementation 'com.karumi:dexter:4.2.0'
 

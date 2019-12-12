@@ -1,6 +1,5 @@
 <resources>
     <!-- google_places_api_key-->
-    <string name="google_places_api_key">AIzaSyDPRoIOi6XF3mShV-wsIfH71FIs7324Wp8</string>
 
 
     <string name="app_name">Patient App</string>
