@@ -32,6 +32,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.base.BaseViewModel;
@@ -60,6 +61,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     public MutableLiveData<Boolean> attachmentVisibility;
     public MutableLiveData<String> doctorProfilePhoto;
     public MutableLiveData<String> appointmentNote;
+    public MutableLiveData<String> rescheduledDate;
     boolean isFromUpcoming = true;
     MutableLiveData<String> currentAppointmentDate;
     MutableLiveData<String> day, month, time, fullUserName, speciality, address, addressOnMap;
@@ -70,7 +72,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> rvVisibility;
     private MutableLiveData<Boolean> rvHistoryVisibility;
     private MutableLiveData<Boolean> scheduleDetailsVisibility;
-    MutableLiveData<Boolean> onSuccessConfirmAppt;
+
+    MutableLiveData<Boolean> refreshListFlag;
     MutableLiveData<Integer> selectTimeSlotItem;
     String selectedTimeSlot="";
     private Calendar myCalendar = Calendar.getInstance();
@@ -105,14 +108,14 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         attachmentList = new MutableLiveData<>();
         doctorProfilePhoto = new MutableLiveData<>();
         scheduleDetailsVisibility = new MutableLiveData<>();
-        onSuccessConfirmAppt=new MutableLiveData<>();
+        refreshListFlag=new MutableLiveData<>();
 
         availableTimeSlot =new MutableLiveData<>();
         appointmentResultData = new MutableLiveData<>();
         appointmentNote = new MutableLiveData<>();
         selectTimeSlotItem = new MutableLiveData<>();
         currentAppointmentDate = new MutableLiveData<>();
-
+        rescheduledDate = new MutableLiveData<>();
 
     }
 
@@ -130,6 +133,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     public MutableLiveData<ArrayList<AppointmentResult>> getListHistoryAppointments() {
         return listHistoryAppointments;
+    }
+
+    public MutableLiveData<String> getRescheduledDate() {
+        return rescheduledDate;
     }
 
     public MutableLiveData<Boolean> getRvHistoryVisibility() {
@@ -180,9 +187,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         return doctorProfilePhoto;
     }
 
-    public MutableLiveData<Boolean> getOnSuccessConfirmAppt() {
-        return onSuccessConfirmAppt;
+    public MutableLiveData<Boolean> getRefreshListFlag() {
+        return refreshListFlag;
     }
+
 
     public MutableLiveData<Boolean> getScheduleDetailsVisibility() {
         return scheduleDetailsVisibility;
@@ -332,9 +340,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 case "ConfirmAppointment":
 
                     getLoading().setValue(false);
-                    onSuccessConfirmAppt.setValue(true);
+                    refreshListFlag.setValue(true);
                     apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-                    Log.e(TAG, "onSuccess: " + apptDetailResponse.getData().getAppointment().getConfirmByPatient());
                     appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                     prepareAppointmentDetailsData();
                     doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
@@ -369,7 +376,19 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "RescheduleRequest":
                     getLoading().setValue(false);
+                    refreshListFlag.setValue(true);
                     Helper.setLog("response",responseJson);
+                    RescheduleResponse rescheduleResponse=Helper.getGsonInstance().fromJson(responseJson,RescheduleResponse.class);
+                    if( rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate()!=null &&
+                    !TextUtils.isEmpty(rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())){
+
+                        rescheduledDate.setValue(prepareRescheduledDate
+                                (rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())
+                        );
+
+                    }else {
+                        rescheduledDate.setValue("");
+                    }
                     getToast().setValue("Success! Your request has been sent!");
 
                     break;
@@ -567,6 +586,14 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
             addressOnMap.setValue(strAddress);
         }
+
+        if(!TextUtils.isEmpty(appointmentResult.getRescheduleApptReqDate()) && appointmentResult.getRescheduleApptReqDate()!=null){
+
+            rescheduledDate.setValue(prepareRescheduledDate(appointmentResult.getRescheduleApptReqDate()));
+
+        }else {
+            rescheduledDate.setValue("");
+        }
         Log.e(TAG, "prepareData: " + appointmentResult.getConfirmByPatient());
 
         if (appointmentResultData.getValue().getReferralReason() != null) {
@@ -722,6 +749,25 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 }
             }
         }
+    }
+
+    public String prepareRescheduledDate(String rawDate){
+
+        String rescheduledDate="";
+        try {
+            Date d=new SimpleDateFormat(Helper.YYYY_MM_DD_T_HH_MM_SS).parse(rawDate);
+
+            String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(d);
+            String time =new SimpleDateFormat(Helper.HH_MM).format(d);
+            rescheduledDate=date+" At "+time;
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Helper.setLog("parsed date",e.getMessage());
+            rescheduledDate="";
+
+        }
+        return  rescheduledDate;
     }
 
 

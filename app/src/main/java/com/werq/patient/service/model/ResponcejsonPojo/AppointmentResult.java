@@ -26,6 +26,12 @@ public class AppointmentResult implements Serializable
     @SerializedName("AppointmentDate")
     private String appintmentDate;
 
+    @SerializedName("RescheduleApptReqDate")
+    private String rescheduleApptReqDate;
+
+    @SerializedName("RescheduleApptRequestAt")
+    private String rescheduleApptRequestAt;
+
     @SerializedName("AppointmentStatus")
     private String appointmentStatus;
 
@@ -136,6 +142,22 @@ public class AppointmentResult implements Serializable
         this.referralReason = referralReason;
     }
 
+    public String getRescheduleApptReqDate() {
+        return rescheduleApptReqDate;
+    }
+
+    public void setRescheduleApptReqDate(String rescheduleApptReqDate) {
+        this.rescheduleApptReqDate = rescheduleApptReqDate;
+    }
+
+    public String getRescheduleApptRequestAt() {
+        return rescheduleApptRequestAt;
+    }
+
+    public void setRescheduleApptRequestAt(String rescheduleApptRequestAt) {
+        this.rescheduleApptRequestAt = rescheduleApptRequestAt;
+    }
+
     @Override
     public String toString() {
         return "AppointmentResult{" +
@@ -144,6 +166,8 @@ public class AppointmentResult implements Serializable
                 ", doctorId=" + doctorId +
                 ", locationId=" + locationId +
                 ", appintmentDate='" + appintmentDate + '\'' +
+                ", rescheduleApptReqDate='" + rescheduleApptReqDate + '\'' +
+                ", rescheduleApptRequestAt='" + rescheduleApptRequestAt + '\'' +
                 ", appointmentStatus='" + appointmentStatus + '\'' +
                 ", confirmByPatient=" + confirmByPatient +
                 ", referralReason='" + referralReason + '\'' +

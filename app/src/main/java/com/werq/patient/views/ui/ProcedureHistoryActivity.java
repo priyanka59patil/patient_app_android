@@ -77,7 +77,7 @@ public class ProcedureHistoryActivity extends BaseActivity {
             }
         });
 
-        viewModel.getRvPlanOfCareVisibility().observe(this,aBoolean -> {
+        viewModel.getRvHistoryOfProcedureVisibility().observe(this,aBoolean -> {
             if(aBoolean){
                 rvProcedureList.setVisibility(View.VISIBLE);
                 tvNoData.setVisibility(View.GONE);

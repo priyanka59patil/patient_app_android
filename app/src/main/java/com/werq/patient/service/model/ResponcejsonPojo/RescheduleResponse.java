@@ -12,8 +12,8 @@ public class RescheduleResponse implements Serializable {
     @SerializedName("Message")
     private String message;
 
-    /*@SerializedName("Data")
-    private Data data;*/
+    @SerializedName("Data")
+    private RescheduleData data;
 
     public Integer getStatusCode() {
         return statusCode;
@@ -29,5 +29,22 @@ public class RescheduleResponse implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public RescheduleData getData() {
+        return data;
+    }
+
+    public void setData(RescheduleData data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "RescheduleResponse{" +
+                "statusCode=" + statusCode +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package com.werq.patient.viewmodel;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -25,38 +26,36 @@ import java.util.List;
 public class PatientProfileViewModel extends BaseViewModel {
     private static final String TAG = "PatientProfileViewModel";
     private final PatientRepository patientRepository;
-    ApiResponce apiResponce = this;
     public MutableLiveData<ArrayList<Insurance>> insuranceList;
     public MutableLiveData<ArrayList<MedicationDatum>> medicationList;
-    private MutableLiveData<Boolean> rvInsuranceVisibility;
-    private MutableLiveData<Boolean> rvMedicationVisibility;
-
     public MutableLiveData<String> patientProfileUrl;
     public MutableLiveData<String> patientName;
     public MutableLiveData<String> patientDOB;
     public MutableLiveData<String> phoneNumber;
     public MutableLiveData<String> address;
-    int medicationPage=0;
-
+    ApiResponce apiResponce = this;
+    int medicationPage = 0;
     Context mContext;
+    private MutableLiveData<Boolean> rvInsuranceVisibility;
+    private MutableLiveData<Boolean> rvMedicationVisibility;
 
 
     public PatientProfileViewModel() {
         patientRepository = new PatientRepository();
-        insuranceList=new MutableLiveData<>();
-        rvInsuranceVisibility=new MutableLiveData<>();
-        rvMedicationVisibility=new MutableLiveData<>();
+        insuranceList = new MutableLiveData<>();
+        rvInsuranceVisibility = new MutableLiveData<>();
+        rvMedicationVisibility = new MutableLiveData<>();
 
-        patientProfileUrl=new MutableLiveData<>();
-        patientName=new MutableLiveData<>();
-        patientDOB=new MutableLiveData<>();
-        phoneNumber=new MutableLiveData<>();
-        address=new MutableLiveData<>();
-        medicationList =new MutableLiveData<>();
+        patientProfileUrl = new MutableLiveData<>();
+        patientName = new MutableLiveData<>();
+        patientDOB = new MutableLiveData<>();
+        phoneNumber = new MutableLiveData<>();
+        address = new MutableLiveData<>();
+        medicationList = new MutableLiveData<>();
     }
 
 
-    public void fetchPatientProfileData(){
+    public void fetchPatientProfileData() {
         getLoading().setValue(true);
         patientRepository.getPatientProfile(Helper.autoken, getToast(), apiResponce, "PatientProfile");
 
@@ -67,98 +66,117 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     }
 
-    public void fetchMedicationList(int page){
+    public void fetchMedicationList(int page) {
         getLoading().setValue(true);
-        patientRepository.getMedicationList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "MedicationList");
-        medicationPage=page;
+        patientRepository.getMedicationList(Helper.autoken, "10", page * 10 + "", getToast(), apiResponce, "MedicationList");
+        medicationPage = page;
     }
 
     @Override
     public void onSuccess(String url, String responseJson) {
+
         getLoading().setValue(false);
 
-        if(url!=null && url.equals("PatientProfile")){
+        if (!TextUtils.isEmpty(url)) {
 
-            PatientProfileResponse patientProfileResponse=Helper
-                    .getGsonInstance().fromJson(responseJson,PatientProfileResponse.class);
+            switch (url) {
 
-            if(patientProfileResponse!=null){
-                Helper.setLog("PatientProfileResponse",patientProfileResponse.toString());
-                if(patientProfileResponse.getData()!=null && patientProfileResponse.getData().getPatient()!=null ){
+                case "PatientProfile":
+                    PatientProfileResponse patientProfileResponse = Helper
+                            .getGsonInstance().fromJson(responseJson, PatientProfileResponse.class);
+                    if (patientProfileResponse != null) {
+                        Helper.setLog("PatientProfileResponse", patientProfileResponse.toString());
+                        if (patientProfileResponse.getData() != null && patientProfileResponse.getData().getPatient() != null) {
 
-                    Patient patient=patientProfileResponse.getData().getPatient();
-                    patientName.setValue(patient.getFirstName()+" "+patient.getLastName());
-                    Date patDob=null;
-                    try {
-                        patDob= new SimpleDateFormat("yyyy-MM-dd").parse(patient.getDOB());
+                            Patient patient = patientProfileResponse.getData().getPatient();
+                            patientName.setValue(patient.getFirstName() + " " + patient.getLastName());
+                            Date patDob = null;
+                            try {
+                                patDob = new SimpleDateFormat("yyyy-MM-dd").parse(patient.getDOB());
 
-                        patientDOB.setValue(new SimpleDateFormat("MMMM dd, yyyy").format(patDob));
+                                patientDOB.setValue(new SimpleDateFormat("MMMM dd, yyyy").format(patDob));
 
-                    } catch (ParseException e) {
-                        patientDOB.setValue("");
-                        e.printStackTrace();
+                            } catch (ParseException e) {
+                                patientDOB.setValue("");
+                                e.printStackTrace();
+                            }
+
+                            for (int i = 0; i < patient.getContactInfo().size(); i++) {
+                                if (patient.getContactInfo().get(i).getType() == 2) {
+                                    phoneNumber.setValue(patient.getContactInfo().get(i).getDetails());
+                                }
+                            }
+
+
+                            String strAddress = patient.getAddress1() + " " + patient.getCity()
+                                    + " " + patient.getState() + " " + patient.getCity() + "" + patient.getCountry();
+                            if (!strAddress.trim().equals("")) {
+                                address.setValue(strAddress);
+                            } else {
+                                address.setValue("Not Available");
+                            }
+
+                        }
+
+                        if (patientProfileResponse.getData() != null && patientProfileResponse.getData().getInsurance() != null) {
+
+                            ArrayList<Insurance> insuranceArrayList = new ArrayList<>();
+                            insuranceArrayList.addAll(patientProfileResponse.getData().getInsurance());
+                            insuranceList.setValue(null);
+                            insuranceList.setValue(insuranceArrayList);
+
+                            if (insuranceList.getValue().size() > 0) {
+                                rvInsuranceVisibility.setValue(true);
+                            } else {
+                                rvInsuranceVisibility.setValue(false);
+                            }
+                        }
+
                     }
 
-                    for (int i = 0; i <patient.getContactInfo().size() ; i++) {
-                        if(patient.getContactInfo().get(i).getType()==2){
-                            phoneNumber.setValue(patient.getContactInfo().get(i).getDetails());
+                    break;
+
+                case "MedicationList":
+
+                    MedicationResponse medicationResponse = Helper.getGsonInstance()
+                            .fromJson(responseJson, MedicationResponse.class);
+
+                    if (medicationResponse != null && medicationResponse.getData() != null) {
+
+                        if (medicationResponse.getData().getMedicationDataList() != null) {
+
+                            ArrayList<MedicationDatum> medicationArrayList = new ArrayList<>();
+
+                            if (medicationList.getValue() != null && medicationPage != 0) {
+                                medicationArrayList.addAll(medicationList.getValue());
+                            }
+                            medicationArrayList.addAll(medicationResponse.getData().getMedicationDataList());
+                            medicationList.setValue(medicationArrayList);
+
+                            if (medicationList.getValue().size() > 0) {
+                                rvMedicationVisibility.setValue(true);
+                            } else {
+                                rvMedicationVisibility.setValue(false);
+                            }
+
                         }
                     }
+                    break;
 
-
-                    String strAddress =patient.getAddress1()+" "+patient.getCity()
-                            +" "+patient.getState()+" "+ patient.getCity()+""+patient.getCountry();
-                    if(!strAddress.trim().equals("")){
-                        address.setValue(strAddress);
-                    }else {
-                        address.setValue("Not Available");
-                    }
-
-                }
-
-                if(patientProfileResponse.getData()!=null && patientProfileResponse.getData().getInsurance()!=null ){
-
-                    ArrayList<Insurance> insuranceArrayList=new ArrayList<>();
-                    insuranceArrayList.addAll(patientProfileResponse.getData().getInsurance());
-                    insuranceList.setValue(null);
-                    insuranceList.setValue(insuranceArrayList);
-
-                    if(insuranceList.getValue().size()>0){
-                        rvInsuranceVisibility.setValue(true);
-                    }else {
-                        rvInsuranceVisibility.setValue(false);
-                    }
-                }
-
+                default:
+                    break;
             }
         }
-        if(url!=null && url.equals("MedicationList")){
 
-            MedicationResponse medicationResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, MedicationResponse.class);
 
-            if(medicationResponse!=null && medicationResponse.getData()!=null){
+       /* if (url != null && url.equals("PatientProfile")) {
 
-                if(medicationResponse.getData().getMedicationDataList()!=null){
-
-                    ArrayList<MedicationDatum> medicationArrayList=new ArrayList<>();
-
-                    if(medicationList.getValue()!=null && medicationPage!=0){
-                        medicationArrayList.addAll(medicationList.getValue());
-                    }
-                    medicationArrayList.addAll(medicationResponse.getData().getMedicationDataList());
-                    medicationList.setValue(medicationArrayList);
-
-                    if(medicationList.getValue().size()>0){
-                        rvMedicationVisibility.setValue(true);
-                    }else {
-                        rvMedicationVisibility.setValue(false);
-                    }
-
-                }
-            }
 
         }
+        if (url != null && url.equals("MedicationList")) {
+
+
+        }*/
 
     }
 

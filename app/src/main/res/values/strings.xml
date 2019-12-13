@@ -156,7 +156,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="value_speciality">Dentistry, Hermatology, Cytophatology</string>
-    <string name="value_abouts">Sarah graduated from the Virginia commonwealth University SOM in 2012 anthony works in westminister,Co and specializes in family Medicines\n\n</string>
+    <string name="value_abouts">Sarah graduated from the Virginia commonwealth University SOM in 2012 anthony works in westminister,Co and specializes in family Medicines</string>
     <string name="label_call">Call</string>
     <string name="label_chat">Chat</string>
     <string name="label_practice">PRACTICE</string>
@@ -203,8 +203,8 @@
     <string name="label_data">data</string>
     <string name="title_activity_view_file">ViewFileActivity</string>
     <string name="something_went_wrong">Something went wrong</string>
-    <string name="no_appt_details">Sorry, something went wrong and we are looking into it. Please try again in a few minutes</string>
-    <string name="not_able_to_fetch_data">Sorry, something went wrong and we are looking into it. Please try again in a few minutes</string>
+    <string name="no_appt_details">Sorry, something went wrong and we are looking into it.\n Please try again in a few minutes</string>
+    <string name="not_able_to_fetch_data">Sorry, something went wrong and we are looking into it.\n Please try again in a few minutes</string>
     <string name="no_network_conection">No network connection</string>
     <string name="password_pattern_msg">Use a combination of minimum 8 characters including letters (minimum 1 Capital and 1 small letter), numbers and special characters..</string>
 
@@ -212,7 +212,7 @@
 
     <string name="summery_of_care">Summery of Care</string>
     <string name="allergies">Allergies</string>
-    <string name="history_of_pastillness">History of Pastillness</string>
+    <string name="history_of_pastillness">History of Past Illness</string>
     <string name="social_history">Social History</string>
     <string name="problem">Problem List</string>
 
@@ -227,4 +227,5 @@
     <string name="no_doctor_team">No Doctor Teams</string>
     <string name="no_files">No Files</string>
     <string name="no_data_found">No Data Found</string>
+    <string name="no_medications">No Medication</string>
 </resources>

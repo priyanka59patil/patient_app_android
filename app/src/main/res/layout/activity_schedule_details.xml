@@ -92,7 +92,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <RelativeLayout
+                        <!--<RelativeLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
@@ -307,7 +307,256 @@
                                 android:enabled="false"
                                 android:alpha="0.5"
                                 />
+                        </RelativeLayout>-->
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            >
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/layout_schedule_view"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/main_layout_padding"
+                                android:layout_marginEnd="@dimen/main_layout_padding"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:layout_above="@+id/view"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="8dp">
+
+                                <TextView
+                                    android:id="@+id/tvday"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+
+                                    android:layout_marginEnd="8dp"
+                                    android:text="@{tabAppoinmentViewModel.day}"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/textSize_title"
+                                    android:textStyle="bold"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"/>
+
+                                <TextView
+                                    android:id="@+id/tvMonth"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="@{tabAppoinmentViewModel.month}"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvday" />
+
+                                <TextView
+                                    android:id="@+id/tvTime"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="0dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:text="@{tabAppoinmentViewModel.time}"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="@+id/tvstatus"
+                                    app:layout_constraintTop_toBottomOf="@+id/tvMonth" />
+
+                                <TextView
+                                    android:id="@+id/tvstatus"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:textAllCaps="true"
+                                    android:padding="3dp"
+                                    android:text=""
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/tvStatusSize"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                            <RelativeLayout
+                                android:id="@+id/rlProfileView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginRight="8dp"
+                                android:layout_toRightOf="@+id/layout_schedule_view">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/ivUseImage"
+                                    android:layout_width="50dp"
+                                    android:layout_height="50dp"
+                                    android:layout_marginStart="8dp"
+                                    android:background="@drawable/user_image_placeholder"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvUseFullName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_toRightOf="@+id/ivUseImage"
+                                    android:text="@{tabAppoinmentViewModel.fullUserName}"
+                                    android:textColor="@color/black"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/ivUseImage"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/tvSpeciality"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tvUseFullName"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_toRightOf="@+id/ivUseImage"
+                                    android:ellipsize="end"
+                                    android:maxLines="2"
+                                    android:text="@{tabAppoinmentViewModel.speciality}" />
+
+                                <TextView
+                                    android:id="@+id/tvAddress"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/ivUseImage"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:minLines="2"
+                                    android:gravity="center|left"
+                                    android:text="@{tabAppoinmentViewModel.address}"
+                                    />
+
+                                <LinearLayout
+                                    android:id="@+id/llRescheduledLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/tvAddress"
+                                    android:layout_marginTop="5dp"
+                                    android:visibility="gone">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:textColor="@color/colorPrimary"
+                                        android:text="Rescheduled At:"
+                                        />
+                                    <TextView
+                                        android:id="@+id/tvRescheduledDate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="5dp"
+                                        android:textColor="@color/color_text"
+                                        android:text=""
+                                        android:layout_below="@+id/ivUseImage" />
+                                </LinearLayout>
+
+                            </RelativeLayout>
+
+                            <View
+                                android:id="@+id/view"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@+id/rlProfileView"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/colorLightGreyBackground" />
+
+                            <LinearLayout
+                                android:id="@+id/layout_image_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/view"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/main_layout_padding"
+                                android:weightSum="2">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1">
+
+                                    <ImageButton
+                                        android:id="@+id/btAskQuestion"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:background="@drawable/rounded_button"
+                                        android:padding="@dimen/img_padding_for_img_bgcolor"
+                                        android:src="@drawable/message_white"
+                                        android:tint="@color/white"
+
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/tvAskQuestions"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/btAskQuestion"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_marginTop="@dimen/text_img_margintop"
+                                        android:text="@string/label_askQuestion"
+                                        android:textColor="@color/colorPrimary" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/rlReschedule"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:alpha="0.5">
+
+                                    <ImageButton
+                                        android:id="@+id/btReSchedule"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:background="@drawable/rounded_button"
+                                        android:padding="@dimen/img_padding_for_img_bgcolor"
+                                        android:src="@drawable/ic_schedule_white_24dp"
+
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/tvReSchedule"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@+id/btReSchedule"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_marginTop="@dimen/text_img_margintop"
+                                        android:text="@string/label_reschedule"
+                                        android:textColor="@color/colorPrimary" />
+
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <View
+                                android:id="@+id/line"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_below="@+id/layout_image_button"
+                                android:background="@color/colorLightGreyBackground" />
+
+                            <Button
+                                android:id="@+id/btConfirm"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/bt_confirm_height"
+                                android:layout_below="@+id/line"
+                                android:layout_margin="@dimen/button_confirm_margin"
+                                android:background="@color/colorPrimary"
+                                android:text="@string/label_confirm"
+                                android:textColor="@color/white"
+                                android:enabled="false"
+                                android:alpha="0.5"
+                                />
                         </RelativeLayout>
+
                     </androidx.cardview.widget.CardView>
 
                     <TextView

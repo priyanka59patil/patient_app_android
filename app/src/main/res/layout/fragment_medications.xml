@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".views.ui.Fragments.MedicationsFragment"
-        >
+        android:background="@color/colorLightGreyBackground">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -40,14 +40,14 @@
             android:id="@+id/tvNoDataLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_appt_details"
+            android:text="@string/no_medications"
+            style="@style/NoDataTheme"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:drawableTop="@drawable/calendar"
+            android:drawableTop="@drawable/ic_info_outline_black"
             android:textAlignment="center"
-            android:padding="10dp"
             android:visibility="gone"
             />
 

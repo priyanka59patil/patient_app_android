@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -145,6 +146,11 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     TextView tvNoApptDetails;
     @BindView(R.id.rlReschedule)
     RelativeLayout rlReschedule;
+
+    @BindView(R.id.llRescheduledLayout)
+    LinearLayout llRescheduledLayout;
+    @BindView(R.id.tvRescheduledDate)
+    TextView tvRescheduledDate;
     //context
     Context mContext;
 
@@ -255,9 +261,10 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.getOnSuccessConfirmAppt().observe(this, aBoolean -> {
+
+        viewModel.getRefreshListFlag().observe(this, aBoolean -> {
             if (aBoolean) {
-                viewModel.getOnSuccessConfirmAppt().setValue(false);
+                viewModel.getRefreshListFlag().setValue(false);
                 Intent intent = new Intent(getResources().getString(R.string.CONFIRMED_APPOINTMENT_BROADCAST));
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
@@ -313,8 +320,20 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             }
         });
 
+        viewModel.getRescheduledDate().observe(this,s -> {
+            if(!TextUtils.isEmpty(s)){
+                llRescheduledLayout.setVisibility(View.VISIBLE);
+                tvAddress.setMinLines(1);
+                tvRescheduledDate.setText(s);
 
-        viewModel.appointmentResultData.observe(this, appointmentResult1 -> {
+            }else {
+                llRescheduledLayout.setVisibility(View.GONE);
+                tvAddress.setMinLines(2);
+            }
+        });
+
+
+        viewModel.getAppointmentResultData().observe(this, appointmentResult1 -> {
 
 
             double mLat, mLong;

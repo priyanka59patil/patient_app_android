@@ -43,6 +43,10 @@ public class Helper {
 
     public static String MMM_DD_YYYY="MMM dd, yyyy";
     public static String YYYY_MM_DD="yyyy-MM-dd";
+    public static String HH_MM_SS="hh:mm:ss";
+    public static String HH_MM="hh:mm";
+    public static String YYYY_MM_DD_T_HH_MM_SS=YYYY_MM_DD+"'T'"+HH_MM_SS;
+
 
     public static void setAutoken(String autoken) {
         Helper.autoken = autoken;

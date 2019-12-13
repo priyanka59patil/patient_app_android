@@ -9,19 +9,21 @@
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:background="@color/backgroundgrey"
-android:paddingBottom="1dp"
+    android:paddingBottom="1dp"
     android:id="@+id/appointment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layout_schedule_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="8dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
         android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:layout_weight="0.5"
             android:id="@+id/tvday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,10 +41,10 @@ android:paddingBottom="1dp"
             android:id="@+id/tvMonth"
             android:layout_width="wrap_content"
             android:layout_marginStart="@dimen/layout16dp"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:text="Aug"
             android:textSize="@dimen/textheader15dp"
-
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvday" />
@@ -50,7 +52,7 @@ android:paddingBottom="1dp"
         <TextView
             android:id="@+id/tvTime"
             android:layout_marginStart="@dimen/layout16dp"
-
+            android:layout_weight="0.5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -62,24 +64,22 @@ android:paddingBottom="1dp"
             app:layout_constraintTop_toBottomOf="@+id/tvMonth" />
 
         <TextView
+            android:layout_weight="1"
             android:layout_marginStart="@dimen/layout16dp"
-
             android:id="@+id/tvstatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/orange_button"
-            android:padding="3dp"
-           android:textSize="@dimen/tvStatusSize"
+            android:padding="5dp"
+            android:textSize="@dimen/tvStatusSize"
             android:gravity="center"
             android:text="To Confirm"
             android:textColor="@color/white"
             android:textAllCaps="true"
+            />
 
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTime" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
     <RelativeLayout
@@ -89,6 +89,8 @@ android:paddingBottom="1dp"
         android:layout_gravity="center"
         android:gravity="center_vertical"
         android:background="@color/white"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:layout_toRightOf="@+id/layout_schedule_view">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -127,12 +129,39 @@ android:paddingBottom="1dp"
             android:id="@+id/tvAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:textSize="@dimen/textnormal12dp"
             android:textColor="@color/color_text"
-            android:text="3874 Masthead St NE #4479 Albuquerque"
-            android:layout_below="@+id/ivUseImage" />
+            android:text="@string/value_abouts"
+            android:layout_below="@+id/ivUseImage"
+            android:maxLines="3"
+            android:ellipsize="end"/>
+
+        <LinearLayout
+            android:id="@+id/llRescheduledLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvAddress"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textSize="@dimen/textnormal12dp"
+                android:textColor="@color/colorPrimary"
+                android:text="Rescheduled At:"
+                />
+            <TextView
+                android:id="@+id/tvRescheduledDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:textSize="@dimen/textnormal12dp"
+                android:textColor="@color/color_text"
+                android:text=""
+                android:layout_below="@+id/ivUseImage" />
+        </LinearLayout>
 
     </RelativeLayout>
     <View
