@@ -36,7 +36,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     String refreshTokenId;*/
     ApiResponce apiResponce=this;
     private MutableLiveData<Boolean> rvVisibility;
-    private MutableLiveData<Boolean> rvDoctorListVisibility;
+    private MutableLiveData<Boolean> rvDoctorTeamVisibility;
    // public MutableLiveData<Boolean> teamloading;
     public MutableLiveData<Boolean> doctorDetailsloading;
     public MutableLiveData<Boolean> isAllCheckedState;
@@ -44,6 +44,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public  MutableLiveData<ArrayList<Doctor>> filterDoctorsList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
     public  MutableLiveData<String> openFrag;
+    int doctorTeamListPage=0;
     int doctorListPage=0;
 
 
@@ -62,7 +63,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         listAttachments=new MutableLiveData<>();
         doctorDetailsloading=new MutableLiveData<>();
         filterDoctorsList=new MutableLiveData<>();
-        rvDoctorListVisibility=new MutableLiveData<>();
+        rvDoctorTeamVisibility=new MutableLiveData<>();
         isAllCheckedState=new MutableLiveData<>();
 
 
@@ -115,6 +116,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     public void fetchTeamList(int page){
         getLoading().setValue(true);
 
+        doctorTeamListPage=page;
         patientRepository.getDocterTeamAppoitment(Helper.autoken,"10",""+page*10,
                     getToast(),apiResponce,"DoctorTeam");
 
@@ -146,13 +148,25 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
             DoctorTeamResponse doctorTeamResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorTeamResponse.class);
             if(doctorTeamResponse!=null){
+
                 ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
+                if(teamList.getValue()!=null && doctorTeamListPage!=0){
+                    dataArrayList.addAll(teamList.getValue());
+                }
+
                 if(doctorTeamResponse.getData()!=null && doctorTeamResponse.getData().getResult()!=null) {
                     dataArrayList.addAll(doctorTeamResponse.getData().getResult());
                     teamList.setValue(dataArrayList);
                 }else {
                     teamList.setValue(null);
                 }
+
+                if(teamList.getValue().size()>0){
+                    rvDoctorTeamVisibility.setValue(true);
+                }else {
+                    rvDoctorTeamVisibility.setValue(false);
+                }
+
             }
             else {
                 teamList.setValue(null);
@@ -205,11 +219,11 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
                 filterDoctorsList.setValue(doctorList);
 
-                if(filterDoctorsList.getValue().size()>0){
+                /*if(filterDoctorsList.getValue().size()>0){
                     rvDoctorListVisibility.setValue(true);
                 }else {
                     rvDoctorListVisibility.setValue(false);
-                }
+                }*/
 
             }
             else {
@@ -243,7 +257,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
     public MutableLiveData<Boolean> getRvDoctorListVisibility() {
-        return rvDoctorListVisibility;
+        return rvDoctorTeamVisibility;
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,25 +20,21 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
-import com.werq.patient.views.ui.ScheduleDetailsActivity;
-import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.Controller.AppointmentController;
+import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.service.model.AppointmentData;
-import com.werq.patient.service.model.AppointmentResponce;
-import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentTabAppointmentBinding;
+import com.werq.patient.service.model.AppointmentResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.viewmodel.TabAppoinmentViewModel;
+import com.werq.patient.views.adapter.AppointmentAdapter;
+import com.werq.patient.views.ui.ScheduleDetailsActivity;
 
 import java.util.ArrayList;
 
@@ -57,6 +54,8 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
+    @BindView(R.id.tvNoData)
+    TextView tvNoData;
     private boolean loading = true;
     int page = 0;
     int listcount = 0;
@@ -71,7 +70,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     ArrayList<AppointmentResult> listAppointments;
     TabAppoinmentViewModel viewModel;
     FragmentTabAppointmentBinding appointmentBinding;
-    private String TAG="TabAppointmentFragment";
+    private String TAG = "TabAppointmentFragment";
 
     ProgressDialog progressDialog;
 
@@ -79,11 +78,11 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        Helper.setLog(TAG,"On Attach");
+        Helper.setLog(TAG, "On Attach");
     }
 
     public TabAppointmentFragment() {
-        Helper.setLog(TAG,"TabAppointmentFragment");
+        Helper.setLog(TAG, "TabAppointmentFragment");
     }
 
     @Override
@@ -128,20 +127,20 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.e(TAG, "onCreate: " );
+        Log.e(TAG, "onCreate: ");
         mContext = getContext();
-        listAppointments=new ArrayList<>();
+        listAppointments = new ArrayList<>();
         listener = this::onclick;
-        basicActivities=this;
-        controller=new AppointmentController(basicActivities);
-        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
+        basicActivities = this;
+        controller = new AppointmentController(basicActivities);
+        viewModel = ViewModelProviders.of(this, new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
 
-        if(Helper.hasNetworkConnection(mContext)){
+        if (Helper.hasNetworkConnection(mContext)) {
 
             viewModel.fetchUpcomingAppointmentList(0);
 
         } else {
-            Helper.showToast(mContext,"No Network Connection");
+            Helper.showToast(mContext, "No Network Connection");
         }
 
         LocalBroadcastManager.getInstance(mContext).registerReceiver(
@@ -154,29 +153,29 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.e(TAG, "onActivityResult: "+requestCode+" "+resultCode );
+        Log.e(TAG, "onActivityResult: " + requestCode + " " + resultCode);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e(TAG, "onCreateView: " );
+        Log.e(TAG, "onCreateView: ");
         View view = inflater.inflate(R.layout.fragment_tab_appointment, container, false);
 
-            if(appointmentBinding==null){
-                appointmentBinding=FragmentTabAppointmentBinding.bind(view);
-            }
-            appointmentBinding.setLifecycleOwner(this);
-            setBaseViewModel(viewModel);
-            appointmentBinding.setAppontmentViewModel(viewModel);
+        if (appointmentBinding == null) {
+            appointmentBinding = FragmentTabAppointmentBinding.bind(view);
+        }
+        appointmentBinding.setLifecycleOwner(this);
+        setBaseViewModel(viewModel);
+        appointmentBinding.setAppontmentViewModel(viewModel);
 
-            ButterKnife.bind(this, view);
-            loadingView.setIndeterminateDrawable(fadingcircle);
-            initializeVariables();
-            adapter = new AppointmentAdapter(getActivity(), true, listener,listAppointments,controller,viewModel,this);
-            RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
-            RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
-            rvAppointmentList.setAdapter(adapter);
+        ButterKnife.bind(this, view);
+        loadingView.setIndeterminateDrawable(fadingcircle);
+        initializeVariables();
+        adapter = new AppointmentAdapter(getActivity(), true, listener, listAppointments, controller, viewModel, this);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvAppointmentList, adapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvAppointmentList);
+        rvAppointmentList.setAdapter(adapter);
 
 
         return view;
@@ -187,17 +186,17 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         super.onResume();
 
 
-        viewModel.getRvVisibility().observe(this,aBoolean -> {
-            if(aBoolean)
-            {
+        viewModel.getRvVisibility().observe(this, aBoolean -> {
+            if (aBoolean) {
                 rvAppointmentList.setVisibility(View.VISIBLE);
-            }
-            else {
+                tvNoData.setVisibility(View.GONE);
+            } else {
                 rvAppointmentList.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
             }
         });
 
-        viewModel.getLoading().observe(this,aBoolean -> {
+        viewModel.getLoading().observe(this, aBoolean -> {
            /* if(aBoolean ){
                 if(progressDialog!=null && !progressDialog.isShowing()){
                     progressDialog.show();
@@ -210,21 +209,19 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                     progressDialog.hide();
                 }
             }*/
-            if(aBoolean ){
+            if (aBoolean) {
                 showProgressBar(loadingView);
                 loadingView.bringToFront();
-            }
-            else {
+            } else {
                 hideProgressBar(loadingView);
             }
         });
 
-        viewModel.listUpcommingAppointments.observe(this,appointmentResults -> {
-            if(appointmentResults!=null){
-                listcount=appointmentResults.size();
+        viewModel.listUpcommingAppointments.observe(this, appointmentResults -> {
+            if (appointmentResults != null) {
+                listcount = appointmentResults.size();
             }
         });
-
 
 
         rvAppointmentList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -246,7 +243,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                         if (data == (count * 4)) {
                             if (loading) {
                                 if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                                    loading=true;
+                                    loading = true;
                                     ++page;
                                     viewModel.fetchUpcomingAppointmentList(page);
                                 }
@@ -263,16 +260,14 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     }
 
 
-
-
     @Override
     public void onclick(int position) {
 
-      //  String gsonData= Helper.getGsonInstance().toJson(listAppointments.get(position));
-        Helper.setLog(TAG,listAppointments.get(position).toString());
+        //  String gsonData= Helper.getGsonInstance().toJson(listAppointments.get(position));
+        Helper.setLog(TAG, listAppointments.get(position).toString());
         Intent intent = new Intent(mContext, ScheduleDetailsActivity.class);
         intent.putExtra("IsFromUpcommming", true);
-        intent.putExtra("AppointmentData",listAppointments.get(position));
+        intent.putExtra("AppointmentData", listAppointments.get(position));
         startActivity(intent);
 
     }
@@ -281,13 +276,13 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     private BroadcastReceiver confirmedAppointmentBR = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Helper.setLog("listening","confirmedAppointmentBR");
-            if(Helper.hasNetworkConnection(mContext)){
+            Helper.setLog("listening", "confirmedAppointmentBR");
+            if (Helper.hasNetworkConnection(mContext)) {
 
                 viewModel.fetchUpcomingAppointmentList(0);
 
             } else {
-                Helper.showToast(mContext,"No Network Connection");
+                Helper.showToast(mContext, "No Network Connection");
             }
            /* Log.e(TAG, "unreadCountReceiver: "+ intent.getStringExtra("type"));
 

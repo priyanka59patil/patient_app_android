@@ -72,10 +72,12 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
         mContext = getActivity();
         recyclerViewClickListerner=this;
         teamList =new ArrayList<>();
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
-                teamList/*,viewModel,this*/);
+
         viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
-            viewModel.getTeamList().observe(this,doctorTeamResults -> {
+
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
+                teamList,viewModel,this);
+       /*     viewModel.getTeamList().observe(this,doctorTeamResults -> {
                 Helper.setLog(TAG,"inside teamList observable page="+page);
                 if(doctorTeamResults!=null && doctorTeamResults.size()>0){
                     if(page==0){
@@ -86,7 +88,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                     listcount=teamList.size();
                     doctorTeamAdapter.notifyDataSetChanged();
                 }
-            });
+            });*/
 
 
         if(Helper.hasNetworkConnection(mContext)){
@@ -155,7 +157,8 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     public void onResume() {
         super.onResume();
 
-        viewModel.getRvVisibility().observe(this,aBoolean -> {
+
+        viewModel.getRvDoctorListVisibility().observe(this,aBoolean -> {
             if(aBoolean)
             {
                 rvDoctorTeam.setVisibility(View.VISIBLE);

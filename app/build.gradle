@@ -41,7 +41,7 @@ android {
         }*/
         debug {
 
-            //resValue "string", "app_name", "Patient-Dev"
+            resValue "string", "app_name", "Patient-Dev"
             buildConfigField "String", "app_version", "\"1.1\""
 
             buildConfigField "String", "s3BucketName", "\"dev-werq-com-ugc-private\""
@@ -55,7 +55,7 @@ android {
             //debug build urls
             buildConfigField "String", "baseUrl", "\"https://dev.werq.com/\""
 
-            //minifyEnabled true
+            minifyEnabled true
             //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationIdSuffix ".dev"
@@ -65,6 +65,81 @@ android {
             //signingConfig signingConfigs.debug
         }
 
+        demo   {
+            resValue "string", "app_name", "Patient-Uat"
+            buildConfigField "String", "app_version", "\"1.1\""
+
+            buildConfigField "String", "s3BucketName", "\"werq-uat-ugc-private\""
+            buildConfigField "String", "s3BucketNameUserProfileDelete", "\"werq-uat-user-profile-public/\""
+            buildConfigField "String", "s3BucketNameUserProfileUpload", "\"werq-uat-user-profile-public\""
+            buildConfigField "String", "profileBucketName", "\"werq-uat-user-profile-public\""
+
+            buildConfigField "String", "s3BucketNameUserProfile", "\"werq-uat-user-profile-public/resized/\""
+
+            //demo build urls
+            buildConfigField "String", "baseUrl", "\"https://demo.werq.com/\""
+
+            //demo build strings
+            buildConfigField "String", "country_code", "\"+1\""
+
+            minifyEnabled true
+            //shrinkResources true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".demo"
+
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
+
+//            signingConfig signingConfigs.config
+        }
+        dev {
+
+            resValue "string", "app_name", "Patient-Dev"
+            buildConfigField "String", "app_version", "\"1.1\""
+
+            buildConfigField "String", "s3BucketName", "\"dev-werq-com-ugc-private\""
+            buildConfigField "String", "s3BucketNameUserProfileDelete", "\"dev-werq-com-user-profile/\""
+            buildConfigField "String", "s3BucketNameUserProfileUpload", "\"dev-werq-com-user-profile\""
+
+
+            buildConfigField "String", "s3BucketNameUserProfile", "\"dev-werq-com-user-profile/resized/\""
+            buildConfigField "String", "profileBucketName", "\"dev-werq-com-user-profile\""
+
+            //debug build urls
+            buildConfigField "String", "baseUrl", "\"https://dev.werq.com/\""
+
+            minifyEnabled true
+            //shrinkResources true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            applicationIdSuffix ".dev"
+
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
+
+        }
+        prod {
+            resValue "string", "app_name", "Patient"
+            buildConfigField "String", "app_version", "\"1.1\""
+
+            buildConfigField "String", "s3BucketName", "\"werq-prod-ugc-private\""
+            buildConfigField "String", "s3BucketNameUserProfileDelete", "\"werq-prod-user-profile-public/\""
+            buildConfigField "String", "s3BucketNameUserProfileUpload", "\"werq-prod-user-profile-public\""
+            buildConfigField "String", "profileBucketName", "\"werq-prod-user-profile-public\""
+
+            buildConfigField "String", "s3BucketNameUserProfile", "\"werq-prod-user-profile-public/resized/\""
+
+            buildConfigField "String", "baseUrl", "\"https://app.werq.com/\""
+
+            //prod build strings
+            buildConfigField "String", "country_code", "\"+1\""
+
+            minifyEnabled true
+            //shrinkResources true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+           // signingConfig signingConfigs.prod
+            applicationIdSuffix ".app"
+
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyA0F_mzmchYXl7AOkFqbzqSV1Lnqy1q6Xo"]
+
+        }
 
     }
     compileOptions {

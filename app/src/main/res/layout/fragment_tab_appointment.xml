@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout >
-  <data>
-    <variable
-        name="appontmentViewModel"
-        type="com.werq.patient.viewmodel.TabAppoinmentViewModel" />
-  </data>
+<layout>
 
-  <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:background="@color/colorLightGreyBackground"
-      tools:context=".views.ui.Fragments.TabAppointmentFragment">
+    <data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAppointmentList"
+        <variable
+            name="appontmentViewModel"
+            type="com.werq.patient.viewmodel.TabAppoinmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/colorLightGreyBackground"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layoutAnimation="@anim/layout_animatin_from_right"
-        />
+        tools:context=".views.ui.Fragments.TabAppointmentFragment">
 
-   <!-- <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAppointmentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLightGreyBackground"
+            android:layoutAnimation="@anim/layout_animatin_from_right"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.ybq.android.spinkit.SpinKitView
-        android:id="@+id/loadingView"
-        android:layout_width="@dimen/progressbar_width"
-        android:layout_height="@dimen/progressbar_height"
-        android:layout_gravity="center"
-        app:SpinKit_Color="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
-    <!--android:visibility="@={appontmentViewModel.loading}"-->
-  </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- <ProgressBar
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_marginStart="8dp"
+             android:layout_marginTop="8dp"
+             android:layout_marginEnd="8dp"
+             android:layout_marginBottom="8dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent"
+             android:visibility="gone"/>-->
+        <TextView
+            android:id="@+id/tvNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/calendar"
+            android:text="@string/no_upcomming_appt"
+            style="@style/NoDataTheme"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/loadingView"
+            android:layout_width="@dimen/progressbar_width"
+            android:layout_height="@dimen/progressbar_height"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:SpinKit_Color="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--android:visibility="@={appontmentViewModel.loading}"-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

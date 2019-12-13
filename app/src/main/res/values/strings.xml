@@ -2,7 +2,7 @@
     <!-- google_places_api_key-->
 
 
-    <string name="app_name">Patient App</string>
+    <!--<string name="app_name">Patient App</string>-->
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
@@ -222,4 +222,9 @@
     <string name="instruction">Instruction</string>
     <string name="plan_of_care">Plan of Care</string>
     <string name="history_of_procedure">History of Procedure</string>
+    <string name="no_upcomming_appt">No Upcomming Appointments</string>
+    <string name="no_history_appt">No History Appointments</string>
+    <string name="no_doctor_team">No Doctor Teams</string>
+    <string name="no_files">No Files</string>
+    <string name="no_data_found">No Data Found</string>
 </resources>

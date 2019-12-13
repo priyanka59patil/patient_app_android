@@ -56,6 +56,11 @@
         <item name="android:windowMinWidthMinor">90%</item>
     </style>
 
+    <style name="NoDataTheme" parent="AppTheme">
+        <item name="android:textColor">@color/titleBadgeText</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+
 </resources>
 
 

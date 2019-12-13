@@ -31,22 +31,22 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
 
     public DoctorTeamAdapter(Context mContext, boolean fromSearchName,
                              RecyclerViewClickListerner recyclerViewClickListerner,
-                             ArrayList<DoctorTeamResult> teamList/*,
+                             ArrayList<DoctorTeamResult> teamList,
                              BottomTabViewModel viewModel,
-                             LifecycleOwner lifecycleOwner*/) {
+                             LifecycleOwner lifecycleOwner) {
         this.mContext = mContext;
         this.fromSearchName=fromSearchName;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
         this.teamList=teamList;
 
-       /* viewModel.getTeamList().observe(lifecycleOwner,doctorTeamResults -> {
+        viewModel.getTeamList().observe(lifecycleOwner,doctorTeamResults -> {
             if(doctorTeamResults!=null ){
                 this.teamList.clear();
                 this.teamList.addAll(doctorTeamResults);
                 notifyDataSetChanged();
                 Helper.setLog("doctorTeamResults",doctorTeamResults.size()+"");
             }
-        });*/
+        });
     }
 
     @NonNull

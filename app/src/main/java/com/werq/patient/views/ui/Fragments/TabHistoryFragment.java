@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,7 +50,8 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     private AppointmentAdapter adapter;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
-
+    @BindView(R.id.tvNoData)
+    TextView tvNoData;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     private boolean loading = true;
     int page = 0;
@@ -134,9 +136,11 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
             if(aBoolean)
             {
                 rvAppointmentList.setVisibility(View.VISIBLE);
+                tvNoData.setVisibility(View.GONE);
             }
             else {
                 rvAppointmentList.setVisibility(View.GONE);
+                tvNoData.setVisibility(View.VISIBLE);
             }
         });
 
