@@ -299,6 +299,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                         viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
 
                     } catch (ParseException e) {
+                        Helper.setExceptionLog(TAG+ "-ParseException: ",e );
                         e.printStackTrace();
                     }
 
@@ -419,6 +420,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                     }
                 }
             } catch (Exception e) {
+                Helper.setExceptionLog("Exception",e);
                 if (!this.isFinishing() && progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.hide();
                 }
@@ -715,7 +717,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
 
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Helper.setLog("ParseException", e.getMessage());
+                    Helper.setExceptionLog("ParseException", e);
                 }
 
             } else {

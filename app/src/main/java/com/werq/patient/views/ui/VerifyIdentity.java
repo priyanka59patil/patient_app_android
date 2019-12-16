@@ -70,6 +70,7 @@ public class VerifyIdentity extends BaseActivity {
             try {
                 spDob.getEditText().setText(DateHelper.dateFormatmmddyyyy(myCalendar.getTime()));
             } catch (ParseException e) {
+                Helper.setExceptionLog("ParseException",e);
                 e.printStackTrace();
             }
 

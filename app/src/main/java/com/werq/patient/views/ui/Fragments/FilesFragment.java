@@ -210,6 +210,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }

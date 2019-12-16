@@ -170,6 +170,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }

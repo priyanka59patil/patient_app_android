@@ -260,6 +260,7 @@ public class LoginViewModel extends BaseViewModel {
                     } catch (GeneralSecurityException e) {
                         //handle error
                         e.printStackTrace();
+                        Helper.setExceptionLog("GeneralSecurityException",e);
                     }
                     sessionManager.setRememberUsername(true, encryptedUName);
                     sessionManager.setRememberPassword(true, encryptedPass);
@@ -294,6 +295,7 @@ public class LoginViewModel extends BaseViewModel {
 
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg
+            Helper.setExceptionLog("GeneralSecurityException",e);
             e.printStackTrace();
         }
     }

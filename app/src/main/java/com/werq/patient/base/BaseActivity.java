@@ -140,4 +140,5 @@ public class BaseActivity extends AppCompatActivity {
             progressBar.setVisibility(View.GONE);
         }
     }
+
 }

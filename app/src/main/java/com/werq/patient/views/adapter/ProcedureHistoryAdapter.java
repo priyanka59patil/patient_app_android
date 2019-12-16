@@ -88,6 +88,7 @@ public class ProcedureHistoryAdapter extends RecyclerView.Adapter<ProcedureHisto
                 holder.tvDateDiagnosed.setText(new SimpleDateFormat("MMM dd, yyyy").format(date));
 
             } catch (ParseException e) {
+                Helper.setExceptionLog("ParseException",e);
                 if(!TextUtils.isEmpty(HistoryProcedure.getDateDiagnosed())){
                     holder.tvDateDiagnosed.setText(HistoryProcedure.getDateDiagnosed());
                 }else {

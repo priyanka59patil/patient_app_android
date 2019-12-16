@@ -188,7 +188,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         setToolbarForbottom(title, true, false);
                         /*DoctorTeamFragment doctorTeamFragment = new DoctorTeamFragment();
                         addFragment(doctorTeamFragment);*/
-                        VisibleMenuItem(true, false, false);
+                        VisibleMenuItem(false, false, false);
 
                         break;
                     case "profile":

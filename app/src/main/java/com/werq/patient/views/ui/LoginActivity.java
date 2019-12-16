@@ -1,8 +1,10 @@
 package com.werq.patient.views.ui;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
@@ -11,13 +13,22 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bugsee.library.Bugsee;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.github.ybq.android.spinkit.style.FadingCircle;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.scottyab.aescrypt.AESCrypt;
+import com.werq.patient.BuildConfig;
 import com.werq.patient.Factory.LoginVmProviderFactory;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -26,7 +37,11 @@ import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityLoginBinding;
 
+import java.security.GeneralSecurityException;
+import java.security.Permission;
 import java.security.spec.ECField;
+import java.util.HashMap;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +88,10 @@ public class LoginActivity extends BaseActivity {
         loadingView.setIndeterminateDrawable(fadingCircle);
         toolbar.setTitle("Log In");
         loginViewModel.setSessionManager( SessionManager.getSessionManager(mContext));
+
+        initBugsee();
+
+
 
     }
 
@@ -155,5 +174,28 @@ public class LoginActivity extends BaseActivity {
         }*/
         loadingView.setVisibility(View.GONE);
 
+    }
+
+    private void initBugsee() {
+
+        if(BuildConfig.BUILD_TYPE.equals("dev") || BuildConfig.BUILD_TYPE.equals("demo")){
+            HashMap<String, Object> options1 = new HashMap<>();
+            options1.put(Bugsee.Option.VideoScale, 0.25);
+            options1.put(Bugsee.Option.NotificationBarTrigger, true);
+            options1.put(Bugsee.Option.ShakeToTrigger, true);
+            options1.put(Bugsee.Option.ReportPrioritySelector, true);
+            Bugsee.launch(this, "d801e4ee-338e-4595-955a-0b8608429dad", options1);
+            Bugsee.setAttribute("Env", "Android-" + BuildConfig.BUILD_TYPE);
+            try {
+
+                String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", SessionManager.getSessionManager(mContext).getRem_username());
+                Bugsee.setAttribute("UserName", SessionManager.getSessionManager(mContext).getRem_username());
+
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+                Helper.setExceptionLog("GeneralSecurityException",e);
+            }
+
+        }
     }
 }

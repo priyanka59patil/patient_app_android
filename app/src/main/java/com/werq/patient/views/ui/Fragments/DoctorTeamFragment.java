@@ -143,6 +143,7 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }

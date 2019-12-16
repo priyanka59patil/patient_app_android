@@ -147,10 +147,10 @@ public class RetrofitClient  {
                         errorMessage=errorData.getError().getMessage();
                     }
                     catch (IOException e) {
-                        Log.e(TAG, "IOException: "+e.getMessage() );
+                        Helper.setExceptionLog(TAG+ "-IOException: ",e );
                     }
                     catch (Exception e){
-                        Log.e(TAG, "Exception: "+e.getMessage() );
+                        Helper.setExceptionLog(TAG+ "-Exception: ",e );
                     }
 
 
@@ -230,10 +230,10 @@ public class RetrofitClient  {
                         errorMessage=errorData.getError().getMessage();
                     }
                     catch (IOException e) {
-                        Log.e(TAG, "IOException: "+e.getMessage() );
+                        Helper.setExceptionLog(TAG+"-IOException: ",e );
                     }
                     catch (Exception e){
-                        Log.e(TAG, "Exception: "+e.getMessage() );
+                        Helper.setExceptionLog(TAG+ "-Exception: ",e );
                     }
 
 

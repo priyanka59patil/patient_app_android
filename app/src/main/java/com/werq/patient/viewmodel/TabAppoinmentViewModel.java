@@ -574,6 +574,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             month.setValue(DateHelper.dayFromDate(date, "month"));
             time.setValue(DateHelper.dayFromDate(date, "time"));
         } catch (Exception e) {
+            Helper.setExceptionLog("Exception",e);
             e.printStackTrace();
         }
 
@@ -649,7 +650,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 attachmentResultList.addAll(apptDetailResponse.getData().getAppointment().getReferralAttachment());
             }
         } catch (Exception e) {
-            Helper.setLog(TAG + " -Exception", e.getMessage());
+            Helper.setExceptionLog("Exception",e);
         }
 
         Helper.setLog("visitnote size", apptDetailResponse.getData().getVisitNoteAttachment().size() + "");
@@ -669,7 +670,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
             }
         } catch (Exception e) {
-            Helper.setLog(TAG + " -Exception", e.getMessage());
+            Helper.setExceptionLog("Exception",e);
         }
 
 
@@ -745,7 +746,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Helper.setLog("ParseException",e.getMessage());
+                    Helper.setExceptionLog("ParseException",e);
                 }
             }
         }
@@ -763,7 +764,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         } catch (ParseException e) {
             e.printStackTrace();
-            Helper.setLog("parsed date",e.getMessage());
+            Helper.setExceptionLog("ParseException",e);
             rescheduledDate="";
 
         }

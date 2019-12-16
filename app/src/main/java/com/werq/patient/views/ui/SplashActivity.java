@@ -22,14 +22,13 @@ public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.imageview)
     ImageView imageview;
-Context mContext;
+    Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         mContext=this;
-        initBugsee();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -42,15 +41,7 @@ Context mContext;
         }, 2000);
 
 
-
     }
 
-    private void initBugsee() {
-        HashMap<String, Object> options1 = new HashMap<>();
-        options1.put(Bugsee.Option.ReportPrioritySelector, true);
-        Bugsee.launch(this, "d801e4ee-338e-4595-955a-0b8608429dad", options1);
-//            }
-        Bugsee.setAttribute("Env", "Android-" + BuildConfig.BUILD_TYPE);
-    }
 
 }

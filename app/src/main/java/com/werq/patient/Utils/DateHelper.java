@@ -33,6 +33,7 @@ public class DateHelper {
         try {
             date = format.parse(dateString);
         } catch (Exception e) {
+            Helper.setExceptionLog("Exception",e);
             e.printStackTrace();
         }
 
@@ -62,6 +63,7 @@ public class DateHelper {
             }
         }
         catch (Exception e){
+            Helper.setExceptionLog("Exception",e);
             getString="";
         }
 

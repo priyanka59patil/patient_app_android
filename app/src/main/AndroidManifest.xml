@@ -10,6 +10,8 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
     <uses-feature
@@ -155,6 +157,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Bugsee activities -->
+        <activity
+            android:name="com.bugsee.library.RequestPermissionsActivity"
+            android:theme="@style/BugseeTheme.Transparent" />
+        <activity
+            android:name="com.bugsee.library.send.SendBundleActivity"
+            android:theme="@style/BugseeActivityStyle" >
+        </activity>
+        <activity
+            android:name="com.bugsee.library.activity.EditScreenshotActivity"
+            android:theme="@style/BugseeActivityStyle" >
+        </activity>
+        <activity
+            android:name="com.bugsee.library.activity.FeedbackActivity"
+            android:theme="@style/BugseeActivityStyle">
+        </activity>
+
 
 
     </application>

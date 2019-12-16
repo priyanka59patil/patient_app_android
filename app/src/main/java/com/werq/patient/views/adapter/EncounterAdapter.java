@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.viewmodel.PatientProfileViewModel;
@@ -119,6 +120,7 @@ public class EncounterAdapter extends RecyclerView.Adapter<EncounterAdapter.Appo
                 holder.tvEncounterDate.setText(new SimpleDateFormat("MMM dd, yyyy").format(encounterDate));
 
             } catch (ParseException e) {
+                Helper.setExceptionLog("ParseException",e);
                 holder.tvEncounterDate.setText("-");
                 e.printStackTrace();
             }

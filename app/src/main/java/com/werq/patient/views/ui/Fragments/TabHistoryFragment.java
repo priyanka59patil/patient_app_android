@@ -197,6 +197,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }

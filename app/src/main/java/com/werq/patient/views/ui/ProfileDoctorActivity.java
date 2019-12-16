@@ -216,6 +216,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                     }
                 }
             }catch (Exception e){
+                Helper.setExceptionLog("Exception",e);
                 if(progressDialog!=null && progressDialog.isShowing()){
                     progressDialog.hide();
                 }

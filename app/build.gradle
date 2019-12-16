@@ -214,7 +214,7 @@ dependencies {
     implementation 'com.scottyab:aescrypt:0.0.1'
 
     //bugsee
-    implementation 'com.bugsee:bugsee-android:+'
+    implementation 'com.bugsee:bugsee-android:1.14.12'
     def lifecycle_version = "2.1.0"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"

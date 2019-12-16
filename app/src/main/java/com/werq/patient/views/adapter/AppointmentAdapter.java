@@ -133,6 +133,7 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
             holder.tvMonth.setText(DateHelper.dayFromDate(date, "month"));
             holder.tvTime.setText(DateHelper.dayFromDate(date, "time"));
         } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
             e.printStackTrace();
         }
         Location location = result.getLocation();

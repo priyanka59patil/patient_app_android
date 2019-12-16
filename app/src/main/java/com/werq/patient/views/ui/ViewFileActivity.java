@@ -115,7 +115,7 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
             }
             catch (Exception e)
             {
-                Log.e("Exception: ", e.getMessage());
+                Helper.setExceptionLog("Exception",e);
             }
 
             fileType=attachmentResult.getFileType();
@@ -159,7 +159,7 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                     if(attachmentResult.getFileUrl()!=null && attachmentResult.getFileUrl().length()>0)
                         query = URLEncoder.encode(attachmentResult.getFileUrl(), "utf-8");
                 } catch (UnsupportedEncodingException e) {
-                    Log.e( "UnsupEncException:", e.getMessage());
+                    Helper.setExceptionLog( "UnsupEncException:", e);
                     e.printStackTrace();
                 }
 

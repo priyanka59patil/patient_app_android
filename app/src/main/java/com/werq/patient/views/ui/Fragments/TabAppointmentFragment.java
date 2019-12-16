@@ -251,6 +251,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }

@@ -182,6 +182,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             time.setValue(DateHelper.dayFromDate(date, "time"));
         } catch (Exception e) {
             e.printStackTrace();
+            Helper.setExceptionLog(TAG+ "-Exception: ",e );
         }
         if (appointmentResultData.getValue().getLocation() != null) {
 
@@ -330,7 +331,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             }
         }
         catch (Exception e){
-            Helper.setLog(TAG+" -Exception",e.getMessage());
+            Helper.setExceptionLog(TAG+" -Exception",e);
         }
 
         Helper.setLog("visitnote size",apptDetailResponse.getData().getVisitNoteAttachment().size()+"");
@@ -350,7 +351,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             }
         }catch (Exception e){
-            Helper.setLog(TAG+" -Exception",e.getMessage());
+            Helper.setExceptionLog(TAG+" -Exception",e);
         }
 
 

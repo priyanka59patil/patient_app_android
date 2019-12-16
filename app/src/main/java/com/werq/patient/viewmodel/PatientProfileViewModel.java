@@ -97,6 +97,7 @@ public class PatientProfileViewModel extends BaseViewModel {
                                 patientDOB.setValue(new SimpleDateFormat("MMMM dd, yyyy").format(patDob));
 
                             } catch (ParseException e) {
+                                Helper.setExceptionLog("ParseException",e);
                                 patientDOB.setValue("");
                                 e.printStackTrace();
                             }

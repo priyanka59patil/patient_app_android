@@ -66,6 +66,10 @@ public class Helper {
         Log.e(tag,value);
     }
 
+    public static void setExceptionLog(String exceptionClassName,Exception e){
+        Helper.setLog(exceptionClassName,e.getMessage());
+    }
+
     public static void showToast(Context context,String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
@@ -154,8 +158,9 @@ public class Helper {
                     }
                 }
             }
-        } catch (Exception ignored) {
-            ignored.printStackTrace();
+        } catch (Exception e) {
+            Helper.setExceptionLog("Exception",e);
+            e.printStackTrace();
         } // for now eat exceptions
         return "";
     }
@@ -166,6 +171,7 @@ public class Helper {
             Date sessionTimestamp= sdf.parse(timestamp);
             return sessionTimestamp.getTime();
         } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
             e.printStackTrace();
         }
         return 0;
@@ -204,7 +210,7 @@ public class Helper {
         try {
             dialog.show();
         } catch (WindowManager.BadTokenException e) {
-
+            Helper.setExceptionLog("WindowManager.BadTokenException",e);
         }
         //dialog.setCancelable(false);
         dialog.getWindow()

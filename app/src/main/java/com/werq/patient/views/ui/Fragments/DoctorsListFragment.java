@@ -156,6 +156,7 @@ public class DoctorsListFragment extends BaseFragment {
                         }
                     }
                 } catch (Exception e) {
+                    Helper.setExceptionLog("Exception",e);
                     e.printStackTrace();
                 }
             }
