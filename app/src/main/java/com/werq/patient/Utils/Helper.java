@@ -63,7 +63,13 @@ public class Helper {
     }
 
     public static void setLog(String tag,String value){
-        Log.e(tag,value);
+        try {
+            Log.e(tag,value);
+
+        }catch (Exception e){
+            Helper.setExceptionLog("LogException",e);
+        }
+
     }
 
     public static void setExceptionLog(String exceptionClassName,Exception e){

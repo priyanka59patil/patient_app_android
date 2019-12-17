@@ -7,6 +7,7 @@ import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -111,6 +112,10 @@ public interface ApiInterface {
     Call<Object> sendRescheduleRequest(@Header("Authorization") String authToken,
                                        @Header("Content-Type") String contentType,
                                        @Body RescheduleAppointment rescheduleAppointment);
+    @POST("Chat")
+    Call<Object> sendNewChatRequest(@Header("Authorization") String authToken,
+                                       @Header("Content-Type") String contentType,
+                                       @Body NewChat newChat);
 
 }
 

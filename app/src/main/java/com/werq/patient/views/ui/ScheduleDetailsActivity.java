@@ -738,14 +738,14 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 mMap.clear(); //clear old markers
 
 
-                CameraPosition googlePlex = CameraPosition.builder()
+                /*CameraPosition googlePlex = CameraPosition.builder()
                         .target(new LatLng(latitude, longitude))
                         .zoom(15)
                         .bearing(0)
                         .tilt(45)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);*/
 
                /* mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(37.4219999, -122.0862462))

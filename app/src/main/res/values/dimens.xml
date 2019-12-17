@@ -83,4 +83,8 @@
     <dimen name="progressbar_width">40dp</dimen>
     <dimen name="hint">14sp</dimen>
     <dimen name="edit_text">16sp</dimen>
+
+
+    <dimen name="chatTimeTextSize">9sp</dimen>
+    <dimen name="chat_msg_text">16sp</dimen>
 </resources>

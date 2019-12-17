@@ -81,39 +81,6 @@ public class LoginViewModel extends BaseViewModel {
     public void loginOnClick()
     {
         Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
-      /*  if(userName.getValue()!=null && !userName.getValue().isEmpty() &&
-        password.getValue()!=null && !password.getValue().isEmpty() ) {
-
-
-            UserCredential userCredential=new UserCredential();
-            userCredential.setUsername(userName.getValue());
-            userCredential.setPassword(password.getValue());
-
-
-            if(Helper.hasNetworkConnection(mContext)){
-
-                getLoading().setValue(true);
-                loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
-
-            }else {
-                getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
-            }
-
-
-        }
-        else {
-            if(userName.getValue()==null || userName.getValue().trim().equals(""))
-            {
-                userNameError.setValue("Email Cannot Be Empty");
-
-            }
-             if(password.getValue()==null || password.getValue().trim().equals(""))
-            {
-                passwordError.setValue("Password Cannot Be Empty");
-            }
-
-        }*/
-
 
         if(validateData()){
             UserCredential userCredential=new UserCredential();
@@ -157,12 +124,12 @@ public class LoginViewModel extends BaseViewModel {
 
             if(password.getValue().trim().equals("")){
                 check = false;
-                password.setValue("Password can not be empty");
+                passwordError.setValue("Password can not be empty");
             }
 
         }else {
             check = false;
-            password.setValue("Password can not be empty");
+            passwordError.setValue("Password can not be empty");
         }
 
         return check;
@@ -218,11 +185,8 @@ public class LoginViewModel extends BaseViewModel {
     @Override
     public void onSuccess(String url, String responseJson) {
 
-        Helper.setLog("responseJson",responseJson);
 
         LoginResponce loginResponce=Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
-
-        Helper.setLog("convertedLogin",loginResponce.toString());
 
         getLoading().setValue(false);
         if(url.equals("SIGNIN")){
@@ -230,15 +194,7 @@ public class LoginViewModel extends BaseViewModel {
             if(loginResponce!=null)
             {
 
-                /*long expiryTimestamp = 0;
-
-                try{
-                    expiryTimestamp=Long.parseLong(loginResponce.getData().getAuthExpiryTime());
-
-                }catch (Exception e){
-
-                }*/
-                Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
+              //  Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
                 sessionManager.clear();
                 long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
 
@@ -248,9 +204,7 @@ public class LoginViewModel extends BaseViewModel {
                         loginResponce.getData().getUser().getID(),
                         timestamp);
 
-                Helper.setLog("convertedTimeStamp",timestamp+"");
-
-                if(rememberMe.getValue()){
+                //Helper.setLog("convertedTimeStamp",timestamp+"");
 
                     String encryptedUName = "";
                     String encryptedPass = "";
@@ -262,9 +216,8 @@ public class LoginViewModel extends BaseViewModel {
                         e.printStackTrace();
                         Helper.setExceptionLog("GeneralSecurityException",e);
                     }
-                    sessionManager.setRememberUsername(true, encryptedUName);
-                    sessionManager.setRememberPassword(true, encryptedPass);
-                }
+                    sessionManager.setRememberUsername(rememberMe.getValue(), encryptedUName);
+                    sessionManager.setRememberPassword(false, encryptedPass);
             }
 
             getActivity().setValue("DashBoard");
@@ -289,9 +242,8 @@ public class LoginViewModel extends BaseViewModel {
 
             String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_username());
             String pwdAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_password());
-               Helper.setLog("decrypUname", uNameAfterDecrypt);
             userName.setValue(uNameAfterDecrypt);
-            password.setValue(pwdAfterDecrypt);
+            //password.setValue(pwdAfterDecrypt);
 
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg
@@ -309,6 +261,8 @@ public class LoginViewModel extends BaseViewModel {
         if(sessionManager.isRememberUsername()) {
             rememberMe.setValue(true);
             setPrefilledUsername();
+        }else {
+            rememberMe.setValue(false);
         }
     }
 }

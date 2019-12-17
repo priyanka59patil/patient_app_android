@@ -177,6 +177,7 @@
 
 
 
+        <service android:name="com.google.firebase.components.ComponentDiscoveryService" />
     </application>
 
 </manifest>

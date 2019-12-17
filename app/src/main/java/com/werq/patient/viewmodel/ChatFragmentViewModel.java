@@ -1,30 +1,47 @@
 package com.werq.patient.viewmodel;
 
+import android.content.Context;
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.werq.patient.Interfaces.ApiInterface;
+import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
-import com.werq.patient.service.repository.ChatRepository;
-
-import java.util.ArrayList;
+import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
+import com.werq.patient.service.model.ResponcejsonPojo.NewChatResponse;
 
 import io.reactivex.disposables.CompositeDisposable;
-import okhttp3.internal.http2.ErrorCode;
 
-public class ChatFragmentViewModel  extends BaseViewModel {
+public class ChatFragmentViewModel extends BaseViewModel {
 
-    ChatRepository chatRepository;
     CompositeDisposable disposable;
+    PatientRepository patientRepository;
+    ApiResponce apiResponce = this;
+    boolean isNewChat = false;
+    MutableLiveData<String> typedMsg;
+    FirebaseDatabase database;
+    DatabaseReference channelIdRef;
 
-  //  MutableLiveData<ArrayList<User>> userList=new MutableLiveData<>();
+    public ChatFragmentViewModel(Context mContext) {
+
+        /*FirebaseApp.initializeApp(mContext);
+        database = FirebaseDatabase.getInstance();*/
+        patientRepository = new PatientRepository();
+        isNewChat = true;
+        typedMsg = new MutableLiveData<>();
 
 
-    public ChatFragmentViewModel() {
     }
-
-   /* public ChatFragmentViewModel(ChatRepository chatRepository, CompositeDisposable disposable) {
-        this.chatRepository = chatRepository;
-        this.disposable = disposable;
-    }*/
 
     @Override
     protected void onCleared() {
@@ -38,15 +55,70 @@ public class ChatFragmentViewModel  extends BaseViewModel {
     @Override
     public void onSuccess(String url, String responseJson) {
 
+
+        if (!TextUtils.isEmpty(url)) {
+
+            switch (url) {
+                case "NewChat":
+                    getLoading().setValue(false);
+                    NewChatResponse newChatResponse=Helper.getGsonInstance().fromJson(responseJson,NewChatResponse.class);
+                    Helper.setLog("NewChatResponse",newChatResponse.toString());
+
+                    /*if(!TextUtils.isEmpty(newChatResponse.getChannelId())){
+                        channelIdRef=database.getReference(newChatResponse.getChannelId());
+                    }
+
+                    channelIdRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            String value = dataSnapshot.getValue(String.class);
+                            Helper.setLog("listen",value);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                            // Failed to read value
+                           Helper.setLog("Firebase-DatabaseError","Failed to read value."+databaseError.getMessage());
+                        }
+                    });*/
+
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
     }
 
     @Override
-    public void onError(String url, String errorCode,String errorMessage) {
-
+    public void onError(String url, String errorCode, String errorMessage) {
+        getLoading().setValue(false);
     }
 
     @Override
     public void onTokenRefersh(String responseJson) {
+            getLoading().setValue(false);
+    }
+
+    public boolean isNewChat() {
+        return isNewChat;
+    }
+
+    public void setNewChat(String message) {
+
+
+            NewChat newChat = new NewChat();
+            newChat.setMessage(message);
+            getLoading().setValue(true);
+            patientRepository.setNewChatRequest(Helper.autoken, newChat, getToast(), apiResponce, "NewChat");
 
     }
+
+    public MutableLiveData<String> getTypedMsg() {
+        return typedMsg;
+    }
+
 }

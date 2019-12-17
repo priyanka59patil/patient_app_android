@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -9,6 +10,7 @@ android {
         targetSdkVersion 28
         versionCode 11
         versionName "0.11"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -35,7 +37,7 @@ android {
         checkReleaseBuilds false
     }
     buildTypes {
-        /*release {
+/*        release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }*/
@@ -58,14 +60,12 @@ android {
             minifyEnabled true
             //shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".dev"
 
             manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
             //signingConfig signingConfigs.debug
         }
-
-        demo   {
+        demo {
             resValue "string", "app_name", "Patient-Uat"
             buildConfigField "String", "app_version", "\"1.1\""
 
@@ -85,7 +85,7 @@ android {
             minifyEnabled true
             //shrinkResources true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".demo"
+           // applicationIdSuffix ".demo"
 
             manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
@@ -110,7 +110,7 @@ android {
             minifyEnabled true
             //shrinkResources true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationIdSuffix ".dev"
+           // applicationIdSuffix ".dev"
 
             manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
@@ -134,8 +134,9 @@ android {
             minifyEnabled true
             //shrinkResources true
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-           // signingConfig signingConfigs.prod
-            applicationIdSuffix ".app"
+            // signingConfig signingConfigs.prod
+           // applicationIdSuffix ".app" -
+
 
             manifestPlaceholders = [googlePlacesApiKey: "AIzaSyA0F_mzmchYXl7AOkFqbzqSV1Lnqy1q6Xo"]
 
@@ -159,6 +160,7 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -244,10 +246,18 @@ dependencies {
 
     /*implementation 'com.github.swapnil1104:OtpEditText:0.1.5'*/
     implementation 'com.github.aabhasr1:OtpView:1.1.2-ktx'
+    //implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
-    implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.android.support:multidex:1.0.3'
     //android permissions library
     implementation 'com.karumi:dexter:4.2.0'
+    //chat view
 
+    implementation 'com.github.stfalcon:chatkit:0.3.3'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
+
+    implementation 'com.google.api-client:google-api-client:1.22.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.22.0'
 }

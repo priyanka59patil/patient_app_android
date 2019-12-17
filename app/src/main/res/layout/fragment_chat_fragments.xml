@@ -17,7 +17,7 @@
         android:paddingTop="@dimen/main_layout_padding"
         tools:context=".views.ui.Fragments.ChatFragments">
 
-        <androidx.recyclerview.widget.RecyclerView
+<!--        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +25,111 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorLightGreyBackground"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <RelativeLayout
+                android:id="@+id/relNoMessage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivNoMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="9dp"
+                    android:src="@drawable/message_white"
+                    android:tint="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/tvErrorMessagePlaceholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivNoMessage"
+                    android:layout_centerInParent="true"
+                    android:text="No Messages"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textview_profile_incomplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_corner"
+                android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
+                android:gravity="center"
+                android:text="! please complete your profile"
+                android:textColor="#B33841"
+                android:translationZ="20dp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_incomplete_profile_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textview_profile_incomplete"
+                android:translationZ="20dp"
+                android:visibility="gone" />
+
+
+            <com.stfalcon.chatkit.messages.MessagesList
+                android:id="@+id/messagesList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/input"
+                android:layout_below="@+id/textview_profile_incomplete"
+                app:incomingDefaultBubbleColor="@android:color/white"
+                app:incomingDefaultBubblePressedColor="@android:color/white"
+                app:incomingDefaultBubbleSelectedColor="@android:color/white"
+                app:incomingDefaultImageOverlaySelectedColor="@android:color/white"
+                app:incomingImageTimeTextColor="@android:color/white"
+                app:incomingImageTimeTextSize="@dimen/chatTimeTextSize"
+                app:incomingTextColor="@android:color/black"
+                app:incomingTextSize="@dimen/chat_msg_text"
+                app:incomingTimeTextColor="@color/chattimetextcolor"
+                app:incomingTimeTextSize="@dimen/chatTimeTextSize"
+                app:outcomingDefaultBubbleColor="@color/colorPrimary"
+                app:outcomingDefaultBubblePressedColor="@color/colorPrimary"
+                app:outcomingDefaultBubbleSelectedColor="@color/colorPrimary"
+                app:outcomingDefaultImageOverlaySelectedColor="@color/colorPrimary"
+                app:outcomingImageTimeTextColor="@android:color/white"
+                app:outcomingImageTimeTextSize="@dimen/chatTimeTextSize"
+                app:outcomingTextColor="@android:color/white"
+                app:outcomingTextSize="@dimen/chat_msg_text"
+                app:outcomingTimeTextColor="@color/chattimetextcolor"
+                app:outcomingTimeTextSize="@dimen/chatTimeTextSize"
+                app:textAutoLink="email|web|phone"
+                app:incomingTextLinkColor="@color/black"
+                app:outcomingTextLinkColor="@color/white"/>
+
+
+            <com.stfalcon.chatkit.messages.MessageInput
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+                app:attachmentButtonBackground="@android:color/white"
+                app:attachmentButtonDefaultIconColor="@color/colorPrimary"
+                app:inputButtonBackground="@android:color/white"
+                app:inputButtonIcon="@drawable/ic_refereal"
+                app:inputHint="Type a message"
+                app:inputMaxLines="3"
+                app:inputTextColor="@color/black"
+                app:showAttachmentButton="true" />
+
+
+        </RelativeLayout>
+
 
 
         <ProgressBar
