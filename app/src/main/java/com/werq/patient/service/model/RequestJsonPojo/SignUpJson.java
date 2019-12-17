@@ -1,12 +1,20 @@
 package com.werq.patient.service.model.RequestJsonPojo;
 
-public class SignUpJson {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class SignUpJson implements Serializable {
+    @SerializedName("Username")
     private String Username;
 
+    @SerializedName("DOB")
     private String DOB;
 
+    @SerializedName("InvitationCode")
     private String InvitationCode;
 
+    @SerializedName("Password")
     private String Password;
 
     public String getUsername ()

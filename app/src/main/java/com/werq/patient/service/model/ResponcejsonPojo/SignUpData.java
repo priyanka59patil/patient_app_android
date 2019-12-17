@@ -1,14 +1,24 @@
 package com.werq.patient.service.model.ResponcejsonPojo;
 
-public class SignUpData {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class SignUpData implements Serializable {
+
+    @SerializedName("User")
     private User User;
 
+    @SerializedName("RefreshToken")
     private String RefreshToken;
 
+    @SerializedName("RefreshTokenExpiryTime")
     private String RefreshTokenExpiryTime;
 
+    @SerializedName("AuthToken")
     private String AuthToken;
 
+    @SerializedName("AuthExpiryTime")
     private String AuthExpiryTime;
 
     public User getUser ()

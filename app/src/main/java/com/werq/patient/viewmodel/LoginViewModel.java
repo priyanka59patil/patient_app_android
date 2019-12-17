@@ -50,7 +50,6 @@ public class LoginViewModel extends BaseViewModel {
         loginRepository=new LoginRepository();
         rememberMe=new MutableLiveData<>();
         this.mContext=context;
-        Helper.setLog("context",context+"");
         /*sessionManager = new SessionManager(context);
         userRememberPref = new SessionManager(context, "");*/
 
@@ -80,7 +79,8 @@ public class LoginViewModel extends BaseViewModel {
 
     public void loginOnClick()
     {
-        Log.e( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
+        Helper.setLog( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
+
 
         if(validateData()){
             UserCredential userCredential=new UserCredential();
@@ -108,7 +108,7 @@ public class LoginViewModel extends BaseViewModel {
                 check = false;
                 userNameError.setValue("Email Cannot Be Empty");
             }else {
-                if(!Helper.isValidEmail(userName.getValue())){
+                if(!Helper.isValidEmail(userName.getValue().trim())){
                     check = false;
                     userNameError.setValue("Please enter valid email");
                 }
@@ -185,17 +185,25 @@ public class LoginViewModel extends BaseViewModel {
     @Override
     public void onSuccess(String url, String responseJson) {
 
-
         LoginResponce loginResponce=Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
+
 
         getLoading().setValue(false);
         if(url.equals("SIGNIN")){
 
             if(loginResponce!=null)
             {
-
-              //  Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
                 sessionManager.clear();
+                long expiryTimestamp = 0;
+
+                try{
+                    expiryTimestamp=Long.parseLong(loginResponce.getData().getAuthExpiryTime());
+
+                }catch (Exception e){
+
+                }
+                //Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
+
                 long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
 
                 sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
@@ -206,11 +214,12 @@ public class LoginViewModel extends BaseViewModel {
 
                 //Helper.setLog("convertedTimeStamp",timestamp+"");
 
+
                     String encryptedUName = "";
                     String encryptedPass = "";
                     try {
                         encryptedUName = AESCrypt.encrypt("Asdrwsd", userName.getValue().trim().toLowerCase());
-                        encryptedPass = AESCrypt.encrypt("Asdrwsd", password.getValue());
+                        encryptedPass = AESCrypt.encrypt("Asdrwsd", password.getValue().trim());
                     } catch (GeneralSecurityException e) {
                         //handle error
                         e.printStackTrace();
@@ -243,7 +252,7 @@ public class LoginViewModel extends BaseViewModel {
             String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_username());
             String pwdAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_password());
             userName.setValue(uNameAfterDecrypt);
-            //password.setValue(pwdAfterDecrypt);
+            password.setValue(pwdAfterDecrypt);
 
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg
@@ -261,7 +270,8 @@ public class LoginViewModel extends BaseViewModel {
         if(sessionManager.isRememberUsername()) {
             rememberMe.setValue(true);
             setPrefilledUsername();
-        }else {
+        }
+        else {
             rememberMe.setValue(false);
         }
     }

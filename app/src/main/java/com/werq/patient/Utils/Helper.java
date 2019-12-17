@@ -192,11 +192,10 @@ public class Helper {
     }
 
     public static boolean isValidEmail(CharSequence target) {
-        if (target == null) {
-            return false;
-        } else {
-            return Patterns.EMAIL_ADDRESS.matcher(target).matches();
-        }
+
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+");
+        Matcher matcher = pattern.matcher(target);
+        return matcher.matches();
     }
 
     public static boolean isValidPhone(CharSequence target) {

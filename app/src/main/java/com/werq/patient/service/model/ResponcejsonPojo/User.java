@@ -1,22 +1,35 @@
 package com.werq.patient.service.model.ResponcejsonPojo;
 
-public class User {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+    @SerializedName("FirstName")
     private String FirstName;
 
+    @SerializedName("DOB")
     private String DOB;
 
+    @SerializedName("Createdat")
     private String Createdat;
 
+    @SerializedName("IsHispanic")
     private String IsHispanic;
 
+    @SerializedName("ContactInfo")
     private ContactInfo[] ContactInfo;
 
+    @SerializedName("ID")
     private String ID;
 
+    @SerializedName("LastName")
     private String LastName;
 
+    @SerializedName("Updatedat")
     private String Updatedat;
 
+    @SerializedName("IsDeceased")
     private String IsDeceased;
 
     public String getFirstName ()

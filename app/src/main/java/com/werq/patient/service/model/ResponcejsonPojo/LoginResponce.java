@@ -1,10 +1,17 @@
 package com.werq.patient.service.model.ResponcejsonPojo;
 
-public class LoginResponce {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class LoginResponce implements Serializable {
+    @SerializedName("Message")
     private String Message;
 
+    @SerializedName("Data")
     private SignUpData Data;
 
+    @SerializedName("StatusCode")
     private String StatusCode;
 
     public String getMessage ()

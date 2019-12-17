@@ -8,11 +8,12 @@ android {
         applicationId "com.werq.patient"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 11
-        versionName "0.11"
+        versionCode 15
+        versionName "0.15"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
 
     }
     dataBinding {
@@ -56,10 +57,10 @@ android {
 
             //debug build urls
             buildConfigField "String", "baseUrl", "\"https://dev.werq.com/\""
-
-            minifyEnabled true
             //shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
             manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
@@ -81,9 +82,9 @@ android {
 
             //demo build strings
             buildConfigField "String", "country_code", "\"+1\""
-
-            minifyEnabled true
             //shrinkResources true
+
+            minifyEnabled false
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
            // applicationIdSuffix ".demo"
 
@@ -107,8 +108,9 @@ android {
             //debug build urls
             buildConfigField "String", "baseUrl", "\"https://dev.werq.com/\""
 
-            minifyEnabled true
             //shrinkResources true
+
+            minifyEnabled false
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
            // applicationIdSuffix ".dev"
 
@@ -131,8 +133,9 @@ android {
             //prod build strings
             buildConfigField "String", "country_code", "\"+1\""
 
-            minifyEnabled true
             //shrinkResources true
+
+            minifyEnabled false
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             // signingConfig signingConfigs.prod
            // applicationIdSuffix ".app" -
