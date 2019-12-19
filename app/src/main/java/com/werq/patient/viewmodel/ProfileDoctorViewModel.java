@@ -22,21 +22,13 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class ProfileDoctorViewModel extends BaseViewModel {
 
-    private PatientRepository patientRepository;
-    private CompositeDisposable disposable;
     private static final String TAG = "TabAppoinmentViewModel";
-
-    ApiResponce apiResponce=this;
-    int doctorId;
-
     public MutableLiveData<String> doctorName;
     public MutableLiveData<String> doctorSpeciality;
     public MutableLiveData<String> about;
     public MutableLiveData<String> profileUrl;
-
     public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
     public MutableLiveData<ArrayList<Coworker>> coworkerList;
-
     public MutableLiveData<ArrayList<Location>> locationsList;
     public MutableLiveData<String> practicePhoneNumber;
     public MutableLiveData<String> practiceWebUrl;
@@ -44,10 +36,36 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public MutableLiveData<String> practiceName;
     public MutableLiveData<Boolean> rvPracticesVisibility;
     public MutableLiveData<Boolean> coworkerLoading;
+    ApiResponce apiResponce = this;
+    int doctorId;
+    int coworkerPageNo = 0;
+    private PatientRepository patientRepository;
+    private CompositeDisposable disposable;
 
-    int coworkerPageNo=0;
 
+    public ProfileDoctorViewModel() {
 
+        Log.e("ProfileDoctorViewModel", "init");
+
+        patientRepository = new PatientRepository();
+        disposable = new CompositeDisposable();
+        this.patientRepository = new PatientRepository();
+
+        doctorName = new MutableLiveData<>();
+        doctorSpeciality = new MutableLiveData<>();
+        about = new MutableLiveData<>();
+        profileUrl = new MutableLiveData<>();
+        doctorDetailsResponse = new MutableLiveData<>();
+
+        coworkerList = new MutableLiveData<>();
+        locationsList = new MutableLiveData<>();
+        rvPracticesVisibility = new MutableLiveData<>();
+
+        practiceWebUrl = new MutableLiveData<>();
+        practicePhoneNumber = new MutableLiveData<>();
+        coworkerLoading = new MutableLiveData<>();
+        practiceName = new MutableLiveData<>();
+    }
 
     public void setDoctorId(int doctorId) {
         this.doctorId = doctorId;
@@ -55,148 +73,123 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         getDoctorDetails(0);
     }
 
-    public void getDoctorDetails( int page) {
+    public void getDoctorDetails(int page) {
 
 
-        if(doctorId!=0){
-            coworkerPageNo=page;
-            if(coworkerPageNo!=0){
+        if (doctorId != 0) {
+            coworkerPageNo = page;
+            if (coworkerPageNo != 0) {
                 coworkerLoading.setValue(true);
-            }else
-            getLoading().setValue(true);
-            patientRepository.getDocterDetails(Helper.autoken,doctorId,getToast(),"10",page*10+"",apiResponce,"DoctorDetails");
+            } else
+                getLoading().setValue(true);
+            patientRepository.getDocterDetails(Helper.autoken, doctorId, getToast(), "10", page * 10 + "", apiResponce, "DoctorDetails");
         }
-    }
-
-    public ProfileDoctorViewModel() {
-
-        Log.e("ProfileDoctorViewModel","init");
-
-        patientRepository = new PatientRepository();
-        disposable = new CompositeDisposable();
-        this.patientRepository =new PatientRepository();
-
-        doctorName=new MutableLiveData<>();
-        doctorSpeciality=new MutableLiveData<>();
-        about=new MutableLiveData<>();
-        profileUrl=new MutableLiveData<>();
-        doctorDetailsResponse=new MutableLiveData<>();
-
-        coworkerList=new MutableLiveData<>();
-        locationsList=new MutableLiveData<>();
-        rvPracticesVisibility=new MutableLiveData<>();
-
-        practiceWebUrl=new MutableLiveData<>();
-        practicePhoneNumber=new MutableLiveData<>();
-        coworkerLoading=new MutableLiveData<>();
-        practiceName=new MutableLiveData<>();
     }
 
     @Override
     public void onSuccess(String url, String responseJson) {
-        if(coworkerPageNo!=0){
+        if (coworkerPageNo != 0) {
             coworkerLoading.setValue(false);
-        }else
+        } else
             getLoading().setValue(false);
-        Helper.setLog("onSuccess=responseJson",responseJson);
-        if(url!=null && !url.isEmpty()){
+        Helper.setLog("onSuccess=responseJson", responseJson);
+        if (url != null && !url.isEmpty()) {
 
-            if(url.equalsIgnoreCase("DoctorDetails"))
-            {
-                DoctorDetailsResponse detailsResponse= Helper.getGsonInstance().fromJson(responseJson,DoctorDetailsResponse.class);
+            if (url.equalsIgnoreCase("DoctorDetails")) {
+                DoctorDetailsResponse detailsResponse = Helper.getGsonInstance().fromJson(responseJson, DoctorDetailsResponse.class);
 
-                if(detailsResponse!=null && detailsResponse.getData()!=null && detailsResponse.getData().getDoctor()!=null)
-                {
+                if (detailsResponse != null && detailsResponse.getData() != null && detailsResponse.getData().getDoctor() != null) {
 
-                    Helper.setLog("onSuccess=responseJson",detailsResponse.toString());
+                    Helper.setLog("onSuccess=responseJson", detailsResponse.toString());
                     doctorDetailsResponse.setValue(detailsResponse);
-                    Doctor doctor=detailsResponse.getData().getDoctor();
+                    Doctor doctor = detailsResponse.getData().getDoctor();
 
-                    if(doctor!=null){
+                    if (doctor != null) {
 
-                        doctorName.setValue(doctor.getFirstName()+" "+doctor.getMiddleName()+doctor.getLastName());
+                        doctorName.setValue(doctor.getFirstName() + " " + doctor.getMiddleName() + doctor.getLastName());
 
-                        if(doctor.getSpeciality()!=null)
-                        {
+                        if (doctor.getSpeciality() != null) {
                             doctorSpeciality.setValue(doctor.getSpeciality().getName());
-                        }
-                        else {
+                        } else {
                             doctorSpeciality.setValue("Not Available");
                         }
 
-                        if(doctor.getAboutMe()!=null && !doctor.getAboutMe().isEmpty())
+                        if (doctor.getAboutMe() != null && !doctor.getAboutMe().isEmpty())
                             about.setValue(doctor.getAboutMe());
                         else
                             about.setValue("Not Available");
 
-                        if(doctor.getProfilePhoto()!=null){
+                        if (doctor.getProfilePhoto() != null) {
                             profileUrl.setValue(doctor.getProfilePhoto());
-                        }else {
+                        } else {
                             profileUrl.setValue("");
                         }
 
 
-
                     }
 
-                    if(detailsResponse.getData().getCoworker()!=null){
+                    if (detailsResponse.getData().getCoworker() != null) {
 
-                        ArrayList<Coworker> coworkerArrayList=new ArrayList<>();
+                        ArrayList<Coworker> coworkerArrayList = new ArrayList<>();
 
-                        coworkerArrayList.addAll( detailsResponse.getData().getCoworker());
+                        coworkerArrayList.addAll(detailsResponse.getData().getCoworker());
                         coworkerList.setValue(coworkerArrayList);
-                   }
+                    }
 
 
-                    if(detailsResponse.getData().getLocations()!=null){
+                    if (detailsResponse.getData().getLocations() != null) {
 
-                        ArrayList<Location> locationsArrayList=(ArrayList<Location>) detailsResponse.getData().getLocations();
+                        ArrayList<Location> locationsArrayList = (ArrayList<Location>) detailsResponse.getData().getLocations();
                         locationsList.setValue(locationsArrayList);
                         //practiceName.setValue(doctor.get);
-                        if(locationsArrayList.size()>0){
+                        if (locationsArrayList.size() > 0) {
                             rvPracticesVisibility.setValue(true);
-                        }else {
+                        } else {
                             rvPracticesVisibility.setValue(false);
                         }
-                    }
-                    else {
+                    } else {
                         locationsList.setValue(null);
                         rvPracticesVisibility.setValue(false);
                     }
 
 
-                    if(doctor.getContactInfo()!=null){
-                       // Helper.setLog("inside","doctor.getContactInfo()");
+                    if (doctor.getContactInfo() != null) {
+                        // Helper.setLog("inside","doctor.getContactInfo()");
 
                         for (int i = 0; i < doctor.getContactInfo().size(); i++) {
                             //1 means website
                             // 2 means phone number
-                            if(doctor.getContactInfo().get(i).getType()==1 ){
-                                if(!TextUtils.isEmpty(doctor.getContactInfo().get(i).getDetails())){
-                                    practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
-                                }else {
-                                    practiceWebUrl.setValue("Not Available");
+                            if (doctor.getContactInfo().get(i).getType() != null) {
+                                switch (doctor.getContactInfo().get(i).getType()) {
+                                    case 1:
+                                        if (!TextUtils.isEmpty(doctor.getContactInfo().get(i).getDetails())) {
+                                            practiceWebUrl.setValue(doctor.getContactInfo().get(i).getDetails());
+                                        } else {
+                                            practiceWebUrl.setValue("Not Available");
+                                        }
+                                        break;
+                                    case 2:
+                                        if (!TextUtils.isEmpty(doctor.getContactInfo().get(i).getDetails())) {
+                                            practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                                        } else {
+                                            practicePhoneNumber.setValue("");
+                                        }
+                                        break;
+                                    case 0:
+                                        practiceWebUrl.setValue("Not Available");
+                                        practicePhoneNumber.setValue("");
+                                        break;
+
                                 }
-
                             }
 
-                            else if(doctor.getContactInfo().get(i).getType()==2 ){
-                                practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
-                            }
-
-                            else if(doctor.getContactInfo().get(i).getType()==0){
-                                practiceWebUrl.setValue("Not Available");
-                                practicePhoneNumber.setValue("Not Available");
-                            }
                         }
-                    }
-                    else {
-                        Helper.setLog("inside practiceWebUrl","Not Available");
+                    } else {
+                        Helper.setLog("inside practiceWebUrl", "Not Available");
                         practiceWebUrl.setValue("Not Available");
-                        practicePhoneNumber.setValue("Not Available");
+                        practicePhoneNumber.setValue("");
                     }
-                }
-                else {
+                } else {
                     doctorDetailsResponse.setValue(null);
                 }
 
@@ -206,12 +199,12 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, String errorCode,String errorMessage) {
-        if(coworkerPageNo!=0){
+    public void onError(String url, String errorCode, String errorMessage) {
+        if (coworkerPageNo != 0) {
             coworkerLoading.setValue(false);
-        }else
+        } else
             getLoading().setValue(false);
-        Helper.setLog("onError","url-"+url+"  errorMessage-"+errorMessage );
+        Helper.setLog("onError", "url-" + url + "  errorMessage-" + errorMessage);
         getToast().setValue(errorMessage);
         //doctorDetailsResponse.setValue(null);
     }

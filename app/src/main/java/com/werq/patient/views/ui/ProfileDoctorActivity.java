@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -16,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -35,8 +36,9 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.werq.patient.BuildConfig;
+import com.werq.patient.Interfaces.BasicActivities;
+import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityProfileDoctorBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
@@ -44,11 +46,10 @@ import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
 import com.werq.patient.views.ui.Fragments.DoctorsListFragment;
 import com.werq.patient.views.ui.Fragments.PracticeFragment;
-import com.werq.patient.Interfaces.BasicActivities;
-import com.werq.patient.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileDoctorActivity extends BaseActivity implements BasicActivities {
@@ -110,16 +111,17 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     private int mPx;
     boolean isMessageDisabled;
     Intent intent;
-    private  int doctorId;
+    private int doctorId;
     ProgressDialog progressDialog;
     Doctor doctorData;
     ProfileDoctorViewModel profileDoctorViewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_profile_doctor);
 
-        ActivityProfileDoctorBinding activityProfileDoctorBinding= DataBindingUtil.setContentView(this,R.layout.activity_profile_doctor);
+        ActivityProfileDoctorBinding activityProfileDoctorBinding = DataBindingUtil.setContentView(this, R.layout.activity_profile_doctor);
         activityProfileDoctorBinding.setLifecycleOwner(this);
         mContext = this;
         intent = getIntent();
@@ -129,12 +131,12 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        profileDoctorViewModel= ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
+        profileDoctorViewModel = ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
 
-        if(Helper.hasNetworkConnection(mContext)){
+        if (Helper.hasNetworkConnection(mContext)) {
             profileDoctorViewModel.setDoctorId(doctorData.getiD());
-        }else{
-            Helper.showToast(mContext,getResources().getString(R.string.no_network_conection));
+        } else {
+            Helper.showToast(mContext, getResources().getString(R.string.no_network_conection));
         }
 
 
@@ -179,18 +181,28 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             }
         });
 
-        profileDoctorViewModel.getDoctorDetailsResponse().observe(this,doctorDetailsResponse -> {
-            if(doctorDetailsResponse!=null)
-            {
+        profileDoctorViewModel.getDoctorDetailsResponse().observe(this, doctorDetailsResponse -> {
+            if (doctorDetailsResponse != null) {
                 setSupportActionBar(toolbar);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 doctorDetailsLayout.setVisibility(View.VISIBLE);
                 tvNoDoctorDetails.setVisibility(View.GONE);
-            }else {
+            } else {
                 setSupportActionBar(noDatatoolbar);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 doctorDetailsLayout.setVisibility(View.GONE);
                 tvNoDoctorDetails.setVisibility(View.VISIBLE);
+            }
+        });
+
+        profileDoctorViewModel.getPracticePhoneNumber().observe(this, s -> {
+            Helper.setLog("getPracticePhoneNumber", s + "-val");
+            if (!TextUtils.isEmpty(s)) {
+                btcall.setEnabled(true);
+                btcall.setAlpha(1f);
+            } else {
+                btcall.setEnabled(false);
+                btcall.setAlpha(0.5f);
             }
         });
 
@@ -201,23 +213,22 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     protected void onResume() {
         super.onResume();
 
-        profileDoctorViewModel.getLoading().observe(this,aBoolean -> {
-            try{
-                if(aBoolean ){
-                    if(progressDialog!=null && !progressDialog.isShowing()){
+        profileDoctorViewModel.getLoading().observe(this, aBoolean -> {
+            try {
+                if (aBoolean) {
+                    if (progressDialog != null && !progressDialog.isShowing()) {
                         progressDialog.show();
-                    }else {
-                        progressDialog=Helper.createProgressDialog(mContext);
+                    } else {
+                        progressDialog = Helper.createProgressDialog(mContext);
                     }
-                }
-                else {
-                    if(progressDialog!=null && progressDialog.isShowing()){
+                } else {
+                    if (progressDialog != null && progressDialog.isShowing()) {
                         progressDialog.hide();
                     }
                 }
-            }catch (Exception e){
-                Helper.setExceptionLog("Exception",e);
-                if(progressDialog!=null && progressDialog.isShowing()){
+            } catch (Exception e) {
+                Helper.setExceptionLog("Exception", e);
+                if (progressDialog != null && progressDialog.isShowing()) {
                     progressDialog.hide();
                 }
 
@@ -225,12 +236,11 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
         });
 
-        profileDoctorViewModel.profileUrl.observe(this,s -> {
+        profileDoctorViewModel.profileUrl.observe(this, s -> {
 
-            if(s!=null && !s.equals(""))
-            {
+            if (s != null && !s.equals("")) {
                 String url = null;
-                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile+s;
+                url = "https://s3.amazonaws.com/" + BuildConfig.s3BucketNameUserProfile + s;
                 Glide.with(mContext).load(url).apply(new RequestOptions()
                         .placeholder(R.drawable.user_image_placeholder)
                         .error(R.drawable.user_image_placeholder).skipMemoryCache(false).diskCacheStrategy(DiskCacheStrategy.ALL)).into(ivUserProfile);
@@ -240,20 +250,19 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                         .error(R.drawable.user_image_placeholder).skipMemoryCache(false)
                         .diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(tbuserimageview);
-            }
-            else {
+            } else {
                 ivUserProfile.setImageResource(R.drawable.user_image_placeholder);
             }
         });
 
-        profileDoctorViewModel.doctorName.observe(this,s -> {
+        profileDoctorViewModel.doctorName.observe(this, s -> {
             tvUsername.setText(s);
         });
-        profileDoctorViewModel.doctorSpeciality.observe(this,s -> {
+        profileDoctorViewModel.doctorSpeciality.observe(this, s -> {
             tvSpeciality.setText(s);
         });
 
-        profileDoctorViewModel.about.observe(this,s -> {
+        profileDoctorViewModel.about.observe(this, s -> {
             tvAbout.setText(s);
         });
     }
@@ -304,6 +313,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     public void setView(Object data) {
 
     }
+
     public void addFragment(Fragment fra) {
         /*Bundle bundle = new Bundle();
         bundle.putSerializable("doctorDetailsResponse", profileDoctorViewModel.doctorDetailsResponse.getValue());
@@ -317,9 +327,9 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
     @Override
     public void getIntentData() {
-        if(intent!=null){
-            doctorData= (Doctor) intent.getSerializableExtra("doctorData");
-            Helper.setLog("doctorData",doctorData.toString());
+        if (intent != null) {
+            doctorData = (Doctor) intent.getSerializableExtra("doctorData");
+            Helper.setLog("doctorData", doctorData.toString());
             isMessageDisabled = intent.getBooleanExtra("isMessageDisabled", false);
             if (isMessageDisabled) {
                 layoutBtChat.setVisibility(View.GONE);
@@ -350,8 +360,22 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     @Override
     protected void onStop() {
         super.onStop();
-        if(progressDialog!=null && progressDialog.isShowing()){
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
         }
+    }
+
+    @OnClick(R.id.btcall)
+    public void onViewClicked() {
+
+        String phoneNo=profileDoctorViewModel.getPracticePhoneNumber().getValue();
+        if(!TextUtils.isEmpty(phoneNo)){
+
+            Helper.setLog("getPracticePhoneNumber", phoneNo + "-val");
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + phoneNo.trim()));
+            startActivity(callIntent);
+        }
+
     }
 }

@@ -2,7 +2,6 @@ package com.werq.patient.views.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -178,6 +177,6 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.tvForgotPassword)
     public void onViewClicked() {
 
-        startActivity(new Intent(mContext, ForgotPasswordActivity.class));
+
     }
 }

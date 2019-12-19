@@ -99,7 +99,7 @@ public class SignUpViewModel extends BaseViewModel {
             }else {
                 if(!Helper.isValidEmail(userName.getValue())){
                     check = false;
-                    userNameError.setValue("Please enter a valid email");
+                    userNameError.setValue("Please enter a valid email id");
                 }
             }
 
@@ -184,7 +184,7 @@ public class SignUpViewModel extends BaseViewModel {
 
            // getActivity().setValue("CreateAccountActivity");
         } else {
-            dobError.setValue("Please Select Dob");
+            dobError.setValue("Please select your DOB for verification");
         }
 
     }

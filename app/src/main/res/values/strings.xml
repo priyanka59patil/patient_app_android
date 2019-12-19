@@ -233,7 +233,7 @@
 
     <string name="empty_email">Please enter an email id</string>
     <string name="empty_password">Please enter password</string>
-    <string name="invalid_email_id">Please enter a valid email</string>
+    <string name="invalid_email_id">Please enter a valid email id</string>
     <string name="incorrect_email_password">Incorrect Email id or Password</string>
 
     <!--Page Lables-->
