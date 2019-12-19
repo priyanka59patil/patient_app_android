@@ -67,7 +67,9 @@
                     android:hint="Select Date Of Birth "
                     android:text="@={viViewModel.dob}"
                     android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
-                    android:onTextChanged="@{viViewModel.onTextChanged}"/>
+                    android:onTextChanged="@{viViewModel.onTextChanged}"
+                    android:clickable="true"
+                    android:editable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button

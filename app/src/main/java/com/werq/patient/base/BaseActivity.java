@@ -101,7 +101,7 @@ public class BaseActivity extends AppCompatActivity {
                             break;
 
                         case "ForgotPwd":startActivity(new Intent(mContext, ForgotPasswordActivity.class));
-                            finish();
+                                finish();
                             break;
 
                         case "SignUp":startActivity(new Intent(mContext, SignUpActivity.class));

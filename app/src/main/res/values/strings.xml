@@ -29,11 +29,11 @@
     <string name="finger_print_string">Would you like to use fingerprint instead of typing password when you Log In ?</string>
     <string name="tab_upcoming">UPCOMING</string>
     <string name="tab_history">HISTORY</string>
-    <string name="error_email">Email can not be empty</string>
+    <string name="error_email">Please enter a valid email id</string>
     <string name="error_email_phone">Email or Phone Number can not be empty</string>
     <string name="error_password">Password can not be empty</string>
     <string name="please_enter_pin">Please Enter Pin</string>
-    <string name="empty_dob">Please Select Dob</string>
+    <string name="empty_dob">Please select your Dob</string>
     <string name="select_email">Email</string>
     <string name="label_status_confirmed">Confirmed</string>
     <string name="label_status_missed">Missed</string>
@@ -210,18 +210,18 @@
 
     <string name="CONFIRMED_APPOINTMENT_BROADCAST">confirmed_appointment</string>
 
-    <string name="summery_of_care">Summery of Care</string>
+    <string name="summery_of_care">Summary of Care</string>
     <string name="allergies">Allergies</string>
     <string name="history_of_pastillness">History of Past Illness</string>
     <string name="social_history">Social History</string>
     <string name="problem">Problem List</string>
 
 
-    <string name="encounter">Encounter</string>
-    <string name="assesssment">Assessment</string>
-    <string name="instruction">Instruction</string>
+    <string name="encounter">Encounters</string>
+    <string name="assesssment">Assessments</string>
+    <string name="instruction">Instructions</string>
     <string name="plan_of_care">Plan of Care</string>
-    <string name="history_of_procedure">History of Procedure</string>
+    <string name="history_of_procedure">History of Procedures</string>
     <string name="no_upcomming_appt">No Upcomming Appointments</string>
     <string name="no_history_appt">No History Appointments</string>
     <string name="no_doctor_team">No Doctor Teams</string>
@@ -229,4 +229,15 @@
     <string name="no_data_found">No Data Found</string>
     <string name="no_medications">No Medication</string>
 
+
+
+    <string name="empty_email">Please enter an email id</string>
+    <string name="empty_password">Please enter password</string>
+    <string name="invalid_email_id">Please enter a valid email</string>
+    <string name="incorrect_email_password">Incorrect Email id or Password</string>
+
+    <!--Page Lables-->
+
+    <string name="page_settings">Settings</string>
+    <string name="page_change_password">Change Password</string>
 </resources>

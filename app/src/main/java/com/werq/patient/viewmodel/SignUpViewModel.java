@@ -95,18 +95,18 @@ public class SignUpViewModel extends BaseViewModel {
 
             if (userName.getValue().trim().equals("")) {
                 check = false;
-                userNameError.setValue("Email Cannot Be Empty");
+                userNameError.setValue("Please enter an email id");
             }else {
                 if(!Helper.isValidEmail(userName.getValue())){
                     check = false;
-                    userNameError.setValue("Please enter valid email");
+                    userNameError.setValue("Please enter a valid email");
                 }
             }
 
         }
         else {
             check = false;
-            userNameError.setValue("Email Cannot Be Empty");
+            userNameError.setValue("Please enter an email id");
         }
 
         /*if(newpassword.getValue()!=null){

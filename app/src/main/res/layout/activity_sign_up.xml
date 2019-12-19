@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:textColor="@color/black"
-                android:text="Please enter the code You received from your doctor "
+                android:text="Please enter the code you received from your doctor "
                 android:textSize="@dimen/textSize_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

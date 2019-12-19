@@ -156,21 +156,6 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setSelectedItemId(R.id.calendar);
         Helper.setToolbar(getSupportActionBar(), "Appointments");
-        FirebaseApp.initializeApp(this);
-
-        DatabaseReference dr= FirebaseDatabase.getInstance().getReference("019cf1a3-1feb-11ea-978c-028da6c5910c");
-        dr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Log.e( "onDataChange: ", dataSnapshot.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e( "onCancelled: ", databaseError.toString());
-            }
-        });
 
         fm.beginTransaction().add(R.id.mainLayout, profileFragment, "3").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout, filesFragment, "2").hide(filesFragment).commit();

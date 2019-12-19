@@ -73,7 +73,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void setToolbar() {
-        Helper.setToolbarwithCross(getSupportActionBar(), "Setting");
+        Helper.setToolbarwithCross(getSupportActionBar(), getResources().getString(R.string.page_settings));
     }
 
     private void initializevariable() {

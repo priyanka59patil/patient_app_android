@@ -65,7 +65,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
                     =Helper.getGsonInstance().fromJson(responseJson,ChangePasswordResponse.class);
             getToast().setValue("Your password has been set successfully");
             changePasswordStatus.setValue(true);
-            Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
+            //Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
 
 
 
@@ -117,15 +117,16 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
         }
         else {
+
             if(TextUtils.isEmpty(currentPassword.getValue())){
-                currentPasswordError.setValue("Current password cannot be empty");
+                currentPasswordError.setValue("Please enter current password");
             }
             if(TextUtils.isEmpty(newPassword.getValue())){
-                newPasswordError.setValue("New password cannot be empty");
+                newPasswordError.setValue("Please enter new password");
             }
 
             if(TextUtils.isEmpty(reenteredPassword.getValue())){
-                reenteredPasswordError.setValue("Confirm password cannot be empty");
+                reenteredPasswordError.setValue("Please confirm new password");
             }
         }
 

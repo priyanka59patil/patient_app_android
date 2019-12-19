@@ -4,9 +4,11 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -14,14 +16,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.viewmodel.SignUpViewModel;
-import com.werq.patient.viewmodel.VerifyIdentityViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.EditTextUtils;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityVerifyIdentityBinding;
+import com.werq.patient.viewmodel.SignUpViewModel;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -40,11 +41,13 @@ public class VerifyIdentity extends BaseActivity {
     TextInputLayout spDob;
 
     SignUpViewModel viViewModel;
+    @BindView(R.id.etspDob)
+    EditText etspDob;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_verify_identity);
+        // setContentView(R.layout.activity_verify_identity);
 
         initlizeVariables();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -70,7 +73,7 @@ public class VerifyIdentity extends BaseActivity {
             try {
                 spDob.getEditText().setText(DateHelper.dateFormatmmddyyyy(myCalendar.getTime()));
             } catch (ParseException e) {
-                Helper.setExceptionLog("ParseException",e);
+                Helper.setExceptionLog("ParseException", e);
                 e.printStackTrace();
             }
 
@@ -89,26 +92,27 @@ public class VerifyIdentity extends BaseActivity {
 
 
     private void initlizeVariables() {
-        ActivityVerifyIdentityBinding activityVIBinding= DataBindingUtil.setContentView(this,R.layout.activity_verify_identity);
+        ActivityVerifyIdentityBinding activityVIBinding = DataBindingUtil.setContentView(this, R.layout.activity_verify_identity);
         activityVIBinding.setLifecycleOwner(this);
-        viViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
+        viViewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
         setBaseViewModel(viViewModel);
         activityVIBinding.setViViewModel(viViewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         mContext = this;
         myCalendar = Calendar.getInstance();
-        String invitationcode=getIntent().getExtras().getString("invitationCode");
+        etspDob.setInputType(InputType.TYPE_NULL);
+        etspDob.requestFocus();
+        String invitationcode = getIntent().getExtras().getString("invitationCode");
         viViewModel.setInvitaionCode(invitationcode);
         viViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
             @Override
             public void onChanged(Bundle bundle) {
 
-                if(bundle!=null){
+                if (bundle != null) {
 
-                    Helper.setLog("VI-OpenActivitywith",bundle.getString("dob"));
-                    Helper.setLog("VI-OpenActivitywith",bundle.getString("dob"));
-                    Intent intent=new Intent(mContext,CreateAccountActivity.class);
+                    Helper.setLog("VI-OpenActivitywith", bundle.getString("dob"));
+                    Intent intent = new Intent(mContext, CreateAccountActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
 
@@ -124,13 +128,15 @@ public class VerifyIdentity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.etspDob, })
+    @OnClick({R.id.etspDob,})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.etspDob:
-                new DatePickerDialog(mContext, date, myCalendar
+                DatePickerDialog mDatePickerDialog=new DatePickerDialog(mContext, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                mDatePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePickerDialog.show();
                 break;
             /*case R.id.button:
                 if (!validation())

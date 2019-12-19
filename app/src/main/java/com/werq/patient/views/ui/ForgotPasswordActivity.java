@@ -35,7 +35,7 @@ public class ForgotPasswordActivity extends BaseActivity {
     @BindView(R.id.tvPasswordHint)
     TextView tvPasswordHint;
 
-    boolean isFromChangePassword;
+    //boolean isFromChangePassword;
     Intent intent;
     @BindView(R.id.etemail)
     EditText etemail;
@@ -85,18 +85,18 @@ public class ForgotPasswordActivity extends BaseActivity {
     }
 
     private void setView() {
-        if (isFromChangePassword) {
+        /*if (isFromChangePassword) {
             tvTextpassword.setVisibility(View.GONE);
             getActionBarTitle(getResources().getString(R.string.label_change_password));
             etPassword.setVisibility(View.VISIBLE);
             etemail.setVisibility(View.GONE);
 
-        } else {
+        } else {*/
             tvTextpassword.setVisibility(View.VISIBLE);
             getActionBarTitle(getResources().getString(R.string.label_forgot_password));
             etPassword.setVisibility(View.GONE);
             etemail.setVisibility(View.VISIBLE);
-        }
+        //}
     }
 
     private void getActionBarTitle(String actionbarTitle) {
@@ -108,13 +108,13 @@ public class ForgotPasswordActivity extends BaseActivity {
     }
 
     private void getIntentData() {
-        isFromChangePassword = intent.getBooleanExtra(getResources().getString(R.string.intent_change_password), false);
+       // isFromChangePassword = intent.getBooleanExtra(getResources().getString(R.string.intent_change_password), false);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -122,6 +122,7 @@ public class ForgotPasswordActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
     }
 
 }

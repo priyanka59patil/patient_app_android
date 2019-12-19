@@ -43,8 +43,8 @@ android {
         }*/
         debug {
 
-
-
+            resValue "string", "app_name", "Patient-Dev"
+            buildConfigField "String", "app_version", "\"1.1\""
 
             buildConfigField "String", "s3BucketName", "\"dev-werq-com-ugc-private\""
             buildConfigField "String", "s3BucketNameUserProfileDelete", "\"dev-werq-com-user-profile/\""
@@ -59,12 +59,14 @@ android {
             //shrinkResources true
             minifyEnabled false
 
+            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
 
             //signingConfig signingConfigs.debug
         }
-        demo {
+        /*demo {
             resValue "string", "app_name", "Patient-Uat"
             buildConfigField "String", "app_version", "\"1.1\""
 
@@ -138,7 +140,7 @@ android {
 
 
 
-        }
+        }*/
 
     }
     compileOptions {
@@ -246,22 +248,16 @@ dependencies {
     //implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
 
+    implementation 'com.google.api-client:google-api-client:1.22.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.22.0'
+
     implementation 'com.android.support:multidex:1.0.3'
     //android permissions library
     implementation 'com.karumi:dexter:4.2.0'
     //chat view
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
-
-/*
-    compile "android.arch.lifecycle:extensions:1.0.0"
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"*/
     implementation 'com.google.firebase:firebase-database:19.2.0'
 
-    //implementation 'com.google.firebase:firebase-firestore:19.0.2'
-
-
- /*   implementation 'com.google.api-client:google-api-client:1.22.0'
-    implementation 'com.google.http-client:google-http-client-gson:1.22.0'*/
 }
 apply plugin: 'com.google.gms.google-services'

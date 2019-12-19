@@ -214,39 +214,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
         }
 
-        /*if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
-            Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
-                @Override
-                public void onPermissionGranted(PermissionGrantedResponse response) {
-                    // permission is granted
-                    //startActivity(callIntent);
-                }
-
-                @Override
-                public void onPermissionDenied(PermissionDeniedResponse response) {
-                    // check for permanent denial of permission
-                    if (response.isPermanentlyDenied()) {
-
-                        Helper.setSnackbarWithMsg("Phone access is needed to make call", toolbar);
-                    }
-                }
-
-                @Override
-                public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                    token.continuePermissionRequest();
-                }
-            }).check();
-
-            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
-
-            return;
-        }
-        else {
-
-           // startActivity(callIntent);
-        }*/
-
         dgAppointment = DiologHelper.createDialogWithLayout(mContext, R.layout.new_appointmentdate, this);
 
         /*FragmentManager fm=getSupportFragmentManager();
@@ -736,16 +703,17 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
                 mMap.clear(); //clear old markers
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(latlng, 10));
 
-
-                /*CameraPosition googlePlex = CameraPosition.builder()
+                CameraPosition googlePlex = CameraPosition.builder()
                         .target(new LatLng(latitude, longitude))
                         .zoom(15)
                         .bearing(0)
-                        .tilt(45)
+                        .tilt(10)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);*/
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(googlePlex)/*, 50000, null*/);
+
 
                /* mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(37.4219999, -122.0862462))
@@ -761,7 +729,14 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(latitude, longitude))
                         .title(locationName));
+
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+
             }
         });
+
+
+
+
     }
 }

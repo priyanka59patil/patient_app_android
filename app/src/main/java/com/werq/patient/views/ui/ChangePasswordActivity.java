@@ -71,7 +71,7 @@ public class ChangePasswordActivity extends BaseActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Change Password");
+        getSupportActionBar().setTitle(getResources().getString(R.string.page_change_password));
         /*ChangePasswordFragment fra = new ChangePasswordFragment();
         addFragment(fra);*/
 

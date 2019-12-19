@@ -10,17 +10,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.viewmodel.CreateAccountViewModel;
 import com.werq.patient.R;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityCreateAccountBinding;

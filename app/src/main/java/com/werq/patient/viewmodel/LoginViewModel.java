@@ -106,30 +106,30 @@ public class LoginViewModel extends BaseViewModel {
 
             if (userName.getValue().trim().equals("")) {
                 check = false;
-                userNameError.setValue("Email Cannot Be Empty");
+                userNameError.setValue(mContext.getResources().getString(R.string.empty_email));
             }else {
                 if(!Helper.isValidEmail(userName.getValue().trim())){
                     check = false;
-                    userNameError.setValue("Please enter valid email");
+                    userNameError.setValue(mContext.getResources().getString(R.string.invalid_email_id));
                 }
             }
 
         }
         else {
             check = false;
-            userNameError.setValue("Email Cannot Be Empty");
+            userNameError.setValue(mContext.getResources().getString(R.string.empty_email));
         }
 
         if(password.getValue()!=null){
 
             if(password.getValue().trim().equals("")){
                 check = false;
-                passwordError.setValue("Password can not be empty");
+                passwordError.setValue(mContext.getResources().getString(R.string.empty_password));
             }
 
         }else {
             check = false;
-            passwordError.setValue("Password can not be empty");
+            passwordError.setValue(mContext.getResources().getString(R.string.empty_password));
         }
 
         return check;
@@ -140,11 +140,6 @@ public class LoginViewModel extends BaseViewModel {
     {
 
         getActivity().setValue("SignUp");
-    }
-
-    public void forgotPasswordOnClick()
-    {
-        getActivity().setValue("ForgotPwd");
     }
 
     public TextWatcher unTextWatcher=new TextWatcher() {
@@ -225,6 +220,8 @@ public class LoginViewModel extends BaseViewModel {
                         e.printStackTrace();
                         Helper.setExceptionLog("GeneralSecurityException",e);
                     }
+
+                Helper.setLog("set rememberMe",rememberMe.getValue()+"");
                     sessionManager.setRememberUsername(rememberMe.getValue(), encryptedUName);
                     sessionManager.setRememberPassword(false, encryptedPass);
             }
@@ -268,11 +265,7 @@ public class LoginViewModel extends BaseViewModel {
     public void setSessionManager(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
         if(sessionManager.isRememberUsername()) {
-            rememberMe.setValue(true);
             setPrefilledUsername();
-        }
-        else {
-            rememberMe.setValue(false);
         }
     }
 }

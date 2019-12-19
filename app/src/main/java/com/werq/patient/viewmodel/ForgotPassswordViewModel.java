@@ -34,7 +34,7 @@ public class ForgotPassswordViewModel extends BaseViewModel {
             getActivity().setValue("Login");
         }
         else {
-            contactError.setValue("Email cannot be empty");
+            contactError.setValue("Please enter a phone number");
         }
     }
 
