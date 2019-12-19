@@ -1,50 +1,35 @@
 {
   "project_info": {
-    "project_number": "308800383349",
-    "firebase_url": "https://patientapp-70278.firebaseio.com",
-    "project_id": "patientapp-70278",
-    "storage_bucket": "patientapp-70278.appspot.com"
+    "project_number": "435815649017",
+    "firebase_url": "https://newpatientapp-b6c92.firebaseio.com",
+    "project_id": "newpatientapp-b6c92",
+    "storage_bucket": "newpatientapp-b6c92.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:308800383349:android:696fd4b83cdd3c9cc84b3c",
+        "mobilesdk_app_id": "1:435815649017:android:23b0fbddd31d88d6965c28",
         "android_client_info": {
           "package_name": "com.werq.patient"
         }
       },
       "oauth_client": [
         {
-          "client_id": "308800383349-uu94argiguampa46n3uo7ebqvesvs71j.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.werq.patient",
-            "certificate_hash": "620b15f2e04bd02aa91a3cf4603eedc75c805063"
-          }
-        },
-        {
-          "client_id": "308800383349-r2ijaeelai8vasobpuvcm3vg3i6136hn.apps.googleusercontent.com",
+          "client_id": "435815649017-1okbg18gfgu5sqaccvb5k7c5m6bpiirs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAOojOJ9nfmZivPzXagTFL7btifQtXENjY"
+          "current_key": "AIzaSyBNeBhWhLGeuYBt-HZ_knLIrQi47fsQSBQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "308800383349-r2ijaeelai8vasobpuvcm3vg3i6136hn.apps.googleusercontent.com",
+              "client_id": "435815649017-1okbg18gfgu5sqaccvb5k7c5m6bpiirs.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "308800383349-5noevmt4gg6pp45b4ahkfmusbj6uim3j.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.werq.PatientApp"
-              }
             }
           ]
         }

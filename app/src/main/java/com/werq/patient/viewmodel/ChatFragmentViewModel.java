@@ -2,6 +2,7 @@ package com.werq.patient.viewmodel;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -34,8 +35,21 @@ public class ChatFragmentViewModel extends BaseViewModel {
 
     public ChatFragmentViewModel(Context mContext) {
 
-        /*FirebaseApp.initializeApp(mContext);
-        database = FirebaseDatabase.getInstance();*/
+/*FirebaseApp.initializeApp(mContext);
+        DatabaseReference dr=FirebaseDatabase.getInstance().getReference("019cf1a3-1feb-11ea-978c-028da6c5910c");
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.e( "onDataChange: ", dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e( "onCancelled: ", databaseError.toString());
+            }
+        });*/
+
         patientRepository = new PatientRepository();
         isNewChat = true;
         typedMsg = new MutableLiveData<>();
@@ -63,7 +77,7 @@ public class ChatFragmentViewModel extends BaseViewModel {
                     getLoading().setValue(false);
                     NewChatResponse newChatResponse=Helper.getGsonInstance().fromJson(responseJson,NewChatResponse.class);
                     Helper.setLog("NewChatResponse",newChatResponse.toString());
-
+                    channelIdRef = FirebaseDatabase.getInstance().getReference(newChatResponse.getChannelId());
                     /*if(!TextUtils.isEmpty(newChatResponse.getChannelId())){
                         channelIdRef=database.getReference(newChatResponse.getChannelId());
                     }

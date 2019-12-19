@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 28
@@ -44,8 +43,8 @@ android {
         }*/
         debug {
 
-            resValue "string", "app_name", "Patient-Dev"
-            buildConfigField "String", "app_version", "\"1.1\""
+
+
 
             buildConfigField "String", "s3BucketName", "\"dev-werq-com-ugc-private\""
             buildConfigField "String", "s3BucketNameUserProfileDelete", "\"dev-werq-com-user-profile/\""
@@ -60,9 +59,8 @@ android {
             //shrinkResources true
             minifyEnabled false
 
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
             //signingConfig signingConfigs.debug
         }
@@ -88,7 +86,6 @@ android {
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
            // applicationIdSuffix ".demo"
 
-            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
 //            signingConfig signingConfigs.config
         }
@@ -114,7 +111,6 @@ android {
             //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
            // applicationIdSuffix ".dev"
 
-            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyDaYa4yOutXZNAG5euJbHr4wmTWNVpZyAU"]
 
         }
         prod {
@@ -141,7 +137,6 @@ android {
            // applicationIdSuffix ".app" -
 
 
-            manifestPlaceholders = [googlePlacesApiKey: "AIzaSyA0F_mzmchYXl7AOkFqbzqSV1Lnqy1q6Xo"]
 
         }
 
@@ -163,7 +158,6 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'com.google.firebase:firebase-database:16.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
@@ -258,9 +252,16 @@ dependencies {
     //chat view
 
     implementation 'com.github.stfalcon:chatkit:0.3.3'
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+
+/*
+    compile "android.arch.lifecycle:extensions:1.0.0"
+    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"*/
     implementation 'com.google.firebase:firebase-database:19.2.0'
 
-    implementation 'com.google.api-client:google-api-client:1.22.0'
-    implementation 'com.google.http-client:google-http-client-gson:1.22.0'
+    //implementation 'com.google.firebase:firebase-firestore:19.0.2'
+
+
+ /*   implementation 'com.google.api-client:google-api-client:1.22.0'
+    implementation 'com.google.http-client:google-http-client-gson:1.22.0'*/
 }
+apply plugin: 'com.google.gms.google-services'

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bugsee.library.Bugsee;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 
 import java.util.HashMap;
 
@@ -29,6 +31,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         mContext=this;
+
+        Helper.setLog("PackageName",getApplicationContext().getPackageName());
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

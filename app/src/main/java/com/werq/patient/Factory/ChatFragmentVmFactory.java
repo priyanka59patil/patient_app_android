@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
@@ -20,10 +21,11 @@ import javax.inject.Singleton;
 public class ChatFragmentVmFactory extends ViewModelProvider.NewInstanceFactory {
   //private AppointmentData data;
   Context mContext;
-
+FirebaseDatabase data;
   @Inject
   public ChatFragmentVmFactory(Context mContext) {
     this.mContext=mContext;
+    this.data= data;
   }
 
 

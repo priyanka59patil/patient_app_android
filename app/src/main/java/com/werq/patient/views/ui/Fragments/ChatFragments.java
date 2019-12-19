@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.FirebaseDatabase;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.werq.patient.Factory.ChatFragmentVmFactory;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
@@ -45,7 +46,8 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         mContext = getActivity();
-        viewModel = ViewModelProviders.of(this,new ChatFragmentVmFactory(mContext)).get(ChatFragmentViewModel.class);
+        FirebaseApp.initializeApp(getActivity().getApplicationContext());
+        viewModel = ViewModelProviders.of(getActivity(),new ChatFragmentVmFactory(getActivity())).get(ChatFragmentViewModel.class);
         ButterKnife.bind(this, view);
         inilizeVariables();
 

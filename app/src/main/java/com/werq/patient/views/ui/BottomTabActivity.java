@@ -3,6 +3,7 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
@@ -148,6 +156,21 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setSelectedItemId(R.id.calendar);
         Helper.setToolbar(getSupportActionBar(), "Appointments");
+        FirebaseApp.initializeApp(this);
+
+        DatabaseReference dr= FirebaseDatabase.getInstance().getReference("019cf1a3-1feb-11ea-978c-028da6c5910c");
+        dr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                Log.e( "onDataChange: ", dataSnapshot.toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e( "onCancelled: ", databaseError.toString());
+            }
+        });
 
         fm.beginTransaction().add(R.id.mainLayout, profileFragment, "3").hide(profileFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout, filesFragment, "2").hide(filesFragment).commit();

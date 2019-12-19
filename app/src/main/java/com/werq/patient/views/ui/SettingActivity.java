@@ -67,7 +67,7 @@ public class SettingActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         initializevariable();
         setToolbar();
-        tvAppVersion.setText(BuildConfig.app_version);
+        //tvAppVersion.setText(BuildConfig.app_version);
 
 
     }
