@@ -117,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:padding="@dimen/padding_textview_practice"
-                    android:text="@string/value_website"
+                    android:text="Not available"
                     android:textColor="@color/colorPrimaryDark"
                     app:layout_constraintStart_toStartOf="parent"
 

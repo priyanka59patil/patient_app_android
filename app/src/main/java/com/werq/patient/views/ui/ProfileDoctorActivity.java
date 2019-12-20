@@ -1,8 +1,10 @@
 package com.werq.patient.views.ui;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -32,10 +35,18 @@ import com.borjabravo.readmoretextview.ReadMoreTextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.werq.patient.BuildConfig;
+import com.werq.patient.Factory.ProfileDoctorVmFactory;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -104,6 +115,10 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     RelativeLayout layoutBtChat;
     @BindView(R.id.fragment)
     FrameLayout fragment;
+    @BindView(R.id.loadingView1)
+    SpinKitView loadingView1;
+    @BindView(R.id.loadingView2)
+    SpinKitView loadingView2;
     private PagerAdapter adapter;
     RelativeLayout.LayoutParams params;
     private Context mContext;
@@ -130,12 +145,19 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         getIntentData();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        loadingView1.setIndeterminateDrawable(fadingCircle);
+        loadingView2.setIndeterminateDrawable(fadingCircle);
 
-        profileDoctorViewModel = ViewModelProviders.of(this).get(ProfileDoctorViewModel.class);
+        profileDoctorViewModel = ViewModelProviders.of(this,new ProfileDoctorVmFactory(mContext)).get(ProfileDoctorViewModel.class);
 
         if (Helper.hasNetworkConnection(mContext)) {
+
             profileDoctorViewModel.setDoctorId(doctorData.getiD());
         } else {
+            setSupportActionBar(noDatatoolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            doctorDetailsLayout.setVisibility(View.GONE);
+            tvNoDoctorDetails.setVisibility(View.VISIBLE);
             Helper.showToast(mContext, getResources().getString(R.string.no_network_conection));
         }
 
@@ -160,7 +182,12 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
                     tbuserimageview.setVisibility(View.VISIBLE);
                     collasbaleView.setVisibility(View.GONE);
-                    toolbarLayout.setTitle(profileDoctorViewModel.getDoctorName().getValue());
+                    if(!TextUtils.isEmpty(profileDoctorViewModel.getDoctorName().getValue())){
+                        toolbarLayout.setTitle(profileDoctorViewModel.getDoctorName().getValue());
+                    }
+                    else {
+                        toolbarLayout.setTitle("Doctor Details");
+                    }
                     tabs.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
                     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
                     tabs.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -172,7 +199,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimary));
                     tbuserimageview.setVisibility(View.GONE);
                     collasbaleView.setVisibility(View.VISIBLE);
-                    toolbarLayout.setTitle("");
+                    toolbarLayout.setTitle("Doctor Details");
                     relTablayouts.setPadding(mPx, 0, mPx, 0);
                     //getSupportActionBar().setDisplayShowTitleEnabled(false);
                     Log.d("toolbarLayout", "false");
@@ -214,7 +241,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         super.onResume();
 
         profileDoctorViewModel.getLoading().observe(this, aBoolean -> {
-            try {
+            /*try {
                 if (aBoolean) {
                     if (progressDialog != null && !progressDialog.isShowing()) {
                         progressDialog.show();
@@ -232,7 +259,18 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                     progressDialog.hide();
                 }
 
+            }*/
+            if (aBoolean) {
+                showProgressBar(loadingView1);
+                showProgressBar(loadingView2);
+                loadingView1.bringToFront();
+                loadingView2.bringToFront();
+            }else {
+                hideProgressBar(loadingView1);
+                hideProgressBar(loadingView2);
             }
+
+
 
         });
 
@@ -368,14 +406,50 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     @OnClick(R.id.btcall)
     public void onViewClicked() {
 
-        String phoneNo=profileDoctorViewModel.getPracticePhoneNumber().getValue();
-        if(!TextUtils.isEmpty(phoneNo)){
+        String phoneNo = profileDoctorViewModel.getPracticePhoneNumber().getValue();
+        if (!TextUtils.isEmpty(phoneNo)) {
 
             Helper.setLog("getPracticePhoneNumber", phoneNo + "-val");
             Intent callIntent = new Intent(Intent.ACTION_CALL);
             callIntent.setData(Uri.parse("tel:" + phoneNo.trim()));
-            startActivity(callIntent);
+            //startActivity(callIntent);
+
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                Dexter.withActivity(this).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // permission is granted
+                        mContext.startActivity(callIntent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // check for permanent denial of permission
+                        if (response.isPermanentlyDenied()) {
+
+                            Helper.setSnackbarWithMsg("Phone access is needed to make call", toolbar);
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+                //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+            } else {
+
+                mContext.startActivity(callIntent);
+            }
         }
+
+
+    }
+
+    public void callOnClick(){
 
     }
 }

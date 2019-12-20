@@ -5,84 +5,95 @@
     android:layout_marginLeft="@dimen/main_layout_padding"
     android:layout_marginTop="@dimen/main_layout_padding"
     android:layout_marginRight="@dimen/main_layout_padding">
-
-    <RelativeLayout
-        android:id="@+id/layout_mainlayout"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/main_adapter_padding"
-        android:paddingTop="@dimen/main_adapter_padding"
-        android:paddingRight="@dimen/main_adapter_padding"
-        android:paddingBottom="@dimen/main_adapter_padding">
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvUserProfiles"
+        <LinearLayout
+            android:id="@+id/llDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/layout_mainlayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/main_adapter_padding"
+                android:paddingTop="@dimen/main_adapter_padding"
+                android:paddingRight="@dimen/main_adapter_padding"
+                >
 
-        </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUserProfiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvPracticeName"
-            android:layout_width="wrap_content"
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <TextView
+                    android:id="@+id/tvPracticeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rvUserProfiles"
+                    android:layout_marginTop="@dimen/margin_top_doctorname"
+                    android:text="@string/value_doctor_name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textheader15dp" />
+
+                <!--<TextView
+                    android:id="@+id/tvPracticeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvTeamName"
+                    android:layout_marginTop="@dimen/margin_top_doctorname"
+                    android:textSize="@dimen/textnormal12dp"
+                    android:textColor="@color/color_text"
+                    android:text="Guha Dentistry practice" />-->
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvPracticeName"
+                    android:layout_marginTop="@dimen/margin_top_doctorname"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical"
+                    android:drawableLeft="@drawable/ic_location_on_blue_24dp"
+                    android:drawablePadding="@dimen/drawable_padding"
+                    android:textSize="@dimen/textnormal12dp"
+
+                    android:textColor="@color/colorPrimary"
+                    android:text="219 Spring Street,New York,Ny" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llCall"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rvUserProfiles"
-            android:layout_marginTop="@dimen/margin_top_doctorname"
-            android:text="@string/value_doctor_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/textheader15dp" />
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/main_adapter_padding"
+            android:paddingRight="@dimen/main_adapter_padding"
+            android:paddingBottom="@dimen/main_adapter_padding">
+            <TextView
+                android:id="@+id/tvPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvAddress"
+                android:layout_marginTop="@dimen/margin_top_doctorname"
+                android:drawableLeft="@drawable/ic_call_blue_24dp"
+                android:drawablePadding="@dimen/drawable_padding"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:text="6565656565"
+                android:textSize="@dimen/textnormal12dp"
 
-        <!--<TextView
-            android:id="@+id/tvPracticeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvTeamName"
-            android:layout_marginTop="@dimen/margin_top_doctorname"
-            android:textSize="@dimen/textnormal12dp"
-            android:textColor="@color/color_text"
-            android:text="Guha Dentistry practice" />-->
+                android:tint="@color/colorPrimary" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvPracticeName"
-            android:layout_marginTop="@dimen/margin_top_doctorname"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/btAdd"
-            android:gravity="center_vertical"
-            android:drawableLeft="@drawable/ic_location_on_blue_24dp"
-            android:drawablePadding="@dimen/drawable_padding"
-            android:textSize="@dimen/textnormal12dp"
+    </LinearLayout>
 
-            android:textColor="@color/colorPrimary"
-            android:text="219 Spring Street,New York,Ny" />
 
-        <TextView
-            android:id="@+id/tvPhoneNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAddress"
-            android:layout_marginTop="@dimen/margin_top_doctorname"
-            android:drawableLeft="@drawable/ic_call_blue_24dp"
-            android:drawablePadding="@dimen/drawable_padding"
-            android:gravity="center_vertical"
-            android:textColor="@color/colorPrimary"
-            android:text="6565656565"
-            android:textSize="@dimen/textnormal12dp"
-
-            android:tint="@color/colorPrimary" />
-
-        <Button
-            android:id="@+id/btAdd"
-            android:layout_width="@dimen/btadd_width_add"
-            android:layout_height="@dimen/btadd_height_add"
-            android:layout_alignParentRight="true"
-          android:layout_alignBaseline="@+id/tvPhoneNumber"
-            android:background="@drawable/blue_button"
-            android:text="@string/label_add"
-            android:textColor="@color/white" />
-
-    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

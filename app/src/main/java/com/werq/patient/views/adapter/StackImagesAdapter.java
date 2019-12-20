@@ -61,7 +61,7 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if (holder instanceof StackImagesAdapter.HeaderViewHolder) {
             StackImagesAdapter.HeaderViewHolder headerHolder = (StackImagesAdapter.HeaderViewHolder) holder;
 
-            headerHolder.notify_badge.setText("+"+(profileUrl.size()-2));
+            headerHolder.notify_badge.setText("+"+(profileUrl.size()-4));
 
 
         } else if (holder instanceof ViewHolder) {
@@ -89,7 +89,7 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
 
         //Helper.setLog("StackImageAdapter","getItemViewType::position"+position);
-        if(profileUrl.size()>2){
+        if(profileUrl.size()>4){
 
             if(position==getItemCount()-1){
                 return TYPE_HEADER;
@@ -114,9 +114,9 @@ public class StackImagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         if(profileUrl!=null){
 
-            if(profileUrl.size()>2){
+            if(profileUrl.size()>4){
                 //Helper.setLog("StackImageAdapter","getItemCount:"+3);
-                return 3;
+                return 5;
             }
             else {
                 //Helper.setLog("StackImageAdapter","getItemCount:"+3);

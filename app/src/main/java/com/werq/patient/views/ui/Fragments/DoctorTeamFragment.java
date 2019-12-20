@@ -1,9 +1,13 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +15,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.werq.patient.Interfaces.DoctorTeamClickListerner;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
@@ -35,7 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClickListerner {
+public class DoctorTeamFragment extends BaseFragment implements DoctorTeamClickListerner {
 
     @BindView(R.id.rvDoctorTeam)
     RecyclerView rvDoctorTeam;
@@ -57,7 +69,6 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     DoctorTeamAdapter doctorTeamAdapter;
 
     //recyclerviewonclick
-    RecyclerViewClickListerner recyclerViewClickListerner;
     BottomTabViewModel viewModel;
     ArrayList<DoctorTeamResult> teamList;
     private String TAG="DoctorTeamFragment";
@@ -70,12 +81,11 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
-        recyclerViewClickListerner=this;
         teamList =new ArrayList<>();
 
         viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
 
-        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,recyclerViewClickListerner,
+        doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,this,
                 teamList,viewModel,this);
        /*     viewModel.getTeamList().observe(this,doctorTeamResults -> {
                 Helper.setLog(TAG,"inside teamList observable page="+page);
@@ -212,14 +222,51 @@ public class DoctorTeamFragment extends BaseFragment implements RecyclerViewClic
 
     @Override
     public void onclick(int position) {
-        if(position==3){
-            openProfileDoctorActivity(true, position);
-        }
-        else {
-            openProfileDoctorActivity(false, position);
-        }
+
+        openProfileDoctorActivity(false, position);
 
 
+    }
+
+    @Override
+    public void onCallclick(String contactNo) {
+        if (!TextUtils.isEmpty(contactNo)) {
+
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + contactNo.trim()));
+            //startActivity(callIntent);
+
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                Dexter.withActivity(getActivity()).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // permission is granted
+                        mContext.startActivity(callIntent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // check for permanent denial of permission
+                        if (response.isPermanentlyDenied()) {
+
+                            Helper.setSnackbarWithMsg("Phone access is needed to make call", getView());
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+                //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+            } else {
+
+                mContext.startActivity(callIntent);
+            }
+        }
     }
 
     private void openProfileDoctorActivity(boolean isMessageDisabled,int position) {

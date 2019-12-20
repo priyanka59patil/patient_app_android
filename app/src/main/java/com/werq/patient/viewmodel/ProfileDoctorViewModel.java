@@ -1,5 +1,6 @@
 package com.werq.patient.viewmodel;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -41,9 +42,11 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     int coworkerPageNo = 0;
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
+    Context mContext;
 
+    public ProfileDoctorViewModel( Context mContext) {
 
-    public ProfileDoctorViewModel() {
+        this.mContext=mContext;
 
         Log.e("ProfileDoctorViewModel", "init");
 
@@ -65,6 +68,10 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         practicePhoneNumber = new MutableLiveData<>();
         coworkerLoading = new MutableLiveData<>();
         practiceName = new MutableLiveData<>();
+
+        doctorDetailsResponse.setValue(null);
+        practiceWebUrl.setValue(null);
+        practicePhoneNumber.setValue(null);
     }
 
     public void setDoctorId(int doctorId) {
@@ -170,7 +177,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                                         break;
                                     case 2:
                                         if (!TextUtils.isEmpty(doctor.getContactInfo().get(i).getDetails())) {
-                                            practicePhoneNumber.setValue(doctor.getContactInfo().get(i).getDetails());
+                                            practicePhoneNumber.setValue("NotA");
                                         } else {
                                             practicePhoneNumber.setValue("");
                                         }

@@ -1,10 +1,12 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -12,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.DoctorTeamClickListerner;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -26,11 +29,11 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
     private StackImagesAdapter stackImageView;
     Context mContext;
     boolean fromSearchName;
-    RecyclerViewClickListerner recyclerViewClickListerner;
+    DoctorTeamClickListerner recyclerViewClickListerner;
     ArrayList<DoctorTeamResult> teamList;
 
     public DoctorTeamAdapter(Context mContext, boolean fromSearchName,
-                             RecyclerViewClickListerner recyclerViewClickListerner,
+                             DoctorTeamClickListerner recyclerViewClickListerner,
                              ArrayList<DoctorTeamResult> teamList,
                              BottomTabViewModel viewModel,
                              LifecycleOwner lifecycleOwner) {
@@ -44,7 +47,6 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
                 this.teamList.clear();
                 this.teamList.addAll(doctorTeamResults);
                 notifyDataSetChanged();
-                Helper.setLog("doctorTeamResults",doctorTeamResults.size()+"");
             }
         });
     }
@@ -79,11 +81,22 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
 
 
 
-            if(fromSearchName)
-                holder.btAdd.setVisibility(View.VISIBLE);
-            else
-                holder.btAdd.setVisibility(View.GONE);
        // }
+
+        holder.llCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewClickListerner.onCallclick(teamList.get(position).getLocation().getPhoneNumber());
+            }
+        });
+
+        holder.llDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewClickListerner.onclick(position);
+            }
+        });
+
 
 
 
@@ -107,24 +120,23 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView rvUserProfiles;
-        Button btAdd;
         RelativeLayout layout_mainlayout;
         TextView tvPracticeName,tvAddress,tvPhoneNumber;
+        LinearLayout llDetails,llCall;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rvUserProfiles=(RecyclerView)itemView.findViewById(R.id.rvUserProfiles);
-            btAdd=(Button)itemView.findViewById(R.id.btAdd);
             tvPracticeName=(TextView) itemView.findViewById(R.id.tvPracticeName);
             tvAddress=(TextView) itemView.findViewById(R.id.tvAddress);
             tvPhoneNumber=(TextView) itemView.findViewById(R.id.tvPhoneNumber);
-
+            llDetails=(LinearLayout) itemView.findViewById(R.id.llDetails);
+            llCall=(LinearLayout) itemView.findViewById(R.id.llCall);
             layout_mainlayout=(RelativeLayout)itemView.findViewById(R.id.layout_mainlayout);
-            layout_mainlayout.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            recyclerViewClickListerner.onclick(getAdapterPosition());
+
         }
     }
 }

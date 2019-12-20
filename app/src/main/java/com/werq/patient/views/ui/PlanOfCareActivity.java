@@ -107,7 +107,7 @@ public class PlanOfCareActivity extends BaseActivity {
 
         planCareList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Plan Of Care");
+        getSupportActionBar().setTitle("Plan of Care");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

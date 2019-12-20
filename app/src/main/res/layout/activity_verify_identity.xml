@@ -64,7 +64,7 @@
                     android:id="@+id/etspDob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Select Date Of Birth "
+                    android:hint="Select Date of Birth "
                     android:text="@={viViewModel.dob}"
                     android:drawableRight="@drawable/ic_keyboard_arrow_down_black_24dp"
                     android:onTextChanged="@{viViewModel.onTextChanged}"

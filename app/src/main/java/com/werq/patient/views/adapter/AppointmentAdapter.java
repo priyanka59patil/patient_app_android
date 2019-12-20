@@ -255,11 +255,6 @@ public class AppointmentAdapter extends RecyclerView.Adapter<AppointmentAdapter.
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.appointment:
-                    listerner.onclick(getAdapterPosition());
-                    break;
-            }
 
         }
     }

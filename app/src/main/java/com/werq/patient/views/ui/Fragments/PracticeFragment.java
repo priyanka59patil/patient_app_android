@@ -1,19 +1,33 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentPracticeBinding;
@@ -33,7 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class PracticeFragment extends BaseFragment /*implements BasicActivities*/ {
+public class PracticeFragment extends BaseFragment /*implements BasicActivities*/implements RecyclerViewClickListerner {
 
     /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
@@ -42,7 +56,6 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     private boolean loading = true;
     int page = 0;
     int listcount = 0;
-
 
     @BindView(R.id.tvtitlepractice)
     TextView tvtitlepractice;
@@ -64,7 +77,6 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     ArrayList<Location> locationsList;
     PracticeAdapter locationpracticeAdapter;
     //PracticeAdapter hospitalpracticeAdapter;
-
     ProfileInterface profileInterface;
     BasicActivities basicActivities;
 
@@ -72,6 +84,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     Context mContext;
     FragmentPracticeBinding fragmentPracticeBinding;
     ProfileDoctorViewModel viewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,8 +176,9 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
        /* fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);*/
         profileInterface=new ProfileController(basicActivities);
+
         locationsList=new ArrayList<>();
-        locationpracticeAdapter=new PracticeAdapter(mContext,locationsList,viewModel,this);
+        locationpracticeAdapter=new PracticeAdapter(mContext,locationsList,viewModel,this,this::onclick);
         RecyclerViewHelper.setAdapterToRecylerView(mContext,rvPracticeLocations,locationpracticeAdapter);
         RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvPracticeLocations);
         //hospitalpracticeAdapter=new PracticeAdapter(mContext,false);
@@ -172,5 +186,46 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     }
 
 
+    @Override
+    public void onclick(int position) {
+        String phoneNo = viewModel.getLocationsList().getValue().get(position).getPhoneNumber();
+        if (!TextUtils.isEmpty(phoneNo)) {
 
+            Helper.setLog("getPracticePhoneNumber", phoneNo + "-val");
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + phoneNo.trim()));
+            //startActivity(callIntent);
+
+            if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                Dexter.withActivity(getActivity()).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // permission is granted
+                        mContext.startActivity(callIntent);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // check for permanent denial of permission
+                        if (response.isPermanentlyDenied()) {
+
+                            Helper.setSnackbarWithMsg("Phone access is needed to make call", getView());
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+                //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+            } else {
+
+                mContext.startActivity(callIntent);
+            }
+        }
+    }
 }

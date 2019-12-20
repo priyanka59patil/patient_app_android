@@ -120,7 +120,8 @@
                                 android:orientation="horizontal"
                                 android:layout_marginTop="8dp"
                                 android:padding="@dimen/main_layout_padding"
-                                android:weightSum="2">
+                                android:weightSum="2"
+                                android:background="@color/white">
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
@@ -133,9 +134,8 @@
                                         android:layout_height="50dp"
                                         android:layout_centerHorizontal="true"
                                         android:background="@drawable/rounded_button"
-                                        android:tint="@color/white"
                                         android:padding="@dimen/img_padding_for_img_bgcolor"
-                                        android:src="@drawable/ic_call_blue_24dp"
+                                        android:src="@drawable/call"
 
                                         />
 
@@ -163,7 +163,6 @@
                                         android:layout_centerHorizontal="true"
                                         android:background="@drawable/rounded_button"
                                         android:padding="@dimen/img_padding_for_img_bgcolor"
-
                                         android:src="@drawable/message_white"
 
                                         />
@@ -215,7 +214,22 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <include layout="@layout/content_profile_doctor" />
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                android:id="@+id/loadingView1"
+                android:layout_width="@dimen/progressbar_width"
+                android:layout_height="@dimen/progressbar_height"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:SpinKit_Color="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tvNoLayout"
@@ -239,23 +253,21 @@
                     app:title="DoctorDetails"
                     />
 
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/loadingView2"
+                    android:layout_width="@dimen/progressbar_width"
+                    android:layout_height="@dimen/progressbar_height"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    app:SpinKit_Color="@color/colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </com.google.android.material.appbar.AppBarLayout>
 
-            <TextView
-                android:id="@+id/tvNoApptDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_appt_details"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                android:drawableTop="@drawable/calendar"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:padding="10dp"
-                android:visibility="gone"
-                />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
