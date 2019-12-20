@@ -444,7 +444,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="8dp"
                                         android:textColor="@color/colorPrimary"
-                                        android:text="Rescheduled At:"
+                                        android:text="Requested At:"
+                                        android:textSize="12sp"
                                         />
                                     <TextView
                                         android:id="@+id/tvRescheduledDate"
@@ -453,6 +454,7 @@
                                         android:layout_marginStart="5dp"
                                         android:textColor="@color/color_text"
                                         android:text=""
+                                        android:textSize="12sp"
                                         android:layout_below="@+id/ivUseImage" />
                                 </LinearLayout>
 

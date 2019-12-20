@@ -109,7 +109,7 @@ public class InstructionActivity extends BaseActivity {
 
         instructionArrayList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Instructions");
+        getSupportActionBar().setTitle(getResources().getString(R.string.instruction));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

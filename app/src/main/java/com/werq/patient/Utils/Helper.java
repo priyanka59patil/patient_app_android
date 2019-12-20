@@ -45,6 +45,7 @@ public class Helper {
     public static String YYYY_MM_DD="yyyy-MM-dd";
     public static String HH_MM_SS="hh:mm:ss";
     public static String HH_MM="hh:mm";
+    public static String HH_MM_a="hh:mmaa";
     public static String YYYY_MM_DD_T_HH_MM_SS=YYYY_MM_DD+"'T'"+HH_MM_SS;
 
 

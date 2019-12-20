@@ -40,11 +40,13 @@ import com.werq.patient.base.BaseViewModel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.internal.http2.ErrorCode;
@@ -722,7 +724,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 try {
 
                     Date dt = new SimpleDateFormat(Helper.MMM_DD_YYYY+" hh:mm aa").parse(appdate);
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//24 hour format
                     output = df.format(dt);
                     output=output.replace(" ","T");
                     Helper.setLog("db date",output);
@@ -756,11 +758,15 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         String rescheduledDate="";
         try {
+            Helper.setLog("database date",rawDate);
             Date d=new SimpleDateFormat(Helper.YYYY_MM_DD_T_HH_MM_SS).parse(rawDate);
+            Helper.setLog("parsed date",d.toString());
+           /* String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(d);
+            String time =new SimpleDateFormat(Helper.HH_MM_a).format(d);*/
 
-            String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(d);
-            String time =new SimpleDateFormat(Helper.HH_MM).format(d);
-            rescheduledDate=date+" At "+time;
+            String date=new SimpleDateFormat(Helper.MMM_DD_YYYY+ "' At '"+Helper.HH_MM_a).format(d);
+            Helper.setLog("formated date",date);
+            rescheduledDate=date;
 
         } catch (ParseException e) {
             e.printStackTrace();

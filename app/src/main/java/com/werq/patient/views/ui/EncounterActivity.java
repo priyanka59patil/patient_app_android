@@ -108,7 +108,7 @@ public class EncounterActivity extends BaseActivity {
 
         encounterArrayList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Encounters");
+        getSupportActionBar().setTitle(getResources().getString(R.string.encounter));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

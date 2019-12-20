@@ -34,7 +34,7 @@ public class SummaryCareActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         mContext=this;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Summery Of Care");
+        getSupportActionBar().setTitle(getResources().getString(R.string.summery_of_care));
         initializeVariables();
         setRecyclerView();
     }

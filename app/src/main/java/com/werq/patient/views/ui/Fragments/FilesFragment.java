@@ -308,7 +308,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 iv_visitnote_check.setVisibility(View.VISIBLE);
                 iv_referral_check.setVisibility(View.GONE);
                 iv_all_check.setVisibility(View.GONE);
-                tvFilterFiles.setText(getResources().getString(R.string.label_visit_note_attachment));
+                tvFilterFiles.setText("File Type:Visit Note");
                 mBottomSheetDialog.dismiss();
                 break;
             case R.id.layout_filter_sent:
@@ -318,7 +318,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 iv_visitnote_check.setVisibility(View.GONE);
                 iv_referral_check.setVisibility(View.VISIBLE);
                 iv_all_check.setVisibility(View.GONE);
-                tvFilterFiles.setText(getResources().getString(R.string.label_referral_attachments));
+                tvFilterFiles.setText("File Type:Referral");
                 mBottomSheetDialog.dismiss();
                 break;
         }

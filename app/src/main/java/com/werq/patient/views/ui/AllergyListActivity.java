@@ -113,7 +113,7 @@ public class AllergyListActivity extends BaseActivity {
 
         allergyList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("Allergy");
+        getSupportActionBar().setTitle(getResources().getString(R.string.allergies));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

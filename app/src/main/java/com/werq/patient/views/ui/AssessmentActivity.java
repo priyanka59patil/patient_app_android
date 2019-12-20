@@ -52,7 +52,7 @@ public class AssessmentActivity extends BaseActivity {
 
         assessmentBinding = DataBindingUtil.setContentView(this,R.layout.activity_assessment);
         ButterKnife.bind(this);
-        getSupportActionBar().setTitle("Assessments");
+        getSupportActionBar().setTitle(getResources().getString(R.string.assesssment));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
         assessmentBinding.setLifecycleOwner(this);

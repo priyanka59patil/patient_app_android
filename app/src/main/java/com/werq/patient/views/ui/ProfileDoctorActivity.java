@@ -186,7 +186,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                         toolbarLayout.setTitle(profileDoctorViewModel.getDoctorName().getValue());
                     }
                     else {
-                        toolbarLayout.setTitle("Doctor Details");
+                        toolbarLayout.setTitle("");
                     }
                     tabs.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
                     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.white));
@@ -199,7 +199,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                     tabs.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimary));
                     tbuserimageview.setVisibility(View.GONE);
                     collasbaleView.setVisibility(View.VISIBLE);
-                    toolbarLayout.setTitle("Doctor Details");
+                    toolbarLayout.setTitle("");
                     relTablayouts.setPadding(mPx, 0, mPx, 0);
                     //getSupportActionBar().setDisplayShowTitleEnabled(false);
                     Log.d("toolbarLayout", "false");

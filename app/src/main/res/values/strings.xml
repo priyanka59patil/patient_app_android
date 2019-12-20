@@ -64,7 +64,7 @@
     <string name="title_activity_search_by_name">SearchByNameActivity</string>
     <string name="label_add">Add</string>
     <string name="title_activity_doctors_profile">DoctorsProfileActivity</string>
-    <string name="title_activity_profile_doctor">ProfileDoctorActivity</string>
+    <string name="title_activity_profile_doctor">Doctor Details</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -193,7 +193,7 @@
     <string name="label_all">All</string>
     <string name="label_received">Received</string>
     <string name="label_sent">Sent</string>
-    <string name="all_files">All Files</string>
+    <string name="all_files">File Type:All</string>
     <string name="reset">Reset</string>
     <string name="label_visit_note_attachment">Visit Note Attachments</string>
     <string name="label_referral_attachments">Referral Attachments</string>

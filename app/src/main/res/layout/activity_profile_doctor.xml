@@ -51,7 +51,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
                         android:layout_marginLeft="20dp"
-
                         android:layout_marginTop="?attr/actionBarSize">
 
                         <RelativeLayout
@@ -250,7 +249,7 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:title="DoctorDetails"
+                    app:title=""
                     />
 
                 <com.github.ybq.android.spinkit.SpinKitView

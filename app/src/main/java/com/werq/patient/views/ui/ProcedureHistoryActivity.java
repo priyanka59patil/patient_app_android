@@ -109,7 +109,7 @@ public class ProcedureHistoryActivity extends BaseActivity {
 
         procHistoryList = new ArrayList<>();
         loadingView.setIndeterminateDrawable(fadingCircle);
-        getSupportActionBar().setTitle("History Of Procedure");
+        getSupportActionBar().setTitle(getResources().getString(R.string.history_of_procedure));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 

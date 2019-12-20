@@ -150,7 +150,7 @@
                 android:layout_marginStart="16dp"
                 android:textSize="@dimen/textnormal12dp"
                 android:textColor="@color/colorPrimary"
-                android:text="Rescheduled At:"
+                android:text="Requested At:"
                 />
             <TextView
                 android:id="@+id/tvRescheduledDate"
