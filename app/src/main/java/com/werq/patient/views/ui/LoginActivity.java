@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
@@ -46,6 +47,9 @@ public class LoginActivity extends BaseActivity {
     Context mContext;
 
     LoginViewModel loginViewModel;
+    @BindView(R.id.tvAppVersion)
+    TextView tvAppVersion;
+
     private ActivityLoginBinding activityLoginBinding;
 
     ProgressDialog progressDialog;
@@ -73,6 +77,8 @@ public class LoginActivity extends BaseActivity {
 
         swRememberMe.setChecked(SessionManager.getSessionManager(mContext).isRememberUsername());
         loginViewModel.getRememberMe().setValue(SessionManager.getSessionManager(mContext).isRememberUsername());
+
+        tvAppVersion.setText("v - " + BuildConfig.VERSION_NAME);
         initBugsee();
 
 

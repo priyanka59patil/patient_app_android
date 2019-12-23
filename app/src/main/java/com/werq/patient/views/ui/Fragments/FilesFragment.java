@@ -327,19 +327,10 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public void onclick(int position) {
         Helper.setLog("inside", "onClick position");
-
-        if (attachmentList.get(position).getVisitNoteId() != 0) {
-            Helper.setLog("aaaa", attachmentList.get(position).toString());
-            Helper.setLog("getAppointmentId", attachmentList.get(position).getAppointmentId() + "");
-            Helper.setLog("getVisitNoteId", attachmentList.get(position).getVisitNoteId() + "");
-
-            Intent intent = new Intent(mContext, ViewVisitNoteActivity.class);
-            intent.putExtra("appointmentId", attachmentList.get(position).getAppointmentId());
-            intent.putExtra("visitNoteId", attachmentList.get(position).getVisitNoteId());
-            startActivity(intent);
-        } else {
-            Helper.showToast(mContext, "No Details Available");
-        }
+        Intent intent = new Intent(mContext, ViewVisitNoteActivity.class);
+        intent.putExtra("appointmentId", attachmentList.get(position).getAppointmentId());
+        intent.putExtra("visitNoteId", attachmentList.get(position).getVisitNoteId());
+        startActivity(intent);
 
 
     }

@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -193,8 +195,6 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
         } else
             holder.tvHasVisitNote.setVisibility(View.GONE);
 
-
-
             /*try {
                 Date date = DateHelper.dateFromUtc(result.getCreatedByUser().);
                 holder.tvTime.setText("today " + DateHelper.dayFromDate(date, "time"));
@@ -233,27 +233,32 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
         TextView tvTime;
         @BindView(R.id.ivUserView)
         CircleImageView ivUserView;
-        @BindView(R.id.cvMainlayout)
-        CardView cvMainlayout;
         @BindView(R.id.tvHasVisitNote)
         TextView tvHasVisitNote;
+
+        @BindView(R.id.llFileImage)
+        LinearLayout llFileImage;
+        @BindView(R.id.clFileDetails)
+        ConstraintLayout clFileDetails;
+
 
 
         public FileadapterViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            cvMainlayout.setOnClickListener(this::onClick);
-            file_view.setOnClickListener(this::onClick);
+            llFileImage.setOnClickListener(this::onClick);
+            clFileDetails.setOnClickListener(this::onClick);
 
         }
 
         @Override
         public void onClick(View view) {
+
             switch (view.getId()) {
 
+                case R.id.llFileImage:
 
-                case R.id.file_view:
                     Log.e( "onClick: ", attachmentResultArrayList.get(getAdapterPosition()).getFileType());
 
                     switch (attachmentResultArrayList.get(getAdapterPosition()).getFileType()) {
@@ -269,15 +274,26 @@ public class AttachmentsAdapter extends RecyclerView.Adapter<AttachmentsAdapter.
                             openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
                             break;
                     }
+                    break;
 
 
-                case R.id.cvMainlayout:
+                case R.id.clFileDetails:
 
-                    if(fromVisitNoteDetails)
-                    {
-                        openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
-                    }else {
-                        recyclerViewClickListerner.onclick(getAdapterPosition());
+                    if(Helper.hasNetworkConnection(mContext)){
+                        if(attachmentResultArrayList.get(getAdapterPosition()).getVisitNoteId()!=0){
+                            if(fromVisitNoteDetails)
+                            {
+                                openViewPhoto(attachmentResultArrayList.get(getAdapterPosition()));
+                            }else {
+                                recyclerViewClickListerner.onclick(getAdapterPosition());
+                            }
+
+                        }else {
+                            Helper.showToast(mContext,"Attachment Details Not Available");
+                        }
+                    }
+                    else {
+                        Helper.showToast(mContext,mContext.getResources().getString(R.string.no_network_conection));
                     }
 
                     break;

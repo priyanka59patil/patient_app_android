@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -8,9 +10,7 @@
     </data>
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -178,6 +178,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textSignUp"/>
 
+            <TextView
+                android:id="@+id/tvOtpError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Please enter received code"
+                android:textColor="@color/red"
+                android:paddingLeft="2dp"
+                app:layout_constraintStart_toStartOf="@id/etOTP"
+                app:layout_constraintTop_toBottomOf="@id/etOTP"
+                android:visibility="gone"/>
+
+
             <!--<com.broooapps.otpedittext2.OtpEditText
                 android:id="@+id/etOTP"
                 android:layout_width="match_parent"
@@ -241,6 +253,8 @@
                     app:layout_constraintTop_toTopOf="@+id/Tv_already_have_account"
                     android:onClick="@{()-> signupViewModel.loginOnClick()}"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

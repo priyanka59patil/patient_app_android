@@ -41,7 +41,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:drawableTop="@drawable/ic_info_outline_black"
-            android:text="No Plan Of Care"
+            android:text="No Plan of Care"
             style="@style/NoDataTheme"
             android:visibility="gone"
             android:textAlignment="center"

@@ -126,6 +126,7 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                     || fileType.toLowerCase().contains("jpg")) {
 
                 wvDocumentFile.setVisibility(View.GONE);
+                ivImageFile.setVisibility(View.VISIBLE);
            /*     ivImageFile.setZoomable(false);
                 ivImageFile.setClickable(false);
                 ivImageFile.setEnabled(false);*/
@@ -164,6 +165,10 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                 }
 
                 ivImageFile.setVisibility(View.GONE);
+                wvDocumentFile.setVisibility(View.VISIBLE);
+                wvDocumentFile.getSettings().setJavaScriptEnabled(true);
+                wvDocumentFile.getSettings().setLoadWithOverviewMode(true);
+                wvDocumentFile.getSettings().setUseWideViewPort(true);
                 wvDocumentFile.setWebChromeClient(new WebChromeClient() {
                     public void onProgressChanged(WebView view, int progress) {
 

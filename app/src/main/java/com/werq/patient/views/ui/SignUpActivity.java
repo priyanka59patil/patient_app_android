@@ -2,28 +2,22 @@ package com.werq.patient.views.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.werq.patient.R;
+import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivitySignUpBinding;
 import com.werq.patient.viewmodel.SignUpViewModel;
-import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,6 +53,8 @@ public class SignUpActivity extends BaseActivity {
 
     Context mContext;
     SignUpViewModel signUpViewModel;
+    @BindView(R.id.tvOtpError)
+    TextView tvOtpError;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,32 +64,31 @@ public class SignUpActivity extends BaseActivity {
     }
 
     private void initilizevariables() {
-        ActivitySignUpBinding activitySignUpBinding= DataBindingUtil.setContentView(this,R.layout.activity_sign_up);
+        ActivitySignUpBinding activitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
         activitySignUpBinding.setLifecycleOwner(this);
-        signUpViewModel= ViewModelProviders.of(this).get(SignUpViewModel.class);
+        signUpViewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
         setBaseViewModel(signUpViewModel);
         activitySignUpBinding.setSignupViewModel(signUpViewModel);
 
         mContext = this;
         ButterKnife.bind(this);
 
-        setToolbarTitleWithBack(toolbar,"Sign Up");
+        setToolbarTitleWithBack(toolbar, "Sign Up");
 
 
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(otpTextView.getOtp()!=null && otpTextView.getOtp().length()==6){
-                    Bundle bundle =new Bundle();
-                    bundle.putString("invitationCode",otpTextView.getOtp());
-                    Intent  intent=new Intent(mContext,VerifyIdentity.class);
+                if (otpTextView.getOtp() != null && otpTextView.getOtp().length() == 6) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("invitationCode", otpTextView.getOtp());
+                    Intent intent = new Intent(mContext, VerifyIdentity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }
-                else
-                {
-                    otpTextView.showError(/*"Please Enter Pin Correct Pin"*/);
+                } else {
+                    otpTextView.showError();
+                    tvOtpError.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -101,19 +96,43 @@ public class SignUpActivity extends BaseActivity {
         signUpViewModel.getOpenActivitywithBundle().observe(this, new Observer<Bundle>() {
             @Override
             public void onChanged(Bundle bundle) {
-                if(bundle!=null){
+                if (bundle != null) {
 
 
                 }
             }
         });
+
+
+        otpTextView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                if(otpTextView.getOtp() != null && otpTextView.getOtp().length() == 1){
+                    tvOtpError.setVisibility(View.GONE);
+                }
+                return false;
+            }
+        });
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-
+        otpTextView.setOtpListener(new OTPListener() {
+            @Override
+            public void onInteractionListener() {
+                // fired when user types something in the Otpbox
+                tvOtpError.setVisibility(View.GONE);
+            }
+            @Override
+            public void onOTPComplete(String otp) {
+                // fired when user has entered the OTP fully.
+            }
+        });
 
        /* otpTextView.setOtpListener(new OTPListener() {
             @Override
@@ -129,7 +148,6 @@ public class SignUpActivity extends BaseActivity {
 */
 
 
-
     }
 
     @Override
@@ -142,7 +160,6 @@ public class SignUpActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
 }
