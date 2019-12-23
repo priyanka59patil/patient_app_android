@@ -12,14 +12,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
-
-
+        android:required="true" />
 
     <application
         android:name=".PatientApplication"
@@ -30,20 +27,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="replace">
+        <activity android:name=".views.ui.SetNewPawsswordActivity"
+            android:label="@string/set_new_password"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
         <activity
             android:name="com.karumi.dexter.DexterActivity"
-            android:theme="@style/Dexter.Internal.Theme.Transparent"
-            />
-        <activity android:name=".views.ui.ProblemListActivity"></activity>
+            android:theme="@style/Dexter.Internal.Theme.Transparent" />
+        <activity android:name=".views.ui.ProblemListActivity" />
         <activity android:name=".views.ui.SocialHistoryActivity" />
         <activity android:name=".views.ui.PastillnessHistoryActivity" />
         <activity android:name=".views.ui.AllergyListActivity" />
@@ -108,7 +106,6 @@
             android:name=".views.ui.ChangePasswordActivity"
             android:label="@string/title_activity_change_password"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".views.ui.ScheduleDetailsActivity"
             android:label="@string/title_activity_schedule_details"
@@ -157,25 +154,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Bugsee activities -->
+        </activity> <!-- Bugsee activities -->
         <activity
             android:name="com.bugsee.library.RequestPermissionsActivity"
             android:theme="@style/BugseeTheme.Transparent" />
         <activity
             android:name="com.bugsee.library.send.SendBundleActivity"
-            android:theme="@style/BugseeActivityStyle" >
-        </activity>
+            android:theme="@style/BugseeActivityStyle"></activity>
         <activity
             android:name="com.bugsee.library.activity.EditScreenshotActivity"
-            android:theme="@style/BugseeActivityStyle" >
-        </activity>
+            android:theme="@style/BugseeActivityStyle"></activity>
         <activity
             android:name="com.bugsee.library.activity.FeedbackActivity"
-            android:theme="@style/BugseeActivityStyle">
-        </activity>
-
+            android:theme="@style/BugseeActivityStyle"></activity>
     </application>
 
 </manifest>

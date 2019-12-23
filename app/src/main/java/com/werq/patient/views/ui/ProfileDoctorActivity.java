@@ -300,8 +300,15 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             tvSpeciality.setText(s);
         });
 
-        profileDoctorViewModel.about.observe(this, s -> {
-            tvAbout.setText(s);
+        profileDoctorViewModel.getAbout().observe(this, aboutDoctor -> {
+
+            if (!TextUtils.isEmpty(aboutDoctor)) {
+                tvAbout.setVisibility(View.VISIBLE);
+                tvAbout.setText(aboutDoctor);
+            }else {
+                tvAbout.setVisibility(View.GONE);
+            }
+
         });
     }
 

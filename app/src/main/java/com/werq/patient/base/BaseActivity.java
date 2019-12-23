@@ -106,6 +106,7 @@ public class BaseActivity extends AppCompatActivity {
 
                         case "SignUp":startActivity(new Intent(mContext, SignUpActivity.class));
                             finish();
+
                             break;
                     }
                 }

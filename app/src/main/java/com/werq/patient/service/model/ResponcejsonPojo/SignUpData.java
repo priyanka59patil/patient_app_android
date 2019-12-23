@@ -21,6 +21,9 @@ public class SignUpData implements Serializable {
     @SerializedName("AuthExpiryTime")
     private String AuthExpiryTime;
 
+    @SerializedName("TempPassChangedFlag")
+    private Integer tempPassChangedFlag;
+
     public User getUser ()
     {
         return User;
@@ -71,9 +74,23 @@ public class SignUpData implements Serializable {
         this.AuthExpiryTime = AuthExpiryTime;
     }
 
+    public Integer getTempPassChangedFlag() {
+        return tempPassChangedFlag;
+    }
+
+    public void setTempPassChangedFlag(Integer tempPassChangedFlag) {
+        this.tempPassChangedFlag = tempPassChangedFlag;
+    }
+
     @Override
-    public String toString()
-    {
-        return "ClassPojo [User = "+User+", RefreshToken = "+RefreshToken+", RefreshTokenExpiryTime = "+RefreshTokenExpiryTime+", AuthToken = "+AuthToken+", AuthExpiryTime = "+AuthExpiryTime+"]";
+    public String toString() {
+        return "SignUpData{" +
+                "User=" + User +
+                ", RefreshToken='" + RefreshToken + '\'' +
+                ", RefreshTokenExpiryTime='" + RefreshTokenExpiryTime + '\'' +
+                ", AuthToken='" + AuthToken + '\'' +
+                ", AuthExpiryTime='" + AuthExpiryTime + '\'' +
+                ", tempPassChangedFlag=" + tempPassChangedFlag +
+                '}';
     }
 }

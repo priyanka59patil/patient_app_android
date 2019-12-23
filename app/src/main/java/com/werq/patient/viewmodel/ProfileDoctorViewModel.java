@@ -26,7 +26,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     private static final String TAG = "TabAppoinmentViewModel";
     public MutableLiveData<String> doctorName;
     public MutableLiveData<String> doctorSpeciality;
-    public MutableLiveData<String> about;
+    private MutableLiveData<String> about;
     public MutableLiveData<String> profileUrl;
     public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
     public MutableLiveData<ArrayList<Coworker>> coworkerList;
@@ -124,7 +124,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                         if (doctor.getAboutMe() != null && !doctor.getAboutMe().isEmpty())
                             about.setValue(doctor.getAboutMe());
                         else
-                            about.setValue("Not Available");
+                            about.setValue("");
 
                         if (doctor.getProfilePhoto() != null) {
                             profileUrl.setValue(doctor.getProfilePhoto());

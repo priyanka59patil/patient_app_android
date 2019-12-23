@@ -15,6 +15,7 @@ import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 import com.werq.patient.service.repository.LoginRepository;
 import com.werq.patient.service.repository.SignUpRepository;
 
@@ -28,7 +29,9 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<String> password;
     MutableLiveData<String> userNameError;
     MutableLiveData<String> passwordError;
+    MutableLiveData<String> nextActivity;
     MutableLiveData<Boolean> rememberMe;
+    SignUpData signUpData;
 
 
     LoginRepository loginRepository;
@@ -49,6 +52,7 @@ public class LoginViewModel extends BaseViewModel {
         passwordError=new MutableLiveData<>();
         loginRepository=new LoginRepository();
         rememberMe=new MutableLiveData<>();
+        nextActivity=new MutableLiveData<>();
         this.mContext=context;
         /*sessionManager = new SessionManager(context);
         userRememberPref = new SessionManager(context, "");*/
@@ -75,6 +79,18 @@ public class LoginViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getRememberMe() {
         return rememberMe;
+    }
+
+    public MutableLiveData<String> getNextActivity() {
+        return nextActivity;
+    }
+
+    public SignUpData getSignUpData() {
+        return signUpData;
+    }
+
+    public void setSignUpData(SignUpData signUpData) {
+        this.signUpData = signUpData;
     }
 
     public void loginOnClick()
@@ -188,45 +204,47 @@ public class LoginViewModel extends BaseViewModel {
 
             if(loginResponce!=null)
             {
-                sessionManager.clear();
-                long expiryTimestamp = 0;
 
-                try{
-                    expiryTimestamp=Long.parseLong(loginResponce.getData().getAuthExpiryTime());
+                if(/*loginResponce.getData().getTempPassChangedFlag()!=0*/false){
 
-                }catch (Exception e){
+                    sessionManager.clear();
+                    long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
 
-                }
-                //Helper.setLog("dbTimeStamp",loginResponce.getData().getAuthExpiryTime());
-
-                long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
-
-                sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
-                        loginResponce.getData().getRefreshToken(),
-                        loginResponce.getData().getUser().getUserName(),
-                        loginResponce.getData().getUser().getID(),
-                        timestamp);
-
-                //Helper.setLog("convertedTimeStamp",timestamp+"");
-
+                    sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
+                            loginResponce.getData().getRefreshToken(),
+                            loginResponce.getData().getUser().getUserName(),
+                            loginResponce.getData().getUser().getID(),
+                            timestamp);
 
                     String encryptedUName = "";
                     String encryptedPass = "";
                     try {
+
                         encryptedUName = AESCrypt.encrypt("Asdrwsd", userName.getValue().trim().toLowerCase());
                         encryptedPass = AESCrypt.encrypt("Asdrwsd", password.getValue().trim());
+
                     } catch (GeneralSecurityException e) {
-                        //handle error
-                        e.printStackTrace();
+
                         Helper.setExceptionLog("GeneralSecurityException",e);
                     }
 
-                Helper.setLog("set rememberMe",rememberMe.getValue()+"");
+                    //Helper.setLog("set rememberMe",rememberMe.getValue()+"");
                     sessionManager.setRememberUsername(rememberMe.getValue(), encryptedUName);
                     sessionManager.setRememberPassword(false, encryptedPass);
+                    nextActivity.setValue("DashBoard");
+                }
+                else {
+                        //intent to change password activity
+                        setSignUpData(loginResponce.getData());
+                        nextActivity.setValue("SetNewPassword");
+
+
+
+                }
+
             }
 
-            getActivity().setValue("DashBoard");
+
         }
 
     }

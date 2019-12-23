@@ -2,9 +2,11 @@ package com.werq.patient.views.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -49,6 +51,8 @@ public class LoginActivity extends BaseActivity {
     LoginViewModel loginViewModel;
     @BindView(R.id.tvAppVersion)
     TextView tvAppVersion;
+    @BindView(R.id.etPassword)
+    EditText etPassword;
 
     private ActivityLoginBinding activityLoginBinding;
 
@@ -101,6 +105,7 @@ public class LoginActivity extends BaseActivity {
                     if( progressDialog!=null && !progressDialog.isShowing()){
 
                         progressDialog.show();
+
                     }else {
                         progressDialog=Helper.createProgressDialog(mContext);
                     }
@@ -126,24 +131,39 @@ public class LoginActivity extends BaseActivity {
         });
 
 
-        /*loginViewModel.getActivity().observe(this,s ->  {
-            if(s!=null){
+        loginViewModel.getNextActivity().observe(this, s -> {
+            if (s != null) {
 
-                switch (s){
+                switch (s) {
 
-                    case "DashBoard": startActivity(new Intent(mContext,BottomTabActivity.class));
+                    case "DashBoard":
+                        startActivity(new Intent(mContext, BottomTabActivity.class));
+                        finish();
                         break;
 
-                    case "ForgotPwd":startActivity(new Intent(mContext,ForgotPasswordActivity.class));
-                        break;
+                    case "SetNewPassword":
 
-                    case "SignUp":startActivity(new Intent(mContext,SignUpActivity.class));
+                        Intent i = new Intent(mContext, SetNewPawsswordActivity.class);
+                        Bundle bundle = new Bundle();
+                        Helper.setLog("data",loginViewModel.getSignUpData().toString());
+                        Helper.setLog("currentPassword",loginViewModel.getPassword().getValue());
+                        if(loginViewModel.getSignUpData()!=null)
+                        {
+                            bundle.putSerializable("data", loginViewModel.getSignUpData());
+                            bundle.putString("currentPassword", etPassword.getText().toString());
+                            i.putExtras(bundle);
+                            startActivity(i);
+                            finish();
+                        }else {
+                            loginViewModel.getToast().setValue("Something went wrong");
+                        }
+
                         break;
 
                 }
             }
 
-        });*/
+        });
 
     }
 
@@ -154,6 +174,7 @@ public class LoginActivity extends BaseActivity {
             progressDialog.hide();
         }*/
         loadingView.setVisibility(View.GONE);
+        loginViewModel.getNextActivity().setValue("");
 
     }
 
@@ -173,7 +194,7 @@ public class LoginActivity extends BaseActivity {
                 Bugsee.setAttribute("UserName", SessionManager.getSessionManager(mContext).getRem_username());
 
             } catch (GeneralSecurityException e) {
-                e.printStackTrace();
+
                 Helper.setExceptionLog("GeneralSecurityException", e);
             }
 
@@ -185,4 +206,7 @@ public class LoginActivity extends BaseActivity {
 
 
     }
+
+
+
 }
