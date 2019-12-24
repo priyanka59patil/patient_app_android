@@ -28,15 +28,46 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<String> userName;
     MutableLiveData<String> password;
     MutableLiveData<String> userNameError;
+    public TextWatcher unTextWatcher = new TextWatcher() {
+
+        private final String TAG = "in-un";
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            userNameError.setValue(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
     MutableLiveData<String> passwordError;
+    public TextWatcher pwdTextWatcher = new TextWatcher() {
+        private final String TAG = "in-pwd";
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            passwordError.setValue(null);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
     MutableLiveData<String> nextActivity;
     MutableLiveData<Boolean> rememberMe;
-    SignUpData signUpData;
-
-
     LoginRepository loginRepository;
-    ApiResponce apiResponce=this;
-
+    ApiResponce apiResponce = this;
     SessionManager sessionManager;
     Context mContext;
 
@@ -46,17 +77,16 @@ public class LoginViewModel extends BaseViewModel {
     public LoginViewModel(Context context) {
         super();
 
-        userName=new MutableLiveData<>();
-        password=new MutableLiveData<>();
-        userNameError=new MutableLiveData<>();
-        passwordError=new MutableLiveData<>();
-        loginRepository=new LoginRepository();
-        rememberMe=new MutableLiveData<>();
-        nextActivity=new MutableLiveData<>();
-        this.mContext=context;
+        userName = new MutableLiveData<>();
+        password = new MutableLiveData<>();
+        userNameError = new MutableLiveData<>();
+        passwordError = new MutableLiveData<>();
+        loginRepository = new LoginRepository();
+        rememberMe = new MutableLiveData<>();
+        nextActivity = new MutableLiveData<>();
+        this.mContext = context;
         /*sessionManager = new SessionManager(context);
         userRememberPref = new SessionManager(context, "");*/
-
 
 
     }
@@ -85,31 +115,22 @@ public class LoginViewModel extends BaseViewModel {
         return nextActivity;
     }
 
-    public SignUpData getSignUpData() {
-        return signUpData;
-    }
-
-    public void setSignUpData(SignUpData signUpData) {
-        this.signUpData = signUpData;
-    }
-
-    public void loginOnClick()
-    {
-        Helper.setLog( "loginOnClick: ", userName.getValue()+" "+password.getValue() );
+    public void loginOnClick() {
+        Helper.setLog("loginOnClick: ", userName.getValue() + " " + password.getValue());
 
 
-        if(validateData()){
-            UserCredential userCredential=new UserCredential();
+        if (validateData()) {
+            UserCredential userCredential = new UserCredential();
             userCredential.setUsername(userName.getValue());
             userCredential.setPassword(password.getValue());
 
 
-            if(Helper.hasNetworkConnection(mContext)){
+            if (Helper.hasNetworkConnection(mContext)) {
 
                 getLoading().setValue(true);
-                loginRepository.signIn(userCredential,getToast(),apiResponce,"SIGNIN");
+                loginRepository.signIn(userCredential, getToast(), apiResponce, "SIGNIN");
 
-            }else {
+            } else {
                 getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
             }
         }
@@ -118,32 +139,31 @@ public class LoginViewModel extends BaseViewModel {
     public boolean validateData() {
         boolean check = true;
 
-        if(userName.getValue()!=null){
+        if (userName.getValue() != null) {
 
             if (userName.getValue().trim().equals("")) {
                 check = false;
                 userNameError.setValue(mContext.getResources().getString(R.string.empty_email));
-            }else {
-                if(!Helper.isValidEmail(userName.getValue().trim())){
+            } else {
+                if (!Helper.isValidEmail(userName.getValue().trim())) {
                     check = false;
                     userNameError.setValue(mContext.getResources().getString(R.string.invalid_email_id));
                 }
             }
 
-        }
-        else {
+        } else {
             check = false;
             userNameError.setValue(mContext.getResources().getString(R.string.empty_email));
         }
 
-        if(password.getValue()!=null){
+        if (password.getValue() != null) {
 
-            if(password.getValue().trim().equals("")){
+            if (password.getValue().trim().equals("")) {
                 check = false;
                 passwordError.setValue(mContext.getResources().getString(R.string.empty_password));
             }
 
-        }else {
+        } else {
             check = false;
             passwordError.setValue(mContext.getResources().getString(R.string.empty_password));
         }
@@ -152,63 +172,26 @@ public class LoginViewModel extends BaseViewModel {
 
     }
 
-    public void signUpOnClick()
-    {
+    public void signUpOnClick() {
 
         getActivity().setValue("SignUp");
     }
 
-    public TextWatcher unTextWatcher=new TextWatcher() {
-
-        private final String TAG = "in-un";
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            userNameError.setValue(null);
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
-    public TextWatcher pwdTextWatcher=new TextWatcher() {
-        private final String TAG = "in-pwd";
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            passwordError.setValue(null);
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
     @Override
     public void onSuccess(String url, String responseJson) {
 
-        LoginResponce loginResponce=Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
+        LoginResponce loginResponce = Helper.getGsonInstance().fromJson(responseJson, LoginResponce.class);
 
 
         getLoading().setValue(false);
-        if(url.equals("SIGNIN")){
+        if (url.equals("SIGNIN")) {
 
-            if(loginResponce!=null)
-            {
+            if (loginResponce != null) {
 
-                if(/*loginResponce.getData().getTempPassChangedFlag()!=0*/false){
+                if (/*loginResponce.getData().getTempPassChangedFlag()!=0*/false) {
 
                     sessionManager.clear();
-                    long timestamp=Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
+                    long timestamp = Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
 
                     sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
                             loginResponce.getData().getRefreshToken(),
@@ -225,19 +208,19 @@ public class LoginViewModel extends BaseViewModel {
 
                     } catch (GeneralSecurityException e) {
 
-                        Helper.setExceptionLog("GeneralSecurityException",e);
+                        Helper.setExceptionLog("GeneralSecurityException", e);
                     }
 
                     //Helper.setLog("set rememberMe",rememberMe.getValue()+"");
                     sessionManager.setRememberUsername(rememberMe.getValue(), encryptedUName);
                     sessionManager.setRememberPassword(false, encryptedPass);
                     nextActivity.setValue("DashBoard");
-                }
-                else {
-                        //intent to change password activity
-                        setSignUpData(loginResponce.getData());
-                        nextActivity.setValue("SetNewPassword");
-
+                } else {
+                    //intent to change password activity
+                    sessionManager.clear();
+                    long timestamp = Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
+                    sessionManager.setAuthToken(loginResponce.getData().getAuthToken(),timestamp);
+                    nextActivity.setValue("SetNewPassword");
 
 
                 }
@@ -250,7 +233,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onError(String url, String errorCode,String errorMessage) {
+    public void onError(String url, String errorCode, String errorMessage) {
 
         getLoading().setValue(false);
 
@@ -271,7 +254,7 @@ public class LoginViewModel extends BaseViewModel {
 
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg
-            Helper.setExceptionLog("GeneralSecurityException",e);
+            Helper.setExceptionLog("GeneralSecurityException", e);
             e.printStackTrace();
         }
     }
@@ -282,7 +265,7 @@ public class LoginViewModel extends BaseViewModel {
 
     public void setSessionManager(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
-        if(sessionManager.isRememberUsername()) {
+        if (sessionManager.isRememberUsername()) {
             setPrefilledUsername();
         }
     }

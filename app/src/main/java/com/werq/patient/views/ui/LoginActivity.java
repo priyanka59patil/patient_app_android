@@ -51,8 +51,11 @@ public class LoginActivity extends BaseActivity {
     LoginViewModel loginViewModel;
     @BindView(R.id.tvAppVersion)
     TextView tvAppVersion;
+
     @BindView(R.id.etPassword)
     EditText etPassword;
+    @BindView(R.id.etUsername)
+    EditText etUsername;
 
     private ActivityLoginBinding activityLoginBinding;
 
@@ -145,18 +148,16 @@ public class LoginActivity extends BaseActivity {
 
                         Intent i = new Intent(mContext, SetNewPawsswordActivity.class);
                         Bundle bundle = new Bundle();
-                        Helper.setLog("data",loginViewModel.getSignUpData().toString());
-                        Helper.setLog("currentPassword",loginViewModel.getPassword().getValue());
-                        if(loginViewModel.getSignUpData()!=null)
-                        {
-                            bundle.putSerializable("data", loginViewModel.getSignUpData());
-                            bundle.putString("currentPassword", etPassword.getText().toString());
-                            i.putExtras(bundle);
-                            startActivity(i);
-                            finish();
-                        }else {
-                            loginViewModel.getToast().setValue("Something went wrong");
-                        }
+                        Helper.setLog("userName", loginViewModel.getUserName().getValue());
+                        Helper.setLog("currentPassword", loginViewModel.getPassword().getValue());
+                        Helper.setLog("rem me", loginViewModel.getRememberMe().getValue()+"");
+
+                        bundle.putString("userName", loginViewModel.getUserName().getValue());
+                        bundle.putString("currentPassword", etPassword.getText().toString());
+                        bundle.putBoolean("rememberMe",loginViewModel.getRememberMe().getValue());
+                        i.putExtras(bundle);
+                        startActivity(i);
+                        finish();
 
                         break;
 
@@ -174,7 +175,7 @@ public class LoginActivity extends BaseActivity {
             progressDialog.hide();
         }*/
         loadingView.setVisibility(View.GONE);
-        loginViewModel.getNextActivity().setValue("");
+        loginViewModel.getNextActivity().setValue(null);
 
     }
 
@@ -206,7 +207,6 @@ public class LoginActivity extends BaseActivity {
 
 
     }
-
 
 
 }

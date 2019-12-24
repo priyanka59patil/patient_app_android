@@ -9,14 +9,19 @@ import android.text.TextWatcher;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.scottyab.aescrypt.AESCrypt;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.ResponcejsonPojo.ChangePasswordResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
+
+import java.security.GeneralSecurityException;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -27,6 +32,8 @@ public class SetNewPasswordViewModel extends BaseViewModel {
     private CompositeDisposable disposable;
     ApiResponce apiResponce=this;
 
+    MutableLiveData<Boolean> rememberMe;
+    MutableLiveData<String> userName;
     public MutableLiveData<String> currentPassword;
     public MutableLiveData<String> newPassword;
     public MutableLiveData<String> reenteredPassword;
@@ -34,10 +41,11 @@ public class SetNewPasswordViewModel extends BaseViewModel {
     MutableLiveData<String> newPasswordError;
     MutableLiveData<String> reenteredPasswordError;
     MutableLiveData<Boolean> changePasswordStatus;
-    boolean isValidPassword=false;
-    Context mContext;
-    SignUpData signUpData;
+    MutableLiveData<String> nextActivity;
 
+    boolean isValidPassword=false;
+    SessionManager sessionManager;
+    Context mContext;
 
     public SetNewPasswordViewModel() {
         super();
@@ -55,8 +63,9 @@ public class SetNewPasswordViewModel extends BaseViewModel {
         reenteredPasswordError =new MutableLiveData<>();
         changePasswordStatus =new MutableLiveData<>();
 
-
-
+        rememberMe=new MutableLiveData<>();
+        userName=new MutableLiveData<>();
+        nextActivity=new MutableLiveData<>();
     }
 
 
@@ -66,11 +75,43 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
         if(!TextUtils.isEmpty(url) && url.equals("SetNewPassword")){
 
-            ChangePasswordResponse changePasswordResponse
-                    =Helper.getGsonInstance().fromJson(responseJson,ChangePasswordResponse.class);
+            LoginResponce loginResponce
+                    =Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
             getToast().setValue("Your password has been set successfully");
             changePasswordStatus.setValue(true);
 
+            if(loginResponce!=null){
+
+                if(loginResponce.getData()!=null){
+                    String authToken=sessionManager.getAuthToken();
+                    long timeStamp=sessionManager.getTimeStamp();
+
+                    sessionManager.clear();
+
+                    sessionManager.creteUserSession(authToken,
+                            loginResponce.getData().getRefreshToken(),
+                            loginResponce.getData().getUser().getUserName(),
+                            loginResponce.getData().getUser().getID(),
+                            timeStamp);
+
+                    String encryptedUName = "";
+                    String encryptedPass = "";
+                    try {
+
+                        encryptedUName = AESCrypt.encrypt("Asdrwsd", userName.getValue().trim().toLowerCase());
+                        encryptedPass = AESCrypt.encrypt("Asdrwsd", currentPassword.getValue().trim());
+
+                    } catch (GeneralSecurityException e) {
+
+                        Helper.setExceptionLog("GeneralSecurityException",e);
+                    }
+
+                    Helper.setLog("set encryptedUName",encryptedUName+"::"+ userName.getValue().trim());
+                    sessionManager.setRememberUsername(rememberMe.getValue(), encryptedUName);
+                    sessionManager.setRememberPassword(false, encryptedPass);
+                    nextActivity.setValue("DashBoard");
+                }
+            }
 
             //Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
 
@@ -95,6 +136,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
         changePassword.setCurrentPassword(currentPassword.getValue());
         changePassword.setNewPassword(newPassword.getValue());
 
+        Helper.setLog("changePassword req",changePassword.toString());
         getLoading().setValue(true);
         patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiResponce,"SetNewPassword");
     }
@@ -232,11 +274,24 @@ public class SetNewPasswordViewModel extends BaseViewModel {
         this.mContext = mContext;
     }
 
-    public SignUpData getSignUpData() {
-        return signUpData;
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
-    public void setSignUpData(SignUpData signUpData) {
-        this.signUpData = signUpData;
+    public void setSessionManager(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
+    }
+
+    public MutableLiveData<Boolean> getRememberMe() {
+        return rememberMe;
+    }
+
+    public MutableLiveData<String> getUserName() {
+        return userName;
+    }
+
+    public MutableLiveData<String> getNextActivity() {
+        return nextActivity;
     }
 }

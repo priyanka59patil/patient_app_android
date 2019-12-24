@@ -3,6 +3,7 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.widget.Button;
 
@@ -14,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivitySetNewPawsswordBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
@@ -59,12 +61,19 @@ public class SetNewPawsswordActivity extends BaseActivity {
         setBaseViewModel(viewModel);
         activityBinding.setSetNewPasswordVm(viewModel);
         viewModel.setmContext(mContext);
+        viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.set_new_password));
         intent=getIntent();
         getIntentData();
+
+        viewModel.getNextActivity().observe(this,s -> {
+            if(!TextUtils.isEmpty(s) && s.equals("DashBoard")){
+                startActivity(new Intent(mContext, BottomTabActivity.class));
+                finish();
+            }
+        });
 
 
     }
@@ -82,19 +91,16 @@ public class SetNewPawsswordActivity extends BaseActivity {
             Bundle bundle = intent.getExtras();
 
             if (bundle != null) {
-
-                signUpData = (SignUpData) bundle.getSerializable("data");
-
-                if (signUpData != null) {
-                    viewModel.setSignUpData(signUpData);
-                }
-
-                Helper.setLog("SNP-data",signUpData.toString());
+                Helper.setLog("SNP-userName",bundle.getString("userName"));
                 Helper.setLog("SNP-currentPassword",bundle.getString("currentPassword"));
+                Helper.setLog("SNP-rememberMe",bundle.getBoolean("rememberMe")+"");
 
+                viewModel.getUserName().setValue(bundle.getString("userName"));
                 viewModel.getCurrentPassword().setValue(bundle.getString("currentPassword"));
+                viewModel.getRememberMe().setValue(bundle.getBoolean("rememberMe",false));
             }
         }
+
     }
 
     @OnClick(R.id.btUpdate)
@@ -110,12 +116,14 @@ public class SetNewPawsswordActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        viewModel.getNextActivity().setValue(null);
     }
 }

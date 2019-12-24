@@ -83,6 +83,13 @@ public class SessionManager {
     }
 
 
+    public void setAuthToken(String AccessToken, long tmpstmp) {
+        Helper.setAutoken(AccessToken);
+        editor.putString(token, AccessToken);
+        editor.putLong(timeStamp, tmpstmp);
+        editor.commit();
+    }
+
     public void setRememberUsername(boolean doRemember, String uname) {
         userEditor.putBoolean(REMEMBER_USERNAME, doRemember);
         userEditor.putString(rem_username, uname);
@@ -94,7 +101,7 @@ public class SessionManager {
         userEditor.commit();
     }
 
-    public static long getTimeStamp() {
+    public long getTimeStamp() {
         return pref.getLong(timeStamp, 0);
     }
 
