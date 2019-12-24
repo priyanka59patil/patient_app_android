@@ -6,6 +6,7 @@ import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
+import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 
 import retrofit2.Call;
@@ -173,6 +174,14 @@ public class PatientRepository {
 
         Helper.setLog("setNewChatRequest-authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().sendNewChatRequest(authToken,Helper.ContentType,newChat);
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  setNewAppointmentRequest(String authToken, NewAppointment newAppointment, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("setNewChatRequest-authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().sendNewAppointmentRequest(authToken,Helper.ContentType,newAppointment);
         RetrofitClient.callApi(call,url,apiResponce,toast);
 
     }

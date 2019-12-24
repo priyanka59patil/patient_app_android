@@ -27,9 +27,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="replace">
-        <activity android:name=".views.ui.SetNewPawsswordActivity"
-            android:label="@string/set_new_password"
+        <activity android:name=".views.ui.BookNewAppointmentActivity"
+            android:label="@string/new_appointment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".views.ui.SetNewPawsswordActivity"
+            android:label="@string/set_new_password"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -160,13 +164,13 @@
             android:theme="@style/BugseeTheme.Transparent" />
         <activity
             android:name="com.bugsee.library.send.SendBundleActivity"
-            android:theme="@style/BugseeActivityStyle"></activity>
+            android:theme="@style/BugseeActivityStyle" />
         <activity
             android:name="com.bugsee.library.activity.EditScreenshotActivity"
-            android:theme="@style/BugseeActivityStyle"></activity>
+            android:theme="@style/BugseeActivityStyle" />
         <activity
             android:name="com.bugsee.library.activity.FeedbackActivity"
-            android:theme="@style/BugseeActivityStyle"></activity>
+            android:theme="@style/BugseeActivityStyle" />
     </application>
 
 </manifest>

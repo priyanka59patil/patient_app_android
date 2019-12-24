@@ -105,23 +105,23 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
             }
             else {
-                if(Helper.isValidPassword(newPassword.getValue())){
-                    if(newPassword.getValue().equals(reenteredPassword.getValue())){
 
+                if(newPassword.getValue().equals(reenteredPassword.getValue())){
+
+                    if(Helper.isValidPassword(newPassword.getValue())){
                         Helper.setLog("updateOnClick","setNewPasswordApiCall");
                         setNewPasswordApiCall();
                     }
                     else {
-                        getToast().setValue("Passwords don't match");
+
+                        Helper.showToast(mContext,mContext.getResources().getString(R.string.password_pattern_msg));
                     }
                 }
                 else {
-
-                    Helper.showToast(mContext,mContext.getResources().getString(R.string.password_pattern_msg));
+                    getToast().setValue("New Password and Confirm New Password should be same");
                 }
+
             }
-
-
 
 
         }

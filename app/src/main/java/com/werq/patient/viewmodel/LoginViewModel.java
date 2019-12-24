@@ -188,7 +188,7 @@ public class LoginViewModel extends BaseViewModel {
 
             if (loginResponce != null) {
 
-                if (/*loginResponce.getData().getTempPassChangedFlag()!=0*/false) {
+                if (loginResponce.getData().getTempPassChangedFlag()!=0) {
 
                     sessionManager.clear();
                     long timestamp = Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());

@@ -2,6 +2,7 @@ package com.werq.patient.Interfaces;
 
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
@@ -116,6 +117,11 @@ public interface ApiInterface {
     Call<Object> sendNewChatRequest(@Header("Authorization") String authToken,
                                        @Header("Content-Type") String contentType,
                                        @Body NewChat newChat);
+
+    @POST("Appointments/AppointmentReq")
+    Call<Object> sendNewAppointmentRequest(@Header("Authorization") String authToken,
+                                    @Header("Content-Type") String contentType,
+                                    @Body NewAppointment newAppointment);
 
 }
 

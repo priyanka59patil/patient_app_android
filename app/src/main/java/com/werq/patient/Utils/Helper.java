@@ -227,6 +227,10 @@ public class Helper {
     }
 
     public static boolean isValidPassword(String password){
+        Helper.setLog("passwordlength",password.trim().length()+"");
+        if(password.trim().length()<8){
+            return false;
+        }
         String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{0,8})";
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);

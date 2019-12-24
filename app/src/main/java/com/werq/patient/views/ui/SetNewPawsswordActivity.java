@@ -101,6 +101,7 @@ public class SetNewPawsswordActivity extends BaseActivity {
             }
         }
 
+
     }
 
     @OnClick(R.id.btUpdate)

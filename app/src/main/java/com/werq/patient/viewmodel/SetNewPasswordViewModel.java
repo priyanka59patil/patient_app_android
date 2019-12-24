@@ -99,7 +99,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
                     try {
 
                         encryptedUName = AESCrypt.encrypt("Asdrwsd", userName.getValue().trim().toLowerCase());
-                        encryptedPass = AESCrypt.encrypt("Asdrwsd", currentPassword.getValue().trim());
+                        encryptedPass = AESCrypt.encrypt("Asdrwsd", newPassword.getValue().trim());
 
                     } catch (GeneralSecurityException e) {
 
@@ -145,20 +145,23 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
         if( !TextUtils.isEmpty(currentPassword.getValue()) && !TextUtils.isEmpty(newPassword.getValue()) && !TextUtils.isEmpty(reenteredPassword.getValue()) ){
 
-                if(Helper.isValidPassword(newPassword.getValue())){
-                    if(newPassword.getValue().equals(reenteredPassword.getValue())){
+            if(newPassword.getValue().equals(reenteredPassword.getValue())){
 
-                        Helper.setLog("updateOnClick","setNewPasswordApiCall");
-                        setNewPasswordApiCall();
-                    }
-                    else {
-                        getToast().setValue("Passwords don't match");
-                    }
+                if(Helper.isValidPassword(newPassword.getValue())){
+                    Helper.setLog("updateOnClick","setNewPasswordApiCall");
+                    setNewPasswordApiCall();
                 }
                 else {
 
                     Helper.showToast(mContext,mContext.getResources().getString(R.string.password_pattern_msg));
                 }
+
+            }
+            else {
+                getToast().setValue("New Password and Confirm New Password should be same");
+            }
+
+
 
         }
         else {

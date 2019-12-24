@@ -65,6 +65,10 @@ public class Location implements Serializable
     public Location() {
     }
 
+    public Location(Integer iD, String address1) {
+        this.iD = iD;
+        this.address1 = address1;
+    }
 
     public String getAddress1() {
         return address1;

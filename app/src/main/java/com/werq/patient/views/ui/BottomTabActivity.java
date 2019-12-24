@@ -3,7 +3,6 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -23,12 +21,6 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
@@ -115,7 +107,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         add = menu.findItem(R.id.action_Doctor_name);
         search = menu.findItem(R.id.action_Search);
 
-        VisibleMenuItem(false, false, false);
+        VisibleMenuItem(true, false, false);
         return true;
     }
 
@@ -125,6 +117,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
             case R.id.action_settings:
                 startActivity(new Intent(mContext, SettingActivity.class));
                 break;
+
             case R.id.action_Doctor_name:
                 switch (title) {
                     case "My Doctor Teams":
@@ -133,9 +126,11 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                     case "Chats":
                         //startActivity(new Intent(mContext, NewChatActivity.class));
                         break;
+
+                    case "Appointments":
+                        startActivity(new Intent(mContext, BookNewAppointmentActivity.class));
+                        break;
                 }
-
-
                 break;
         }
 
@@ -168,6 +163,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                 switch (s) {
                     case "calendar":
 
+                        title="Appointments";
                         if(appointmentFragment==null){
                             appointmentFragment=new AppointmentFragment();
                             fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();
@@ -179,7 +175,8 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
                         if (add != null && setting != null && search != null) {
                             Helper.setToolbar(getSupportActionBar(), "Appointments");
-                            VisibleMenuItem(false, false, false);
+                            setToolbarForbottom(title, true, false);
+                            VisibleMenuItem(true, false, false);
 
                         }
 

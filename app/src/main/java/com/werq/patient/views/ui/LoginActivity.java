@@ -148,10 +148,6 @@ public class LoginActivity extends BaseActivity {
 
                         Intent i = new Intent(mContext, SetNewPawsswordActivity.class);
                         Bundle bundle = new Bundle();
-                        Helper.setLog("userName", loginViewModel.getUserName().getValue());
-                        Helper.setLog("currentPassword", loginViewModel.getPassword().getValue());
-                        Helper.setLog("rem me", loginViewModel.getRememberMe().getValue()+"");
-
                         bundle.putString("userName", loginViewModel.getUserName().getValue());
                         bundle.putString("currentPassword", etPassword.getText().toString());
                         bundle.putBoolean("rememberMe",loginViewModel.getRememberMe().getValue());
