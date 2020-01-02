@@ -209,6 +209,7 @@
     <string name="password_pattern_msg">Use a combination of minimum 8 characters including letters (minimum 1 Capital and 1 small letter), numbers and special characters..</string>
 
     <string name="CONFIRMED_APPOINTMENT_BROADCAST">confirmed_appointment</string>
+    <string name="NEW_DOCTOR_PROFILE">new_doctor_profile</string>
 
     <string name="summery_of_care">Summary of Care</string>
     <string name="allergies">Allergies</string>

@@ -29,7 +29,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     private MutableLiveData<String> about;
     public MutableLiveData<String> profileUrl;
     public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
-    public MutableLiveData<ArrayList<Coworker>> coworkerList;
+    public MutableLiveData<ArrayList<Doctor>> coworkerList;
     public MutableLiveData<ArrayList<Location>> locationsList;
     public MutableLiveData<String> practicePhoneNumber;
     public MutableLiveData<String> practiceWebUrl;
@@ -137,7 +137,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
                     if (detailsResponse.getData().getCoworker() != null) {
 
-                        ArrayList<Coworker> coworkerArrayList = new ArrayList<>();
+                        ArrayList<Doctor> coworkerArrayList = new ArrayList<>();
 
                         coworkerArrayList.addAll(detailsResponse.getData().getCoworker());
                         coworkerList.setValue(coworkerArrayList);
@@ -246,7 +246,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
     }
 
-    public MutableLiveData<ArrayList<Coworker>> getCoworkerList() {
+    public MutableLiveData<ArrayList<Doctor>> getCoworkerList() {
         return coworkerList;
     }
 

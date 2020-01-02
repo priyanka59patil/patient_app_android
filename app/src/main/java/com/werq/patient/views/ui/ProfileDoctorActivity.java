@@ -2,8 +2,10 @@ package com.werq.patient.views.ui;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
@@ -53,10 +56,15 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityProfileDoctorBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
+import com.werq.patient.service.model.ResponeError.ProfileIntentService;
 import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
 import com.werq.patient.views.ui.Fragments.DoctorsListFragment;
 import com.werq.patient.views.ui.Fragments.PracticeFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,6 +127,8 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     SpinKitView loadingView1;
     @BindView(R.id.loadingView2)
     SpinKitView loadingView2;
+    @BindView(R.id.profileFrame)
+    FrameLayout profileFrame;
     private PagerAdapter adapter;
     RelativeLayout.LayoutParams params;
     private Context mContext;
@@ -148,7 +158,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         loadingView1.setIndeterminateDrawable(fadingCircle);
         loadingView2.setIndeterminateDrawable(fadingCircle);
 
-        profileDoctorViewModel = ViewModelProviders.of(this,new ProfileDoctorVmFactory(mContext)).get(ProfileDoctorViewModel.class);
+        profileDoctorViewModel = ViewModelProviders.of(this, new ProfileDoctorVmFactory(mContext)).get(ProfileDoctorViewModel.class);
 
         if (Helper.hasNetworkConnection(mContext)) {
 
@@ -182,10 +192,9 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
                     tbuserimageview.setVisibility(View.VISIBLE);
                     collasbaleView.setVisibility(View.GONE);
-                    if(!TextUtils.isEmpty(profileDoctorViewModel.getDoctorName().getValue())){
+                    if (!TextUtils.isEmpty(profileDoctorViewModel.getDoctorName().getValue())) {
                         toolbarLayout.setTitle(profileDoctorViewModel.getDoctorName().getValue());
-                    }
-                    else {
+                    } else {
                         toolbarLayout.setTitle("");
                     }
                     tabs.setTabTextColors(getResources().getColor(R.color.white), getResources().getColor(R.color.white));
@@ -233,6 +242,11 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             }
         });
 
+       /* LocalBroadcastManager.getInstance(mContext).registerReceiver(
+                newDoctorProfileReceiver,
+                new IntentFilter(getString(R.string.NEW_DOCTOR_PROFILE)));*/
+
+        EventBus.getDefault().register(this);
 
     }
 
@@ -265,11 +279,10 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
                 showProgressBar(loadingView2);
                 loadingView1.bringToFront();
                 loadingView2.bringToFront();
-            }else {
+            } else {
                 hideProgressBar(loadingView1);
                 hideProgressBar(loadingView2);
             }
-
 
 
         });
@@ -305,7 +318,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             if (!TextUtils.isEmpty(aboutDoctor)) {
                 tvAbout.setVisibility(View.VISIBLE);
                 tvAbout.setText(aboutDoctor);
-            }else {
+            } else {
                 tvAbout.setVisibility(View.GONE);
             }
 
@@ -321,6 +334,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+
                 finish();
                 break;
         }
@@ -330,17 +344,21 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getSupportFragmentManager());
 
-        /*DoctorsListFragment fra=new DoctorsListFragment();
+       /* DoctorsListFragment fra=new DoctorsListFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("doctorDetailsResponse", profileDoctorViewModel.doctorDetailsResponse.getValue());
+        bundle.putSerializable("clickList", profileDoctorViewModel.doctorDetailsResponse.getValue());
         fra.setArguments(bundle);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, fra);
         transaction.commitNow();*/
-
+        DoctorsListFragment doctorsListFragment = new DoctorsListFragment();
         adapter.addFragment(new PracticeFragment(), getString(R.string.label_practice));
-        adapter.addFragment(new DoctorsListFragment(), getString(R.string.label_doctorTEAM));
+        adapter.addFragment(doctorsListFragment, getString(R.string.label_doctorTEAM));
         viewpager.setAdapter(adapter);
+
+        doctorsListFragment.setMainContainer(profileFrame);
+
+        //doctorsListFragment.setRecyclerViewClickListerner(this);
 
 
     }
@@ -403,8 +421,27 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventReceive(ProfileIntentService profileIntentService){
+
+        Helper.setLog("onEventReceive","profileIntentService");
+        Intent i=new Intent(ProfileDoctorActivity.this,ProfileDoctorActivity.class);
+        i.putExtra("doctorData",profileIntentService.getDoctor());
+        i.putExtra("isMessageDisabled",profileIntentService.isMessageEnabled());
+        startActivity(i);
+        finish();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
+        //unregisterReceiver(newDoctorProfileReceiver);
+        EventBus.getDefault().unregister(this);
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.hide();
         }
@@ -456,7 +493,21 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
 
     }
 
-    public void callOnClick(){
+    private BroadcastReceiver newDoctorProfileReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Helper.setLog("listening", "confirmedAppointmentBR");
+            //
+            Intent i=new Intent(ProfileDoctorActivity.this,ProfileDoctorActivity.class);
+            i.putExtra("doctorData",intent.getSerializableExtra("doctorData"));
+            i.putExtra("isMessageDisabled",intent.getBooleanExtra("isMessageDisabled", false));
+            //overridePendingTransition(0, 0);
+            startActivity(i);
+            finish();
+            //getIntentData();
+            //overridePendingTransition(0, 0);
 
-    }
+        }
+    };
+
 }

@@ -96,6 +96,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public MutableLiveData<String> getPassword() {
+        password.setValue("Test@123");
         return password;
     }
 
@@ -248,9 +249,9 @@ public class LoginViewModel extends BaseViewModel {
         try {
 
             String uNameAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_username());
-            String pwdAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_password());
+            //String pwdAfterDecrypt = AESCrypt.decrypt("Asdrwsd", sessionManager.getRem_password());
             userName.setValue(uNameAfterDecrypt);
-            password.setValue(pwdAfterDecrypt);
+            //password.setValue(pwdAfterDecrypt);
 
         } catch (GeneralSecurityException e) {
             //handle error - could be due to incorrect password or tampered encryptedMsg

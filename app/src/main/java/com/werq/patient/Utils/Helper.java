@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 public class Helper {
     public static Gson gson;
@@ -235,6 +236,17 @@ public class Helper {
         Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
+    }
+
+    public static boolean isValidUrl(String url) {
+        try {
+            Pattern regex = Pattern.compile("\\b(?:(https?|ftp|file)://|www\\.)?[-A-Z0-9+&#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]\\.[-A-Z0-9+&@#/%?=~_|$!:,.;]*[A-Z0-9+&@#/%=~_|$]", Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+            return regex.matcher(url).matches();
+        } catch (PatternSyntaxException ex) {
+            // Syntax error in the regular expression
+            return false;
+        }
+
     }
 
 

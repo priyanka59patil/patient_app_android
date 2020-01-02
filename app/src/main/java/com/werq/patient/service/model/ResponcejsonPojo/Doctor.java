@@ -13,8 +13,10 @@ public class Doctor implements Serializable
 
     @SerializedName("ID")
     private Integer iD;
+
     @SerializedName("Status")
     private String status;
+
     @SerializedName("FirstName")
     private String firstName;
 
@@ -26,18 +28,28 @@ public class Doctor implements Serializable
 
     @SerializedName("ProfilePhoto")
     private String profilePhoto;
+
     @SerializedName("AboutMe")
     @Expose
     private String aboutMe;
 
     @SerializedName("NPINumber")
-    private String nPINumber;
+    private Integer nPINumber;
+
     @SerializedName("IsDeleted")
     private Boolean isDeleted;
+
     @SerializedName("ContactInfo")
     private List<ContactInfo> contactInfo = null;
+
     @SerializedName("Speciality")
     private Speciality speciality;
+
+    @SerializedName("CreatedAt")
+    private String createdAt;
+
+    @SerializedName("JobTitle")
+    private JobTitle jobTitle;
 
     public Doctor() {
     }
@@ -50,11 +62,11 @@ public class Doctor implements Serializable
         this.iD = iD;
     }
 
-    public String getnPINumber() {
+    public Integer getnPINumber() {
         return nPINumber;
     }
 
-    public void setnPINumber(String nPINumber) {
+    public void setnPINumber(Integer nPINumber) {
         this.nPINumber = nPINumber;
     }
 
@@ -131,6 +143,22 @@ public class Doctor implements Serializable
         this.aboutMe = aboutMe;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public JobTitle getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(JobTitle jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
     @Override
     public String toString() {
         return "Doctor{" +
@@ -145,6 +173,8 @@ public class Doctor implements Serializable
                 ", isDeleted=" + isDeleted +
                 ", contactInfo=" + contactInfo +
                 ", speciality=" + speciality +
+                ", createdAt='" + createdAt + '\'' +
+                ", jobTitle=" + jobTitle +
                 '}';
     }
 }

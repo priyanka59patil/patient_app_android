@@ -36,6 +36,8 @@ import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.views.ui.ScheduleDetailsActivity;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -312,6 +314,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().unregister(this);
         hideProgressBar(loadingView);
     }
 }

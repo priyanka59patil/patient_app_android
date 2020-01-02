@@ -2,27 +2,33 @@ package com.werq.patient.views.ui.Fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentDoctorsListBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
+import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.viewmodel.ProfileDoctorViewModel;
 import com.werq.patient.views.adapter.DoctorListAdapter;
 import com.werq.patient.R;
@@ -49,12 +55,16 @@ public class DoctorsListFragment extends BaseFragment {
     RecyclerView rvDoctorTeam;
     @BindView(R.id.tvNoData)
     TextView tvNoData;
-    private ArrayList<Coworker> coworkerList;
+    private ArrayList<Doctor> coworkerList;
     Context mContext;
     ProfileDoctorViewModel viewModel;
     FragmentDoctorsListBinding fragmentDoctorsListBinding;
     //ProgressDialog progressDialog;
     DoctorListAdapter doctorListAdapter;
+    RecyclerViewClickListerner recyclerViewClickListerner;
+    private String TAG="DoctorsListFragment";
+    FrameLayout mainContainer;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -193,5 +203,27 @@ public class DoctorsListFragment extends BaseFragment {
         super.onStop();
         hideProgressBar(loadingView);
 
+    }
+
+    public RecyclerViewClickListerner getRecyclerViewClickListerner() {
+        return recyclerViewClickListerner;
+    }
+
+
+    /*@Override
+    public void onclick(int position) {
+        Helper.setLog(TAG,position+"");
+        Intent intent = new Intent(getResources().getString(R.string.NEW_DOCTOR_PROFILE));
+        intent.putExtra("doctorData",coworkerList.get(position));
+        intent.putExtra("isMessageDisabled",false);
+        LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
+    }*/
+
+    public FrameLayout getMainContainer() {
+        return mainContainer;
+    }
+
+    public void setMainContainer(FrameLayout mainContainer) {
+        this.mainContainer = mainContainer;
     }
 }

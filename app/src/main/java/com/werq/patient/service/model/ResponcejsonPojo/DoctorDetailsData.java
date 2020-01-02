@@ -14,7 +14,7 @@ public class DoctorDetailsData implements Serializable {
     private List<Location> locations = null;
     @SerializedName("Coworker")
     @Expose
-    private List<Coworker> coworker = null;
+    private List<Doctor> coworker = null;
 
     public Doctor getDoctor() {
         return doctor;
@@ -32,11 +32,11 @@ public class DoctorDetailsData implements Serializable {
         this.locations = locations;
     }
 
-    public List<Coworker> getCoworker() {
+    public List<Doctor> getCoworker() {
         return coworker;
     }
 
-    public void setCoworker(List<Coworker> coworker) {
+    public void setCoworker(List<Doctor> coworker) {
         this.coworker = coworker;
     }
 

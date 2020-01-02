@@ -7,47 +7,44 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
-import com.werq.patient.base.BaseFragment;
-import com.werq.patient.databinding.FragmentPracticeBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.viewmodel.ProfileDoctorViewModel;
-import com.werq.patient.views.adapter.PracticeAdapter;
 import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.ProfileInterface;
-import com.werq.patient.service.model.Responce;
+import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
+import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
+import com.werq.patient.base.BaseFragment;
+import com.werq.patient.databinding.FragmentPracticeBinding;
+import com.werq.patient.service.model.Responce;
+import com.werq.patient.service.model.ResponcejsonPojo.Location;
+import com.werq.patient.viewmodel.ProfileDoctorViewModel;
+import com.werq.patient.views.adapter.PracticeAdapter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
-public class PracticeFragment extends BaseFragment /*implements BasicActivities*/implements RecyclerViewClickListerner {
+public class PracticeFragment extends BaseFragment /*implements BasicActivities*/ implements RecyclerViewClickListerner {
 
     /*@BindView(R.id.loadingView)
     ProgressBar loadingView;
@@ -96,9 +93,9 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_practice, container, false);
-        mContext=getActivity();
-        if(fragmentPracticeBinding==null){
-            fragmentPracticeBinding =FragmentPracticeBinding.bind(view);
+        mContext = getActivity();
+        if (fragmentPracticeBinding == null) {
+            fragmentPracticeBinding = FragmentPracticeBinding.bind(view);
         }
 
 
@@ -109,7 +106,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
 
         /*viewModel.setAuthToken(SessionManager.getSessionManager(mContext).getAuthToken());
         viewModel.setRefreshTokenId(SessionManager.getSessionManager(mContext).getRefreshTokenId());*/
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         initializeVariables();
 
 
@@ -121,20 +118,19 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
             }
         });*/
 
-        viewModel.practiceWebUrl.observe(this,s -> {
-            if(s!=null && !s.isEmpty()){
+        viewModel.practiceWebUrl.observe(this, s -> {
+            if (s != null && !s.isEmpty()) {
                 tvWebsite.setText(s);
-            }else {
+            } else {
                 tvWebsite.setText("Not Available");
             }
         });
 
-        viewModel.rvPracticesVisibility.observe(this,aBoolean -> {
-            if(aBoolean){
+        viewModel.rvPracticesVisibility.observe(this, aBoolean -> {
+            if (aBoolean) {
                 tvtittlePracticeLocation.setVisibility(View.VISIBLE);
                 rvPracticeLocations.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 tvtittlePracticeLocation.setVisibility(View.GONE);
                 rvPracticeLocations.setVisibility(View.GONE);
             }
@@ -159,8 +155,7 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
             }
         });*/
 
-       //     getData();
-
+        //     getData();
 
 
         return view;
@@ -175,12 +170,12 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
     public void initializeVariables() {
        /* fadingCircle=new Circle();
         loadingView.setIndeterminateDrawable(fadingCircle);*/
-        profileInterface=new ProfileController(basicActivities);
+        profileInterface = new ProfileController(basicActivities);
 
-        locationsList=new ArrayList<>();
-        locationpracticeAdapter=new PracticeAdapter(mContext,locationsList,viewModel,this,this::onclick);
-        RecyclerViewHelper.setAdapterToRecylerView(mContext,rvPracticeLocations,locationpracticeAdapter);
-        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext,rvPracticeLocations);
+        locationsList = new ArrayList<>();
+        locationpracticeAdapter = new PracticeAdapter(mContext, locationsList, viewModel, this, this::onclick);
+        RecyclerViewHelper.setAdapterToRecylerView(mContext, rvPracticeLocations, locationpracticeAdapter);
+        RecyclerViewHelper.setAdapterToRecylerViewwithanimation(mContext, rvPracticeLocations);
         //hospitalpracticeAdapter=new PracticeAdapter(mContext,false);
 
     }
@@ -227,5 +222,23 @@ public class PracticeFragment extends BaseFragment /*implements BasicActivities*
                 mContext.startActivity(callIntent);
             }
         }
+    }
+
+    @OnClick(R.id.tvWebsite)
+    public void onViewClicked() {
+
+        Uri uri;
+        if(!TextUtils.isEmpty(tvWebsite.getText().toString()) && Helper.isValidUrl(tvWebsite.getText().toString())){
+            if (tvWebsite.getText().toString().contains("http://") || tvWebsite.getText().toString().contains("https://")) {
+                uri = Uri.parse(tvWebsite.getText().toString()); // missing 'http://' will cause crashed
+            } else {
+                uri = Uri.parse("http://" + tvWebsite.getText().toString()); // missing 'http://' will cause crashed
+
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            mContext.startActivity(intent);
+        }
+
+
     }
 }
