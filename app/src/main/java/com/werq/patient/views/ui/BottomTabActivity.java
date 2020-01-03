@@ -160,6 +160,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         tabViewModel.getOpenFrag().observe(this,s -> {
             if(s!=null)
             {
+                Helper.hideKeyboardFrom(mContext,navView);
                 switch (s) {
                     case "calendar":
 

@@ -48,6 +48,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         mContext = getActivity();
         FirebaseApp.initializeApp(getActivity().getApplicationContext());
         viewModel = ViewModelProviders.of(getActivity(),new ChatFragmentVmFactory(getActivity())).get(ChatFragmentViewModel.class);
+        setBaseViewModel(viewModel);
         ButterKnife.bind(this, view);
         inilizeVariables();
 

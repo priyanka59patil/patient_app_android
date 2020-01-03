@@ -2,11 +2,24 @@
 <LinearLayout app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     android:id="@+id/fragment_history_menu_bottom"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/diolog_height"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/titleBadgeTitle"
+        android:layout_marginLeft="@dimen/main_layout_padding"
+        android:text="Filter By File Types"
+        android:padding="16dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorLightGreyBackground"/>
+
     <RelativeLayout
         android:id="@+id/layout_filter_allDoctors"
         android:layout_width="match_parent"

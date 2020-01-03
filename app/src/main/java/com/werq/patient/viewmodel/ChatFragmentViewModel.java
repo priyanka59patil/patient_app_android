@@ -35,21 +35,7 @@ public class ChatFragmentViewModel extends BaseViewModel {
 
     public ChatFragmentViewModel(Context mContext) {
 
-/*FirebaseApp.initializeApp(mContext);
-        DatabaseReference dr=FirebaseDatabase.getInstance().getReference("019cf1a3-1feb-11ea-978c-028da6c5910c");
-        dr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                Log.e( "onDataChange: ", dataSnapshot.toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e( "onCancelled: ", databaseError.toString());
-            }
-        });*/
-
+        database = FirebaseDatabase.getInstance();
         patientRepository = new PatientRepository();
         isNewChat = true;
         typedMsg = new MutableLiveData<>();
@@ -78,7 +64,8 @@ public class ChatFragmentViewModel extends BaseViewModel {
                     NewChatResponse newChatResponse=Helper.getGsonInstance().fromJson(responseJson,NewChatResponse.class);
                     Helper.setLog("NewChatResponse",newChatResponse.toString());
                     channelIdRef = FirebaseDatabase.getInstance().getReference(newChatResponse.getChannelId());
-                    /*if(!TextUtils.isEmpty(newChatResponse.getChannelId())){
+
+                    if(!TextUtils.isEmpty(newChatResponse.getChannelId())){
                         channelIdRef=database.getReference(newChatResponse.getChannelId());
                     }
 
@@ -87,16 +74,18 @@ public class ChatFragmentViewModel extends BaseViewModel {
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             // This method is called once with the initial value and again
                             // whenever data at this location is updated.
-                            String value = dataSnapshot.getValue(String.class);
+                            String value = dataSnapshot.toString();
                             Helper.setLog("listen",value);
+                            //getToast().setValue(value);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             // Failed to read value
-                           Helper.setLog("Firebase-DatabaseError","Failed to read value."+databaseError.getMessage());
+                            Helper.setLog("Firebase-DatabaseError","Failed to read value."+databaseError.getMessage());
+                            // getToast().setValue(databaseError.getMessage());
                         }
-                    });*/
+                    });
 
                     break;
 
