@@ -21,6 +21,7 @@
                 android:paddingLeft="@dimen/main_adapter_padding"
                 android:paddingTop="@dimen/main_adapter_padding"
                 android:paddingRight="@dimen/main_adapter_padding"
+                android:paddingBottom="8dp"
                 >
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -65,31 +66,24 @@
                     android:textColor="@color/colorPrimary"
                     android:text="219 Spring Street,New York,Ny" />
 
+                <TextView
+
+                    android:id="@+id/tvPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvAddress"
+                    android:layout_marginTop="@dimen/margin_top_doctorname"
+                    android:drawableLeft="@drawable/ic_call_blue_24dp"
+                    android:drawablePadding="@dimen/drawable_padding"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorPrimary"
+                    android:text="6565656565"
+                    android:textSize="@dimen/textnormal12dp"
+                    android:paddingBottom="8dp"
+                    android:paddingRight="8dp"
+                    android:tint="@color/colorPrimary" />
+
             </RelativeLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llCall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/main_adapter_padding"
-            android:paddingRight="@dimen/main_adapter_padding"
-            android:paddingBottom="@dimen/main_adapter_padding">
-            <TextView
-                android:id="@+id/tvPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvAddress"
-                android:layout_marginTop="@dimen/margin_top_doctorname"
-                android:drawableLeft="@drawable/ic_call_blue_24dp"
-                android:drawablePadding="@dimen/drawable_padding"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorPrimary"
-                android:text="6565656565"
-                android:textSize="@dimen/textnormal12dp"
-
-                android:tint="@color/colorPrimary" />
         </LinearLayout>
 
     </LinearLayout>

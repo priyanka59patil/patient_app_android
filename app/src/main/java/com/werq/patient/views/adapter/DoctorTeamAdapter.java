@@ -78,12 +78,9 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
             holder.tvPracticeName.setText(teamList.get(position).getLocation().getOrganizationName());
             holder.tvAddress.setText(strAddress);
             holder.tvPhoneNumber.setText(teamList.get(position).getLocation().getPhoneNumber());
-
-
-
        // }
 
-        holder.llCall.setOnClickListener(new View.OnClickListener() {
+        holder.tvPhoneNumber.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 recyclerViewClickListerner.onCallclick(teamList.get(position).getLocation().getPhoneNumber());
@@ -122,7 +119,7 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
         RecyclerView rvUserProfiles;
         RelativeLayout layout_mainlayout;
         TextView tvPracticeName,tvAddress,tvPhoneNumber;
-        LinearLayout llDetails,llCall;
+        LinearLayout llDetails;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rvUserProfiles=(RecyclerView)itemView.findViewById(R.id.rvUserProfiles);
@@ -130,7 +127,6 @@ public class DoctorTeamAdapter extends RecyclerView.Adapter<DoctorTeamAdapter.Vi
             tvAddress=(TextView) itemView.findViewById(R.id.tvAddress);
             tvPhoneNumber=(TextView) itemView.findViewById(R.id.tvPhoneNumber);
             llDetails=(LinearLayout) itemView.findViewById(R.id.llDetails);
-            llCall=(LinearLayout) itemView.findViewById(R.id.llCall);
             layout_mainlayout=(RelativeLayout)itemView.findViewById(R.id.layout_mainlayout);
         }
 

@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,7 @@ import com.squareup.picasso.Picasso;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.FragmentFilesBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 
@@ -49,7 +51,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.voghdev.pdfviewpager.library.PDFViewPager;
 
-public class ViewFileActivity extends AppCompatActivity implements BasicActivities{
+public class ViewFileActivity extends BaseActivity implements BasicActivities{
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -66,7 +68,10 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
     String fileType="";
 
-    ProgressDialog progressDialog;
+   // ProgressDialog progressDialog;
+
+    @BindView(R.id.loadingView)
+    ProgressBar loadingView;
 
     /*@BindView(R.id.rlViewFile)
     RelativeLayout rlViewFile;*/
@@ -82,7 +87,7 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
     AttachmentResult attachmentResult;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_file);
         ButterKnife.bind(this);
@@ -97,7 +102,8 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
         }
         mContext=this;
         Helper.setToolbarwithCross(getSupportActionBar(),"");
-        progressDialog=Helper.createProgressDialog(mContext);
+       // progressDialog=Helper.createProgressDialog(mContext);
+        loadingView.setIndeterminateDrawable(fadingCircle);
         initializeVariables();
         getIntentData();
 
@@ -109,14 +115,14 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
         if(attachmentResult!=null)
         {
-            try{
+            /*try{
                 Helper.setLog("ViewFileActivity",attachmentResult.getFileUrl());
                 Helper.setLog("ViewFileActivity",attachmentResult.getResizeURL());
             }
             catch (Exception e)
             {
                 Helper.setExceptionLog("Exception",e);
-            }
+            }*/
 
             fileType=attachmentResult.getFileType();
 
@@ -131,7 +137,9 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                 ivImageFile.setClickable(false);
                 ivImageFile.setEnabled(false);*/
 
-                progressDialog.show();
+                //progressDialog.show();
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
 
                 Glide.with(mContext)
                         .load(attachmentResult.getResizeURL())
@@ -139,13 +147,13 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                                 Helper.showToast(mContext,"Something went wrong");
-                                progressDialog.hide();
+                                hideProgressBar(loadingView);
                                 return false;
                             }
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                progressDialog.hide();
+                                hideProgressBar(loadingView);
            /*                     ivImageFile.setZoomable(true);
                                 ivImageFile.setClickable(true);
                                 ivImageFile.setEnabled(true);*/
@@ -154,7 +162,8 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
                         }).into(ivImageFile);
             }
             else {
-                progressDialog.show();
+                showProgressBar(loadingView);
+                loadingView.bringToFront();
                 String query = "";
                 try {
                     if(attachmentResult.getFileUrl()!=null && attachmentResult.getFileUrl().length()>0)
@@ -174,14 +183,14 @@ public class ViewFileActivity extends AppCompatActivity implements BasicActiviti
 
                         Log.e("Progress",""+progress);
                         if(progress == 100)
-                            progressDialog.hide();
+                            hideProgressBar(loadingView);
                     }
                 });
 
 
                 if(attachmentResult.getFileUrl().length()>0)
                 {
-                    progressDialog.hide();
+                    hideProgressBar(loadingView);
                     wvDocumentFile.loadUrl( "https://docs.google.com/viewer?url="+query);
                 }
             }

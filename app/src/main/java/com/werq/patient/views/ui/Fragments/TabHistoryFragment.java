@@ -68,7 +68,6 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
     TabAppoinmentViewModel viewModel;
     private String TAG="TabHistoryFragment";
     FragmentTabHistoryBinding fragmentTabHistoryBinding;
-    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -103,7 +103,7 @@ public class BookNewAppointmentActivity extends BaseActivity {
         activityBinding.setViewModel(viewModel);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getResources().getString(R.string.set_new_password));
+        getSupportActionBar().setTitle(getResources().getString(R.string.new_appointment));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         etSelectDate.setFocusable(false);

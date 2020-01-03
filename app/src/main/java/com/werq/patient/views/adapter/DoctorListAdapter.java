@@ -129,10 +129,20 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Vi
             @Override
             public void onClick(View view) {
 
-                ProfileIntentService profileIntentService
-                        =new ProfileIntentService(coworkerArrayList.get(position), false);
+                if(coworkerArrayList.get(position).getnPINumber()!=null && coworkerArrayList.get(position).getnPINumber()!=0){
 
-                EventBus.getDefault().post(profileIntentService);
+                    if (coworkerArrayList.get(position).getSpeciality() != null) {
+
+                        if(!TextUtils.isEmpty(coworkerArrayList.get(position).getSpeciality().getName().trim())){
+
+                            ProfileIntentService profileIntentService
+                                    =new ProfileIntentService(coworkerArrayList.get(position), false);
+
+                            EventBus.getDefault().post(profileIntentService);
+                        }
+                    }
+
+                }
                 /*Intent intent = new Intent(mContext.getResources().getString(R.string.NEW_DOCTOR_PROFILE));
                 intent.putExtra("doctorData",);
                 intent.putExtra("isMessageDisabled",false);
