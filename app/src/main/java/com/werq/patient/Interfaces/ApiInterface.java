@@ -4,6 +4,7 @@ import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
@@ -113,16 +114,28 @@ public interface ApiInterface {
     Call<Object> sendRescheduleRequest(@Header("Authorization") String authToken,
                                        @Header("Content-Type") String contentType,
                                        @Body RescheduleAppointment rescheduleAppointment);
-    @POST("Chat")
-    Call<Object> sendNewChatRequest(@Header("Authorization") String authToken,
-                                       @Header("Content-Type") String contentType,
-                                       @Body NewChat newChat);
 
     @POST("Appointments/AppointmentReq")
     Call<Object> sendNewAppointmentRequest(@Header("Authorization") String authToken,
                                     @Header("Content-Type") String contentType,
                                     @Body NewAppointment newAppointment);
+    @POST("Chat")
+    Call<Object> sendNewChatRequest(@Header("Authorization") String authToken,
+                                    @Header("Content-Type") String contentType,
+                                    @Body NewChat newChat);
 
+    @GET("Chat/patient/{channelId}")
+    Call<Object> fetchChatList(@Header("Authorization") String authToken,
+                               @Path("channelId") String channelId,
+                               @Query("flag") int flag,
+                               @Query("timeStamp") String timeStamp,
+                               @Query("take") String take,
+                               @Query("skip") String skip);
+
+    @POST("Chat/sendbypatient")
+    Call<Object> sendMessageToServer(@Header("Authorization") String authToken,
+                                     @Header("Content-Type") String contentType,
+                                     @Body SendMessage sendMessage);
 }
 
 

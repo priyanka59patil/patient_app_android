@@ -197,7 +197,7 @@ public class LoginViewModel extends BaseViewModel {
                     sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
                             loginResponce.getData().getRefreshToken(),
                             loginResponce.getData().getUser().getUserName(),
-                            loginResponce.getData().getUser().getID(),
+                            loginResponce.getData().getUser().getID()+"",
                             timestamp);
 
                     String encryptedUName = "";

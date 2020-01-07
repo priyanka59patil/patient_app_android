@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@id/messageUserAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp" />
+
+    <LinearLayout
+        android:id="@+id/llimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/message_incoming_bubble_margin_right"
+        android:layout_marginRight="@dimen/message_incoming_bubble_margin_right"
+        android:layout_toEndOf="@id/messageUserAvatar"
+        android:layout_toRightOf="@id/messageUserAvatar"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@id/image"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:siShape="@drawable/bg_rectangle_chat_incoming"
+            app:siSquare="false" />
+
+        <!--<TextView-->
+            <!--android:id="@id/messageTime"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:paddingLeft="24dp"-->
+            <!--android:layout_marginTop="-18dp"-->
+            <!--android:paddingRight="8dp" />-->
+
+        <TextView
+            android:id="@id/messageTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_black_round_corner"
+            android:layout_gravity="end"
+            android:paddingTop="48dp"
+            android:gravity="end"
+            android:paddingLeft="84dp"
+            android:layout_marginTop="-62dp"
+            android:paddingRight="8dp" />
+
+
+    </LinearLayout>
+
+    <!--<TextView-->
+    <!--android:id="@id/messageTime"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/llimage"-->
+    <!--android:layout_alignEnd="@id/llimage"-->
+    <!--android:layout_alignRight="@id/llimage"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:layout_marginLeft="16dp"/>-->
+
+</RelativeLayout>

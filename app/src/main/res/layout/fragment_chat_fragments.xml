@@ -124,6 +124,7 @@
                 app:inputButtonIcon="@drawable/ic_refereal"
                 app:inputHint="Type a message"
                 app:inputMaxLines="3"
+                android:maxLength="5"
                 app:inputTextColor="@color/black"
                 app:showAttachmentButton="true" />
 

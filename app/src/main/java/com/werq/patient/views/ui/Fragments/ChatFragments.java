@@ -1,31 +1,70 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
+import com.squareup.picasso.Picasso;
+import com.stfalcon.chatkit.commons.ImageLoader;
+import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
+import com.stfalcon.chatkit.messages.MessagesList;
+import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.stfalcon.chatkit.utils.DateFormatter;
 import com.werq.patient.Factory.ChatFragmentVmFactory;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.Utils.SingleCustomIncomingImageMessageViewHolder;
+import com.werq.patient.Utils.SingleCustomIncomingTextMessageViewHolder;
+import com.werq.patient.Utils.SingleCustomOutcomingImageMessageViewHolder;
+import com.werq.patient.Utils.SingleCustomOutcomingTextMessageViewHolder;
 import com.werq.patient.base.BaseFragment;
+import com.werq.patient.service.model.chat.Author;
+import com.werq.patient.service.model.chat.Message;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
 import com.werq.patient.views.ui.ChatRoomActivity;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.HEAD;
 
 
-public class ChatFragments extends BaseFragment implements RecyclerViewClickListerner {
+public class ChatFragments extends BaseFragment implements RecyclerViewClickListerner, MessagesListAdapter.OnLoadMoreListener,
+        DateFormatter.Formatter{
 
 
     /*@BindView(R.id.rv_chats)
@@ -35,10 +74,17 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     Context mContext;
     RecyclerViewClickListerner recyclerViewClickListerner;
     ChatFragmentViewModel viewModel;
+    @BindView(R.id.messagesList)
+    MessagesList messagesList;
     @BindView(R.id.input)
     MessageInput input;
     @BindView(R.id.loadingView)
     ProgressBar loadingView;
+    MessagesListAdapter<Message> messagesAdapter;
+    private ImageLoader imageLoader;
+    int page =0;
+    int prevItemCount =0;
+    private boolean loading = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +95,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         FirebaseApp.initializeApp(getActivity().getApplicationContext());
         viewModel = ViewModelProviders.of(getActivity(),new ChatFragmentVmFactory(getActivity())).get(ChatFragmentViewModel.class);
         setBaseViewModel(viewModel);
+        viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this, view);
         inilizeVariables();
 
@@ -58,10 +105,11 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
             public boolean onSubmit(CharSequence inputString) {
                 if (Helper.hasNetworkConnection(mContext)) {
 
+
                     if (!inputString.toString().trim().isEmpty()) {
 
                         viewModel.getTypedMsg().setValue(inputString.toString().trim());
-                        viewModel.setNewChat(inputString.toString().trim());
+                        viewModel.sendMessageToServer(inputString.toString().trim());
                         input.getInputEditText().setText("");
 
                     }
@@ -74,12 +122,96 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
             }
         });
 
+
+        initImageLoader();
+
+        initAndSetMessageAdapter();
+
+        viewModel.setNewChat("");
+
+
+
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+
+
+
+        //viewModel.fetchBeforeChat(new Date().getTime(),0);
+
+       /* ArrayList<Message> messagesList=new ArrayList<>();
+
+        for (int i = 0; i <5 ; i++) {
+
+            Message message=new Message();
+            Author user = new Author();
+            String senderId = "", name = "Priyanka Patil";
+            if(i%2==0){
+                senderId="1";
+            }
+            message.setText("messsage "+i);
+            user.setId(senderId);
+            user.setOnline(false);
+            user.setName(name);
+            message.setUser(user);
+            //message.setId(String.valueOf(timestamp));
+            message.setTimestamp(new Date().getTime()/1000-i*100);
+
+            message.setCreatedAt(new Date());
+
+            messagesList.add(message);
+
+        }
+        messagesAdapter.addToEnd(messagesList, true);
+        //             localMessageArray.addAll(tempMessageArrayList);
+        messagesAdapter.notifyDataSetChanged();*/
+
+
+        viewModel.getMessageList().observe(this,messages -> {
+
+            for (int i = 0; i < messages.size(); i++) {
+                Helper.setLog("chat obj",messages.get(i).toString());
+            }
+
+            if(page==0){
+                messagesAdapter.clear();
+            }
+
+            messagesAdapter.addToEnd(messages, true);
+            messagesAdapter.notifyDataSetChanged();
+
+            if(messages.size()>0){
+
+                viewModel.getLastMessageTimestamp().setValue(messages.get(0).getTimestamp());
+
+            }
+
+
+        });
+
+
+        viewModel.getMessageListAfter().observe(this, messages -> {
+
+            if(messages.size()>0){
+
+                for (int i = 0; i < messages.size(); i++) {
+                    Helper.setLog("chat obj",messages.get(i).toString());
+
+                    messagesAdapter.addToStart(messages.get(i),true);
+                    messagesAdapter.notifyDataSetChanged();
+                }
+
+                viewModel.getLastMessageTimestamp().setValue(messages.get(0).getTimestamp());
+
+            }
+
+        });
+
 
 
     }
@@ -98,5 +230,229 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     public void onclick(int position) {
         startActivity(new Intent(mContext, ChatRoomActivity.class));
 
+    }
+
+    public void initAndSetMessageAdapter() {
+
+        MessageHolders holdersConfig;
+        holdersConfig = new MessageHolders()
+                .setIncomingTextConfig(
+                        SingleCustomIncomingTextMessageViewHolder.class,
+                        R.layout.incoming_chat_layout)
+                .setOutcomingTextConfig(
+                        SingleCustomOutcomingTextMessageViewHolder.class,
+                        R.layout.outcoming_chat_layout)
+                .setIncomingImageConfig(
+                        SingleCustomIncomingImageMessageViewHolder.class,
+                        R.layout.incoming_image_layout)
+                .setOutcomingImageConfig(
+                        SingleCustomOutcomingImageMessageViewHolder.class,
+                        R.layout.outcoming_image_layout);
+
+
+
+        messagesAdapter = new MessagesListAdapter<>(SessionManager.getUserId(), holdersConfig, imageLoader);
+        messagesAdapter.setDateHeadersFormatter(this);
+        messagesAdapter.setLoadMoreListener(this);
+        messagesList.setAdapter(messagesAdapter);
+
+
+       /* messagesAdapter.setOnMessageClickListener(new MessagesListAdapter.OnMessageClickListener<Message>() {
+            @Override
+            public void onMessageClick(Message message) {
+
+                //Log.e(TAG, "onMessageClick: " + message.toString());
+                if (message.getMediaType() == null && message.getText() != null) {
+                    String messageText = message.getText();
+                    if (messageText.length() == 10 && Helper.isNumeric(messageText) && !messageText.startsWith("0")) {
+                        Log.e(TAG, "onMessageClick: this is contact no");
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        callIntent.setData(Uri.parse("tel:" + messageText.trim()));
+
+                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                            Dexter.withActivity(activity).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                                @Override
+                                public void onPermissionGranted(PermissionGrantedResponse response) {
+                                    // permission is granted
+                                    mContext.startActivity(callIntent);
+                                }
+
+                                @Override
+                                public void onPermissionDenied(PermissionDeniedResponse response) {
+                                    // check for permanent denial of permission
+                                    if (response.isPermanentlyDenied()) {
+
+                                        Helper.setSnackbarWithMsg("Phone access is needed to make call", toolbar);
+                                    }
+                                }
+
+                                @Override
+                                public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                    token.continuePermissionRequest();
+                                }
+                            }).check();
+
+                            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 1);
+
+                        }
+                        else {
+
+                            mContext.startActivity(callIntent);
+                        }
+
+                    } else if (isValidLink(messageText)) {
+                           *//* if(!messageText.startsWith("http") )
+                               messageText="http://"+messageText;
+
+                            if(isValid(messageText))
+                            {*//*
+                        Uri uri;
+                        if (messageText.contains("http://") || messageText.contains("https://")) {
+                            uri = Uri.parse(messageText); // missing 'http://' will cause crashed
+                        } else {
+                            uri = Uri.parse("http://" + messageText); // missing 'http://' will cause crashed
+
+                        }
+                        Log.e(TAG, "onMessageClick: " + uri.getPath());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        mContext.startActivity(intent);
+                        //}
+
+                    }
+
+                }
+                if (message.getImageUrl() != null) {
+                    if (message.getMediaType().equals("Img")) {
+                        messageIntent(ViewPhoto.class, message);
+                    } else if (message.getMediaType().equals("unsup")) {
+                        Helper.makeToast(mContext, "Sorry, this file is not supported.");
+                    } else {
+                        messageIntent(DisplayAttachments.class, message);
+                    }
+
+                } else {
+                    if (message.getMediaType() != null)
+                        Helper.makeToast(mContext, "Please wait, the Attachment is loading.");
+                }
+
+            }
+        });*/
+    }
+
+    public void initImageLoader() {
+        imageLoader = new ImageLoader() {
+            @Override
+            public void loadImage(final ImageView imageView, final String url, @Nullable Object payload) {
+                imageView.setImageResource(android.R.color.transparent);
+                String type, imgurl;
+
+
+                if (url.contains("##*&*")) {
+                    type = url.substring(0, url.indexOf("##*&*"));
+                    imgurl = url.substring(url.indexOf("##*&*") + 5);
+                } else {
+                    type = url;
+                    imgurl = url;
+                }
+
+                setImageViewLayout(imageView, R.drawable.user_image_placeholder);
+
+               /* if (url.contains("/profile/photo")) {
+                    Helper.glideImage(mContext, url, imageView, getResources().getDrawable(R.drawable.user_image_placeholder));
+                    // Picasso.with(mContext).load(url).placeholder(R.drawable.user_image_placeholder).error(R.drawable.user_image_placeholder).into(imageView);
+                } else {
+                    if (type.equals("Pdf")) {
+                        setImageViewLayout(imageView, R.drawable.ic_pdf);
+                    } else if (type.equals("Doc")) {
+                        setImageViewLayout(imageView, R.drawable.ic_doc);
+                    } else if (type.equals("unsup")) {
+                        setImageViewLayout(imageView, R.drawable.ic_file_unsupported);
+                    } else {
+                        byte[] decodedString = Base64.decode(type, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        int height = decodedByte.getHeight();
+                        int width = decodedByte.getWidth();
+
+                        if (height > width) {
+                            float scale = (float) height / width;
+                            height = 350;
+                            width = Math.round(height / scale);
+                        } else {
+                            float scale = (float) width / height;
+                            width = 350;
+                            height = Math.round(width / scale);
+                        }
+
+                        imageView.requestLayout();
+                        imageView.setLayoutParams(new LinearLayout.LayoutParams(getWidthLayoutParam(200), getHeightLayoutParam(140)));
+                        imageView.setImageBitmap(Bitmap.createScaledBitmap(decodedByte, width, height, false));
+                        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(decodedByte, width, height, false));
+
+                        if (url.contains("##*&*")) {
+                            Picasso.with(mContext).load(imgurl).placeholder(d).into(imageView);
+                        }
+                    }
+                }*/
+            }
+        };
+    }
+
+    public void setImageViewLayout(ImageView imageView, int icon) {
+        imageView.requestLayout();
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(getWidthLayoutParam(140), getHeightLayoutParam(160)));
+        imageView.setImageResource(icon);
+    }
+
+    public int getWidthLayoutParam(int width) {
+        final float sc = getResources().getDisplayMetrics().density;
+        return (int) (width * sc + 0.5f);
+    }
+
+    public int getHeightLayoutParam(int height) {
+        final float sc = getResources().getDisplayMetrics().density;
+        return (int) (height * sc + 0.5f);
+    }
+
+    @Override
+    public void onLoadMore(int page, int totalItemsCount) {
+
+        Helper.setLog("onLoadMore-page",page+"");
+        Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
+
+        prevItemCount=page;
+        int count = this.page + 1;
+        int data = page;
+
+        if (page == (count * 2)) {
+            Helper.setLog("onLoadMore-page",page+"");
+            //loading = false;
+        }
+
+
+        /*if (data == (count * 10)) {
+
+            if (loading) {
+
+                Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
+                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    //                                loading = false;
+                    loading = true;
+                    //Logv("...", "Last Item Wow !");
+                    ++page;
+                    Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
+                    viewModel.fetchAttachments(page, selectedDoctors, selectedFileFilter);
+                    //Do pagination.. i.e. fetch new data
+                }
+            }
+        }*/
+
+
+
+    }
+
+    @Override
+    public String format(Date date) {
+        return null;
     }
 }

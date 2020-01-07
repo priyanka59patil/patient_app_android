@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/llimage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.github.siyamed.shapeimageview.mask.PorterShapeImageView
+            android:id="@id/image"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:siShape="@drawable/bg_rectangle_chat_outgoing"
+            app:siSquare="false" />
+
+        <!--<TextView-->
+            <!--android:id="@id/messageTime"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:paddingTop="8dp"-->
+            <!--android:paddingLeft="24dp"-->
+            <!--android:layout_marginTop="-18dp"-->
+            <!--android:paddingRight="8dp"/>-->
+
+        <TextView
+            android:id="@id/messageTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_black_sharp_corner"
+            android:layout_gravity="end"
+            android:paddingTop="48dp"
+            android:paddingLeft="84dp"
+            android:gravity="end"
+            android:layout_marginTop="-62dp"
+            android:paddingRight="8dp"/>
+    </LinearLayout>
+
+    <!--<TextView-->
+        <!--android:id="@id/messageTime"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/llimage"-->
+        <!--android:layout_alignEnd="@id/llimage"-->
+        <!--android:layout_alignRight="@id/llimage"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginLeft="16dp" />-->
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignEnd="@id/llimage"-->
+    <!--android:layout_alignRight="@id/llimage"-->
+    <!--android:layout_below="@id/llimage"-->
+    <!--android:id="@+id/deltick"-->
+    <!--android:drawableLeft="@drawable/ic_done_all_grey_400_18dp"/>-->
+
+
+</RelativeLayout>

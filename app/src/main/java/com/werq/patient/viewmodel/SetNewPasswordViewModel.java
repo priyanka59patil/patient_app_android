@@ -91,7 +91,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
                     sessionManager.creteUserSession(authToken,
                             loginResponce.getData().getRefreshToken(),
                             loginResponce.getData().getUser().getUserName(),
-                            loginResponce.getData().getUser().getID(),
+                            loginResponce.getData().getUser().getID()+"",
                             timeStamp);
 
                     String encryptedUName = "";

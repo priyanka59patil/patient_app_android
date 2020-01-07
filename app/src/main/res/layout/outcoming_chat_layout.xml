@@ -1,0 +1,90 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/headerView"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvHeader"
+            android:gravity="center"
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+    android:id="@+id/messageView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="8dp">
+
+    <LinearLayout
+        android:id="@id/bubble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+           />
+        <TextView
+            android:id="@id/messageText"
+            android:layout_width="wrap_content"
+            android:textSize="20dp"
+
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+            <TextView android:id="@id/messageTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@id/bubble"
+                android:layout_alignRight="@id/bubble"
+                android:layout_below="@id/bubble"
+                android:layout_marginLeft="16dp"
+                android:textSize="13dp"
+
+                android:layout_marginStart="16dp"/>
+
+        <!--<TextView-->
+            <!--android:id="@id/messageTime"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_alignEnd="@id/bubble"-->
+            <!--android:layout_alignRight="@id/bubble"-->
+            <!--android:layout_below="@id/bubble"-->
+            <!--android:layout_alignBaseline="@+id/deltick"-->
+            <!--android:layout_toStartOf="@+id/deltick" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignEnd="@id/bubble"-->
+            <!--android:layout_alignRight="@id/bubble"-->
+            <!--android:layout_below="@id/bubble"-->
+            <!--android:id="@+id/deltick"-->
+            <!--android:drawableLeft="@drawable/ic_done_all_grey_400_18dp"/>-->
+
+</RelativeLayout>
+
+</RelativeLayout>

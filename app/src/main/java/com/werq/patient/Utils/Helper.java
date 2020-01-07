@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -32,6 +33,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -173,6 +176,7 @@ public class Helper {
         return "";
     }
 
+
     public static long convertTimestamp(String timestamp){
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         try {
@@ -184,6 +188,41 @@ public class Helper {
         }
         return 0;
     }
+
+    public static Date convertUtcToLocale(String utcDate) {
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        try {
+            Date sessionTimestamp= sdf.parse(utcDate);
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(sessionTimestamp.getTime());
+            return cal.getTime();
+
+        } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static Date localToGMT(String localDate) {
+
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+
+            Date sessionTimestamp= sdf.parse(localDate);
+            return sessionTimestamp;
+
+        } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     public static boolean isTimestampExpired(long timestamp){
 

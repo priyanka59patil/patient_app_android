@@ -7,6 +7,7 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
+import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 
 import retrofit2.Call;
@@ -180,8 +181,25 @@ public class PatientRepository {
 
     public void  setNewAppointmentRequest(String authToken, NewAppointment newAppointment, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
 
-        Helper.setLog("setNewChatRequest-authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().sendNewAppointmentRequest(authToken,Helper.ContentType,newAppointment);
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void  fetchChatList(String authToken, String channelId,int flag,String timestamp, String take,String skip
+            , MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
+        RetrofitClient.callApi(call,url,apiResponce,toast);
+
+    }
+
+    public void sendMessageToServer(String authToken, SendMessage sendMessage,
+                               MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+
+        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        Call<Object> call= RetrofitClient.getRetrofit().sendMessageToServer(authToken,Helper.ContentType,sendMessage);
         RetrofitClient.callApi(call,url,apiResponce,toast);
 
     }

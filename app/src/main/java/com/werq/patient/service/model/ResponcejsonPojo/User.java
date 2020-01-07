@@ -21,7 +21,7 @@ public class User implements Serializable {
     private ContactInfo[] ContactInfo;
 
     @SerializedName("ID")
-    private String ID;
+    private Integer ID;
 
     @SerializedName("LastName")
     private String LastName;
@@ -86,13 +86,11 @@ public class User implements Serializable {
         this.ContactInfo = ContactInfo;
     }
 
-    public String getID ()
-    {
+    public Integer getID() {
         return ID;
     }
 
-    public void setID (String ID)
-    {
+    public void setID(Integer ID) {
         this.ID = ID;
     }
 

@@ -17,13 +17,12 @@ public class SessionManager {
     private static final String PrefName_RememberUsername = "RememberUsername";
 
 
-    public static final String userid = "userid";
-    public static final String username = "username";
+    public static final String userid = "userid"; //patientId
+    public static final String username = "username"; //login userName
     private static final String IS_LOGIN = "IsLoggedIn";
-    public static final String token = "accessToken";
-    public static final String idToken = "idToken";
+    public static final String token = "accessToken";  //authToken
+    public static final String idToken = "idToken";    //refreshToken
     public static final String timeStamp = "timeStamp";
-
 
     public static final String REMEMBER_USERNAME = "RememberUsername";
     public static final String rem_username = "rem_username";
@@ -105,6 +104,11 @@ public class SessionManager {
         return pref.getLong(timeStamp, 0);
     }
 
+    //patientID
+    public static String getUserId() {
+        return pref.getString(userid, "");
+    }
+
     public boolean isRememberUsername() {
         return userPref.getBoolean(REMEMBER_USERNAME, false);
     }
@@ -128,6 +132,8 @@ public class SessionManager {
     public boolean isRememberPassword() {
         return userPref.getBoolean(REMEMBER_PASSWORD, false);
     }
+
+
 
 
 
