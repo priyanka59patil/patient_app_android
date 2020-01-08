@@ -87,6 +87,7 @@ public class ChatFragmentViewModel extends BaseViewModel {
         sendMessage.setChannel(channelId);
         sendMessage.setMessage(message);
         patientRepository.sendMessageToServer(Helper.autoken, sendMessage, getToast(), apiResponce, "SendMessage");
+        lastMessageTimestamp.setValue(new Date().getTime());
     }
 
 
@@ -171,6 +172,7 @@ public class ChatFragmentViewModel extends BaseViewModel {
                     break;
 
                 case "SendMessage":
+
                     SentMessageResponse sentMessageResponse = Helper.getGsonInstance().fromJson(responseJson, SentMessageResponse.class);
 
                     if (sentMessageResponse != null && sentMessageResponse.getStatusCode() == 200) {
@@ -226,13 +228,15 @@ public class ChatFragmentViewModel extends BaseViewModel {
         Author user = new Author();
         Date date = null;
         String senderId = "";
+        try {
 
-        date = Helper.localToGMT(chatMessage.getCreatedAt());
+            date = Helper.parseUtcStringToDate(chatMessage.getCreatedAt());
+            Helper.setLog("ChatMessage-timestamp",date.getTime()+"");
 
-            if(date!=null){
-                Helper.setLog("ChatMessage-timestamp",date.getTime()+"");
-            }
-
+        } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
 
         if (chatMessage.getFromPatient()) {
 

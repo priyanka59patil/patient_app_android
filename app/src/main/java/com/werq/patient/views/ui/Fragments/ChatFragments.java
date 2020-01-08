@@ -163,7 +163,6 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
             message.setTimestamp(new Date().getTime()/1000-i*100);
 
             message.setCreatedAt(new Date());
-
             messagesList.add(message);
 
         }

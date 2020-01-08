@@ -177,16 +177,10 @@ public class Helper {
     }
 
 
-    public static long convertTimestamp(String timestamp){
+    public static Date parseUtcStringToDate(String utcDate) throws ParseException {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        try {
-            Date sessionTimestamp= sdf.parse(timestamp);
-            return sessionTimestamp.getTime();
-        } catch (ParseException e) {
-            Helper.setExceptionLog("ParseException",e);
-            e.printStackTrace();
-        }
-        return 0;
+            Date sessionTimestamp= sdf.parse(utcDate);
+            return sessionTimestamp;
     }
 
     public static Date convertUtcToLocale(String utcDate) {
@@ -206,21 +200,13 @@ public class Helper {
         return null;
     }
 
-    public static Date localToGMT(String localDate) {
+    public static Date currentlocalDateToUtc() throws ParseException {
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-
-            Date sessionTimestamp= sdf.parse(localDate);
-            return sessionTimestamp;
-
-        } catch (ParseException e) {
-            Helper.setExceptionLog("ParseException",e);
-            e.printStackTrace();
-        }
-
-        return null;
+        Date gmt = new Date(sdf.format(date));
+        return gmt;
     }
 
 

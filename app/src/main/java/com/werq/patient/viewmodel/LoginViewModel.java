@@ -20,6 +20,7 @@ import com.werq.patient.service.repository.LoginRepository;
 import com.werq.patient.service.repository.SignUpRepository;
 
 import java.security.GeneralSecurityException;
+import java.text.ParseException;
 
 import okhttp3.internal.http2.ErrorCode;
 
@@ -192,7 +193,13 @@ public class LoginViewModel extends BaseViewModel {
                 if (loginResponce.getData().getTempPassChangedFlag()!=0) {
 
                     sessionManager.clear();
-                    long timestamp = Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
+                    long timestamp = 0;
+                    try {
+                        timestamp = Helper.parseUtcStringToDate(loginResponce.getData().getAuthExpiryTime()).getTime();
+                    } catch (ParseException e) {
+                        Helper.setExceptionLog("ParseException",e);
+                        e.printStackTrace();
+                    }
 
                     sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
                             loginResponce.getData().getRefreshToken(),
@@ -219,7 +226,13 @@ public class LoginViewModel extends BaseViewModel {
                 } else {
                     //intent to change password activity
                     sessionManager.clear();
-                    long timestamp = Helper.convertTimestamp(loginResponce.getData().getAuthExpiryTime());
+                    long timestamp = 0;
+                    try {
+                        timestamp = Helper.parseUtcStringToDate(loginResponce.getData().getAuthExpiryTime()).getTime();
+                    } catch (ParseException e) {
+                        Helper.setExceptionLog("ParseException",e);
+                        e.printStackTrace();
+                    }
                     sessionManager.setAuthToken(loginResponce.getData().getAuthToken(),timestamp);
                     nextActivity.setValue("SetNewPassword");
 
