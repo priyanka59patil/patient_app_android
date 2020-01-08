@@ -29,6 +29,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.SentMessageResponse;
 import com.werq.patient.service.model.chat.Author;
 import com.werq.patient.service.model.chat.Message;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -86,6 +87,16 @@ public class ChatFragmentViewModel extends BaseViewModel {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChannel(channelId);
         sendMessage.setMessage(message);
+        try {
+            Helper.setLog("UTCDate",Helper.currentlocalDateToUtc().toString());
+            sendMessage.setTimeStamp(Helper.currentlocalDateToUtc().getTime());
+
+
+        } catch (ParseException e) {
+
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
         patientRepository.sendMessageToServer(Helper.autoken, sendMessage, getToast(), apiResponce, "SendMessage");
         lastMessageTimestamp.setValue(new Date().getTime());
     }
@@ -228,15 +239,8 @@ public class ChatFragmentViewModel extends BaseViewModel {
         Author user = new Author();
         Date date = null;
         String senderId = "";
-        try {
 
-            date = Helper.parseUtcStringToDate(chatMessage.getCreatedAt());
-            Helper.setLog("ChatMessage-timestamp",date.getTime()+"");
-
-        } catch (ParseException e) {
-            Helper.setExceptionLog("ParseException",e);
-            e.printStackTrace();
-        }
+        date=new Timestamp(chatMessage.getTimeStamp());
 
         if (chatMessage.getFromPatient()) {
 

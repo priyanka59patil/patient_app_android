@@ -12,6 +12,9 @@ public class SendMessage implements Serializable {
     @SerializedName("Message")
     private String message;
 
+    @SerializedName("TimeStamp")
+    private Long timeStamp;
+
     public String getChannel() {
         return channel;
     }
@@ -28,11 +31,20 @@ public class SendMessage implements Serializable {
         this.message = message;
     }
 
+    public Long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     @Override
     public String toString() {
         return "SendMessage{" +
                 "channel='" + channel + '\'' +
                 ", message='" + message + '\'' +
+                ", timeStamp=" + timeStamp +
                 '}';
     }
 }

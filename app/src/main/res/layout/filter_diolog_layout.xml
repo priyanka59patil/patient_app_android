@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/titleBadgeTitle"
         android:layout_marginLeft="@dimen/main_layout_padding"
-        android:text="Filter By File Types"
+        android:text="Filter by File Type"
         android:padding="16dp"/>
     <View
         android:layout_width="match_parent"

@@ -318,7 +318,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
                 iv_visitnote_check.setVisibility(View.GONE);
                 iv_referral_check.setVisibility(View.VISIBLE);
                 iv_all_check.setVisibility(View.GONE);
-                tvFilterFiles.setText("File Type:Referral");
+                tvFilterFiles.setText("File Typs:Referral");
                 mBottomSheetDialog.dismiss();
                 break;
         }

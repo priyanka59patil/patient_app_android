@@ -203,7 +203,7 @@ public class Helper {
     public static Date currentlocalDateToUtc() throws ParseException {
 
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date gmt = new Date(sdf.format(date));
         return gmt;

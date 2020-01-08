@@ -201,6 +201,7 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.tvForgotPassword)
     public void onViewClicked() {
 
+        startActivity(new Intent(mContext, ForgotPasswordActivity.class));
 
     }
 
