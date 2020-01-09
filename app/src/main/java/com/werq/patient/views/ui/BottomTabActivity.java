@@ -44,49 +44,42 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     BottomNavigationView navView;
     @BindView(R.id.container)
     RelativeLayout container;
-    private TextView mTextMessage;
     Context mContext;
     BottomSheetDialog mBottomSheetDialog;
     String title;
     DiologListner diologListner;
-   // GetSheetViewFromFragment  getSheetViewFromFragment=this;
-
-
     LinearLayout layoutNewInvitation;
+    // GetSheetViewFromFragment  getSheetViewFromFragment=this;
     LinearLayout layoutDoctorBase;
     BottomTabViewModel tabViewModel;
+    ImageView iv_visitnote_check, iv_referral_check, iv_all_check;
+    Fragment appointmentFragment;
+    Fragment chatFragment;
+    Fragment doctorTeamFragment;
+    Fragment filesFragment;
+    Fragment profileFragment;
+    Fragment active;
+    FragmentManager fm = getSupportFragmentManager();
+    private TextView mTextMessage;
     private RelativeLayout layout_filter_allDoctors;
     private RelativeLayout layout_filter_received;
     private RelativeLayout layout_filter_sent;
-    ImageView iv_visitnote_check,iv_referral_check,iv_all_check;
-
-     Fragment appointmentFragment;
-     Fragment chatFragment;
-     Fragment doctorTeamFragment ;
-     Fragment filesFragment;
-     Fragment profileFragment;
-    Fragment active;
-    final FragmentManager fm = getSupportFragmentManager();
-
-
-
-    private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
-        if(add!=null){
-            add.setVisible(addValue);
-        }
-        if(setting!=null) {
-            setting.setVisible(settingValue);
-        }
-        if(search!=null){
-            search.setVisible(searchValue);
-        }
-
-    }
-
     private MenuItem setting;
     private MenuItem add;
     private MenuItem search;
 
+    private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
+        if (add != null) {
+            add.setVisible(addValue);
+        }
+        if (setting != null) {
+            setting.setVisible(settingValue);
+        }
+        if (search != null) {
+            search.setVisible(searchValue);
+        }
+
+    }
 
     private void addFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -141,9 +134,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_bottom_tab);
-        ActivityBottomTabBinding bottomTabBinding= DataBindingUtil.setContentView(this,R.layout.activity_bottom_tab);
+        ActivityBottomTabBinding bottomTabBinding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_tab);
         bottomTabBinding.setLifecycleOwner(this);
-        tabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        tabViewModel = ViewModelProviders.of(this).get(BottomTabViewModel.class);
         setBaseViewModel(tabViewModel);
         bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
@@ -157,19 +150,21 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         fm.beginTransaction().add(R.id.mainLayout, doctorTeamFragment, "3").hide(doctorTeamFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(chatFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();*/
-        tabViewModel.getOpenFrag().observe(this,s -> {
-            if(s!=null)
-            {
-                Helper.hideKeyboardFrom(mContext,navView);
+        tabViewModel.getOpenFrag().observe(this, s -> {
+            if (s != null) {
+                Helper.hideKeyboardFrom(mContext, navView);
+                if (fm == null) {
+                    fm = getSupportFragmentManager();
+                }
                 switch (s) {
                     case "calendar":
 
-                        title="Appointments";
-                        if(appointmentFragment==null){
-                            appointmentFragment=new AppointmentFragment();
-                            fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();
+                        title = "Appointments";
+                        if (appointmentFragment == null) {
+                            appointmentFragment = new AppointmentFragment();
+                            fm.beginTransaction().add(R.id.mainLayout, appointmentFragment, "1").commit();
                             active = appointmentFragment;
-                        }else {
+                        } else {
                             fm.beginTransaction().hide(active).show(appointmentFragment).commit();
                             active = appointmentFragment;
                         }
@@ -184,11 +179,11 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "messages":
                         title = "Chats";
-                        if(chatFragment== null){
-                            chatFragment=new ChatFragments();
+                        if (chatFragment == null) {
+                            chatFragment = new ChatFragments();
                             fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(active).commit();
-                            active=chatFragment;
-                        }else {
+                            active = chatFragment;
+                        } else {
                             fm.beginTransaction().hide(active).show(chatFragment).commit();
                             active = chatFragment;
                         }
@@ -200,11 +195,11 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                     case "people":
 
                         title = "My Doctor Teams";
-                        if(doctorTeamFragment==null){
-                            doctorTeamFragment=new DoctorTeamFragment();
+                        if (doctorTeamFragment == null) {
+                            doctorTeamFragment = new DoctorTeamFragment();
                             fm.beginTransaction().add(R.id.mainLayout, doctorTeamFragment, "3").hide(active).commit();
-                            active=doctorTeamFragment;
-                        }else {
+                            active = doctorTeamFragment;
+                        } else {
                             fm.beginTransaction().hide(active).show(doctorTeamFragment).commit();
                             active = doctorTeamFragment;
                         }
@@ -216,12 +211,11 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "profile":
                         title = "My Profile";
-                        if(profileFragment==null){
-                            profileFragment=new ProfileFragment();
+                        if (profileFragment == null) {
+                            profileFragment = new ProfileFragment();
                             fm.beginTransaction().add(R.id.mainLayout, profileFragment, "4").hide(active).commit();
-                            active=profileFragment;
-                        }
-                        else {
+                            active = profileFragment;
+                        } else {
                             fm.beginTransaction().hide(active).show(profileFragment).commit();
                             active = profileFragment;
                         }
@@ -233,17 +227,16 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
                     case "folder":
                         title = "Files";
-                        if(filesFragment==null){
-                            filesFragment=new FilesFragment();
+                        if (filesFragment == null) {
+                            filesFragment = new FilesFragment();
                             fm.beginTransaction().add(R.id.mainLayout, filesFragment, "5").hide(active).commit();
-                            active=filesFragment;
-                        }
-                        else {
+                            active = filesFragment;
+                        } else {
                             fm.beginTransaction().hide(active).show(filesFragment).commit();
                             active = filesFragment;
                         }
 
-                        Helper.setLog("folder","FilesFragment");
+                        Helper.setLog("folder", "FilesFragment");
 
                         //mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext,R.layout.filter_diolog_layout,diologListner,"file");
                         Helper.setToolbar(getSupportActionBar(), "Files");
@@ -262,7 +255,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //listner
         diologListner = this;
 
-       mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.doctor_name_diolog_layout, diologListner);
+        mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.doctor_name_diolog_layout, diologListner);
 
 
         // mBottomSheetDialog.setContentView(sheetView);
@@ -289,8 +282,8 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void setdiologview(View view) {
-        layoutNewInvitation = (LinearLayout) view.findViewById(R.id.layout_new_invitation);
-        layoutDoctorBase = (LinearLayout) view.findViewById(R.id.layout_doctor_base);
+        layoutNewInvitation = view.findViewById(R.id.layout_new_invitation);
+        layoutDoctorBase = view.findViewById(R.id.layout_doctor_base);
         layoutNewInvitation.setOnClickListener(this::onClick);
         layoutDoctorBase.setOnClickListener(this::onClick);
 

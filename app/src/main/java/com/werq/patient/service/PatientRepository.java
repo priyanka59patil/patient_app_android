@@ -3,11 +3,14 @@ package com.werq.patient.service;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiResponce;
+import com.werq.patient.Interfaces.ChatListApiCall;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatMessage;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 
 import retrofit2.Call;
@@ -186,12 +189,12 @@ public class PatientRepository {
 
     }
 
-    public void  fetchChatList(String authToken, String channelId,int flag,String timestamp, String take,String skip
-            , MutableLiveData<String> toast, ApiResponce apiResponce, String url){
+    public void  fetchChatList(String authToken, String channelId, int flag, String timestamp, String take, String skip
+            , MutableLiveData<String> toast, ChatListApiCall chatListApiCall, String url){
 
         Helper.setLog("fetchChatList-authToken :- ",authToken);
-        Call<Object> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
-        RetrofitClient.callApi(call,url,apiResponce,toast);
+        Call<ChatResponse> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
+        RetrofitClient.chatListCall(call,url,chatListApiCall,toast);
 
     }
 

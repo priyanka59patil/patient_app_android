@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -29,6 +31,8 @@ import java.net.NetworkInterface;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -183,31 +187,25 @@ public class Helper {
             return sessionTimestamp;
     }
 
-    public static Date convertUtcToLocale(String utcDate) {
+    public static Date convertUtcToLocale(String utcDate) throws ParseException {
 
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        try {
-            Date sessionTimestamp= sdf.parse(utcDate);
-            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-            cal.setTimeInMillis(sessionTimestamp.getTime());
-            return cal.getTime();
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date sessionTimestamp= sdf.parse(utcDate);
+        return sessionTimestamp;
 
-        } catch (ParseException e) {
-            Helper.setExceptionLog("ParseException",e);
-            e.printStackTrace();
-        }
-
-        return null;
     }
+
 
     public static Date currentlocalDateToUtc() throws ParseException {
 
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date gmt = new Date(sdf.format(date));
-        return gmt;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        SimpleDateFormat localDateFormat = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        localDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return localDateFormat.parse( simpleDateFormat.format(new Date()) );
     }
+
 
 
     public static boolean isTimestampExpired(long timestamp){

@@ -8,6 +8,7 @@ import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 
@@ -125,12 +126,12 @@ public interface ApiInterface {
                                     @Body NewChat newChat);
 
     @GET("Chat/patient/{channelId}")
-    Call<Object> fetchChatList(@Header("Authorization") String authToken,
-                               @Path("channelId") String channelId,
-                               @Query("flag") int flag,
-                               @Query("timeStamp") String timeStamp,
-                               @Query("take") String take,
-                               @Query("skip") String skip);
+    Call<ChatResponse> fetchChatList(@Header("Authorization") String authToken,
+                                     @Path("channelId") String channelId,
+                                     @Query("flag") int flag,
+                                     @Query("timeStamp") String timeStamp,
+                                     @Query("take") String take,
+                                     @Query("skip") String skip);
 
     @POST("Chat/sendbypatient")
     Call<Object> sendMessageToServer(@Header("Authorization") String authToken,

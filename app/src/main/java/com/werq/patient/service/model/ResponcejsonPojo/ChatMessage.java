@@ -34,7 +34,7 @@ public class ChatMessage implements Serializable {
     private Integer status;
 
     @SerializedName("TimeStamp")
-    private Long timeStamp;
+    private String timeStamp;
 
     @SerializedName("CreatedAt")
     private String createdAt;
@@ -130,11 +130,11 @@ public class ChatMessage implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Long getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Long timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 

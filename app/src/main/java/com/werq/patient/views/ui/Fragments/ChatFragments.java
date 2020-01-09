@@ -118,6 +118,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                     Helper.showToast(mContext, getString(R.string.no_network_conection));
                     return false;
                 }
+
                 return true;
             }
         });
@@ -129,67 +130,26 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
 
         viewModel.setNewChat("");
 
-
-
-
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-
-
-
-        //viewModel.fetchBeforeChat(new Date().getTime(),0);
-
-       /* ArrayList<Message> messagesList=new ArrayList<>();
-
-        for (int i = 0; i <5 ; i++) {
-
-            Message message=new Message();
-            Author user = new Author();
-            String senderId = "", name = "Priyanka Patil";
-            if(i%2==0){
-                senderId="1";
-            }
-            message.setText("messsage "+i);
-            user.setId(senderId);
-            user.setOnline(false);
-            user.setName(name);
-            message.setUser(user);
-            //message.setId(String.valueOf(timestamp));
-            message.setTimestamp(new Date().getTime()/1000-i*100);
-
-            message.setCreatedAt(new Date());
-            messagesList.add(message);
-
-        }
-        messagesAdapter.addToEnd(messagesList, true);
-        //             localMessageArray.addAll(tempMessageArrayList);
-        messagesAdapter.notifyDataSetChanged();*/
-
-
         viewModel.getMessageList().observe(this,messages -> {
-
-            for (int i = 0; i < messages.size(); i++) {
-                Helper.setLog("chat obj",messages.get(i).toString());
-            }
-
-            if(page==0){
-                messagesAdapter.clear();
-            }
-
-            messagesAdapter.addToEnd(messages, true);
-            messagesAdapter.notifyDataSetChanged();
 
             if(messages.size()>0){
 
-                viewModel.getLastMessageTimestamp().setValue(messages.get(0).getTimestamp());
+                    for (int i = 0; i < messages.size(); i++) {
+                        Helper.setLog("chat obj initial",messages.get(i).toString());
+                    }
+
+                    if(page==0){
+                        messagesAdapter.clear();
+                    }
+
+                    messagesAdapter.addToEnd(messages, true);
+                    messagesAdapter.notifyDataSetChanged();
+
+                    viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
+                    viewModel.getFirstMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
+
 
             }
-
 
         });
 
@@ -199,19 +159,41 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
             if(messages.size()>0){
 
                 for (int i = 0; i < messages.size(); i++) {
-                    Helper.setLog("chat obj",messages.get(i).toString());
 
+                    Helper.setLog("chat obj after",messages.get(i).toString());
                     messagesAdapter.addToStart(messages.get(i),true);
                     messagesAdapter.notifyDataSetChanged();
                 }
 
-                viewModel.getLastMessageTimestamp().setValue(messages.get(0).getTimestamp());
+                viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
 
             }
 
         });
 
+        viewModel.getMessageListBefore().observe(this,messages -> {
 
+            if(messages.size()>0){
+
+                for (int i = 0; i < messages.size(); i++) {
+                    Helper.setLog("chat obj before",messages.get(i).toString());
+                }
+
+                messagesAdapter.addToEnd(messages, true);
+                messagesAdapter.notifyDataSetChanged();
+
+                Helper.setLog("chat obj before first msg timestamp",messages.get(messages.size()-1).getId()+"");
+                viewModel.getFirstMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
+
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
@@ -419,34 +401,12 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         Helper.setLog("onLoadMore-page",page+"");
         Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
 
-        prevItemCount=page;
-        int count = this.page + 1;
-        int data = page;
+        if(viewModel.getTotalChatMesssagesCount()>page){
 
-        if (page == (count * 2)) {
-            Helper.setLog("onLoadMore-page",page+"");
-            //loading = false;
+            Helper.setLog("onLoadMore-page",viewModel.getFirstMessageTimestamp().getValue()+"");
+            viewModel.fetchBeforeChat(viewModel.getFirstMessageTimestamp().getValue());
+
         }
-
-
-        /*if (data == (count * 10)) {
-
-            if (loading) {
-
-                Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
-                if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                    //                                loading = false;
-                    loading = true;
-                    //Logv("...", "Last Item Wow !");
-                    ++page;
-                    Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
-                    viewModel.fetchAttachments(page, selectedDoctors, selectedFileFilter);
-                    //Do pagination.. i.e. fetch new data
-                }
-            }
-        }*/
-
-
 
     }
 
