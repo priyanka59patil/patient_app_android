@@ -236,6 +236,9 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
                     for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
                         msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
                     }
+                    /*for (int i = chatResponse.getData().getChatMessageList().size()-1; i>=0; i--) {
+                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
+                    }*/
 
                     messageList.setValue(msgList);
                     break;
@@ -321,7 +324,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
         Date date = null;
         String senderId = "";
 
-
+        message.setId(chatMessage.getTimeStamp());
 
         try {
 
@@ -335,36 +338,33 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
         if (chatMessage.getFromPatient()) {
 
             senderId = chatMessage.getPatientId() + "";
+            user.setName("");
 
         } else {
 
             if (chatMessage.getSupportId() != null) {
                 senderId = chatMessage.getSupportId() + "";
+                user.setName(chatMessage.getSupportName());
                 // name=chatMessage.getSupportName();
             }
         }
 
-
-
         user.setId(senderId);
         user.setOnline(false);
-        //user.setName(name);
+
 
         message.setUser(user);
         message.setText(chatMessage.getMsgBody());
         //message.setId(String.valueOf(timestamp));
         if (date != null) {
-
             message.setTimestamp(date.getTime());
-
-            if(chatMessage.getTimeStamp().equals("0")){
+           /* if(chatMessage.getTimeStamp().equals("0")){
 
                 message.setId(date.getTime()+"");
             }
             else {
                 message.setId(chatMessage.getTimeStamp());
-            }
-
+            }*/
         }
         message.setCreatedAt(date);
         return message;

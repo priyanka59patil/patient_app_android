@@ -97,7 +97,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public MutableLiveData<String> getPassword() {
-
+        password.setValue("Test@123");
         return password;
     }
 

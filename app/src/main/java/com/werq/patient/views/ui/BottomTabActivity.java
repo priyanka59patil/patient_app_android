@@ -179,14 +179,14 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "messages":
                         title = "Chats";
-                        if (chatFragment == null) {
+                        //if (chatFragment == null) {
                             chatFragment = new ChatFragments();
                             fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(active).commit();
                             active = chatFragment;
-                        } else {
+                       /* } else {
                             fm.beginTransaction().hide(active).show(chatFragment).commit();
                             active = chatFragment;
-                        }
+                        }*/
 
                         setToolbarForbottom(title, true, false);
                         VisibleMenuItem(true, false, false);
