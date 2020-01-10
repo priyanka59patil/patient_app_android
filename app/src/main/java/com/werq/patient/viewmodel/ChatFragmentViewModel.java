@@ -46,13 +46,13 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
     MutableLiveData<ArrayList<Message>> messageListAfter;
     MutableLiveData<Long> lastMessageTimestamp;
     MutableLiveData<Long> firstMessageTimestamp;
-    int totalChatMesssagesCount;// all chat msg count till today
+    int totalPrevMesssagesCount;// all chat msg count till today
     FirebaseDatabase database;
     DatabaseReference channelIdRef;
     SessionManager sessionManager;
     String channelId;
 
-    public ChatFragmentViewModel(Context mContext) {
+    public ChatFragmentViewModel() {
 
         database = FirebaseDatabase.getInstance();
         patientRepository = new PatientRepository();
@@ -82,8 +82,6 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
             patientRepository.fetchChatList(Helper.autoken, channelId,
                     2, currentUtcTimestamp, 5 + "",
                     0 + "", getToast(), apiResponceChatList, "ChatList");
-
-            lastMessageTimestamp.setValue(Long.valueOf(currentUtcTimestamp));
 
 
         } catch (ParseException e) {
@@ -131,6 +129,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
         messageListAfter.setValue(afterChatList);
 
         patientRepository.sendMessageToServer(Helper.autoken, sendMessage, getToast(), apiResponce, "SendMessage");
+        Helper.setLog("last msg timestamp msg sent",sendMessage.getTimeStamp()+"");
         lastMessageTimestamp.setValue(sendMessage.getTimeStamp());
     }
 
@@ -138,7 +137,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
     public void fetchAfterChat(long lastMsgtimestamp ) {
         patientRepository.fetchChatList(Helper.autoken, channelId,
                 1, lastMsgtimestamp + "", 5 + "",
-                1 + "", getToast(), apiResponceChatList, "ChatListAfter");
+                0 + "", getToast(), apiResponceChatList, "ChatListAfter");
     }
 
     public void fetchBeforeChat(long firstMsgtimestamp ) {
@@ -165,6 +164,9 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
                         channelIdRef = database.getReference(newChatResponse.getChannelId());
                         channelId = newChatResponse.getChannelId();
                         fetchInitialChat();
+
+                        DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
+                        updateDataRef.child("IsMsgSendFromSupport").setValue(false);
                     }
 
                     channelIdRef.addValueEventListener(new ValueEventListener() {
@@ -179,6 +181,9 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
                             if (supportId != null && supportId) {
                                 Helper.setLog("IsMsgSendFromSupport", supportId+"");
                                 fetchAfterChat(lastMessageTimestamp.getValue());
+
+                                DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
+                                updateDataRef.child("IsMsgSendFromSupport").setValue(false);
 
                             }
 
@@ -223,14 +228,13 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
         if (!TextUtils.isEmpty(url)) {
 
-            DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
+
             switch (url) {
 
                 case "ChatList":
-                    updateDataRef.child("IsMsgSendFromSupport").setValue(false);
                     ChatResponse chatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", chatResponse.toString());
-                    totalChatMesssagesCount=chatResponse.getData().getCount();
+                    totalPrevMesssagesCount=chatResponse.getData().getCount();
                     ArrayList<Message> msgList = new ArrayList<>();
 
                     for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
@@ -245,12 +249,10 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                 case "ChatListAfter":
 
-                    updateDataRef.child("IsMsgSendFromSupport").setValue(false);
-
                     ChatResponse afterChatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", afterChatResponse.toString());
                     //ToDo remove this comment after database skip part done
-                    //totalChatMesssagesCount=afterChatResponse.getData().getCount();
+                    //totalPrevMesssagesCount=afterChatResponse.getData().getCount();
                     ArrayList<Message> afterChatList = new ArrayList<>();
 
                     for (int i = 0; i < afterChatResponse.getData().getChatMessageList().size(); i++) {
@@ -262,13 +264,11 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                 case "ChatListBefore":
 
-                    updateDataRef.child("IsMsgSendFromSupport").setValue(false);
-
                     ChatResponse beforeChatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", beforeChatResponse.toString());
                     //ToDo remove this comment after database skip part done
 
-                    //totalChatMesssagesCount=beforeChatResponse.getData().getCount();
+                    //totalPrevMesssagesCount=beforeChatResponse.getData().getCount();
                     ArrayList<Message> beforeChatList = new ArrayList<>();
 
                     for (int i = 0; i < beforeChatResponse.getData().getChatMessageList().size(); i++) {
@@ -378,12 +378,12 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
         return lastMessageTimestamp;
     }
 
-    public int getTotalChatMesssagesCount() {
-        return totalChatMesssagesCount;
+    public int getTotalPrevMesssagesCount() {
+        return totalPrevMesssagesCount;
     }
 
-    public void setTotalChatMesssagesCount(int totalChatMesssagesCount) {
-        this.totalChatMesssagesCount = totalChatMesssagesCount;
+    public void setTotalPrevMesssagesCount(int totalPrevMesssagesCount) {
+        this.totalPrevMesssagesCount = totalPrevMesssagesCount;
     }
 
     public MutableLiveData<Long> getFirstMessageTimestamp() {

@@ -40,7 +40,6 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
-import com.werq.patient.Factory.ChatFragmentVmFactory;
 import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -93,7 +92,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         mContext = getActivity();
         FirebaseApp.initializeApp(getActivity().getApplicationContext());
-        viewModel = ViewModelProviders.of(getActivity(),new ChatFragmentVmFactory(getActivity())).get(ChatFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
         setBaseViewModel(viewModel);
         viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this, view);
@@ -146,6 +145,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                     messagesAdapter.notifyDataSetChanged();
 
                     viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
+                    Helper.setLog("last msg timestamp",messages.get(0).getId()+"");
                     viewModel.getFirstMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
 
 
@@ -165,7 +165,9 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                     messagesAdapter.notifyDataSetChanged();
                 }
 
+                Helper.setLog("chat obj after last msg timestamp",messages.get(0).getId()+"");
                 viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
+
 
             }
 
@@ -399,9 +401,9 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     public void onLoadMore(int page, int totalItemsCount) {
 
         Helper.setLog("onLoadMore-page",page+"");
-        Helper.setLog("onLoadMore-totalItemsCount",totalItemsCount+"");
+        Helper.setLog("onLoadMore-last api total count totalItemsCount",viewModel.getTotalPrevMesssagesCount()+"");
 
-        if(viewModel.getTotalChatMesssagesCount()>page){
+        if(viewModel.getTotalPrevMesssagesCount()>page){
 
             Helper.setLog("onLoadMore-page",viewModel.getFirstMessageTimestamp().getValue()+"");
             viewModel.fetchBeforeChat(viewModel.getFirstMessageTimestamp().getValue());

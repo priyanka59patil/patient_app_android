@@ -33,7 +33,7 @@ FirebaseDatabase data;
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(ChatFragmentViewModel.class)) {
       //noinspection unchecked
-      return (T) new ChatFragmentViewModel(mContext);
+      return (T) new ChatFragmentViewModel();
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }
