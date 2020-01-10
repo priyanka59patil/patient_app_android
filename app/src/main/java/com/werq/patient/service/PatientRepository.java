@@ -6,6 +6,7 @@ import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Interfaces.ChatListApiCall;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;

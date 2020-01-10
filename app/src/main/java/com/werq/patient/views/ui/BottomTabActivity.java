@@ -3,6 +3,7 @@ package com.werq.patient.views.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
@@ -67,6 +69,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     private MenuItem setting;
     private MenuItem add;
     private MenuItem search;
+    SessionManager sessionManager;
 
     private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
         if (add != null) {
@@ -150,16 +153,26 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         fm.beginTransaction().add(R.id.mainLayout, doctorTeamFragment, "3").hide(doctorTeamFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(chatFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();*/
+
+       sessionManager=SessionManager.getSessionManager(mContext);
+       if(TextUtils.isEmpty(Helper.autoken)){
+           Helper.autoken= sessionManager.getAuthToken();
+       }
+        if(TextUtils.isEmpty(Helper.idToken)){
+            Helper.idToken= sessionManager.getRefreshTokenId();
+        }
+
         tabViewModel.getOpenFrag().observe(this, s -> {
             if (s != null) {
                 Helper.hideKeyboardFrom(mContext, navView);
-                if (fm == null) {
-                    fm = getSupportFragmentManager();
-                }
+
                 switch (s) {
                     case "calendar":
 
                         title = "Appointments";
+                        if (fm == null) {
+                            fm = getSupportFragmentManager();
+                        }
                         if (appointmentFragment == null) {
                             appointmentFragment = new AppointmentFragment();
                             fm.beginTransaction().add(R.id.mainLayout, appointmentFragment, "1").commit();
@@ -179,6 +192,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "messages":
                         title = "Chats";
+                        if (fm == null) {
+                            fm = this.getSupportFragmentManager();
+                        }
                         //if (chatFragment == null) {
                             chatFragment = new ChatFragments();
                             fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(active).commit();
@@ -195,6 +211,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                     case "people":
 
                         title = "My Doctor Teams";
+                        if (fm == null) {
+                            fm = getSupportFragmentManager();
+                        }
                         if (doctorTeamFragment == null) {
                             doctorTeamFragment = new DoctorTeamFragment();
                             fm.beginTransaction().add(R.id.mainLayout, doctorTeamFragment, "3").hide(active).commit();
@@ -211,6 +230,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         break;
                     case "profile":
                         title = "My Profile";
+                        if (fm == null) {
+                            fm = getSupportFragmentManager();
+                        }
                         if (profileFragment == null) {
                             profileFragment = new ProfileFragment();
                             fm.beginTransaction().add(R.id.mainLayout, profileFragment, "4").hide(active).commit();
@@ -227,6 +249,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
 
                     case "folder":
                         title = "Files";
+                        if (fm == null) {
+                            fm = getSupportFragmentManager();
+                        }
                         if (filesFragment == null) {
                             filesFragment = new FilesFragment();
                             fm.beginTransaction().add(R.id.mainLayout, filesFragment, "5").hide(active).commit();

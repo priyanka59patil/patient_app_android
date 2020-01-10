@@ -97,6 +97,7 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public MutableLiveData<String> getPassword() {
+       // password.setValue("Test@123");
         return password;
     }
 
@@ -188,6 +189,9 @@ public class LoginViewModel extends BaseViewModel {
         if (url.equals("SIGNIN")) {
 
             if (loginResponce != null) {
+
+                //if TempPassChangedFlag()==true (1) then login otherwise
+                // TempPassChangedFlag()==false(0) then setNewPassword
 
                 if (loginResponce.getData().getTempPassChangedFlag()!=0) {
 

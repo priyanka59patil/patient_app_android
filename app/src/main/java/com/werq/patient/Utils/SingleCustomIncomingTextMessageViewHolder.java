@@ -28,7 +28,8 @@ public class SingleCustomIncomingTextMessageViewHolder
     public void onBind(Message message) {
         super.onBind(message);
 
-        tvName.setVisibility(View.GONE);
+        tvName.setVisibility(View.VISIBLE);
+        tvName.setText(message.getUser().getName());
         SimpleDateFormat formatDate = new SimpleDateFormat("hh:mm a");
         messageTime.setText(formatDate.format(message.getCreatedAt()).toString());
 

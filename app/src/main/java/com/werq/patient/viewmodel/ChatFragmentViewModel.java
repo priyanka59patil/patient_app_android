@@ -46,7 +46,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
     MutableLiveData<ArrayList<Message>> messageListAfter;
     MutableLiveData<Long> lastMessageTimestamp;
     MutableLiveData<Long> firstMessageTimestamp;
-    int totalPrevMesssagesCount;// all chat msg count till today
+    int remainingHistoryMsgCount;// all chat msg count till today
     FirebaseDatabase database;
     DatabaseReference channelIdRef;
     SessionManager sessionManager;
@@ -174,18 +174,21 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             // This method is called once with the initial value and again
                             // whenever data at this location is updated.
+                            Helper.setLog("DataSnapshot", dataSnapshot.toString());
+                           if(dataSnapshot !=null && dataSnapshot.getValue()!=null){
+                                Map<String, Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
+                                Boolean supportId = map.get("IsMsgSendFromSupport");
 
-                            Map<String, Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
-                            Boolean supportId = map.get("IsMsgSendFromSupport");
+                                if (supportId != null && supportId) {
+                                    Helper.setLog("IsMsgSendFromSupport", supportId+"");
+                                    fetchAfterChat(lastMessageTimestamp.getValue());
 
-                            if (supportId != null && supportId) {
-                                Helper.setLog("IsMsgSendFromSupport", supportId+"");
-                                fetchAfterChat(lastMessageTimestamp.getValue());
+                                    DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
+                                    updateDataRef.child("IsMsgSendFromSupport").setValue(false);
 
-                                DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
-                                updateDataRef.child("IsMsgSendFromSupport").setValue(false);
-
+                                }
                             }
+
 
                         }
 
@@ -234,7 +237,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
                 case "ChatList":
                     ChatResponse chatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", chatResponse.toString());
-                    totalPrevMesssagesCount=chatResponse.getData().getCount();
+                    remainingHistoryMsgCount=chatResponse.getData().getCount();
                     ArrayList<Message> msgList = new ArrayList<>();
 
                     for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
@@ -251,8 +254,6 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                     ChatResponse afterChatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", afterChatResponse.toString());
-                    //ToDo remove this comment after database skip part done
-                    //totalPrevMesssagesCount=afterChatResponse.getData().getCount();
                     ArrayList<Message> afterChatList = new ArrayList<>();
 
                     for (int i = 0; i < afterChatResponse.getData().getChatMessageList().size(); i++) {
@@ -266,9 +267,8 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                     ChatResponse beforeChatResponse = chatResponseObject;
                     Helper.setLog("chatResponse", beforeChatResponse.toString());
-                    //ToDo remove this comment after database skip part done
 
-                    //totalPrevMesssagesCount=beforeChatResponse.getData().getCount();
+                    remainingHistoryMsgCount=beforeChatResponse.getData().getCount();
                     ArrayList<Message> beforeChatList = new ArrayList<>();
 
                     for (int i = 0; i < beforeChatResponse.getData().getChatMessageList().size(); i++) {
@@ -354,7 +354,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
 
         message.setUser(user);
-        message.setText(chatMessage.getMsgBody());
+        message.setText(chatMessage.getMsgBody().trim());
         //message.setId(String.valueOf(timestamp));
         if (date != null) {
             message.setTimestamp(date.getTime());
@@ -378,12 +378,12 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
         return lastMessageTimestamp;
     }
 
-    public int getTotalPrevMesssagesCount() {
-        return totalPrevMesssagesCount;
+    public int getRemainingHistoryMsgCount() {
+        return remainingHistoryMsgCount;
     }
 
-    public void setTotalPrevMesssagesCount(int totalPrevMesssagesCount) {
-        this.totalPrevMesssagesCount = totalPrevMesssagesCount;
+    public void setRemainingHistoryMsgCount(int remainingHistoryMsgCount) {
+        this.remainingHistoryMsgCount = remainingHistoryMsgCount;
     }
 
     public MutableLiveData<Long> getFirstMessageTimestamp() {

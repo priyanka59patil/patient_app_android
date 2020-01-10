@@ -117,11 +117,11 @@ public class SessionManager {
         return userPref.getString(rem_username, "");
     }
 
-    public String getAuthToken() {
+    public static String getAuthToken() {
         return pref.getString(token, "");
     }
 
-    public String getRefreshTokenId() {
+    public static String getRefreshTokenId() {
         return pref.getString(idToken, ""); }
 
 

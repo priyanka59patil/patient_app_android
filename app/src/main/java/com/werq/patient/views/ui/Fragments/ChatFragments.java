@@ -24,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
@@ -88,6 +90,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         mContext = getActivity();
@@ -97,6 +100,8 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this, view);
         inilizeVariables();
+
+
 
 
         input.setInputListener(new MessageInput.InputListener() {
@@ -401,15 +406,30 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     public void onLoadMore(int page, int totalItemsCount) {
 
         Helper.setLog("onLoadMore-page",page+"");
-        Helper.setLog("onLoadMore-last api total count totalItemsCount",viewModel.getTotalPrevMesssagesCount()+"");
+        Helper.setLog("onLoadMore-last api total count totalItemsCount",viewModel.getRemainingHistoryMsgCount()+"");
 
-        if(viewModel.getTotalPrevMesssagesCount()>page){
+        if(viewModel.getRemainingHistoryMsgCount()>5){
 
             Helper.setLog("onLoadMore-page",viewModel.getFirstMessageTimestamp().getValue()+"");
             viewModel.fetchBeforeChat(viewModel.getFirstMessageTimestamp().getValue());
 
         }
 
+    }
+
+    public void addOnScrollListner() {
+
+        messagesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                Helper.hideKeyboardFrom(mContext,input);
+            }
+        });
     }
 
     @Override

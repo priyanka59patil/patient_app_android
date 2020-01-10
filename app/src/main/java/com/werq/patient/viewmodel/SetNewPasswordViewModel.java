@@ -175,7 +175,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
             }
 
             if(TextUtils.isEmpty(reenteredPassword.getValue())){
-                reenteredPasswordError.setValue("Please confirm new password");
+                reenteredPasswordError.setValue("Please enter confirm new password");
             }
         }
 
