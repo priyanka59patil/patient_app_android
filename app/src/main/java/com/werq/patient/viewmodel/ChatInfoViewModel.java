@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class ChatInfoViewModel extends BaseViewModel {
 
@@ -48,18 +49,19 @@ public class ChatInfoViewModel extends BaseViewModel {
         }*/
     }
 
+
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
 
     }
 
     @Override
-    public void onError(String url, String errorCode,String errorMessage) {
+    public void onError(String url, String errorCode, String errorMessage) {
 
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
 }

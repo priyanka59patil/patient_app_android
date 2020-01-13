@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -16,13 +17,14 @@ import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.ResponcejsonPojo.ChangePasswordResponse;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class ChangePasswordViewModel extends BaseViewModel {
 
     private static final String TAG = "ChangePasswordViewModel";
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
 
     public MutableLiveData<String> currentPassword;
     public MutableLiveData<String> newPassword;
@@ -56,13 +58,11 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
 
         if(!TextUtils.isEmpty(url) && url.equals("ChangePassword")){
 
-            ChangePasswordResponse changePasswordResponse
-                    =Helper.getGsonInstance().fromJson(responseJson,ChangePasswordResponse.class);
             getToast().setValue("Your password has been set successfully");
             changePasswordStatus.setValue(true);
             //Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
@@ -70,7 +70,6 @@ public class ChangePasswordViewModel extends BaseViewModel {
 
 
         }
-
     }
 
     @Override
@@ -80,10 +79,11 @@ public class ChangePasswordViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
         changePasswordStatus.setValue(false);
     }
+
 
     private void setNewPasswordApiCall(){
         ChangePassword changePassword=new ChangePassword();
@@ -91,7 +91,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
         changePassword.setNewPassword(newPassword.getValue());
 
         getLoading().setValue(true);
-        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiResponce,"ChangePassword");
+        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiCallback,"ChangePassword");
     }
 
     public void updateOnClick(){

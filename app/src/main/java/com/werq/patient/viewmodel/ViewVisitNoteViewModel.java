@@ -2,6 +2,7 @@ package com.werq.patient.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -14,6 +15,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
 import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class ViewVisitNoteViewModel extends BaseViewModel {
 
@@ -21,7 +23,7 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
 
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
     //public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public MutableLiveData<String> doctorName;
     public MutableLiveData<String> speciality;
@@ -45,13 +47,15 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
 
     }
 
+
     @Override
-    public void onSuccess(String url, String responseJson) {
-        Helper.setLog("responseJson",responseJson);
+    public void onSuccess(String url, Response response) {
+
+        Helper.setLog("responseJson",response.body().toString());
         getLoading().setValue(false);
         if(url!=null && url.equals("VisitNoteDetails")) {
 
-            VisitNoteResponse visitNoteResponse= Helper.getGsonInstance().fromJson(responseJson,VisitNoteResponse.class);
+            VisitNoteResponse visitNoteResponse= (VisitNoteResponse) response.body();
             VisitNoteCreatedByUser createdByUser=visitNoteResponse.getData().getVisitNoteResult().getVisitNoteCreatedByUser();
             doctorName.setValue(createdByUser.getFirstName()+" "+createdByUser.getMiddleName()+" "+createdByUser.getLastName());
             speciality.setValue(createdByUser.getJobTitle().getTitle());
@@ -79,9 +83,10 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
+
 
     public MutableLiveData<String> getDoctorName() {
         return doctorName;
@@ -103,6 +108,6 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     public  void fetchVisitNoteDetails(int page,int appointmentId,int visitNoteId){
         getLoading().setValue(true);
         patientRepository.getVisitNoteDetails(Helper.autoken,appointmentId,visitNoteId,
-                10+"",page*10+"",getToast(),apiResponce,"VisitNoteDetails");
+                10+"",page*10+"",getToast(),apiCallback,"VisitNoteDetails");
     }
 }

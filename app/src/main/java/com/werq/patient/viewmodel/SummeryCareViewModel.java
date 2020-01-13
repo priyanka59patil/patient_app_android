@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -36,10 +37,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import retrofit2.Response;
+
 public class SummeryCareViewModel extends BaseViewModel {
     private static final String TAG = "PatientProfileViewModel";
     private final PatientRepository patientRepository;
-    ApiResponce apiResponce = this;
+    ApiCallback apiCallback = this;
     public MutableLiveData<ArrayList<Insurance>> insuranceList;
     public MutableLiveData<ArrayList<MedicationDatum>> medicationList;
     public MutableLiveData<ArrayList<Encounter>> encounterList;
@@ -118,7 +121,7 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public void fetchPatientProfileData(){
         getLoading().setValue(true);
-        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiResponce, "PatientProfile");
+        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiCallback, "PatientProfile");
 
         /*patientName.setValue("Priya Patil");
         patientDOB.setValue("31-07-1996");
@@ -129,71 +132,70 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public void fetchMedicationList(int page){
         getLoading().setValue(true);
-        patientRepository.getMedicationList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "MedicationList");
+        patientRepository.getMedicationList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "MedicationList");
         medicationPage=page;
     }
 
     public void fetchEncounterList(int page){
         getLoading().setValue(true);
-        patientRepository.getEncounterList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "EncountersList");
+        patientRepository.getEncounterList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "EncountersList");
         encounterPage=page;
     }
 
     public void fetchAssessments(){
         getLoading().setValue(true);
-        patientRepository.getAssessmets(Helper.autoken, getToast(), apiResponce, "Asssessments");
+        patientRepository.getAssessmets(Helper.autoken, getToast(), apiCallback, "Asssessments");
     }
 
     public void fetchInstruction(int page){
         getLoading().setValue(true);
-        patientRepository.getInstructionList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "Instructions");
+        patientRepository.getInstructionList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "Instructions");
         instructionPage=page;
     }
 
     public void fetchPlanOfCareList(int page){
         getLoading().setValue(true);
-        patientRepository.getPlanOfCareList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "PlanOfCare");
+        patientRepository.getPlanOfCareList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "PlanOfCare");
         planCarePage=page;
     }
 
     public void fetchHistoryOfProcedureList(int page){
         getLoading().setValue(true);
-        patientRepository.getHistoryOfProcedureList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "HistoryOfProcedure");
+        patientRepository.getHistoryOfProcedureList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "HistoryOfProcedure");
         historyProcedurePage=page;
     }
 
     public void fetchAllergyList(int page){
         getLoading().setValue(true);
-        patientRepository.getAllergyList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "AllergyList");
+        patientRepository.getAllergyList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "AllergyList");
         allergyPage=page;
     }
 
     public void fetchPastillnessHistoryList(int page){
         getLoading().setValue(true);
-        patientRepository.getPastillnessHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "PastillnessHistoryList");
+        patientRepository.getPastillnessHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "PastillnessHistoryList");
         allergyPage=page;
     }
 
     public void fetchSocialHistoryList(int page){
         getLoading().setValue(true);
-        patientRepository.getSocialHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "SocialHistoryList");
+        patientRepository.getSocialHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "SocialHistoryList");
         allergyPage=page;
     }
 
     public void fetchProblemList(int page){
         getLoading().setValue(true);
-        patientRepository.getProblemList(Helper.autoken,"10",page*10+"", getToast(), apiResponce, "ProblemList");
+        patientRepository.getProblemList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "ProblemList");
         allergyPage=page;
     }
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
 
         if(url!=null && url.equals("PatientProfile")){
 
-            PatientProfileResponse patientProfileResponse=Helper
-                    .getGsonInstance().fromJson(responseJson,PatientProfileResponse.class);
+            PatientProfileResponse patientProfileResponse= (PatientProfileResponse) response.body();
 
             if(patientProfileResponse!=null){
                 Helper.setLog("PatientProfileResponse",patientProfileResponse.toString());
@@ -248,8 +250,7 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
         if(url!=null && url.equals("MedicationList")){
 
-            MedicationResponse medicationResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, MedicationResponse.class);
+            MedicationResponse medicationResponse= (MedicationResponse) response.body();
 
             if(medicationResponse!=null && medicationResponse.getData()!=null){
 
@@ -275,8 +276,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("EncountersList")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             EncounterListResponse encounterListResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, EncounterListResponse.class);
+                    .fromJson(json, EncounterListResponse.class);
 
             if(encounterListResponse!=null && encounterListResponse.getData()!=null){
 
@@ -302,10 +304,10 @@ public class SummeryCareViewModel extends BaseViewModel {
 
         if(url!=null && url.equals("Asssessments")){
 
-            AssessmentsResponse response =Helper.getGsonInstance().fromJson(responseJson,AssessmentsResponse.class);
-            if(response!=null && response.getAssessment()!=null){
-                if(response.getAssessment().getAssessment()!=null){
-                    assessments.setValue(response.getAssessment().getAssessment());
+            AssessmentsResponse assessmentsResponse = (AssessmentsResponse) response.body();
+            if(assessmentsResponse!=null && assessmentsResponse.getAssessment()!=null){
+                if(assessmentsResponse.getAssessment().getAssessment()!=null){
+                    assessments.setValue(assessmentsResponse.getAssessment().getAssessment());
                 }else {
                     assessments.setValue(null);
                 }
@@ -314,8 +316,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("Instructions")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             InstructionResponse instructionResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, InstructionResponse.class);
+                    .fromJson(json, InstructionResponse.class);
 
             if(instructionResponse!=null && instructionResponse.getData()!=null){
 
@@ -340,8 +343,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("PlanOfCare")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             PlanOfCareResponse planOfCareResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, PlanOfCareResponse.class);
+                    .fromJson(json, PlanOfCareResponse.class);
 
             if(planOfCareResponse!=null && planOfCareResponse.getData()!=null){
 
@@ -366,8 +370,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("HistoryOfProcedure")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             ProcedureHistoryResponse procHistoryResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, ProcedureHistoryResponse.class);
+                    .fromJson(json, ProcedureHistoryResponse.class);
 
             if(procHistoryResponse!=null && procHistoryResponse.getData()!=null){
 
@@ -392,8 +397,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("AllergyList")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             AllergyResponse allergyResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, AllergyResponse.class);
+                    .fromJson(json, AllergyResponse.class);
 
             if(allergyResponse!=null && allergyResponse.getData()!=null){
 
@@ -418,8 +424,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("PastillnessHistoryList")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             PastillnessHistoryResponse pastillnessResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, PastillnessHistoryResponse.class);
+                    .fromJson(json, PastillnessHistoryResponse.class);
 
             if(pastillnessResponse!=null && pastillnessResponse.getData()!=null){
 
@@ -444,8 +451,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("SocialHistoryList")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             SocialHistoryResponse socialHistoryResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, SocialHistoryResponse.class);
+                    .fromJson(json, SocialHistoryResponse.class);
 
             if(socialHistoryResponse!=null && socialHistoryResponse.getData()!=null){
 
@@ -470,8 +478,9 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
 
         if(url!=null && url.equals("ProblemList")){
+            String json = Helper.getGsonInstance().toJson(response.body());
             ProblemListResponse problemListResponse=Helper.getGsonInstance()
-                    .fromJson(responseJson, ProblemListResponse.class);
+                    .fromJson(json, ProblemListResponse.class);
 
             if(problemListResponse!=null && problemListResponse.getData()!=null){
 
@@ -494,7 +503,6 @@ public class SummeryCareViewModel extends BaseViewModel {
 
             }
         }
-
     }
 
     @Override
@@ -503,9 +511,10 @@ public class SummeryCareViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
+
 
     public MutableLiveData<String> getPatientProfileUrl() {
         return patientProfileUrl;

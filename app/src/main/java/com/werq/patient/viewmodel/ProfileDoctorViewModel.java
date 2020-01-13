@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.JsonObject;
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -20,6 +21,7 @@ import com.werq.patient.service.model.ResponeError.ErrorData;
 import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class ProfileDoctorViewModel extends BaseViewModel {
 
@@ -37,7 +39,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public MutableLiveData<String> practiceName;
     public MutableLiveData<Boolean> rvPracticesVisibility;
     public MutableLiveData<Boolean> coworkerLoading;
-    ApiResponce apiResponce = this;
+    ApiCallback apiCallback = this;
     int doctorId;
     int coworkerPageNo = 0;
     private PatientRepository patientRepository;
@@ -89,21 +91,22 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                 coworkerLoading.setValue(true);
             } else
                 getLoading().setValue(true);
-            patientRepository.getDocterDetails(Helper.autoken, doctorId, getToast(), "10", page * 10 + "", apiResponce, "DoctorDetails");
+            patientRepository.getDocterDetails(Helper.autoken, doctorId, getToast(), "10", page * 10 + "", apiCallback, "DoctorDetails");
         }
     }
 
+
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
         if (coworkerPageNo != 0) {
             coworkerLoading.setValue(false);
         } else
             getLoading().setValue(false);
-        Helper.setLog("onSuccess=responseJson", responseJson);
+
         if (url != null && !url.isEmpty()) {
 
             if (url.equalsIgnoreCase("DoctorDetails")) {
-                DoctorDetailsResponse detailsResponse = Helper.getGsonInstance().fromJson(responseJson, DoctorDetailsResponse.class);
+                DoctorDetailsResponse detailsResponse = (DoctorDetailsResponse) response.body();
 
                 if (detailsResponse != null && detailsResponse.getData() != null && detailsResponse.getData().getDoctor() != null) {
 
@@ -202,7 +205,6 @@ public class ProfileDoctorViewModel extends BaseViewModel {
 
             }
         }
-
     }
 
     @Override
@@ -217,7 +219,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
 

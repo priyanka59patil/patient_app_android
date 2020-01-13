@@ -3,6 +3,7 @@ package com.werq.patient.viewmodel;
 import com.werq.patient.base.BaseViewModel;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class FingerPrintViewModel extends BaseViewModel {
 
@@ -19,8 +20,9 @@ public class FingerPrintViewModel extends BaseViewModel {
         getActivity().setValue("BottomActivity");
     }
 
+
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
 
     }
 
@@ -30,7 +32,7 @@ public class FingerPrintViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
 }

@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -24,13 +25,14 @@ import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 import java.security.GeneralSecurityException;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class SetNewPasswordViewModel extends BaseViewModel {
 
     private static final String TAG = "ChangePasswordViewModel";
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
 
     MutableLiveData<Boolean> rememberMe;
     MutableLiveData<String> userName;
@@ -70,13 +72,12 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
 
         if(!TextUtils.isEmpty(url) && url.equals("SetNewPassword")){
 
-            LoginResponce loginResponce
-                    =Helper.getGsonInstance().fromJson(responseJson,LoginResponce.class);
+            LoginResponce loginResponce = (LoginResponce) response.body();
             getToast().setValue("Your password has been set successfully");
             changePasswordStatus.setValue(true);
 
@@ -116,7 +117,6 @@ public class SetNewPasswordViewModel extends BaseViewModel {
             //Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
 
         }
-
     }
 
     @Override
@@ -126,7 +126,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
         changePasswordStatus.setValue(false);
     }
@@ -138,7 +138,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
         Helper.setLog("changePassword req",changePassword.toString());
         getLoading().setValue(true);
-        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiResponce,"SetNewPassword");
+        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiCallback,"SetNewPassword");
     }
 
     public void updateOnClick(){

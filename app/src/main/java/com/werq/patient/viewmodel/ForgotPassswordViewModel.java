@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.werq.patient.base.BaseViewModel;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class ForgotPassswordViewModel extends BaseViewModel {
 
@@ -58,7 +59,7 @@ public class ForgotPassswordViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
 
     }
 
@@ -68,7 +69,8 @@ public class ForgotPassswordViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
+
 }

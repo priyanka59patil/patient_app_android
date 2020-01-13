@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -26,13 +27,14 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class BookAppointmentViewModel extends BaseViewModel {
 
     private static final String TAG = "ChangePasswordViewModel";
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
 
     MutableLiveData<ArrayList<Location>> locationList;
     MutableLiveData<String> selectedLocation;
@@ -65,7 +67,7 @@ public class BookAppointmentViewModel extends BaseViewModel {
 
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
         if(!TextUtils.isEmpty(url)){
             switch (url){
@@ -75,7 +77,6 @@ public class BookAppointmentViewModel extends BaseViewModel {
                     break;
             }
         }
-
     }
 
     @Override
@@ -85,7 +86,7 @@ public class BookAppointmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
         requestStatus.setValue(false);
     }
@@ -97,7 +98,7 @@ public class BookAppointmentViewModel extends BaseViewModel {
 
         Helper.setLog("changePassword req",changePassword.toString());
         getLoading().setValue(true);
-        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiResponce,"SetNewPassword");
+        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiCallback,"SetNewPassword");
     }*/
 
     public void saveOnClick(){
@@ -122,7 +123,7 @@ public class BookAppointmentViewModel extends BaseViewModel {
             newAppointment.setLocationName(selectedLocation.getValue());
 
             getLoading().setValue(true);
-            patientRepository.setNewAppointmentRequest(Helper.autoken,newAppointment,getToast(),apiResponce,"SetNewApptRequest");
+            patientRepository.setNewAppointmentRequest(Helper.autoken,newAppointment,getToast(),apiCallback,"SetNewApptRequest");
 
         }
 

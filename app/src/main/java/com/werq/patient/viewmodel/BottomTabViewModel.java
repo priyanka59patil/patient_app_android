@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class BottomTabViewModel extends BaseViewModel implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -34,7 +36,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
     /*String authToken;
     String refreshTokenId;*/
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
     private MutableLiveData<Boolean> rvVisibility;
     private MutableLiveData<Boolean> rvDoctorTeamVisibility;
    // public MutableLiveData<Boolean> teamloading;
@@ -118,35 +120,33 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
 
         doctorTeamListPage=page;
         patientRepository.getDocterTeamAppoitment(Helper.autoken,"10",""+page*10,
-                    getToast(),apiResponce,"DoctorTeam");
+                    getToast(),apiCallback,"DoctorTeam");
 
     }
 
     public void fetchAttachments(int page,String doctors,String filter) {
         getLoading().setValue(true);
-        patientRepository.getAttachments(Helper.autoken,doctors,filter,"10",page*10+"",getToast(),apiResponce,"AllAttachments");
+        patientRepository.getAttachments(Helper.autoken,doctors,filter,"10",page*10+"",getToast(),apiCallback,"AllAttachments");
     }
 
     public void fetchFilterDoctorList(int page) {
         getLoading().setValue(true);
         doctorListPage=page;
-        patientRepository.getFilterDoctorList(Helper.autoken,"10",page*10+"",getToast(),apiResponce,"FilterDoctorList");
+        patientRepository.getFilterDoctorList(Helper.autoken,"10",page*10+"",getToast(),apiCallback,"FilterDoctorList");
     }
 
 
     @Override
-    public void onSuccess(String url, String responseJson) {
-        Helper.setLog("responseJson",responseJson);
-
+    public void onSuccess(String url, Response response) {
 
         getLoading().setValue(false);
 
         if(url!=null && url.equals("DoctorTeam"))
         {
             if (teamList.getValue()!=null)
-            Helper.setLog(TAG,"onSuccess"+teamList.getValue().size()+"");
+                Helper.setLog(TAG,"onSuccess"+teamList.getValue().size()+"");
 
-            DoctorTeamResponse doctorTeamResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorTeamResponse.class);
+            DoctorTeamResponse doctorTeamResponse= (DoctorTeamResponse) response.body();
             if(doctorTeamResponse!=null){
 
                 ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
@@ -179,7 +179,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("AllAttachments"))
         {
 
-            AttachmentResponse attachmentResponse=Helper.getGsonInstance().fromJson(responseJson,AttachmentResponse.class);
+            AttachmentResponse attachmentResponse= (AttachmentResponse) response.body();
 
             if(attachmentResponse !=null){
                 ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
@@ -200,7 +200,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("FilterDoctorList"))
         {
 
-            DoctorListResponse doctorListResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorListResponse.class);
+            DoctorListResponse doctorListResponse= (DoctorListResponse) response.body();
 
             if(doctorListResponse !=null && doctorListResponse.getData()!=null){
 
@@ -239,10 +239,10 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
-
     }
+
 
     public MutableLiveData<ArrayList<AttachmentResult>> getListAttachments() {
         return listAttachments;

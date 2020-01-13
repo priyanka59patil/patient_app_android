@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.R;
@@ -21,6 +22,8 @@ import com.werq.patient.service.repository.AppointmentRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Response;
 
 public class ScheduleDetailsViewModel extends BaseViewModel {
 
@@ -44,7 +47,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     //public MutableLiveData<String> toolbarTitle;
 
     String authToken;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
     AppointmentRepository appointmentRepository;
     AppointmentDetailResponse apptDetailResponse;
     private String TAG="ScheduleDetailsViewModel";
@@ -235,19 +238,19 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
     private void getAppointmentData() {
         getLoading().setValue(true);
-        appointmentRepository.getAppointmentDetails(authToken,appointmentResultData.getValue().getiD(),getToast(),apiResponce,"GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(authToken,appointmentResultData.getValue().getiD(),getToast(),apiCallback,"GetAppointmentDetails");
     }
 
     @Override
-    public void onSuccess(String url, String responseJson) {
-        Helper.setLog(TAG,url+"::" +responseJson);
+    public void onSuccess(String url, Response response) {
+        Helper.setLog(TAG,url+"::" +response.body().toString());
 
         getLoading().setValue(false);
         if(url!=null && !url.isEmpty())
         {
             if(url.equalsIgnoreCase("GetAppointmentDetails")){
 
-                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                AppointmentDetailResponse apptDetailResponse= (AppointmentDetailResponse) response.body();
                 /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
@@ -275,7 +278,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             }
             else if(url.equalsIgnoreCase("ConfirmAppointment")){
-                AppointmentDetailResponse apptDetailResponse= Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                AppointmentDetailResponse apptDetailResponse= (AppointmentDetailResponse) response.body();
                 Log.e(TAG, "onSuccess: "+apptDetailResponse.getData().getAppointment().getConfirmByPatient() );
                 appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                 doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
@@ -294,7 +297,6 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             }
         }
-
     }
 
     @Override
@@ -303,7 +305,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
 
@@ -315,7 +317,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
             ConfirmAppointment confirmAppointment=new ConfirmAppointment();
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
             confirmAppointment.setConfirmByPatient("true");
-            appointmentRepository.setConfirmAppointment(authToken,confirmAppointment,getToast(),apiResponce,"ConfirmAppointment");
+            appointmentRepository.setConfirmAppointment(authToken,confirmAppointment,getToast(),apiCallback,"ConfirmAppointment");
         }
     }
 

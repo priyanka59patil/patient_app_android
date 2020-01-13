@@ -5,13 +5,15 @@ import androidx.lifecycle.MutableLiveData;
 import com.werq.patient.base.BaseViewModel;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class NewChatViewModel extends BaseViewModel {
 
     MutableLiveData<String> searchText;
 
+
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
 
     }
 
@@ -21,7 +23,8 @@ public class NewChatViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
+
 }

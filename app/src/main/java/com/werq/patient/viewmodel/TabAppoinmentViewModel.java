@@ -15,6 +15,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.MockData.JsonData;
 import com.werq.patient.R;
@@ -50,6 +51,7 @@ import java.util.TimeZone;
 
 import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class TabAppoinmentViewModel extends BaseViewModel {
 
@@ -67,7 +69,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     boolean isFromUpcoming = true;
     MutableLiveData<String> currentAppointmentDate;
     MutableLiveData<String> day, month, time, fullUserName, speciality, address, addressOnMap;
-    ApiResponce apiResponce = this;
+    ApiCallback apiCallback = this;
     int upcommingPageNo = 0;
     int historyPageNo = 0;
     private CompositeDisposable disposable;
@@ -251,8 +253,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onSuccess(String url, String responseJson) {
-
+    public void onSuccess(String url, Response response) {
         AppointmentResponse appointmentResponce;
         ArrayList<AppointmentResult> dataArrayList ;
 
@@ -262,7 +263,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "UpcomingAppointment":
                     getLoading().setValue(false);
-                    appointmentResponce = Helper.getGsonInstance().fromJson(responseJson, AppointmentResponse.class);
+                    appointmentResponce = (AppointmentResponse) response.body();
                     dataArrayList = new ArrayList<>();
                     if (listUpcommingAppointments.getValue() != null && upcommingPageNo != 0) {
                         dataArrayList.addAll(listUpcommingAppointments.getValue());
@@ -283,7 +284,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "HistoryAppointment":
                     getLoading().setValue(false);
-                    appointmentResponce = Helper.getGsonInstance().fromJson(responseJson, AppointmentResponse.class);
+                    appointmentResponce = (AppointmentResponse) response.body();
                     dataArrayList = new ArrayList<>();
                     if (listHistoryAppointments.getValue() != null && historyPageNo != 0) {
                         dataArrayList.addAll(listHistoryAppointments.getValue());
@@ -303,7 +304,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "GetAppointmentDetails":
                     getLoading().setValue(false);
-                    AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                    AppointmentDetailResponse apptDetailResponse = (AppointmentDetailResponse) response.body();
                 /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
@@ -343,7 +344,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                     getLoading().setValue(false);
                     refreshListFlag.setValue(true);
-                    apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
+                    apptDetailResponse = (AppointmentDetailResponse) response.body();
                     appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                     prepareAppointmentDetailsData();
                     doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
@@ -351,8 +352,8 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "TimeSlots":
 
-                   // getLoading().setValue(false);
-                    TimeSlotResponse timeSlotResponse=Helper.getGsonInstance().fromJson(responseJson,TimeSlotResponse.class);
+                    // getLoading().setValue(false);
+                    TimeSlotResponse timeSlotResponse= (TimeSlotResponse) response.body();
                     if(timeSlotResponse!=null && timeSlotResponse.getData()!=null
                             && timeSlotResponse.getData().getAvailableTimeSlot()!=null){
 
@@ -363,7 +364,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                         if (!TextUtils.isEmpty(selectedTimeSlot)) {
                             for (int i = 0; i < availableTimeSlots.size(); i++) {
                                 AvailableTimeSlot a = availableTimeSlots.get(i);
-                               // Log.e("onResponse: ", a.getStartTime());
+                                // Log.e("onResponse: ", a.getStartTime());
                                 if ( a.getStartTime().equals(selectedTimeSlot)) {
                                     selectTimeSlotItem.setValue(i);
                                 }
@@ -379,10 +380,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 case "RescheduleRequest":
                     getLoading().setValue(false);
                     refreshListFlag.setValue(true);
-                    Helper.setLog("response",responseJson);
-                    RescheduleResponse rescheduleResponse=Helper.getGsonInstance().fromJson(responseJson,RescheduleResponse.class);
+                    Helper.setLog("response",response.body().toString());
+                    RescheduleResponse rescheduleResponse= (RescheduleResponse) response.body();
                     if( rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate()!=null &&
-                    !TextUtils.isEmpty(rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())){
+                            !TextUtils.isEmpty(rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())){
 
                         rescheduledDate.setValue(prepareRescheduledDate
                                 (rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())
@@ -399,144 +400,6 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     break;
             }
         }
-/*
-        Helper.setLog("responseJson", responseJson);
-        AppointmentResponse appointmentResponce = Helper.getGsonInstance().fromJson(responseJson, AppointmentResponse.class);
-
-        getLoading().setValue(false);
-        if (url != null && url.equals("UpcomingAppointment")) {
-           // upcommingloading.setValue(false);
-
-
-            ArrayList<AppointmentResult> dataArrayList = new ArrayList<>();
-            if (listUpcommingAppointments.getValue() != null && upcommingPageNo != 0) {
-                dataArrayList.addAll(listUpcommingAppointments.getValue());
-            }
-
-            dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
-            listUpcommingAppointments.setValue(dataArrayList);
-
-            if (listUpcommingAppointments.getValue().size() > 0) {
-                rvVisibility.setValue(true);
-                //noVisitNote.setVisibility(View.GONE);
-
-            } else {
-                rvVisibility.setValue(false);
-            }
-        }
-
-        if (url != null && url.equals("HistoryAppointment")) {
-           // historyloading.setValue(false);
-            ArrayList<AppointmentResult> dataArrayList = new ArrayList<>();
-            if (listHistoryAppointments.getValue() != null && historyPageNo != 0) {
-                dataArrayList.addAll(listHistoryAppointments.getValue());
-            }
-            dataArrayList.addAll(Arrays.asList(appointmentResponce.getData().getResult()));
-            listHistoryAppointments.setValue(dataArrayList);
-
-
-            if (listHistoryAppointments.getValue().size() > 0) {
-                rvHistoryVisibility.setValue(true);
-                //noVisitNote.setVisibility(View.GONE);
-
-            } else {
-                rvHistoryVisibility.setValue(false);
-            }
-
-        }
-
-        if (url != null && url.equalsIgnoreCase("GetAppointmentDetails")) {
-
-           // apptDetailsloading.setValue(false);
-
-            AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-                *//*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
-                {
-                    List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
-
-                    List<VisitNoteAttachment> get=apptDetailResponse.getData().getVisitNoteAttachment();
-                    if(visitNoteList!=null && visitNoteList.size()>0)
-                    {
-                        Helper.setLog("visitNoteList.size()",visitNoteList.size()+"");
-                    }
-
-                }*//*
-
-            if (apptDetailResponse != null) {
-               // scheduleDetailsVisibility.setValue(true);
-                appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
-                prepareAppointmentDetailsData();
-                doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
-                attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
-
-
-
-                if (attachmentList.getValue() != null) {
-                    if (attachmentList.getValue().size() > 0) {
-                        attachmentVisibility.setValue(true);
-
-                    } else {
-                        attachmentVisibility.setValue(false);
-                    }
-                }
-
-            } else {
-                scheduleDetailsVisibility.setValue(false);
-            }
-
-
-        }
-
-        if (url != null && url.equalsIgnoreCase("ConfirmAppointment")) {
-            //apptDetailsloading.setValue(false);
-            confirmedAppointment.setValue(false);
-            AppointmentDetailResponse apptDetailResponse = Helper.getGsonInstance().fromJson(responseJson, AppointmentDetailResponse.class);
-            Log.e(TAG, "onSuccess: " + apptDetailResponse.getData().getAppointment().getConfirmByPatient());
-            appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
-            prepareAppointmentDetailsData();
-            doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
-
-               *//* if(apptDetailResponse.getData().getAppointment().getConfirmByPatient()==true)
-                {
-                    appointmentStatus.setValue("Confirmed");
-
-                }else
-                {
-                   appointmentStatus.setValue(apptDetailResponse.getData().getAppointment().getAppointmentStatus());
-
-                }*//*
-
-            //confirmByPatient.setValue(true);
-
-        }
-
-        if (url != null && url.equalsIgnoreCase("TimeSlots")) {
-            //apptDetailsloading.setValue(false);
-            getLoading().setValue(false);
-            TimeSlotResponse timeSlotResponse=Helper.getGsonInstance().fromJson(responseJson,TimeSlotResponse.class);
-            if(timeSlotResponse!=null && timeSlotResponse.getData()!=null
-                    && timeSlotResponse.getData().getAvailableTimeSlot()!=null){
-
-                ArrayList<AvailableTimeSlot> availableTimeSlots=new ArrayList<>();
-                availableTimeSlots.addAll(timeSlotResponse.getData().getAvailableTimeSlot());
-                availableTimeSlot.setValue(availableTimeSlots);
-
-                if (!TextUtils.isEmpty(selectedTimeSlot)) {
-                    for (int i = 0; i < availableTimeSlots.size(); i++) {
-                        AvailableTimeSlot a = availableTimeSlots.get(i);
-                        Log.e("onResponse: ", a.getStartTime());
-                        if ( a.getStartTime().equals(selectedTimeSlot)) {
-                            selectTimeSlotItem.setValue(i);
-                        }
-                    }
-                }
-
-            }else {
-                availableTimeSlot.setValue(null);
-            }
-
-        }*/
-
     }
 
     @Override
@@ -550,14 +413,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
-        /*if (isFromUpcoming) {
-            upcommingloading.setValue(false);
-        } else {
-            historyloading.setValue(false);
-        }*/
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
+
 
     private void prepareAppointmentDetailsData() {
         //toolbar.setValue(data.getProvider().getFirst_name() + " " + data.getProvider().getLast_name());
@@ -625,7 +484,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         upcommingPageNo = page;
 
             appointmentRepository.getUpcommingAppoitment(Helper.autoken, "10", "" + page * 10,
-                    getToast(), apiResponce, "UpcomingAppointment");
+                    getToast(), apiCallback, "UpcomingAppointment");
 
     }
 
@@ -634,12 +493,12 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         getLoading().setValue(true);
         historyPageNo = page;
         appointmentRepository.getHistoryAppoitment(Helper.autoken, "10", "" + page * 10,
-                getToast(), apiResponce, "HistoryAppointment");
+                getToast(), apiCallback, "HistoryAppointment");
     }
 
     public void getAppointmentData(int appointmentId) {
         getLoading().setValue(true);
-        appointmentRepository.getAppointmentDetails(Helper.autoken, appointmentId, getToast(), apiResponce, "GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(Helper.autoken, appointmentId, getToast(), apiCallback, "GetAppointmentDetails");
     }
 
     public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse) {
@@ -689,7 +548,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
             confirmAppointment.setConfirmByPatient("true");
             getLoading().setValue(true);
-            appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiResponce, "ConfirmAppointment");
+            appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiCallback, "ConfirmAppointment");
         }
     }
 
@@ -702,7 +561,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
 
             appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
-                    ,date, getToast(), apiResponce, "TimeSlots");
+                    ,date, getToast(), apiCallback, "TimeSlots");
         }
     }
 
@@ -744,7 +603,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     getLoading().setValue(true);
 
                     appointmentRepository.sendRescheduleRequest(Helper.autoken,rescheduleAppointment
-                            ,getToast(),apiResponce,"RescheduleRequest");
+                            ,getToast(),apiCallback,"RescheduleRequest");
 
                 } catch (ParseException e) {
                     e.printStackTrace();

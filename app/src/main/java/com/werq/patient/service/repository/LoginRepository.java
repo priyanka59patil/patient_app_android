@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiInterface;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
@@ -27,10 +28,10 @@ public class LoginRepository {
 
     private String TAG="LoginRepository";
 
-    public void signIn(UserCredential signInJson, MutableLiveData<String> toast, ApiResponce apiResponce, String url){
-        Call<Object>  call= RetrofitClient.getRetrofit().signIn(Helper.ContentType,signInJson);
+    public void signIn(UserCredential signInJson, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
+        Call<LoginResponce>  call= RetrofitClient.getRetrofit().signIn(Helper.ContentType,signInJson);
 
-        RetrofitClient.callApi(call,url,apiResponce,toast);
+        RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
 
     }

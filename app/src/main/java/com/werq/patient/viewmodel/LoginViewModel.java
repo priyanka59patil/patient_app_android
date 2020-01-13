@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -23,8 +24,9 @@ import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
-public class LoginViewModel extends BaseViewModel {
+public class LoginViewModel extends BaseViewModel  {
 
     MutableLiveData<String> userName;
     MutableLiveData<String> password;
@@ -68,7 +70,7 @@ public class LoginViewModel extends BaseViewModel {
     MutableLiveData<String> nextActivity;
     MutableLiveData<Boolean> rememberMe;
     LoginRepository loginRepository;
-    ApiResponce apiResponce = this;
+    ApiCallback apiCallback = this;
     SessionManager sessionManager;
     Context mContext;
 
@@ -130,7 +132,7 @@ public class LoginViewModel extends BaseViewModel {
             if (Helper.hasNetworkConnection(mContext)) {
 
                 getLoading().setValue(true);
-                loginRepository.signIn(userCredential, getToast(), apiResponce, "SIGNIN");
+                loginRepository.signIn(userCredential, getToast(), this, "SIGNIN");
 
             } else {
                 getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
@@ -180,9 +182,10 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
+        //LoginResponce loginResponce = Helper.getGsonInstance().fromJson(responseJson, LoginResponce.class);
 
-        LoginResponce loginResponce = Helper.getGsonInstance().fromJson(responseJson, LoginResponce.class);
+        LoginResponce loginResponce= (LoginResponce) response.body();
 
 
         getLoading().setValue(false);
@@ -257,9 +260,10 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
+
 
     private void setPrefilledUsername() {
         try {

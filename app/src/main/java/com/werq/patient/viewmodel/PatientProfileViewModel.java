@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -24,6 +25,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import retrofit2.Response;
+
 public class PatientProfileViewModel extends BaseViewModel {
     private static final String TAG = "PatientProfileViewModel";
     private final PatientRepository patientRepository;
@@ -34,7 +37,7 @@ public class PatientProfileViewModel extends BaseViewModel {
     public MutableLiveData<String> patientDOB;
     public MutableLiveData<String> phoneNumber;
     public MutableLiveData<String> address;
-    ApiResponce apiResponce = this;
+    ApiCallback apiCallback = this;
     int medicationPage = 0;
     Context mContext;
     private MutableLiveData<Boolean> rvInsuranceVisibility;
@@ -58,7 +61,7 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     public void fetchPatientProfileData() {
         getLoading().setValue(true);
-        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiResponce, "PatientProfile");
+        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiCallback, "PatientProfile");
 
         /*patientName.setValue("Priya Patil");
         patientDOB.setValue("31-07-1996");
@@ -69,13 +72,12 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     public void fetchMedicationList(int page) {
         getLoading().setValue(true);
-        patientRepository.getMedicationList(Helper.autoken, "10", page * 10 + "", getToast(), apiResponce, "MedicationList");
+        patientRepository.getMedicationList(Helper.autoken, "10", page * 10 + "", getToast(), apiCallback, "MedicationList");
         medicationPage = page;
     }
 
     @Override
-    public void onSuccess(String url, String responseJson) {
-
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
 
         if (!TextUtils.isEmpty(url)) {
@@ -83,8 +85,7 @@ public class PatientProfileViewModel extends BaseViewModel {
             switch (url) {
 
                 case "PatientProfile":
-                    PatientProfileResponse patientProfileResponse = Helper
-                            .getGsonInstance().fromJson(responseJson, PatientProfileResponse.class);
+                    PatientProfileResponse patientProfileResponse = (PatientProfileResponse) response.body();
                     if (patientProfileResponse != null) {
                         Helper.setLog("PatientProfileResponse", patientProfileResponse.toString());
                         if (patientProfileResponse.getData() != null && patientProfileResponse.getData().getPatient() != null) {
@@ -140,8 +141,7 @@ public class PatientProfileViewModel extends BaseViewModel {
 
                 case "MedicationList":
 
-                    MedicationResponse medicationResponse = Helper.getGsonInstance()
-                            .fromJson(responseJson, MedicationResponse.class);
+                    MedicationResponse medicationResponse = (MedicationResponse) response.body();
 
                     if (medicationResponse != null && medicationResponse.getData() != null) {
 
@@ -169,17 +169,6 @@ public class PatientProfileViewModel extends BaseViewModel {
                     break;
             }
         }
-
-
-       /* if (url != null && url.equals("PatientProfile")) {
-
-
-        }
-        if (url != null && url.equals("MedicationList")) {
-
-
-        }*/
-
     }
 
     @Override
@@ -188,7 +177,7 @@ public class PatientProfileViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
 

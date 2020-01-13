@@ -3,13 +3,14 @@ package com.werq.patient.viewmodel;
 import com.werq.patient.base.BaseViewModel;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class ChatTopicsViewModel extends BaseViewModel {
 
     CompositeDisposable compositeDisposable;
 
     @Override
-    public void onSuccess(String url, String responseJson) {
+    public void onSuccess(String url, Response response) {
 
     }
 
@@ -19,7 +20,9 @@ public class ChatTopicsViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
+
+
 }

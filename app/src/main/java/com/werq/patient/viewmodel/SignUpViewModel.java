@@ -6,6 +6,7 @@ import android.text.TextWatcher;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -13,6 +14,7 @@ import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.repository.SignUpRepository;
 
 import okhttp3.internal.http2.ErrorCode;
+import retrofit2.Response;
 
 public class SignUpViewModel extends BaseViewModel {
 
@@ -26,7 +28,7 @@ public class SignUpViewModel extends BaseViewModel {
 
     String invitaionCode;
     String dobData;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
 
     SignUpRepository signUpRepository;
 
@@ -66,7 +68,7 @@ public class SignUpViewModel extends BaseViewModel {
         // signUpJson.setPassword(newpassword.getValue());
         signUpJson.setUsername(userName.getValue());
         getLoading().setValue(true);
-        signUpRepository.signUp(signUpJson,getToast(),apiResponce,SIGNUP);
+        signUpRepository.signUp(signUpJson,getToast(),apiCallback,SIGNUP);
 
          /*else {
 
@@ -208,10 +210,8 @@ public class SignUpViewModel extends BaseViewModel {
     }
 
 
-
     @Override
-    public void onSuccess(String url, String responseJson) {
-
+    public void onSuccess(String url, Response response) {
         getLoading().setValue(false);
         if(url!=null && !url.isEmpty()){
             if(url.equals(SIGNUP)){
@@ -219,8 +219,6 @@ public class SignUpViewModel extends BaseViewModel {
                 isSuccessfull.setValue(true);
             }
         }
-
-
     }
 
     @Override
@@ -237,7 +235,7 @@ public class SignUpViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
         getLoading().setValue(false);
     }
 

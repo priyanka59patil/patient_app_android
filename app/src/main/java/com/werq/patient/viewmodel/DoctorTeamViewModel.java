@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.werq.patient.Interfaces.ApiCallback;
 import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
@@ -15,6 +16,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import java.util.ArrayList;
 
 import io.reactivex.disposables.CompositeDisposable;
+import retrofit2.Response;
 
 public class DoctorTeamViewModel  extends BaseViewModel {
 
@@ -28,7 +30,7 @@ public class DoctorTeamViewModel  extends BaseViewModel {
     private int page=0;
     String authToken;
     String refreshTokenId;
-    ApiResponce apiResponce=this;
+    ApiCallback apiCallback=this;
     private MutableLiveData<Boolean> rvVisibility;
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
 
@@ -72,16 +74,15 @@ public class DoctorTeamViewModel  extends BaseViewModel {
             Log.e(TAG, "authToken: "+authToken );
 
             patientRepository.getDocterTeamAppoitment(authToken,"20",""+0,
-                    getToast(),apiResponce,"DoctorTeam");
+                    getToast(),apiCallback,"DoctorTeam");
         }
     }
 
-
     @Override
-    public void onSuccess(String url, String responseJson) {
-        Helper.setLog("responseJson",responseJson);
+    public void onSuccess(String url, Response response) {
+        Helper.setLog("responseJson",response.body().toString());
 
-        DoctorTeamResponse doctorTeamResponse=Helper.getGsonInstance().fromJson(responseJson,DoctorTeamResponse.class);
+        DoctorTeamResponse doctorTeamResponse= (DoctorTeamResponse) response.body();
 
         getLoading().setValue(false);
 
@@ -100,7 +101,6 @@ public class DoctorTeamViewModel  extends BaseViewModel {
                 rvVisibility.setValue(false);
             }
         }
-
     }
 
     @Override
@@ -109,9 +109,10 @@ public class DoctorTeamViewModel  extends BaseViewModel {
     }
 
     @Override
-    public void onTokenRefersh(String responseJson) {
+    public void onTokenRefersh(Response response) {
 
     }
+
 
     @Override
     protected void onCleared() {
