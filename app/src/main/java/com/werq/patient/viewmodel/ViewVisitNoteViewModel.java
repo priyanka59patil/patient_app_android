@@ -3,12 +3,10 @@ package com.werq.patient.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteCreatedByUser;
 import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
 

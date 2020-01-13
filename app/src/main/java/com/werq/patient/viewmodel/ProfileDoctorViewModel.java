@@ -6,17 +6,13 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.gson.JsonObject;
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
-import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.service.model.ResponeError.ErrorData;
 
 import java.util.ArrayList;
 

@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 
 public abstract class BaseViewModel extends ViewModel implements ApiCallback {
     private MutableLiveData<String> mShowToast;

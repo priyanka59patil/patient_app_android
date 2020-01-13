@@ -1,6 +1,5 @@
 package com.werq.patient.viewmodel;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -12,8 +11,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
-import com.werq.patient.Interfaces.ChatListApiCall;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
@@ -35,12 +32,11 @@ import java.util.Map;
 import io.reactivex.disposables.CompositeDisposable;
 import retrofit2.Response;
 
-public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiCall {
+public class ChatFragmentViewModel extends BaseViewModel  {
 
     CompositeDisposable disposable;
     PatientRepository patientRepository;
     ApiCallback apiCallback = this;
-    ChatListApiCall apiResponceChatList = this;
     boolean isNewChat = false;
     MutableLiveData<String> typedMsg;
     MutableLiveData<ArrayList<Message>> messageListBefore;
@@ -83,7 +79,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
             String currentUtcTimestamp=Helper.currentlocalDateToUtc().getTime() + "";
             patientRepository.fetchChatList(Helper.autoken, channelId,
                     2, currentUtcTimestamp, 5 + "",
-                    0 + "", getToast(), apiResponceChatList, "ChatList");
+                    0 + "", getToast(), apiCallback, "ChatList");
 
 
         } catch (ParseException e) {
@@ -139,13 +135,13 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
     public void fetchAfterChat(long lastMsgtimestamp ) {
         patientRepository.fetchChatList(Helper.autoken, channelId,
                 1, lastMsgtimestamp + "", 5 + "",
-                0 + "", getToast(), apiResponceChatList, "ChatListAfter");
+                0 + "", getToast(), apiCallback, "ChatListAfter");
     }
 
     public void fetchBeforeChat(long firstMsgtimestamp ) {
         patientRepository.fetchChatList(Helper.autoken, channelId,
                 2, firstMsgtimestamp + "", 5 + "",
-                1+ "", getToast(), apiResponceChatList, "ChatListBefore");
+                1+ "", getToast(), apiCallback, "ChatListBefore");
     }
 
 
@@ -161,10 +157,9 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                     if (!TextUtils.isEmpty(newChatResponse.getChannelId())) {
 
-                        channelIdRef = database.getReference(newChatResponse.getChannelId());
+                        channelIdRef = database.getReference().child("ChatInfo").child(newChatResponse.getChannelId());
                         channelId = newChatResponse.getChannelId();
                         fetchInitialChat();
-
                         DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
                         updateDataRef.child("IsMsgSendFromSupport").setValue(false);
                     }
@@ -214,6 +209,50 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
                     break;
 
+                case "ChatList":
+                    ChatResponse chatResponse = (ChatResponse) response.body();
+                    Helper.setLog("chatResponse", chatResponse.toString());
+                    remainingHistoryMsgCount=chatResponse.getData().getCount();
+                    ArrayList<Message> msgList = new ArrayList<>();
+
+                    for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
+                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
+                    }
+                    /*for (int i = chatResponse.getData().getChatMessageList().size()-1; i>=0; i--) {
+                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
+                    }*/
+
+                    messageList.setValue(msgList);
+                    break;
+
+                case "ChatListAfter":
+
+                    ChatResponse afterChatResponse =(ChatResponse) response.body();
+                    Helper.setLog("chatResponse", afterChatResponse.toString());
+                    ArrayList<Message> afterChatList = new ArrayList<>();
+
+                    for (int i = 0; i < afterChatResponse.getData().getChatMessageList().size(); i++) {
+                        afterChatList.add(createMessageObject(afterChatResponse.getData().getChatMessageList().get(i)));
+                    }
+
+                    messageListAfter.setValue(afterChatList);
+                    break;
+
+                case "ChatListBefore":
+
+                    ChatResponse beforeChatResponse = (ChatResponse) response.body();
+                    Helper.setLog("chatResponse", beforeChatResponse.toString());
+
+                    remainingHistoryMsgCount=beforeChatResponse.getData().getCount();
+                    ArrayList<Message> beforeChatList = new ArrayList<>();
+
+                    for (int i = 0; i < beforeChatResponse.getData().getChatMessageList().size(); i++) {
+                        beforeChatList.add(createMessageObject(beforeChatResponse.getData().getChatMessageList().get(i)));
+                    }
+
+                    messageListBefore.setValue(beforeChatList);
+                    break;
+
                 default:
                     break;
             }
@@ -227,7 +266,7 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
     @Override
     public void onTokenRefersh(Response response) {
-
+        getLoading().setValue(false);
     }
 
     /*@Override
@@ -287,70 +326,6 @@ public class ChatFragmentViewModel extends BaseViewModel implements ChatListApiC
 
     }*/
 
-    @Override
-    public void onChatListSuccess(String url, Response response) {
-        if (!TextUtils.isEmpty(url)) {
-
-
-            switch (url) {
-
-                case "ChatList":
-                    ChatResponse chatResponse = (ChatResponse) response.body();
-                    Helper.setLog("chatResponse", chatResponse.toString());
-                    remainingHistoryMsgCount=chatResponse.getData().getCount();
-                    ArrayList<Message> msgList = new ArrayList<>();
-
-                    for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
-                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
-                    }
-                    /*for (int i = chatResponse.getData().getChatMessageList().size()-1; i>=0; i--) {
-                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
-                    }*/
-
-                    messageList.setValue(msgList);
-                    break;
-
-                case "ChatListAfter":
-
-                    ChatResponse afterChatResponse =(ChatResponse) response.body();
-                    Helper.setLog("chatResponse", afterChatResponse.toString());
-                    ArrayList<Message> afterChatList = new ArrayList<>();
-
-                    for (int i = 0; i < afterChatResponse.getData().getChatMessageList().size(); i++) {
-                        afterChatList.add(createMessageObject(afterChatResponse.getData().getChatMessageList().get(i)));
-                    }
-
-                    messageListAfter.setValue(afterChatList);
-                    break;
-
-                case "ChatListBefore":
-
-                    ChatResponse beforeChatResponse = (ChatResponse) response.body();
-                    Helper.setLog("chatResponse", beforeChatResponse.toString());
-
-                    remainingHistoryMsgCount=beforeChatResponse.getData().getCount();
-                    ArrayList<Message> beforeChatList = new ArrayList<>();
-
-                    for (int i = 0; i < beforeChatResponse.getData().getChatMessageList().size(); i++) {
-                        beforeChatList.add(createMessageObject(beforeChatResponse.getData().getChatMessageList().get(i)));
-                    }
-
-                    messageListBefore.setValue(beforeChatList);
-                    break;
-
-            }
-        }
-    }
-
-    @Override
-    public void onChatListError(String url, String errorCode, String errorMessage) {
-
-    }
-
-    @Override
-    public void onTokenRefersh(String responseJson) {
-        getLoading().setValue(false);
-    }
 
     public boolean isNewChat() {
         return isNewChat;

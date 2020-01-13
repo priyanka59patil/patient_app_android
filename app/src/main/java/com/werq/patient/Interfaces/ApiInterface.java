@@ -7,6 +7,7 @@ import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
@@ -15,13 +16,13 @@ import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorListResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.SentMessageResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
 
@@ -37,12 +38,12 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @POST("Auth/signup")
-    Call<LoginResponce> signUp(@Header("Content-Type") String contentType,
+    Call<ApiResponse<SignUpData>> signUp(@Header("Content-Type") String contentType,
                              @Body SignUpJson params);
 
     @POST("Auth")
-    Call<LoginResponce> signIn(@Header("Content-Type") String contentType,
-                               @Body UserCredential userCredential);
+    Call<ApiResponse<SignUpData>> signIn(@Header("Content-Type") String contentType,
+                                         @Body UserCredential userCredential);
 
     @GET("Appointments/upcoming")
     Call<AppointmentResponse> getUpcomingAppointment(@Header("Authorization") String authToken,
@@ -115,7 +116,7 @@ public interface ApiInterface {
                                            @Query("skip") String skip );
 
     @POST("Auth/changepassword")
-    Call<LoginResponce> changePassword(@Header("Content-Type") String contentType,
+    Call<ApiResponse<SignUpData>> changePassword(@Header("Content-Type") String contentType,
                                 @Header("Authorization") String authToken,
                                 @Body ChangePassword changePassword);
 

@@ -6,13 +6,10 @@ import android.text.TextUtils;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
-import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
@@ -21,9 +18,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import retrofit2.Response;
 

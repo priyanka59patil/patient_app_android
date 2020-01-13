@@ -1,29 +1,13 @@
 package com.werq.patient.viewmodel;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
-import com.werq.patient.MockData.JsonData;
-import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
-import com.werq.patient.service.model.AppointmentData;
-import com.werq.patient.service.model.AppointmentResponce;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
@@ -32,7 +16,6 @@ import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 import com.werq.patient.service.repository.AppointmentRepository;
@@ -41,16 +24,13 @@ import com.werq.patient.base.BaseViewModel;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import io.reactivex.disposables.CompositeDisposable;
-import okhttp3.internal.http2.ErrorCode;
 import retrofit2.Response;
 
 public class TabAppoinmentViewModel extends BaseViewModel {

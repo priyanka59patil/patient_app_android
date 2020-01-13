@@ -1,26 +1,16 @@
 package com.werq.patient.viewmodel;
 
-import android.content.Context;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.scottyab.aescrypt.AESCrypt;
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
-import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
-import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 
-import java.security.GeneralSecurityException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

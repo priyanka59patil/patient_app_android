@@ -5,9 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.Files;
 import com.werq.patient.Utils.DateHelper;

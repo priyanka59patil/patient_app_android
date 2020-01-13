@@ -1,19 +1,15 @@
 package com.werq.patient.viewmodel;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.SignUpJson;
 import com.werq.patient.service.repository.SignUpRepository;
 
-import okhttp3.internal.http2.ErrorCode;
 import retrofit2.Response;
 
 public class SignUpViewModel extends BaseViewModel {

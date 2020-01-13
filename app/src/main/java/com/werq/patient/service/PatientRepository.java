@@ -3,26 +3,24 @@ package com.werq.patient.service;
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ChatListApiCall;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.ChatMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorListResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
 import com.werq.patient.service.model.ResponcejsonPojo.NewChatResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.SentMessageResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
 
 import retrofit2.Call;
@@ -181,7 +179,7 @@ public class PatientRepository {
 
     public void  setNewPassword(String authToken, ChangePassword changePassword, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Call<LoginResponce> call= RetrofitClient.getRetrofit().changePassword(Helper.ContentType,authToken,changePassword);
+        Call<ApiResponse<SignUpData>> call= RetrofitClient.getRetrofit().changePassword(Helper.ContentType,authToken,changePassword);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }
@@ -202,11 +200,11 @@ public class PatientRepository {
     }
 
     public void  fetchChatList(String authToken, String channelId, int flag, String timestamp, String take, String skip
-            , MutableLiveData<String> toast, ChatListApiCall chatListApiCall, String url){
+            , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("fetchChatList-authToken :- ",authToken);
         Call<ChatResponse> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
-        RetrofitClient.chatListCall(call,url,chatListApiCall,toast);
+        RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }
 

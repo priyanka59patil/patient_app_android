@@ -1,8 +1,6 @@
 package com.werq.patient.viewmodel;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,15 +9,13 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
-import com.werq.patient.service.model.ResponcejsonPojo.ChangePasswordResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 
 import java.security.GeneralSecurityException;
@@ -77,22 +73,22 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
         if(!TextUtils.isEmpty(url) && url.equals("SetNewPassword")){
 
-            LoginResponce loginResponce = (LoginResponce) response.body();
+            ApiResponse<SignUpData> apiResponse= (ApiResponse<SignUpData>) response.body();
+            SignUpData signUpData=apiResponse.getData();
             getToast().setValue("Your password has been set successfully");
             changePasswordStatus.setValue(true);
 
-            if(loginResponce!=null){
 
-                if(loginResponce.getData()!=null){
+                if(signUpData!=null){
                     String authToken=sessionManager.getAuthToken();
                     long timeStamp=sessionManager.getTimeStamp();
 
                     sessionManager.clear();
 
                     sessionManager.creteUserSession(authToken,
-                            loginResponce.getData().getRefreshToken(),
-                            loginResponce.getData().getUser().getUserName(),
-                            loginResponce.getData().getUser().getID()+"",
+                            signUpData.getRefreshToken(),
+                            signUpData.getUser().getUserName(),
+                            signUpData.getUser().getID()+"",
                             timeStamp);
 
                     String encryptedUName = "";
@@ -112,7 +108,6 @@ public class SetNewPasswordViewModel extends BaseViewModel {
                     sessionManager.setRememberPassword(false, encryptedPass);
                     nextActivity.setValue("DashBoard");
                 }
-            }
 
             //Helper.setLog("changePasswordResponse",changePasswordResponse.toString());
 

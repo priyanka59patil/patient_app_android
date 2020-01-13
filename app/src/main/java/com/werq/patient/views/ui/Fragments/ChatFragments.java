@@ -170,8 +170,8 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                     messagesAdapter.notifyDataSetChanged();
                 }
 
-                Helper.setLog("chat obj after last msg timestamp",messages.get(0).getId()+"");
-                viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
+                Helper.setLog("chat obj after last msg timestamp",messages.get(messages.size()-1).getId()+"");
+                viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
 
 
             }

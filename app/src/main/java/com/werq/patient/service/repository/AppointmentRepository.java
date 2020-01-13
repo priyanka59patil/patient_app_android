@@ -1,25 +1,19 @@
 package com.werq.patient.service.repository;
 
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentData;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AppointmentRepository  {
 

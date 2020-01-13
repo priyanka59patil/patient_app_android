@@ -3,27 +3,23 @@ package com.werq.patient.viewmodel;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
 import com.werq.patient.Interfaces.ApiCallback;
-import com.werq.patient.Interfaces.ApiResponce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.UserCredential;
-import com.werq.patient.service.model.ResponcejsonPojo.LoginResponce;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
 import com.werq.patient.service.repository.LoginRepository;
-import com.werq.patient.service.repository.SignUpRepository;
 
 import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
-import okhttp3.internal.http2.ErrorCode;
 import retrofit2.Response;
 
 public class LoginViewModel extends BaseViewModel  {
@@ -183,34 +179,37 @@ public class LoginViewModel extends BaseViewModel  {
 
     @Override
     public void onSuccess(String url, Response response) {
-        //LoginResponce loginResponce = Helper.getGsonInstance().fromJson(responseJson, LoginResponce.class);
 
-        LoginResponce loginResponce= (LoginResponce) response.body();
+        ApiResponse<SignUpData> apiResponse= (ApiResponse<SignUpData>) response.body();
+        SignUpData signUpData=apiResponse.getData();
+        Helper.setLog("ApiResponse", apiResponse.toString());
+        Helper.setLog("ApiResponse-signUpData", signUpData.toString());
+
 
 
         getLoading().setValue(false);
         if (url.equals("SIGNIN")) {
 
-            if (loginResponce != null) {
+            if (signUpData != null) {
 
                 //if TempPassChangedFlag()==true (1) then login otherwise
                 // TempPassChangedFlag()==false(0) then setNewPassword
 
-                if (loginResponce.getData().getTempPassChangedFlag()!=0) {
+                if (signUpData.getTempPassChangedFlag()!=0) {
 
                     sessionManager.clear();
                     long timestamp = 0;
                     try {
-                        timestamp = Helper.parseUtcStringToDate(loginResponce.getData().getAuthExpiryTime()).getTime();
+                        timestamp = Helper.parseUtcStringToDate(signUpData.getAuthExpiryTime()).getTime();
                     } catch (ParseException e) {
                         Helper.setExceptionLog("ParseException",e);
                         e.printStackTrace();
                     }
 
-                    sessionManager.creteUserSession(loginResponce.getData().getAuthToken(),
-                            loginResponce.getData().getRefreshToken(),
-                            loginResponce.getData().getUser().getUserName(),
-                            loginResponce.getData().getUser().getID()+"",
+                    sessionManager.creteUserSession(signUpData.getAuthToken(),
+                            signUpData.getRefreshToken(),
+                            signUpData.getUser().getUserName(),
+                            signUpData.getUser().getID()+"",
                             timestamp);
 
                     String encryptedUName = "";
@@ -234,12 +233,12 @@ public class LoginViewModel extends BaseViewModel  {
                     sessionManager.clear();
                     long timestamp = 0;
                     try {
-                        timestamp = Helper.parseUtcStringToDate(loginResponce.getData().getAuthExpiryTime()).getTime();
+                        timestamp = Helper.parseUtcStringToDate(signUpData.getAuthExpiryTime()).getTime();
                     } catch (ParseException e) {
                         Helper.setExceptionLog("ParseException",e);
                         e.printStackTrace();
                     }
-                    sessionManager.setAuthToken(loginResponce.getData().getAuthToken(),timestamp);
+                    sessionManager.setAuthToken(signUpData.getAuthToken(),timestamp);
                     nextActivity.setValue("SetNewPassword");
 
 
