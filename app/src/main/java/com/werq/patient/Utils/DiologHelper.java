@@ -6,7 +6,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Interfaces.Callback.DiologListner;
 
 public class DiologHelper {
 

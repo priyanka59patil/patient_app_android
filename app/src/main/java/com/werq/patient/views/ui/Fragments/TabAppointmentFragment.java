@@ -24,7 +24,7 @@ import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;

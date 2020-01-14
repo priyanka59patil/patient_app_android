@@ -9,24 +9,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.base.BaseActivity;
-import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.ActivityFilterDoctorListBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.viewmodel.BottomTabViewModel;
-import com.werq.patient.views.adapter.FilesAdapter;
 import com.werq.patient.views.adapter.FilterDoctorAdapter;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.views.ui.Fragments.FilesFragment;
 
 import net.igenius.customcheckbox.CustomCheckBox;
 

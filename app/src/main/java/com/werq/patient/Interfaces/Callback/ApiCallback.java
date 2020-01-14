@@ -1,4 +1,4 @@
-package com.werq.patient.Interfaces;
+package com.werq.patient.Interfaces.Callback;
 
 import retrofit2.Response;
 

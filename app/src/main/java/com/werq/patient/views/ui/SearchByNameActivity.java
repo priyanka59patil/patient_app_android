@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.werq.patient.views.adapter.DoctorTeamAdapter;
 import com.werq.patient.views.adapter.StackImagesAdapter;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;

@@ -2,7 +2,6 @@ package com.werq.patient.views.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +23,12 @@ import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.viewmodel.ChatInfoViewModel;
 import com.werq.patient.views.ui.ViewFileActivity;
 import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.service.model.Files;
 import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
 import com.werq.patient.R;
-import com.werq.patient.Utils.DateHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

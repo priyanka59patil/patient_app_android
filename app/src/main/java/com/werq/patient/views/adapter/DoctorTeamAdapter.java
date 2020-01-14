@@ -1,11 +1,9 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,10 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.werq.patient.Interfaces.DoctorTeamClickListerner;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.DoctorTeamClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;

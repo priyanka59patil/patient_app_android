@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,8 +29,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -52,8 +49,8 @@ import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Factory.ViewModelProviderFactory;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
-import com.werq.patient.Interfaces.DiologListner;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.DiologListner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;
 import com.werq.patient.Utils.Helper;
@@ -67,7 +64,6 @@ import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
 import com.werq.patient.views.adapter.NewTimeSlotAdapter;
-import com.werq.patient.views.ui.Fragments.MapFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -222,12 +218,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         transaction.replace(R.id.mapframe, new MapFragment());
         transaction.commitNow();*/
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapframe);
-    }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         viewModel.getRefreshListFlag().observe(this, aBoolean -> {
             if (aBoolean) {
@@ -236,46 +228,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(intent);
             }
 
-        });
-
-
-        btConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Helper.setLog("Clicked", "btConfirm");
-                if (Helper.hasNetworkConnection(mContext)) {
-
-                    viewModel.setConfirmStatus();
-
-                } else {
-                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
-                }
-
-            }
-        });
-        btReSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Helper.setLog("Clicked", "btReSchedule");
-                if (Helper.hasNetworkConnection(mContext)) {
-                    showTimeSlot();
-                    dgAppointment.show();
-                    try {
-
-                        Date d = new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
-                        viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
-
-                    } catch (ParseException e) {
-                        Helper.setExceptionLog(TAG+ "-ParseException: ",e );
-                        e.printStackTrace();
-                    }
-
-
-                } else {
-                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
-                }
-
-            }
         });
 
         viewModel.getScheduleDetailsVisibility().observe(this, aBoolean -> {
@@ -299,8 +251,6 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 tvAddress.setMinLines(2);
             }
         });
-
-
         viewModel.getAppointmentResultData().observe(this, appointmentResult1 -> {
 
 
@@ -408,6 +358,54 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
                 ivUseImage.setImageResource(R.drawable.user_image_placeholder);
             }
         });
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        btConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Helper.setLog("Clicked", "btConfirm");
+                if (Helper.hasNetworkConnection(mContext)) {
+
+                    viewModel.setConfirmStatus();
+
+                } else {
+                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+                }
+
+            }
+        });
+        btReSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Helper.setLog("Clicked", "btReSchedule");
+                if (Helper.hasNetworkConnection(mContext)) {
+                    showTimeSlot();
+                    dgAppointment.show();
+                    try {
+
+                        Date d = new SimpleDateFormat(Helper.MMM_DD_YYYY).parse(et_selectDate.getText().toString());
+                        viewModel.fetchTimeSlots(new SimpleDateFormat(Helper.YYYY_MM_DD).format(d));
+
+                    } catch (ParseException e) {
+                        Helper.setExceptionLog(TAG+ "-ParseException: ",e );
+                        e.printStackTrace();
+                    }
+
+
+                } else {
+                    viewModel.getToast().setValue(mContext.getResources().getString(R.string.no_network_conection));
+                }
+
+            }
+        });
+
+
 
     }
 
@@ -642,13 +640,25 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
             public void onClick(View v) {
 
                 if (viewModel.getSelectTimeSlotItem().getValue() == null) {
+
                     Helper.showToast(mContext, "Please select time slot");
+
                 } else {
 
+                    try {
+                        if(!Helper.isOlderDate(et_selectDate.getText().toString()+" "+viewModel.availableTimeSlot.getValue().get(viewModel.getSelectTimeSlotItem().getValue()).getStartTime()))
+                        {
+                            viewModel.sendRescheduleRequest(et_selectDate.getText().toString(), etReason.getText().toString());
+                            dgAppointment.cancel();
+                        }
+                        else {
+                            viewModel.getToast().setValue("Requested reschedule appointment date is invalid or past.You can send reschedule appointment request before 2 hr");
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Helper.setExceptionLog("ParseException",e);
+                    }
 
-                    viewModel.sendRescheduleRequest(et_selectDate.getText().toString(), etReason.getText().toString());
-
-                    dgAppointment.cancel();
                 }
 
             }

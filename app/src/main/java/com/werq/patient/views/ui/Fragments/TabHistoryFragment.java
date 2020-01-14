@@ -1,6 +1,5 @@
 package com.werq.patient.views.ui.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,15 +11,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ybq.android.spinkit.sprite.Sprite;
-import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentTabHistoryBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
@@ -28,8 +23,7 @@ import com.werq.patient.views.ui.ScheduleDetailsActivity;
 import com.werq.patient.views.adapter.AppointmentAdapter;
 import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Interfaces.BasicActivities;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.service.model.AppointmentData;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.service.model.AppointmentResponce;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.R;

@@ -12,9 +12,8 @@ import androidx.cardview.widget.CardView;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
 
 import net.igenius.customcheckbox.CustomCheckBox;

@@ -5,9 +5,10 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.werq.patient.Interfaces.ApiCallback;
+import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.base.SingleLiveEvent;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;

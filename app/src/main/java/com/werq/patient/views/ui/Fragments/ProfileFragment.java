@@ -1,12 +1,9 @@
 package com.werq.patient.views.ui.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
@@ -22,11 +19,9 @@ import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentProfileBinding;
 import com.werq.patient.viewmodel.PatientProfileViewModel;
 import com.werq.patient.views.adapter.PagerAdapter;
-import com.werq.patient.Controller.ProfileController;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.BasicFragments;
-import com.werq.patient.Interfaces.DiologListner;
-import com.werq.patient.Interfaces.ProfileInterface;
+import com.werq.patient.Interfaces.Callback.DiologListner;
 import com.werq.patient.service.model.Responce;
 import com.werq.patient.R;
 import com.werq.patient.Utils.FragmentUtils;

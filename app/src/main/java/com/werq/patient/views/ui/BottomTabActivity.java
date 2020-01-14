@@ -28,7 +28,7 @@ import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
 import com.werq.patient.views.ui.Fragments.FilesFragment;
 import com.werq.patient.views.ui.Fragments.ProfileFragment;
-import com.werq.patient.Interfaces.DiologListner;
+import com.werq.patient.Interfaces.Callback.DiologListner;
 import com.werq.patient.viewmodel.BottomTabViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DiologHelper;

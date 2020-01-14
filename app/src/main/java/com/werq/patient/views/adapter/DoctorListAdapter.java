@@ -1,7 +1,6 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,17 +9,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.BuildConfig;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
-import com.werq.patient.service.model.ResponcejsonPojo.Coworker;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponeError.ProfileIntentService;
 

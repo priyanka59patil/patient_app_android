@@ -8,7 +8,7 @@ import android.text.TextWatcher;
 import androidx.lifecycle.MutableLiveData;
 
 import com.scottyab.aescrypt.AESCrypt;
-import com.werq.patient.Interfaces.ApiCallback;
+import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;

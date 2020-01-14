@@ -3,7 +3,7 @@ package com.werq.patient.base;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.werq.patient.Interfaces.ApiCallback;
+import com.werq.patient.Interfaces.Callback.ApiCallback;
 
 public abstract class BaseViewModel extends ViewModel implements ApiCallback {
     private MutableLiveData<String> mShowToast;

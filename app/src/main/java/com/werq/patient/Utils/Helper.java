@@ -180,6 +180,23 @@ public class Helper {
         return "";
     }
 
+    public static boolean isOlderDate(String date) throws ParseException {
+
+        SimpleDateFormat sdf=new SimpleDateFormat(MMM_DD_YYYY+" hh:mmaa");
+        Date inputDate = sdf.parse(date);
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.MINUTE,-15);//15 min before
+        cal.add(Calendar.HOUR, -2);//two hr before
+        Date currentDate=cal.getTime();
+        if (inputDate.before(currentDate) ) {
+
+            return true;
+        }
+
+        return false;
+
+    }
+
 
     public static Date parseUtcStringToDate(String utcDate) throws ParseException {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");

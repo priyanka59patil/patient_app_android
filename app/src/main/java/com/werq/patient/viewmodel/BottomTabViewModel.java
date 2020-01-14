@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.werq.patient.Interfaces.ApiCallback;
+import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;

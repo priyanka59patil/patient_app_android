@@ -4,34 +4,20 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.DateHelper;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
-import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
-import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.viewmodel.PatientProfileViewModel;
-import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class InsuranceAdapter extends RecyclerView.Adapter<InsuranceAdapter.AppointmentViewHolder> {
     Context mContext;

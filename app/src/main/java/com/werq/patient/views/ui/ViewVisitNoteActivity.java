@@ -1,8 +1,6 @@
 package com.werq.patient.views.ui;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,7 +9,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
@@ -22,24 +19,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.werq.patient.BuildConfig;
-import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityViewVisitNoteBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.viewmodel.ViewVisitNoteViewModel;
 import com.werq.patient.views.adapter.AttachmentsAdapter;
-import com.werq.patient.views.adapter.FilesAdapter;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
-import com.werq.patient.MockData.JsonData;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.service.model.Files;
-import com.werq.patient.service.model.FilesData;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
 import com.werq.patient.views.adapter.ChatAdapters;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 
 import butterknife.BindView;

@@ -2,7 +2,7 @@ package com.werq.patient.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.werq.patient.Interfaces.ApiCallback;
+import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;

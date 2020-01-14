@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,22 +20,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.Interfaces.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
-import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.service.model.Files;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
-import com.werq.patient.viewmodel.BottomTabViewModel;
-import com.werq.patient.viewmodel.ChatInfoViewModel;
-import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.viewmodel.ViewVisitNoteViewModel;
 import com.werq.patient.views.ui.ViewFileActivity;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
