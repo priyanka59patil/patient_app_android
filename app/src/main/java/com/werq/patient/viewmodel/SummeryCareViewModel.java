@@ -10,19 +10,20 @@ import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.ResponcejsonPojo.Allergy;
 import com.werq.patient.service.model.ResponcejsonPojo.AllergyResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.Assessment;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.service.model.ResponcejsonPojo.EncounterListResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.HistoryOfProcedure;
 import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
 import com.werq.patient.service.model.ResponcejsonPojo.InstructionResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
+import com.werq.patient.service.model.ResponcejsonPojo.MedicationData;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
-import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.PastillnessHistory;
 import com.werq.patient.service.model.ResponcejsonPojo.PastillnessHistoryResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
-import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileData;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCareResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Problem;
@@ -194,7 +195,7 @@ public class SummeryCareViewModel extends BaseViewModel {
 
         if(url!=null && url.equals("PatientProfile")){
 
-            PatientProfileResponse patientProfileResponse= (PatientProfileResponse) response.body();
+            ApiResponse<PatientProfileData> patientProfileResponse= (ApiResponse<PatientProfileData>) response.body();
 
             if(patientProfileResponse!=null){
                 Helper.setLog("PatientProfileResponse",patientProfileResponse.toString());
@@ -249,7 +250,7 @@ public class SummeryCareViewModel extends BaseViewModel {
         }
         if(url!=null && url.equals("MedicationList")){
 
-            MedicationResponse medicationResponse= (MedicationResponse) response.body();
+            ApiResponse<MedicationData> medicationResponse= (ApiResponse<MedicationData>) response.body();
 
             if(medicationResponse!=null && medicationResponse.getData()!=null){
 
@@ -303,10 +304,10 @@ public class SummeryCareViewModel extends BaseViewModel {
 
         if(url!=null && url.equals("Asssessments")){
 
-            AssessmentsResponse assessmentsResponse = (AssessmentsResponse) response.body();
-            if(assessmentsResponse!=null && assessmentsResponse.getAssessment()!=null){
-                if(assessmentsResponse.getAssessment().getAssessment()!=null){
-                    assessments.setValue(assessmentsResponse.getAssessment().getAssessment());
+            ApiResponse<Assessment> assessmentsResponse = (ApiResponse<Assessment>) response.body();
+            if(assessmentsResponse!=null && assessmentsResponse.getData()!=null){
+                if(assessmentsResponse.getData().getAssessment()!=null){
+                    assessments.setValue(assessmentsResponse.getData().getAssessment());
                 }else {
                     assessments.setValue(null);
                 }

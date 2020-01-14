@@ -1,4 +1,4 @@
-package com.werq.patient.service.model.ResponcejsonPojo;
+package com.werq.patient.service.model.RequestJsonPojo;
 
 import com.google.gson.annotations.SerializedName;
 

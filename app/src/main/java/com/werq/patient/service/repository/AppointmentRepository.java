@@ -8,10 +8,11 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RetrofitClient;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentData;
+import com.werq.patient.service.model.ResponcejsonPojo.ApptDetailsData;
+import com.werq.patient.service.model.ResponcejsonPojo.RescheduleData;
+import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotData;
 
 import retrofit2.Call;
 
@@ -24,7 +25,7 @@ public class AppointmentRepository  {
                                         ApiCallback apiCallback, String url){
 
 
-        Call<AppointmentResponse> appointmentDataCall= RetrofitClient.getRetrofit().getUpcomingAppointment(authToken,take,skip);
+        Call<ApiResponse<AppointmentData>> appointmentDataCall= RetrofitClient.getRetrofit().getUpcomingAppointment(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -34,7 +35,7 @@ public class AppointmentRepository  {
                                       ApiCallback apiCallback, String url){
 
 
-        Call<AppointmentResponse> appointmentDataCall= RetrofitClient.getRetrofit().getHistoryAppointment(authToken,take,skip);
+        Call<ApiResponse<AppointmentData>> appointmentDataCall= RetrofitClient.getRetrofit().getHistoryAppointment(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -45,7 +46,7 @@ public class AppointmentRepository  {
 
         Helper.setLog(TAG,"authToken:- "+authToken+"");
 
-        Call<AppointmentDetailResponse> appointmentDataCall= RetrofitClient.getRetrofit().getAppointmentDetails(authToken,appointmentId);
+        Call<ApiResponse<ApptDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().getAppointmentDetails(authToken,appointmentId);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -56,7 +57,7 @@ public class AppointmentRepository  {
 
         Helper.setLog(TAG,"authToken:- "+authToken+"");
 
-        Call<AppointmentDetailResponse> appointmentDataCall= RetrofitClient.getRetrofit().
+        Call<ApiResponse<ApptDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().
                                             setConfirmAppointment(authToken,Helper.ContentType,confirmAppointment);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
@@ -66,7 +67,7 @@ public class AppointmentRepository  {
     public void  getTimeSlots(String authToken, int organizationId,String date, MutableLiveData<String> toast,
                                        ApiCallback apiCallback, String url){
 
-        Call<TimeSlotResponse> appointmentDataCall= RetrofitClient.getRetrofit()
+        Call<ApiResponse<TimeSlotData>> appointmentDataCall= RetrofitClient.getRetrofit()
                 .getTimeSlots(authToken,organizationId,date);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
@@ -78,7 +79,7 @@ public class AppointmentRepository  {
 
         Helper.setLog(TAG,"authToken:- "+authToken+"");
 
-        Call<RescheduleResponse> rescheduleRequestCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
+        Call<ApiResponse<RescheduleData>> rescheduleRequestCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
 
         RetrofitClient.dynamicApiCall(rescheduleRequestCall,url,apiCallback,toast);
 

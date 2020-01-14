@@ -6,9 +6,10 @@ import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteCreatedByUser;
-import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteDetailsData;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,7 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
         getLoading().setValue(false);
         if(url!=null && url.equals("VisitNoteDetails")) {
 
-            VisitNoteResponse visitNoteResponse= (VisitNoteResponse) response.body();
+            ApiResponse<VisitNoteDetailsData> visitNoteResponse= (ApiResponse<VisitNoteDetailsData>) response.body();
             VisitNoteCreatedByUser createdByUser=visitNoteResponse.getData().getVisitNoteResult().getVisitNoteCreatedByUser();
             doctorName.setValue(createdByUser.getFirstName()+" "+createdByUser.getMiddleName()+" "+createdByUser.getLastName());
             speciality.setValue(createdByUser.getJobTitle().getTitle());

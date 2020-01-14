@@ -16,11 +16,10 @@ import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatMessage;
-import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
-import com.werq.patient.service.model.ResponcejsonPojo.NewChatResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.SentMessageResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatMessageData;
+import com.werq.patient.service.model.RequestJsonPojo.NewChat;
 import com.werq.patient.service.model.chat.Author;
 import com.werq.patient.service.model.chat.Message;
 
@@ -152,13 +151,14 @@ public class ChatFragmentViewModel extends BaseViewModel  {
             switch (url) {
                 case "NewChat":
                     getLoading().setValue(false);
-                    NewChatResponse newChatResponse = (NewChatResponse) response.body();
-                    Helper.setLog("NewChatResponse", newChatResponse.toString());
 
-                    if (!TextUtils.isEmpty(newChatResponse.getChannelId())) {
+                    ApiResponse<String> apiResponse= (ApiResponse<String>) response.body();
+                    Helper.setLog("NewChatResponse", apiResponse.getData());//getData will return channelId
 
-                        channelIdRef = database.getReference().child("ChatInfo").child(newChatResponse.getChannelId());
-                        channelId = newChatResponse.getChannelId();
+                    if (!TextUtils.isEmpty(apiResponse.getData())) {
+
+                        channelIdRef = database.getReference().child("ChatInfo").child(apiResponse.getData());
+                        channelId = apiResponse.getData();
                         fetchInitialChat();
                         DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
                         updateDataRef.child("IsMsgSendFromSupport").setValue(false);
@@ -201,7 +201,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
                 case "SendMessage":
 
-                    SentMessageResponse sentMessageResponse = (SentMessageResponse) response.body();
+                    ApiResponse<Boolean> sentMessageResponse= (ApiResponse<Boolean>) response.body();
 
                     if (sentMessageResponse != null && sentMessageResponse.getStatusCode() == 200) {
                         fetchAfterChat(lastMessageTimestamp.getValue());
@@ -210,24 +210,21 @@ public class ChatFragmentViewModel extends BaseViewModel  {
                     break;
 
                 case "ChatList":
-                    ChatResponse chatResponse = (ChatResponse) response.body();
-                    Helper.setLog("chatResponse", chatResponse.toString());
-                    remainingHistoryMsgCount=chatResponse.getData().getCount();
+                    ApiResponse<ChatMessageData> chatListResponse= (ApiResponse<ChatMessageData>) response.body();
+                    Helper.setLog("chatResponse", chatListResponse.toString());
+                    remainingHistoryMsgCount=chatListResponse.getData().getCount();
                     ArrayList<Message> msgList = new ArrayList<>();
 
-                    for (int i = 0; i < chatResponse.getData().getChatMessageList().size(); i++) {
-                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
+                    for (int i = 0; i < chatListResponse.getData().getChatMessageList().size(); i++) {
+                        msgList.add(createMessageObject(chatListResponse.getData().getChatMessageList().get(i)));
                     }
-                    /*for (int i = chatResponse.getData().getChatMessageList().size()-1; i>=0; i--) {
-                        msgList.add(createMessageObject(chatResponse.getData().getChatMessageList().get(i)));
-                    }*/
 
                     messageList.setValue(msgList);
                     break;
 
                 case "ChatListAfter":
 
-                    ChatResponse afterChatResponse =(ChatResponse) response.body();
+                    ApiResponse<ChatMessageData> afterChatResponse= (ApiResponse<ChatMessageData>) response.body();
                     Helper.setLog("chatResponse", afterChatResponse.toString());
                     ArrayList<Message> afterChatList = new ArrayList<>();
 
@@ -240,7 +237,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
                 case "ChatListBefore":
 
-                    ChatResponse beforeChatResponse = (ChatResponse) response.body();
+                    ApiResponse<ChatMessageData> beforeChatResponse= (ApiResponse<ChatMessageData>) response.body();
                     Helper.setLog("chatResponse", beforeChatResponse.toString());
 
                     remainingHistoryMsgCount=beforeChatResponse.getData().getCount();

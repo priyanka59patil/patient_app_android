@@ -9,19 +9,17 @@ import com.werq.patient.service.model.RequestJsonPojo.ChangePassword;
 import com.werq.patient.service.model.RequestJsonPojo.NewAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AssessmentsResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.ChatResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorListResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.NewChat;
-import com.werq.patient.service.model.ResponcejsonPojo.NewChatResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.SentMessageResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.Assessment;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentData;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatMessageData;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsData;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorListData;
+import com.werq.patient.service.model.ResponcejsonPojo.MedicationData;
+import com.werq.patient.service.model.RequestJsonPojo.NewChat;
+import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileData;
 import com.werq.patient.service.model.ResponcejsonPojo.SignUpData;
-import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.VisitNoteDetailsData;
 
 import retrofit2.Call;
 
@@ -31,7 +29,7 @@ public class PatientRepository {
     public void  getDocterTeamAppoitment(String authToken, String take, String skip , MutableLiveData<String> toast,
                                          ApiCallback apiCallback, String url){
 
-        Call<DoctorTeamResponse> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorTeams(authToken,take,skip);
+        Call<ApiResponse<DoctorData>> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorTeams(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -42,7 +40,7 @@ public class PatientRepository {
                                   ApiCallback apiCallback, String url){
 
 
-        Call<DoctorDetailsResponse> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(Helper.autoken,doctorId,coworkerTake,coworkerSkip);
+        Call<ApiResponse<DoctorDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(Helper.autoken,doctorId,coworkerTake,coworkerSkip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -52,7 +50,7 @@ public class PatientRepository {
                                 ApiCallback apiCallback, String url){
 
         Helper.setLog("authToken :- ",authToken);
-        Call<AttachmentResponse> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,filter,take,skip);
+        Call<ApiResponse<AttachmentData>> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,filter,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -62,7 +60,7 @@ public class PatientRepository {
                         , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
 
-        Call<VisitNoteResponse> appointmentDataCall= RetrofitClient.getRetrofit()
+        Call<ApiResponse<VisitNoteDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit()
                                         .getVisitNoteDetails(authToken,appointmentId+"",visitNoteId,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
@@ -72,7 +70,7 @@ public class PatientRepository {
     public void  getPatientProfile(String authToken, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
        Helper.setLog("authToken :- ",authToken+"");
-        Call<PatientProfileResponse> call= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
+        Call<ApiResponse<PatientProfileData>> call= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -81,7 +79,7 @@ public class PatientRepository {
     public void  getMedicationList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("authToken :- ",authToken+"");
-        Call<MedicationResponse> call= RetrofitClient.getRetrofit().getMedicationList(authToken,take,skip);
+        Call<ApiResponse<MedicationData>> call= RetrofitClient.getRetrofit().getMedicationList(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -98,7 +96,7 @@ public class PatientRepository {
     public void  getAssessmets(String authToken,MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("authToken :- ",authToken+"");
-        Call<AssessmentsResponse> call= RetrofitClient.getRetrofit().getAssessments(authToken);
+        Call<ApiResponse<Assessment>> call= RetrofitClient.getRetrofit().getAssessments(authToken);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -171,7 +169,7 @@ public class PatientRepository {
     public void  getFilterDoctorList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("authToken :- ",authToken);
-        Call<DoctorListResponse> call= RetrofitClient.getRetrofit().getDoctorList(authToken,take,skip);
+        Call<ApiResponse<DoctorListData>> call= RetrofitClient.getRetrofit().getDoctorList(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -187,7 +185,7 @@ public class PatientRepository {
     public void  setNewChatRequest(String authToken, NewChat newChat, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("setNewChatRequest-authToken :- ",authToken);
-        Call<NewChatResponse> call= RetrofitClient.getRetrofit().sendNewChatRequest(authToken,Helper.ContentType,newChat);
+        Call<ApiResponse<String>> call= RetrofitClient.getRetrofit().sendNewChatRequest(authToken,Helper.ContentType,newChat);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }
@@ -203,7 +201,7 @@ public class PatientRepository {
             , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("fetchChatList-authToken :- ",authToken);
-        Call<ChatResponse> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
+        Call<ApiResponse<ChatMessageData>> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }
@@ -212,7 +210,7 @@ public class PatientRepository {
                                     MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
         Helper.setLog("fetchChatList-authToken :- ",authToken);
-        Call<SentMessageResponse> call= RetrofitClient.getRetrofit().sendMessageToServer(authToken,Helper.ContentType,sendMessage);
+        Call<ApiResponse<Boolean>> call= RetrofitClient.getRetrofit().sendMessageToServer(authToken,Helper.ContentType,sendMessage);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }

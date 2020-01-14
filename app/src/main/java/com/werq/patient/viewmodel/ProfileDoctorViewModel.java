@@ -10,8 +10,9 @@ import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsData;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     public MutableLiveData<String> doctorSpeciality;
     private MutableLiveData<String> about;
     public MutableLiveData<String> profileUrl;
-    public MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse;
+    public MutableLiveData<DoctorDetailsData> doctorDetailsData;
     public MutableLiveData<ArrayList<Doctor>> coworkerList;
     public MutableLiveData<ArrayList<Location>> locationsList;
     public MutableLiveData<String> practicePhoneNumber;
@@ -56,7 +57,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         doctorSpeciality = new MutableLiveData<>();
         about = new MutableLiveData<>();
         profileUrl = new MutableLiveData<>();
-        doctorDetailsResponse = new MutableLiveData<>();
+        doctorDetailsData = new MutableLiveData<>();
 
         coworkerList = new MutableLiveData<>();
         locationsList = new MutableLiveData<>();
@@ -67,7 +68,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         coworkerLoading = new MutableLiveData<>();
         practiceName = new MutableLiveData<>();
 
-        doctorDetailsResponse.setValue(null);
+        doctorDetailsData.setValue(null);
         practiceWebUrl.setValue(null);
         practicePhoneNumber.setValue(null);
     }
@@ -102,12 +103,12 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         if (url != null && !url.isEmpty()) {
 
             if (url.equalsIgnoreCase("DoctorDetails")) {
-                DoctorDetailsResponse detailsResponse = (DoctorDetailsResponse) response.body();
+                ApiResponse<DoctorDetailsData> detailsResponse = (ApiResponse<DoctorDetailsData>) response.body();
 
                 if (detailsResponse != null && detailsResponse.getData() != null && detailsResponse.getData().getDoctor() != null) {
 
                     Helper.setLog("onSuccess=responseJson", detailsResponse.toString());
-                    doctorDetailsResponse.setValue(detailsResponse);
+                    doctorDetailsData.setValue(detailsResponse.getData());
                     Doctor doctor = detailsResponse.getData().getDoctor();
 
                     if (doctor != null) {
@@ -196,7 +197,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                         practicePhoneNumber.setValue("");
                     }
                 } else {
-                    doctorDetailsResponse.setValue(null);
+                    doctorDetailsData.setValue(null);
                 }
 
             }
@@ -211,7 +212,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
             getLoading().setValue(false);
         Helper.setLog("onError", "url-" + url + "  errorMessage-" + errorMessage);
         getToast().setValue(errorMessage);
-        //doctorDetailsResponse.setValue(null);
+        //doctorDetailsData.setValue(null);
     }
 
     @Override
@@ -235,13 +236,8 @@ public class ProfileDoctorViewModel extends BaseViewModel {
         return profileUrl;
     }
 
-    public MutableLiveData<DoctorDetailsResponse> getDoctorDetailsResponse() {
-        return doctorDetailsResponse;
-    }
-
-    public void setDoctorDetailsResponse(MutableLiveData<DoctorDetailsResponse> doctorDetailsResponse) {
-        this.doctorDetailsResponse = doctorDetailsResponse;
-
+    public MutableLiveData<DoctorDetailsData> getDoctorDetailsData() {
+        return doctorDetailsData;
     }
 
     public MutableLiveData<ArrayList<Doctor>> getCoworkerList() {

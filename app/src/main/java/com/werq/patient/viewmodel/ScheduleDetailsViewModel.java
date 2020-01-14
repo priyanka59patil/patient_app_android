@@ -11,8 +11,9 @@ import com.werq.patient.service.model.Files;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.ApptDetailsData;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
 import com.werq.patient.service.repository.AppointmentRepository;
@@ -47,7 +48,6 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
     String authToken;
     ApiCallback apiCallback=this;
     AppointmentRepository appointmentRepository;
-    AppointmentDetailResponse apptDetailResponse;
     private String TAG="ScheduleDetailsViewModel";
 
     public String getAuthToken() {
@@ -248,7 +248,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         {
             if(url.equalsIgnoreCase("GetAppointmentDetails")){
 
-                AppointmentDetailResponse apptDetailResponse= (AppointmentDetailResponse) response.body();
+                ApiResponse<ApptDetailsData> apptDetailResponse= (ApiResponse<ApptDetailsData>) response.body();
                 /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
@@ -262,7 +262,12 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
                 }*/
                 appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                 doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
-                attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
+
+                if(apptDetailResponse!=null && apptDetailResponse.getData()!=null){
+                    attachmentList.setValue(prepareAttachmentsList(apptDetailResponse.getData()));
+                }
+
+
 
                 if(attachmentList.getValue()!=null){
                     if(attachmentList.getValue().size()>0){
@@ -276,7 +281,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
             }
             else if(url.equalsIgnoreCase("ConfirmAppointment")){
-                AppointmentDetailResponse apptDetailResponse= (AppointmentDetailResponse) response.body();
+                ApiResponse<ApptDetailsData> apptDetailResponse= (ApiResponse<ApptDetailsData>) response.body();
                 Log.e(TAG, "onSuccess: "+apptDetailResponse.getData().getAppointment().getConfirmByPatient() );
                 appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                 doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
@@ -319,31 +324,31 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         }
     }
 
-    public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse)
+    public List<AttachmentResult> prepareAttachmentsList(ApptDetailsData apptDetailsData)
     {
         List<AttachmentResult> attachmentResultList =new ArrayList<>();
 
-        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+        Helper.setLog("ReferralAttachment.size()",apptDetailsData.getAppointment().getReferralAttachment().size()+"");
 
         try{
-            if(apptDetailResponse.getData().getAppointment().getReferralAttachment()!=null){
-                attachmentResultList.addAll(apptDetailResponse.getData().getAppointment().getReferralAttachment());
+            if(apptDetailsData.getAppointment().getReferralAttachment()!=null){
+                attachmentResultList.addAll(apptDetailsData.getAppointment().getReferralAttachment());
             }
         }
         catch (Exception e){
             Helper.setExceptionLog(TAG+" -Exception",e);
         }
 
-        Helper.setLog("visitnote size",apptDetailResponse.getData().getVisitNoteAttachment().size()+"");
+        Helper.setLog("visitnote size",apptDetailsData.getVisitNoteAttachment().size()+"");
 
         try{
 
 
-            for (int i = 0; i < apptDetailResponse.getData().getVisitNoteAttachment().size(); i++) {
+            for (int i = 0; i < apptDetailsData.getVisitNoteAttachment().size(); i++) {
 
-                Helper.setLog("apptDetailResponse",apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement().size()+"");
+                Helper.setLog("apptDetailResponse",apptDetailsData.getVisitNoteAttachment().get(i).getAttachement().size()+"");
 
-                List<AttachmentResult> visitNote=apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement();
+                List<AttachmentResult> visitNote=apptDetailsData.getVisitNoteAttachment().get(i).getAttachement();
                 if(visitNote!=null){
                     attachmentResultList.addAll(visitNote);
                 }
@@ -355,7 +360,7 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
         }
 
 
-        Helper.setLog("ReferralAttachment.size()",apptDetailResponse.getData().getAppointment().getReferralAttachment().size()+"");
+        Helper.setLog("ReferralAttachment.size()",apptDetailsData.getAppointment().getReferralAttachment().size()+"");
 
         return attachmentResultList;
     }

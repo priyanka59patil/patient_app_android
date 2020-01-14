@@ -8,17 +8,17 @@ import androidx.lifecycle.MutableLiveData;
 import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.Helper;
-import com.werq.patient.base.SingleLiveEvent;
 import com.werq.patient.service.model.RequestJsonPojo.ConfirmAppointment;
 import com.werq.patient.service.model.RequestJsonPojo.RescheduleAppointment;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentDetailResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AppointmentData;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
+import com.werq.patient.service.model.ResponcejsonPojo.ApptDetailsData;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AvailableTimeSlot;
 import com.werq.patient.service.model.ResponcejsonPojo.Location;
-import com.werq.patient.service.model.ResponcejsonPojo.RescheduleResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.RescheduleData;
+import com.werq.patient.service.model.ResponcejsonPojo.TimeSlotData;
 import com.werq.patient.service.repository.AppointmentRepository;
 import com.werq.patient.base.BaseViewModel;
 
@@ -235,7 +235,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
     @Override
     public void onSuccess(String url, Response response) {
-        AppointmentResponse appointmentResponce;
+        ApiResponse<AppointmentData> appointmentResponce;
         ArrayList<AppointmentResult> dataArrayList ;
 
         if(!TextUtils.isEmpty(url)){
@@ -244,7 +244,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "UpcomingAppointment":
                     getLoading().setValue(false);
-                    appointmentResponce = (AppointmentResponse) response.body();
+                    appointmentResponce = (ApiResponse<AppointmentData>) response.body();
                     dataArrayList = new ArrayList<>();
                     if (listUpcommingAppointments.getValue() != null && upcommingPageNo != 0) {
                         dataArrayList.addAll(listUpcommingAppointments.getValue());
@@ -265,7 +265,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "HistoryAppointment":
                     getLoading().setValue(false);
-                    appointmentResponce = (AppointmentResponse) response.body();
+                    appointmentResponce = (ApiResponse<AppointmentData>) response.body();
                     dataArrayList = new ArrayList<>();
                     if (listHistoryAppointments.getValue() != null && historyPageNo != 0) {
                         dataArrayList.addAll(listHistoryAppointments.getValue());
@@ -285,7 +285,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                 case "GetAppointmentDetails":
                     getLoading().setValue(false);
-                    AppointmentDetailResponse apptDetailResponse = (AppointmentDetailResponse) response.body();
+                    ApiResponse<ApptDetailsData> apptDetailResponse = (ApiResponse<ApptDetailsData>) response.body();
                 /*if(apptDetailResponse!=null && apptDetailResponse.getData().getVisitNoteAttachment()!=null)
                 {
                     List<VisitNoteAttachment> visitNoteList=apptDetailResponse.getData().getVisitNoteAttachment();
@@ -303,7 +303,11 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                         appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                         prepareAppointmentDetailsData();
                         doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
-                        attachmentList.setValue(prepareAttachmentsList(apptDetailResponse));
+
+                       if(apptDetailResponse.getData()!=null){
+                           attachmentList.setValue(prepareAttachmentsList(apptDetailResponse.getData()));
+                       }
+
 
 
 
@@ -325,7 +329,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
                     getLoading().setValue(false);
                     refreshListFlag.setValue(true);
-                    apptDetailResponse = (AppointmentDetailResponse) response.body();
+                    apptDetailResponse = (ApiResponse<ApptDetailsData>) response.body();
                     appointmentResultData.setValue(apptDetailResponse.getData().getAppointment());
                     prepareAppointmentDetailsData();
                     doctorProfilePhoto.setValue(apptDetailResponse.getData().getAppointment().getDoctor().getProfilePhoto());
@@ -334,7 +338,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                 case "TimeSlots":
 
                     // getLoading().setValue(false);
-                    TimeSlotResponse timeSlotResponse= (TimeSlotResponse) response.body();
+                    ApiResponse<TimeSlotData> timeSlotResponse= (ApiResponse<TimeSlotData>) response.body();
                     if(timeSlotResponse!=null && timeSlotResponse.getData()!=null
                             && timeSlotResponse.getData().getAvailableTimeSlot()!=null){
 
@@ -362,7 +366,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     getLoading().setValue(false);
                     refreshListFlag.setValue(true);
                     Helper.setLog("response",response.body().toString());
-                    RescheduleResponse rescheduleResponse= (RescheduleResponse) response.body();
+                    ApiResponse<RescheduleData> rescheduleResponse= (ApiResponse<RescheduleData>) response.body();
                     if( rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate()!=null &&
                             !TextUtils.isEmpty(rescheduleResponse.getData().getItem2().getAppointment().getRescheduleApptReqDate())){
 
@@ -482,29 +486,29 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         appointmentRepository.getAppointmentDetails(Helper.autoken, appointmentId, getToast(), apiCallback, "GetAppointmentDetails");
     }
 
-    public List<AttachmentResult> prepareAttachmentsList(AppointmentDetailResponse apptDetailResponse) {
+    public List<AttachmentResult> prepareAttachmentsList(ApptDetailsData apptDetailsData) {
         List<AttachmentResult> attachmentResultList = new ArrayList<>();
 
-        Helper.setLog("ReferralAttachment.size()", apptDetailResponse.getData().getAppointment().getReferralAttachment().size() + "");
+        Helper.setLog("ReferralAttachment.size()", apptDetailsData.getAppointment().getReferralAttachment().size() + "");
 
         try {
-            if (apptDetailResponse.getData().getAppointment().getReferralAttachment() != null) {
-                attachmentResultList.addAll(apptDetailResponse.getData().getAppointment().getReferralAttachment());
+            if (apptDetailsData.getAppointment().getReferralAttachment() != null) {
+                attachmentResultList.addAll(apptDetailsData.getAppointment().getReferralAttachment());
             }
         } catch (Exception e) {
             Helper.setExceptionLog("Exception",e);
         }
 
-        Helper.setLog("visitnote size", apptDetailResponse.getData().getVisitNoteAttachment().size() + "");
+        Helper.setLog("visitnote size", apptDetailsData.getVisitNoteAttachment().size() + "");
 
         try {
 
 
-            for (int i = 0; i < apptDetailResponse.getData().getVisitNoteAttachment().size(); i++) {
+            for (int i = 0; i < apptDetailsData.getVisitNoteAttachment().size(); i++) {
 
-                Helper.setLog("apptDetailResponse", apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement().size() + "");
+                Helper.setLog("apptDetailResponse", apptDetailsData.getVisitNoteAttachment().get(i).getAttachement().size() + "");
 
-                List<AttachmentResult> visitNote = apptDetailResponse.getData().getVisitNoteAttachment().get(i).getAttachement();
+                List<AttachmentResult> visitNote = apptDetailsData.getVisitNoteAttachment().get(i).getAttachement();
                 if (visitNote != null) {
                     attachmentResultList.addAll(visitNote);
                 }
@@ -516,7 +520,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         }
 
 
-        Helper.setLog("ReferralAttachment.size()", apptDetailResponse.getData().getAppointment().getReferralAttachment().size() + "");
+        Helper.setLog("ReferralAttachment.size()", apptDetailsData.getAppointment().getReferralAttachment().size() + "");
 
         return attachmentResultList;
     }

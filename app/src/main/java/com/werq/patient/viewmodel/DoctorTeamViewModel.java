@@ -9,7 +9,8 @@ import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 
 import java.util.ArrayList;
@@ -81,7 +82,7 @@ public class DoctorTeamViewModel  extends BaseViewModel {
     public void onSuccess(String url, Response response) {
         Helper.setLog("responseJson",response.body().toString());
 
-        DoctorTeamResponse doctorTeamResponse= (DoctorTeamResponse) response.body();
+        ApiResponse<DoctorData> doctorTeamResponse= (ApiResponse<DoctorData>) response.body();
 
         getLoading().setValue(false);
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class ApiResponse<T> implements Serializable {
 
     @SerializedName("StatusCode")
-    private String StatusCode;
+    private Integer StatusCode;
 
     @SerializedName("Message")
     private String Message;
@@ -23,11 +23,11 @@ public class ApiResponse<T> implements Serializable {
         Message = message;
     }
 
-    public String getStatusCode() {
+    public Integer getStatusCode() {
         return StatusCode;
     }
 
-    public void setStatusCode(String statusCode) {
+    public void setStatusCode(Integer statusCode) {
         StatusCode = statusCode;
     }
 

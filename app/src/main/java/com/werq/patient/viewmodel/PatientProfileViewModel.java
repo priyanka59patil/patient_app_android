@@ -9,11 +9,12 @@ import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
+import com.werq.patient.service.model.ResponcejsonPojo.MedicationData;
 import com.werq.patient.service.model.ResponcejsonPojo.MedicationDatum;
-import com.werq.patient.service.model.ResponcejsonPojo.MedicationResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Patient;
-import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.PatientProfileData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,7 +81,7 @@ public class PatientProfileViewModel extends BaseViewModel {
             switch (url) {
 
                 case "PatientProfile":
-                    PatientProfileResponse patientProfileResponse = (PatientProfileResponse) response.body();
+                    ApiResponse<PatientProfileData> patientProfileResponse = (ApiResponse<PatientProfileData>) response.body();
                     if (patientProfileResponse != null) {
                         Helper.setLog("PatientProfileResponse", patientProfileResponse.toString());
                         if (patientProfileResponse.getData() != null && patientProfileResponse.getData().getPatient() != null) {
@@ -136,7 +137,7 @@ public class PatientProfileViewModel extends BaseViewModel {
 
                 case "MedicationList":
 
-                    MedicationResponse medicationResponse = (MedicationResponse) response.body();
+                    ApiResponse<MedicationData> medicationResponse = (ApiResponse<MedicationData>) response.body();
 
                     if (medicationResponse != null && medicationResponse.getData() != null) {
 

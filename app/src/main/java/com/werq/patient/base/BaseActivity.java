@@ -55,13 +55,21 @@ public class BaseActivity extends AppCompatActivity {
         });*/
 
 
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         if(baseViewModel!=null){
             baseViewModel.getToast().observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String s) {
 
                     Helper.showToast(mContext, s);
-                    Helper.setLog("mutableLiveToast",s);
 
                 }
             });
@@ -93,7 +101,7 @@ public class BaseActivity extends AppCompatActivity {
                             break;
 
                         case "ForgotPwd":startActivity(new Intent(mContext, ForgotPasswordActivity.class));
-                            finish();
+                                finish();
                             break;
 
                         case "SignUp":startActivity(new Intent(mContext, SignUpActivity.class));
@@ -107,15 +115,6 @@ public class BaseActivity extends AppCompatActivity {
 
 
         }
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
 
     }
 

@@ -217,8 +217,8 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
             }
         });
 
-        profileDoctorViewModel.getDoctorDetailsResponse().observe(this, doctorDetailsResponse -> {
-            if (doctorDetailsResponse != null) {
+        profileDoctorViewModel.getDoctorDetailsData().observe(this, doctorDetailsData  -> {
+            if (doctorDetailsData != null) {
                 setSupportActionBar(toolbar);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 doctorDetailsLayout.setVisibility(View.VISIBLE);

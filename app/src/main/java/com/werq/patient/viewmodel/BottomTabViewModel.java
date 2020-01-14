@@ -12,11 +12,12 @@ import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
-import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.AttachmentData;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorListResponse;
-import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
+import com.werq.patient.service.model.ResponcejsonPojo.DoctorListData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorTeamResult;
 
 import java.util.ArrayList;
@@ -142,7 +143,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
             if (teamList.getValue()!=null)
                 Helper.setLog(TAG,"onSuccess"+teamList.getValue().size()+"");
 
-            DoctorTeamResponse doctorTeamResponse= (DoctorTeamResponse) response.body();
+            ApiResponse<DoctorData> doctorTeamResponse= (ApiResponse<DoctorData>) response.body();
+
             if(doctorTeamResponse!=null){
 
                 ArrayList<DoctorTeamResult> dataArrayList=new ArrayList<>();
@@ -175,7 +177,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("AllAttachments"))
         {
 
-            AttachmentResponse attachmentResponse= (AttachmentResponse) response.body();
+            ApiResponse<AttachmentData> attachmentResponse= (ApiResponse<AttachmentData>) response.body();
 
             if(attachmentResponse !=null){
                 ArrayList<AttachmentResult> dataArrayList=new ArrayList<>();
@@ -196,7 +198,7 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         if(url!=null && url.equals("FilterDoctorList"))
         {
 
-            DoctorListResponse doctorListResponse= (DoctorListResponse) response.body();
+            ApiResponse<DoctorListData> doctorListResponse= (ApiResponse<DoctorListData>) response.body();
 
             if(doctorListResponse !=null && doctorListResponse.getData()!=null){
 
