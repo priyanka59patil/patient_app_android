@@ -183,7 +183,7 @@ public class LoginViewModel extends BaseViewModel  {
         ApiResponse<SignUpData> apiResponse= (ApiResponse<SignUpData>) response.body();
         SignUpData signUpData=apiResponse.getData();
         Helper.setLog("ApiResponse", apiResponse.toString());
-        Helper.setLog("ApiResponse-signUpData", signUpData.toString());
+        //Helper.setLog("ApiResponse-signUpData", signUpData.toString());
 
 
 

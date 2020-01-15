@@ -72,10 +72,11 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
 
 
         if(isAll){
+
             holder.cbFilter.setChecked(true);
         }else {
-            holder.cbFilter.setChecked(false);
 
+            holder.cbFilter.setChecked(false);
         }
 
         holder.cbFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {

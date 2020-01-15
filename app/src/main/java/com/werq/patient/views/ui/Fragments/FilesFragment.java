@@ -106,6 +106,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
@@ -264,6 +265,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         switch (view.getId()) {
             case R.id.tvFilterDoctors:
                 Intent intent = new Intent(mContext, FilterDoctorList.class);
+
                 startActivityForResult(intent, 2);
                 break;
             case R.id.tvFilterFiles:

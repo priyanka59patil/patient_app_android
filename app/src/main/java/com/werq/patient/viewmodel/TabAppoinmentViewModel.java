@@ -602,14 +602,12 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         String rescheduledDate="";
         try {
-            Helper.setLog("database date",rawDate);
+            //Helper.setLog("database date",rawDate);
             Date d=new SimpleDateFormat(Helper.YYYY_MM_DD_T_HH_MM_SS).parse(rawDate);
-            Helper.setLog("parsed date",d.toString());
-           /* String date=new SimpleDateFormat(Helper.MMM_DD_YYYY).format(d);
-            String time =new SimpleDateFormat(Helper.HH_MM_a).format(d);*/
+            //Helper.setLog("parsed date",d.toString());
 
             String date=new SimpleDateFormat(Helper.MMM_DD_YYYY+ "' At '"+Helper.HH_MM_a).format(d);
-            Helper.setLog("formated date",date);
+            //Helper.setLog("formated date",date);
             rescheduledDate=date;
 
         } catch (ParseException e) {

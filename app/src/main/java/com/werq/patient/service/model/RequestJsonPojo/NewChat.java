@@ -9,6 +9,17 @@ public class NewChat implements Serializable {
     @SerializedName("Message")
     private String message;
 
+    @SerializedName("TimeStamp")
+    private Long timestamp;
+
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -21,6 +32,7 @@ public class NewChat implements Serializable {
     public String toString() {
         return "NewChat{" +
                 "message='" + message + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 }

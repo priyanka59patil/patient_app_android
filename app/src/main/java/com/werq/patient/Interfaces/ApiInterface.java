@@ -12,6 +12,7 @@ import com.werq.patient.service.model.ResponcejsonPojo.AppointmentData;
 import com.werq.patient.service.model.ResponcejsonPojo.ApptDetailsData;
 import com.werq.patient.service.model.ResponcejsonPojo.Assessment;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentData;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatHistoryData;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatMessageData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsData;
@@ -146,11 +147,11 @@ public interface ApiInterface {
                                                      @Query("skip") String skip);
 
     @GET("Chat/history/patient")
-    Call<ApiResponse<ChatMessageData>> getChatHistory(@Header("Authorization") String authToken,
-                                     @Query("flag") int flag,
-                                     @Query("timeStamp") String timeStamp,
-                                     @Query("take") String take,
-                                     @Query("skip") String skip);
+    Call<ApiResponse<ChatHistoryData>> getChatHistory(@Header("Authorization") String authToken,
+                                                      @Query("flag") int flag,
+                                                      @Query("timeStamp") String timeStamp,
+                                                      @Query("take") String take,
+                                                      @Query("skip") String skip);
 
 
     @POST("Chat/sendbypatient")

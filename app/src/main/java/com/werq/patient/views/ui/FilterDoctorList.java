@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -45,7 +46,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
     @BindView(R.id.view)
     View view;
     @BindView(R.id.cbFilter)
-    CustomCheckBox cbFilter;
+    CustomCheckBox cbAllDoctorFilter;
     ActivityFilterDoctorListBinding doctorListBinding;
     BottomTabViewModel bottomTabViewModel;
     ArrayList<Doctor> doctorArrayList;
@@ -80,7 +81,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner,doctorArrayList,bottomTabViewModel,this,false);
         setDoctorTeams();
 
-        cbFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+        cbAllDoctorFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
                 adapter.setAll(isChecked);
@@ -133,7 +134,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
                 break;
             case R.id.action_check:
                 String doctors="";
-                if(cbFilter.isChecked()){
+                if(cbAllDoctorFilter.isChecked()){
                     doctors="";
 
                 }else {
@@ -169,5 +170,8 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
 
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

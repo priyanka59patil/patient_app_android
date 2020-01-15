@@ -63,6 +63,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     int prevItemCount =0;
     private boolean loading = true;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -78,21 +79,32 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         inilizeVariables();
 
 
-
-
         input.setInputListener(new MessageInput.InputListener() {
             @Override
             public boolean onSubmit(CharSequence inputString) {
                 if (Helper.hasNetworkConnection(mContext)) {
 
-
                     if (!inputString.toString().trim().isEmpty()) {
 
-                        viewModel.getTypedMsg().setValue(inputString.toString().trim());
-                        viewModel.sendMessageToServer(inputString.toString().trim());
-                        input.getInputEditText().setText("");
+                        if(!viewModel.isFirstMsgSent()){
+
+                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
+                            viewModel.setNewChat(inputString.toString().trim());
+                            input.getInputEditText().setText("");
+
+                        }
+                        else {
+
+                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
+                            viewModel.sendMessageToServer(inputString.toString().trim());
+                            input.getInputEditText().setText("");
+                        }
+
+
 
                     }
+
+
 
                 } else {
                     Helper.showToast(mContext, getString(R.string.no_network_conection));
@@ -108,7 +120,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
 
         initAndSetMessageAdapter();
 
-        viewModel.setNewChat("");
+        viewModel.fetchInitialChat();
 
         viewModel.getMessageList().observe(this,messages -> {
 

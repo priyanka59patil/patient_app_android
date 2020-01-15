@@ -11,6 +11,7 @@ import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponcejsonPojo.Assessment;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentData;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatHistoryData;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatMessageData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorData;
 import com.werq.patient.service.model.ResponcejsonPojo.DoctorDetailsData;
@@ -202,6 +203,15 @@ public class PatientRepository {
 
         Helper.setLog("fetchChatList-authToken :- ",authToken);
         Call<ApiResponse<ChatMessageData>> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
+        RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
+
+    }
+
+    public void  fetchHistoryChatList(String authToken, int flag, String timestamp, String take, String skip
+            , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
+
+        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        Call<ApiResponse<ChatHistoryData>> call= RetrofitClient.getRetrofit().getChatHistory(authToken,flag,timestamp,take,skip);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
     }

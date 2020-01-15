@@ -17,6 +17,7 @@ import com.werq.patient.base.BaseViewModel;
 import com.werq.patient.service.PatientRepository;
 import com.werq.patient.service.model.RequestJsonPojo.SendMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
+import com.werq.patient.service.model.ResponcejsonPojo.ChatHistoryData;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatMessage;
 import com.werq.patient.service.model.ResponcejsonPojo.ChatMessageData;
 import com.werq.patient.service.model.RequestJsonPojo.NewChat;
@@ -48,6 +49,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
     DatabaseReference channelIdRef;
     SessionManager sessionManager;
     String channelId;
+    boolean isFirstMsgSent=false;
 
     public ChatFragmentViewModel() {
 
@@ -72,20 +74,28 @@ public class ChatFragmentViewModel extends BaseViewModel  {
         }
     }
 
-    public void fetchInitialChat() {
+    public void addSentMsgToAdapter(String message,Date msgDate){
+        Message chatMessage = new Message();
+        Author user = new Author();
 
-        try {
-            String currentUtcTimestamp=Helper.currentlocalDateToUtc().getTime() + "";
-            patientRepository.fetchChatList(Helper.autoken, channelId,
-                    2, currentUtcTimestamp, 5 + "",
-                    0 + "", getToast(), apiCallback, "ChatList");
-
-
-        } catch (ParseException e) {
-            Helper.setExceptionLog("ParseException",e);
-            e.printStackTrace();
+        if(msgDate!=null){
+            chatMessage.setId(msgDate.getTime()+"");
+            chatMessage.setTimestamp(msgDate.getTime());
+            chatMessage.setCreatedAt(msgDate);
         }
+
+        user.setId(SessionManager.getUserId());
+        user.setOnline(false);
+        //user.setName(name);
+        chatMessage.setUser(user);
+        chatMessage.setText(message);
+
+        ArrayList<Message> afterChatList = new ArrayList<>();
+        afterChatList.add(chatMessage);
+        messageListAfter.setValue(afterChatList);
     }
+
+
 
     public void sendMessageToServer(String message) {
 
@@ -106,30 +116,27 @@ public class ChatFragmentViewModel extends BaseViewModel  {
             e.printStackTrace();
         }
 
-        Message chatMessage = new Message();
-        Author user = new Author();
-
-        if(utcDate!=null){
-            chatMessage.setId(sendMessage.getTimeStamp()+"");
-            chatMessage.setTimestamp(sendMessage.getTimeStamp());
-            chatMessage.setCreatedAt(utcDate);
-        }
-
-        user.setId(SessionManager.getUserId());
-        user.setOnline(false);
-        //user.setName(name);
-        chatMessage.setUser(user);
-        chatMessage.setText(message);
-
-        ArrayList<Message> afterChatList = new ArrayList<>();
-        afterChatList.add(chatMessage);
-        messageListAfter.setValue(afterChatList);
+        addSentMsgToAdapter(message,utcDate);
 
         patientRepository.sendMessageToServer(Helper.autoken, sendMessage, getToast(), apiCallback, "SendMessage");
         Helper.setLog("last msg timestamp msg sent",sendMessage.getTimeStamp()+"");
         lastMessageTimestamp.setValue(sendMessage.getTimeStamp());
     }
 
+    public void fetchInitialChat() {
+
+        try {
+            String currentUtcTimestamp=Helper.currentlocalDateToUtc().getTime() + "";
+            patientRepository.fetchHistoryChatList(Helper.autoken,
+                    2, currentUtcTimestamp, 5 + "",
+                    0 + "", getToast(), apiCallback, "ChatList");
+
+
+        } catch (ParseException e) {
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
+    }
 
     public void fetchAfterChat(long lastMsgtimestamp ) {
         patientRepository.fetchChatList(Helper.autoken, channelId,
@@ -138,7 +145,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
     }
 
     public void fetchBeforeChat(long firstMsgtimestamp ) {
-        patientRepository.fetchChatList(Helper.autoken, channelId,
+        patientRepository.fetchHistoryChatList(Helper.autoken,
                 2, firstMsgtimestamp + "", 5 + "",
                 1+ "", getToast(), apiCallback, "ChatListBefore");
     }
@@ -155,45 +162,21 @@ public class ChatFragmentViewModel extends BaseViewModel  {
                     ApiResponse<String> apiResponse= (ApiResponse<String>) response.body();
                     Helper.setLog("NewChatResponse", apiResponse.getData());//getData will return channelId
 
+
                     if (!TextUtils.isEmpty(apiResponse.getData())) {
+                        if(!isFirstMsgSent){
+                            isFirstMsgSent=true;
+                        }
+                        if(TextUtils.isEmpty(channelId)){
 
-                        channelIdRef = database.getReference().child("ChatInfo").child(apiResponse.getData());
-                        channelId = apiResponse.getData();
-                        fetchInitialChat();
-                        DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
-                        updateDataRef.child("IsMsgSendFromSupport").setValue(false);
+                            channelId = apiResponse.getData();
+
+
+                            setChannelObserver(channelId);
+                        }
+
+                       // updateDataRef.child("IsMsgSendFromSupport").setValue(false);
                     }
-
-                    channelIdRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            // This method is called once with the initial value and again
-                            // whenever data at this location is updated.
-                            Helper.setLog("DataSnapshot", dataSnapshot.toString());
-                            if(dataSnapshot !=null && dataSnapshot.getValue()!=null){
-                                Map<String, Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
-                                Boolean supportId = map.get("IsMsgSendFromSupport");
-
-                                if (supportId != null && supportId) {
-                                    Helper.setLog("IsMsgSendFromSupport", supportId+"");
-                                    fetchAfterChat(lastMessageTimestamp.getValue());
-
-                                    DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference(channelId);
-                                    updateDataRef.child("IsMsgSendFromSupport").setValue(false);
-
-                                }
-                            }
-
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            Helper.setLog("Firebase-DatabaseError", "Failed to read value." + databaseError.getMessage());
-                            // getToast().setValue(databaseError.getMessage());
-                        }
-                    });
 
                     break;
 
@@ -201,22 +184,23 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
                 case "SendMessage":
 
-                    ApiResponse<Boolean> sentMessageResponse= (ApiResponse<Boolean>) response.body();
-
-                    if (sentMessageResponse != null && sentMessageResponse.getStatusCode() == 200) {
-                        fetchAfterChat(lastMessageTimestamp.getValue());
-                    }
+                    //ApiResponse<Boolean> sentMessageResponse= (ApiResponse<Boolean>) response.body();
 
                     break;
 
                 case "ChatList":
-                    ApiResponse<ChatMessageData> chatListResponse= (ApiResponse<ChatMessageData>) response.body();
+                    ApiResponse<ChatHistoryData> chatListResponse= (ApiResponse<ChatHistoryData>) response.body();
                     Helper.setLog("chatResponse", chatListResponse.toString());
+
+                    if(!TextUtils.isEmpty(chatListResponse.getData().getResult().getChannel()) && TextUtils.isEmpty(channelId)){
+                        channelId =chatListResponse.getData().getResult().getChannel();
+                        setChannelObserver(channelId );
+                    }
                     remainingHistoryMsgCount=chatListResponse.getData().getCount();
                     ArrayList<Message> msgList = new ArrayList<>();
 
-                    for (int i = 0; i < chatListResponse.getData().getChatMessageList().size(); i++) {
-                        msgList.add(createMessageObject(chatListResponse.getData().getChatMessageList().get(i)));
+                    for (int i = 0; i < chatListResponse.getData().getResult().getMsgs().size(); i++) {
+                        msgList.add(createMessageObject(chatListResponse.getData().getResult().getMsgs().get(i)));
                     }
 
                     messageList.setValue(msgList);
@@ -237,14 +221,14 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
                 case "ChatListBefore":
 
-                    ApiResponse<ChatMessageData> beforeChatResponse= (ApiResponse<ChatMessageData>) response.body();
+                    ApiResponse<ChatHistoryData> beforeChatResponse= (ApiResponse<ChatHistoryData>) response.body();
                     Helper.setLog("chatResponse", beforeChatResponse.toString());
 
                     remainingHistoryMsgCount=beforeChatResponse.getData().getCount();
                     ArrayList<Message> beforeChatList = new ArrayList<>();
 
-                    for (int i = 0; i < beforeChatResponse.getData().getChatMessageList().size(); i++) {
-                        beforeChatList.add(createMessageObject(beforeChatResponse.getData().getChatMessageList().get(i)));
+                    for (int i = 0; i < beforeChatResponse.getData().getResult().getMsgs().size(); i++) {
+                        beforeChatList.add(createMessageObject(beforeChatResponse.getData().getResult().getMsgs().get(i)));
                     }
 
                     messageListBefore.setValue(beforeChatList);
@@ -254,6 +238,52 @@ public class ChatFragmentViewModel extends BaseViewModel  {
                     break;
             }
         }
+    }
+
+    private void setChannelObserver(String channelIdString) {
+
+
+        Helper.setLog("DataSnapshot", "setChannelObserver");
+        channelIdRef=null;
+        channelIdRef = database.getReference("ChatInfo").child(channelIdString);
+
+
+
+        channelIdRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+
+                Helper.setLog("DataSnapshot", dataSnapshot.toString());
+                if(dataSnapshot !=null && dataSnapshot.getValue()!=null){
+                    Map<String, Boolean> map = (Map<String, Boolean>) dataSnapshot.getValue();
+                    Boolean supportId = map.get("IsMsgSendFromSupport");
+
+                    if (supportId != null && supportId) {
+                        Helper.setLog("IsMsgSendFromSupport", supportId+"");
+                        fetchAfterChat(lastMessageTimestamp.getValue());
+                        DatabaseReference updateDataRef = FirebaseDatabase.getInstance().getReference("ChatInfo").child(channelIdString);
+                        updateDataRef.child("IsMsgSendFromSupport").setValue(false);
+
+                    }
+                }else {
+
+                    channelId="";
+                    if(isFirstMsgSent){
+                        isFirstMsgSent=false;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Helper.setLog("Firebase-DatabaseError", "Failed to read value." + databaseError.getMessage());
+                // getToast().setValue(databaseError.getMessage());
+            }
+        });
     }
 
     @Override
@@ -333,7 +363,23 @@ public class ChatFragmentViewModel extends BaseViewModel  {
         NewChat newChat = new NewChat();
         newChat.setMessage(message);
         getLoading().setValue(true);
+
+        Date utcDate = null;
+        try {
+            utcDate=Helper.currentlocalDateToUtc();
+            Helper.setLog("UTCDate",utcDate.toString());
+            Helper.setLog("UTC",utcDate.getTime()+"");
+            newChat.setTimestamp(utcDate.getTime());
+
+        } catch (ParseException e) {
+
+            Helper.setExceptionLog("ParseException",e);
+            e.printStackTrace();
+        }
+
+        addSentMsgToAdapter(message,utcDate);
         patientRepository.setNewChatRequest(Helper.autoken, newChat, getToast(), apiCallback, "NewChat");
+        lastMessageTimestamp.setValue(newChat.getTimestamp());
 
     }
 
@@ -423,5 +469,13 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
     public MutableLiveData<ArrayList<Message>> getMessageListBefore() {
         return messageListBefore;
+    }
+
+    public boolean isFirstMsgSent() {
+        return isFirstMsgSent;
+    }
+
+    public void setFirstMsgSent(boolean firstMsgSent) {
+        isFirstMsgSent = firstMsgSent;
     }
 }

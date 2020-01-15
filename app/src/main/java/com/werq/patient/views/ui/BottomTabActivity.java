@@ -204,8 +204,8 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                             active = chatFragment;
                         }*/
 
-                        setToolbarForbottom(title, true, false);
-                        VisibleMenuItem(true, false, false);
+                        setToolbarForbottom(title, false, false);
+                        VisibleMenuItem(false, false, false);
 
                         break;
                     case "people":
