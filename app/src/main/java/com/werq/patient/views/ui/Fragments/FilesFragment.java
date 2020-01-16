@@ -85,13 +85,16 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
     private boolean loading = true;
     int page = 0;
     int listcount = 0;
-    String selectedDoctors = "";
+    String selectedDoctors ;
+    boolean isAllSelected ;
     String selectedFileFilter = "all";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getActivity();
+        selectedDoctors="";
+        isAllSelected=false;
         diologListner = this;
         recyclerViewClickListerner = this::onclick;
         basicActivities = this;
@@ -267,10 +270,9 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         switch (view.getId()) {
             case R.id.tvFilterDoctors:
                 Intent intent = new Intent(mContext, FilterDoctorList.class);
+                intent.putExtra("selectedDoctors",selectedDoctors);
+                intent.putExtra("isAllSelected",isAllSelected);
 
-                Helper.setLog("selectedDoctors",selectedDoctors);
-                String[] doctors = selectedDoctors.split(",");
-                intent.putExtra("selectedDoctors",doctors);
                 startActivityForResult(intent, 2);
                 break;
             case R.id.tvFilterFiles:
@@ -281,6 +283,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             case R.id.tvResetFilter:
                 if(!TextUtils.isEmpty(selectedDoctors) || !selectedFileFilter.equals("all")){
                     selectedDoctors="";
+                    isAllSelected=false;
                     selectedFileFilter="all";
                     iv_visitnote_check.setVisibility(View.GONE);
                     iv_referral_check.setVisibility(View.GONE);
@@ -378,6 +381,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 1) {
             selectedDoctors = data.getStringExtra("doctors");
+            isAllSelected =data.getBooleanExtra("isAllSelected",false);
             refreshData();
         }
         Helper.setLog("File Frag", "onActivityResult" + requestCode + " " + resultCode);

@@ -1,6 +1,7 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
+import com.werq.patient.Interfaces.FilterDoctorClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
@@ -30,20 +32,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapter.ViewHolder> {
     Context mContext;
-    RecyclerViewClickListerner recyclerViewClickListerner;
+    FilterDoctorClickListerner recyclerViewClickListerner;
     ArrayList<Doctor> doctorArrayList;
     boolean isAll;
     BottomTabViewModel bottomTabViewModel;
     public static ArrayList<Doctor> selectedDoctorList;
-    String[] preSelectedDoctors;
-
+    ArrayList<Integer> receivedDoctors;
+    ArrayList<Integer> tempReceivedDoctors;
     public FilterDoctorAdapter(Context mContext,
-                               RecyclerViewClickListerner recyclerViewClickListerner,
+                               FilterDoctorClickListerner recyclerViewClickListerner,
                                ArrayList<Doctor> doctorArrayList,
                                BottomTabViewModel bottomTabViewModel,
                                LifecycleOwner lifecycleOwner,
                                boolean isAll,
-                               String[] preSelectedDoctors)
+                               String preSelectedDoctors)
     {
         this.mContext = mContext;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
@@ -51,7 +53,19 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
         this.isAll=isAll;
         this.bottomTabViewModel=bottomTabViewModel;
         selectedDoctorList=new ArrayList<>();
-        this.preSelectedDoctors=preSelectedDoctors;
+        receivedDoctors=new ArrayList<>();
+        tempReceivedDoctors=new ArrayList<>();
+
+        Helper.setLog("preSelectedDoctors",preSelectedDoctors);
+        if(!TextUtils.isEmpty(preSelectedDoctors)){
+            String[] d=preSelectedDoctors.split(",");
+            receivedDoctors.clear();
+            tempReceivedDoctors.clear();
+            for (int i = 0; i <d.length ; i++) {
+                receivedDoctors.add(Integer.valueOf(d[i]));
+            }
+        }
+        tempReceivedDoctors=receivedDoctors;
 
         bottomTabViewModel.filterDoctorsList.observe(lifecycleOwner,doctors -> {
 
@@ -78,27 +92,28 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
         if(isAll){
 
             holder.cbFilter.setChecked(true);
-        }else {
+            selectedDoctorList.add(doctorArrayList.get(position));
+        }else
+        {
+            if(isDoctorSelected(doctorArrayList.get(position).getiD())){
+                holder.cbFilter.setChecked(true);
+                selectedDoctorList.add(doctorArrayList.get(position));
 
-            if(preSelectedDoctors!=null && preSelectedDoctors.length>0){
-                for (int i = 0; i <preSelectedDoctors.length ; i++) {
-
-                    if(preSelectedDoctors[i].equals(selectedDoctorList.get(i).getiD()+"")){
-                        holder.cbFilter.setChecked(true);
-                    }
-
-                }
+            }else {
+                holder.cbFilter.setChecked(false);
             }
 
-            holder.cbFilter.setChecked(false);
+
         }
 
         holder.cbFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
+
                 if(isChecked){
                     selectedDoctorList.add(doctorArrayList.get(position));
                 }else {
+                    recyclerViewClickListerner.changeAllDoctorFlag(false);
                     if(selectedDoctorList.size()>0){
                         for (int i = 0; i <selectedDoctorList.size() ; i++) {
                             if(selectedDoctorList.get(i).getiD()==doctorArrayList.get(position).getiD()){
@@ -209,5 +224,18 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
         }else {
             selectedDoctorList.clear();
         }*/
+    }
+
+    public boolean isDoctorSelected(int doctorId){
+        if(tempReceivedDoctors!=null && tempReceivedDoctors.size()>0){
+            for (int i = 0; i <tempReceivedDoctors.size() ; i++) {
+                if(tempReceivedDoctors.get(i)==doctorId){
+                    tempReceivedDoctors.remove(i);
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

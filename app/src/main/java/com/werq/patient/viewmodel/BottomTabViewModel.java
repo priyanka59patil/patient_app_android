@@ -36,7 +36,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     private MutableLiveData<Boolean> rvDoctorTeamVisibility;
    // public MutableLiveData<Boolean> teamloading;
     public MutableLiveData<Boolean> doctorDetailsloading;
-    public MutableLiveData<Boolean> isAllCheckedState;
     public  MutableLiveData<ArrayList<DoctorTeamResult>> teamList;
     public  MutableLiveData<ArrayList<Doctor>> filterDoctorsList;
     public MutableLiveData<ArrayList<AttachmentResult>> listAttachments ;
@@ -61,8 +60,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         doctorDetailsloading=new MutableLiveData<>();
         filterDoctorsList=new MutableLiveData<>();
         rvDoctorTeamVisibility=new MutableLiveData<>();
-        isAllCheckedState=new MutableLiveData<>();
-
 
     }
 

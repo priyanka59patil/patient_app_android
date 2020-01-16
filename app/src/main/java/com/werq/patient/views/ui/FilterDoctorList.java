@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Factory.BottomTabVmFactory;
+import com.werq.patient.Interfaces.FilterDoctorClickListerner;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityFilterDoctorListBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
@@ -33,7 +34,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilterDoctorList extends BaseActivity implements RecyclerViewClickListerner {
+public class FilterDoctorList extends BaseActivity implements FilterDoctorClickListerner {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,7 +42,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
     RecyclerView rvDoctorTeam;
     FilterDoctorAdapter adapter;
     Context mContext;
-    RecyclerViewClickListerner recyclerViewClickListerner;
+    FilterDoctorClickListerner recyclerViewClickListerner;
     @BindView(R.id.tvlabelallDoctors)
     TextView tvlabelallDoctors;
     @BindView(R.id.view)
@@ -51,7 +52,8 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
     ActivityFilterDoctorListBinding doctorListBinding;
     BottomTabViewModel bottomTabViewModel;
     ArrayList<Doctor> doctorArrayList;
-    String[] receivedDoctors;
+    String receivedDoctors;
+    boolean receivedIsAllSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,11 +68,9 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         doctorListBinding.setLifecycleOwner(this);
         doctorListBinding.setBottomTabViewModel(bottomTabViewModel);
 
-        receivedDoctors=getIntent().getStringArrayExtra("selectedDoctors");
-        for (int i = 0; i < receivedDoctors.length; i++) {
-            Helper.setLog("selectedDoctors-"+i,receivedDoctors[i]);
-        }
-
+        receivedDoctors=getIntent().getStringExtra("selectedDoctors");
+        receivedIsAllSelected=getIntent().getBooleanExtra("isAllSelected",false);
+        cbAllDoctorFilter.setChecked(receivedIsAllSelected);
         setSupportActionBar(toolbar);
 
         setToolbar();
@@ -85,26 +85,30 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         }
 
         doctorArrayList =new ArrayList<>();
-        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner,doctorArrayList,bottomTabViewModel,this,false,receivedDoctors);
+        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner,doctorArrayList,bottomTabViewModel,this,receivedIsAllSelected,receivedDoctors);
         setDoctorTeams();
 
-        cbAllDoctorFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {
+        cbAllDoctorFilter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CustomCheckBox checkBox, boolean isChecked) {
-                adapter.setAll(isChecked);
-                if(isChecked){
-                   // FilterDoctorAdapter.selectedDoctorList.clear();
-                }else {
+            public void onClick(View view) {
+
+                Helper.setLog("isChecked",cbAllDoctorFilter.isChecked()+"");
+                if(cbAllDoctorFilter.isChecked()){
+                    cbAllDoctorFilter.setChecked(false);
+                    adapter.setAll(false);
                     FilterDoctorAdapter.selectedDoctorList.clear();
+                    adapter.notifyDataSetChanged();
+                }else {
+                    cbAllDoctorFilter.setChecked(true);
+                    adapter.setAll(true);
+                    adapter.notifyDataSetChanged();
+
                 }
-                adapter.notifyDataSetChanged();
+
             }
         });
 
-        bottomTabViewModel.isAllCheckedState.observe(this,aBoolean -> {
-            Helper.setLog("isAllCheckedState", String.valueOf(aBoolean));
-           // cbFilter.setChecked(aBoolean);
-        });
+
     }
 
     private void setDoctorTeams() {
@@ -120,7 +124,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         mContext = this;
 
         //listner
-        recyclerViewClickListerner=this::onclick;
+        recyclerViewClickListerner=this;
 
         //adapters
 
@@ -153,6 +157,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
                 }
 
                 Helper.setLog("doctors selected",doctors);
+                Helper.setLog("All selected",cbAllDoctorFilter.isChecked()+"");
               /*  bottomTabViewModel.selectedDoctors.setValue(doctors);
                 Bundle bundle = new Bundle();
                 bundle.putString("doctors",doctors);
@@ -161,6 +166,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
                 finish();*/
                 Intent intent=new Intent(this,BottomTabActivity.class);
                 intent.putExtra("doctors",doctors);
+                intent.putExtra("isAllSelected",cbAllDoctorFilter.isChecked());
                 intent.putExtra("fromFragment","FileFragment");
                 setResult(1,intent);
                 finish();
@@ -174,6 +180,15 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
 
     @Override
     public void onclick(int position) {
+
+    }
+
+    @Override
+    public void changeAllDoctorFlag(boolean setChecked) {
+
+        if(cbAllDoctorFilter.isChecked()){
+            cbAllDoctorFilter.setChecked(false);
+        }
 
     }
 
