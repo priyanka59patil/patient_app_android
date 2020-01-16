@@ -31,8 +31,6 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     private PatientRepository patientRepository;
     private CompositeDisposable disposable;
 
-    /*String authToken;
-    String refreshTokenId;*/
     ApiCallback apiCallback=this;
     private MutableLiveData<Boolean> rvVisibility;
     private MutableLiveData<Boolean> rvDoctorTeamVisibility;
@@ -47,8 +45,8 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
     int doctorListPage=0;
 
 
-    public BottomTabViewModel() {
-        super();
+    public BottomTabViewModel(String authToken) {
+        super(authToken);
         openFrag=new MutableLiveData<>();
         openFrag.setValue("calendar");
 
@@ -116,20 +114,20 @@ public class BottomTabViewModel extends BaseViewModel implements BottomNavigatio
         getLoading().setValue(true);
 
         doctorTeamListPage=page;
-        patientRepository.getDocterTeamAppoitment(Helper.autoken,"10",""+page*10,
+        patientRepository.getDocterTeamAppoitment(getAuthToken(),"10",""+page*10,
                     getToast(),apiCallback,"DoctorTeam");
 
     }
 
     public void fetchAttachments(int page,String doctors,String filter) {
         getLoading().setValue(true);
-        patientRepository.getAttachments(Helper.autoken,doctors,filter,"10",page*10+"",getToast(),apiCallback,"AllAttachments");
+        patientRepository.getAttachments(getAuthToken(),doctors,filter,"10",page*10+"",getToast(),apiCallback,"AllAttachments");
     }
 
     public void fetchFilterDoctorList(int page) {
         getLoading().setValue(true);
         doctorListPage=page;
-        patientRepository.getFilterDoctorList(Helper.autoken,"10",page*10+"",getToast(),apiCallback,"FilterDoctorList");
+        patientRepository.getFilterDoctorList(getAuthToken(),"10",page*10+"",getToast(),apiCallback,"FilterDoctorList");
     }
 
 

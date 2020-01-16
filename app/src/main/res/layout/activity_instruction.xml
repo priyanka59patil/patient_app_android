@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="summeryCareViewModel"
-            type="com.werq.patient.viewmodel.SummeryCareViewModel" />
+            name="summaryCareViewModel"
+            type="com.werq.patient.viewmodel.SummaryCareViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

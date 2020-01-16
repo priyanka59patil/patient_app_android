@@ -158,7 +158,7 @@ public class ProfileDoctorActivity extends BaseActivity implements BasicActiviti
         loadingView1.setIndeterminateDrawable(fadingCircle);
         loadingView2.setIndeterminateDrawable(fadingCircle);
 
-        profileDoctorViewModel = ViewModelProviders.of(this, new ProfileDoctorVmFactory(mContext)).get(ProfileDoctorViewModel.class);
+        profileDoctorViewModel = ViewModelProviders.of(this, new ProfileDoctorVmFactory(mContext,getAuthToken())).get(ProfileDoctorViewModel.class);
 
         if (Helper.hasNetworkConnection(mContext)) {
 

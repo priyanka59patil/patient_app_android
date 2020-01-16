@@ -36,8 +36,8 @@ public class BookAppointmentViewModel extends BaseViewModel {
     MutableLiveData<Boolean> requestStatus;
 
 
-    public BookAppointmentViewModel() {
-        super();
+    public BookAppointmentViewModel(String authToken) {
+        super(authToken);
 
         patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
@@ -113,7 +113,7 @@ public class BookAppointmentViewModel extends BaseViewModel {
             newAppointment.setLocationName(selectedLocation.getValue());
 
             getLoading().setValue(true);
-            patientRepository.setNewAppointmentRequest(Helper.autoken,newAppointment,getToast(),apiCallback,"SetNewApptRequest");
+            patientRepository.setNewAppointmentRequest(getAuthToken(),newAppointment,getToast(),apiCallback,"SetNewApptRequest");
 
         }
 

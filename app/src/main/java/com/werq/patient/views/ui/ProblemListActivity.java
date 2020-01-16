@@ -7,23 +7,19 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.github.ybq.android.spinkit.SpinKitView;
+import com.werq.patient.Factory.SummaryCareVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityProblemListBinding;
-import com.werq.patient.databinding.ActivitySocialHistoryBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Problem;
-import com.werq.patient.service.model.ResponcejsonPojo.SocialHistory;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 import com.werq.patient.views.adapter.ProblemListAdapter;
-import com.werq.patient.views.adapter.SocialHistoryAdapter;
 
 import java.util.ArrayList;
 
@@ -42,7 +38,7 @@ public class ProblemListActivity extends BaseActivity {
     ActivityProblemListBinding activityBinding;
     ArrayList<Problem> problemList;
     Context mContext;
-    SummeryCareViewModel viewModel;
+    SummaryCareViewModel viewModel;
     ProblemListAdapter adapter;
 
     @Override
@@ -53,10 +49,10 @@ public class ProblemListActivity extends BaseActivity {
 
         activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_problem_list);
         ButterKnife.bind(this);
-        viewModel = ViewModelProviders.of(this).get(SummeryCareViewModel.class);
+        viewModel = ViewModelProviders.of(this,new SummaryCareVmFactory(getAuthToken())).get(SummaryCareViewModel.class);
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        activityBinding.setSummeryCareViewModel(viewModel);
+        activityBinding.setSummaryCareViewModel(viewModel);
         initializeVariables();
         adapter = new ProblemListAdapter(mContext, problemList, viewModel, this);
         setRecyclerView();

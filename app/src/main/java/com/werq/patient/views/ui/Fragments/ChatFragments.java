@@ -21,6 +21,7 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
+import com.werq.patient.Factory.ChatFragmentVmFactory;
 import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
@@ -72,7 +73,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         mContext = getActivity();
         FirebaseApp.initializeApp(getActivity().getApplicationContext());
-        viewModel = ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
+        viewModel = ViewModelProviders.of(this,new ChatFragmentVmFactory(getAuthToken())).get(ChatFragmentViewModel.class);
         setBaseViewModel(viewModel);
         viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this, view);

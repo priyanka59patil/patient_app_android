@@ -30,7 +30,8 @@ public class SignUpViewModel extends BaseViewModel {
 
     private final String SIGNUP="SignUp";
 
-    public SignUpViewModel() {
+    public SignUpViewModel(String authToken) {
+        super(authToken);
         /*pin1 = new MutableLiveData<>();
         pin2 = new MutableLiveData<>();
         pin3 = new MutableLiveData<>();

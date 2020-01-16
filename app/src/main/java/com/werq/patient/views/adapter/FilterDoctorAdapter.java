@@ -35,13 +35,15 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
     boolean isAll;
     BottomTabViewModel bottomTabViewModel;
     public static ArrayList<Doctor> selectedDoctorList;
+    String[] preSelectedDoctors;
 
     public FilterDoctorAdapter(Context mContext,
                                RecyclerViewClickListerner recyclerViewClickListerner,
                                ArrayList<Doctor> doctorArrayList,
                                BottomTabViewModel bottomTabViewModel,
                                LifecycleOwner lifecycleOwner,
-                               boolean isAll)
+                               boolean isAll,
+                               String[] preSelectedDoctors)
     {
         this.mContext = mContext;
         this.recyclerViewClickListerner=recyclerViewClickListerner;
@@ -49,6 +51,8 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
         this.isAll=isAll;
         this.bottomTabViewModel=bottomTabViewModel;
         selectedDoctorList=new ArrayList<>();
+        this.preSelectedDoctors=preSelectedDoctors;
+
         bottomTabViewModel.filterDoctorsList.observe(lifecycleOwner,doctors -> {
 
             if(doctors!=null){
@@ -75,6 +79,16 @@ public class FilterDoctorAdapter extends RecyclerView.Adapter<FilterDoctorAdapte
 
             holder.cbFilter.setChecked(true);
         }else {
+
+            if(preSelectedDoctors!=null && preSelectedDoctors.length>0){
+                for (int i = 0; i <preSelectedDoctors.length ; i++) {
+
+                    if(preSelectedDoctors[i].equals(selectedDoctorList.get(i).getiD()+"")){
+                        holder.cbFilter.setChecked(true);
+                    }
+
+                }
+            }
 
             holder.cbFilter.setChecked(false);
         }

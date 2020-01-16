@@ -40,7 +40,8 @@ public class PatientProfileViewModel extends BaseViewModel {
     private MutableLiveData<Boolean> rvMedicationVisibility;
 
 
-    public PatientProfileViewModel() {
+    public PatientProfileViewModel(String authToken) {
+        super(authToken);
         patientRepository = new PatientRepository();
         insuranceList = new MutableLiveData<>();
         rvInsuranceVisibility = new MutableLiveData<>();
@@ -57,7 +58,7 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     public void fetchPatientProfileData() {
         getLoading().setValue(true);
-        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiCallback, "PatientProfile");
+        patientRepository.getPatientProfile(getAuthToken(), getToast(), apiCallback, "PatientProfile");
 
         /*patientName.setValue("Priya Patil");
         patientDOB.setValue("31-07-1996");
@@ -68,7 +69,7 @@ public class PatientProfileViewModel extends BaseViewModel {
 
     public void fetchMedicationList(int page) {
         getLoading().setValue(true);
-        patientRepository.getMedicationList(Helper.autoken, "10", page * 10 + "", getToast(), apiCallback, "MedicationList");
+        patientRepository.getMedicationList(getAuthToken(), "10", page * 10 + "", getToast(), apiCallback, "MedicationList");
         medicationPage = page;
     }
 

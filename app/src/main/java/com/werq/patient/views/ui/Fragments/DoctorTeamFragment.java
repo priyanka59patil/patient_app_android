@@ -26,6 +26,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.Interfaces.Callback.DoctorTeamClickListerner;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseFragment;
@@ -79,7 +80,7 @@ public class DoctorTeamFragment extends BaseFragment implements DoctorTeamClickL
         mContext = getActivity();
         teamList =new ArrayList<>();
 
-        viewModel= ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+        viewModel= ViewModelProviders.of(getActivity(),new BottomTabVmFactory(getAuthToken())).get(BottomTabViewModel.class);
 
         doctorTeamAdapter=new DoctorTeamAdapter(mContext,false,this,
                 teamList,viewModel,this);

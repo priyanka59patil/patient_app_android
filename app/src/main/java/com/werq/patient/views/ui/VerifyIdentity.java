@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Factory.SignUpVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.DateHelper;
 import com.werq.patient.Utils.EditTextUtils;
@@ -94,7 +95,7 @@ public class VerifyIdentity extends BaseActivity {
     private void initlizeVariables() {
         ActivityVerifyIdentityBinding activityVIBinding = DataBindingUtil.setContentView(this, R.layout.activity_verify_identity);
         activityVIBinding.setLifecycleOwner(this);
-        viViewModel = ViewModelProviders.of(this).get(SignUpViewModel.class);
+        viViewModel = ViewModelProviders.of(this,new SignUpVmFactory(getAuthToken())).get(SignUpViewModel.class);
         setBaseViewModel(viViewModel);
         activityVIBinding.setViViewModel(viViewModel);
         ButterKnife.bind(this);

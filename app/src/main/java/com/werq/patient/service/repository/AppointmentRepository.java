@@ -44,7 +44,7 @@ public class AppointmentRepository  {
     public void  getAppointmentDetails(String authToken, int appointmentId, MutableLiveData<String> toast,
                                       ApiCallback apiCallback, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken+"");
+        //Helper.setLog(TAG,"authToken:- "+authToken+"");
 
         Call<ApiResponse<ApptDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().getAppointmentDetails(authToken,appointmentId);
 
@@ -55,7 +55,7 @@ public class AppointmentRepository  {
     public void  setConfirmAppointment(String authToken, ConfirmAppointment confirmAppointment, MutableLiveData<String> toast,
                                        ApiCallback apiCallback, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken+"");
+        //Helper.setLog(TAG,"authToken:- "+authToken+"");
 
         Call<ApiResponse<ApptDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().
                                             setConfirmAppointment(authToken,Helper.ContentType,confirmAppointment);
@@ -77,7 +77,7 @@ public class AppointmentRepository  {
     public void  sendRescheduleRequest(String authToken, RescheduleAppointment rescheduleAppointment, MutableLiveData<String> toast,
                                        ApiCallback apiCallback, String url){
 
-        Helper.setLog(TAG,"authToken:- "+authToken+"");
+        //Helper.setLog(TAG,"authToken:- "+authToken+"");
 
         Call<ApiResponse<RescheduleData>> rescheduleRequestCall= RetrofitClient.getRetrofit().sendRescheduleRequest(authToken,Helper.ContentType,rescheduleAppointment);
 

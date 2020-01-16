@@ -5,11 +5,7 @@ import android.content.Context;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.database.FirebaseDatabase;
-import com.werq.patient.Interfaces.AppointmentInterface;
-import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
-import com.werq.patient.viewmodel.ScheduleDetailsViewModel;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -20,12 +16,10 @@ import javax.inject.Singleton;
 @Singleton
 public class ChatFragmentVmFactory extends ViewModelProvider.NewInstanceFactory {
   //private AppointmentData data;
-  Context mContext;
-FirebaseDatabase data;
+  private String authToken;
   @Inject
-  public ChatFragmentVmFactory(Context mContext) {
-    this.mContext=mContext;
-    this.data= data;
+  public ChatFragmentVmFactory(String authToken) {
+    this.authToken=authToken;
   }
 
 
@@ -33,7 +27,7 @@ FirebaseDatabase data;
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(ChatFragmentViewModel.class)) {
       //noinspection unchecked
-      return (T) new ChatFragmentViewModel();
+      return (T) new ChatFragmentViewModel(authToken);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

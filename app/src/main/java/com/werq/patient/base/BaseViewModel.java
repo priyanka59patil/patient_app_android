@@ -10,8 +10,13 @@ public abstract class BaseViewModel extends ViewModel implements ApiCallback {
     private MutableLiveData<String> mNewActivity;
     private MutableLiveData<Boolean> loading;
     private MutableLiveData<Boolean> repoLoadError;
+    private String authToken;
 
-    public BaseViewModel(){
+    public BaseViewModel() {
+    }
+
+    public BaseViewModel(String authToken){
+        this.authToken =authToken;
         mShowToast=new MutableLiveData<>();
         mNewActivity=new MutableLiveData<>();
         loading=new MutableLiveData<>();
@@ -20,6 +25,13 @@ public abstract class BaseViewModel extends ViewModel implements ApiCallback {
 
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public MutableLiveData<String> getToast(){
         return mShowToast;

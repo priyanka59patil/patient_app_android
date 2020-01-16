@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Factory.SetNewPasswordVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
@@ -56,7 +57,7 @@ public class SetNewPawsswordActivity extends BaseActivity {
         if (activityBinding == null) {
             activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_set_new_pawssword);
         }
-        viewModel = ViewModelProviders.of(this).get(SetNewPasswordViewModel.class);
+        viewModel = ViewModelProviders.of(this,new SetNewPasswordVmFactory(getAuthToken())).get(SetNewPasswordViewModel.class);
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         activityBinding.setSetNewPasswordVm(viewModel);

@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity {
         activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         activityLoginBinding.setLifecycleOwner(this);
         mContext = this;
-        loginViewModel = ViewModelProviders.of(this, new LoginVmProviderFactory(mContext)).get(LoginViewModel.class);
+        loginViewModel = ViewModelProviders.of(this, new LoginVmProviderFactory(mContext,getAuthToken())).get(LoginViewModel.class);
         setBaseViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
         ButterKnife.bind(this);

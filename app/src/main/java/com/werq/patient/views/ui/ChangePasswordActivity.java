@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.werq.patient.Factory.ChangePasswordVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
@@ -62,7 +63,7 @@ public class ChangePasswordActivity extends BaseActivity {
         if (activityBinding == null) {
             activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_change_password);
         }
-        viewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel.class);
+        viewModel = ViewModelProviders.of(this,new ChangePasswordVmFactory(getAuthToken())).get(ChangePasswordViewModel.class);
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         activityBinding.setCpViewModel(viewModel);

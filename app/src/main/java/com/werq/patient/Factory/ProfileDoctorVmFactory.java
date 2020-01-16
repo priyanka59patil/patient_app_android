@@ -19,9 +19,11 @@ import javax.inject.Singleton;
 public class ProfileDoctorVmFactory extends ViewModelProvider.NewInstanceFactory {
   //private AppointmentData data;
   Context mContext;
+  private String authToken;
   @Inject
-  public ProfileDoctorVmFactory(Context mContext) {
+  public ProfileDoctorVmFactory(Context mContext,String authToken) {
     this.mContext=mContext;
+    this.authToken=authToken;
   }
 
 
@@ -29,7 +31,7 @@ public class ProfileDoctorVmFactory extends ViewModelProvider.NewInstanceFactory
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(ProfileDoctorViewModel.class)) {
       //noinspection unchecked
-      return (T) new ProfileDoctorViewModel(mContext);
+      return (T) new ProfileDoctorViewModel(mContext,authToken);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

@@ -71,7 +71,7 @@ public class DoctorTeamViewModel  extends BaseViewModel {
     public void fetchTeamList(){
 
         if(!TextUtils.isEmpty(authToken)){
-            Log.e(TAG, "authToken: "+authToken );
+            //Log.e(TAG, "authToken: "+authToken );
 
             patientRepository.getDocterTeamAppoitment(authToken,"20",""+0,
                     getToast(),apiCallback,"DoctorTeam");

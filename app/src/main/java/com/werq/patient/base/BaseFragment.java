@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.lifecycle.Observer;
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -29,7 +31,7 @@ public abstract class BaseFragment extends Fragment {
     BaseViewModel baseViewModel;
     Context mContext;
     public static Sprite fadingcircle;
-
+    private String authToken;
 
     public void setBaseViewModel(BaseViewModel viewModel){
         this.baseViewModel=viewModel;
@@ -40,6 +42,11 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mContext=getContext();
+        if(TextUtils.isEmpty(authToken)){
+            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
+            authToken=sessionManager.getAuthToken();
+           // Helper.setLog("BaseFragment",authToken);
+        }
         if(fadingcircle==null){
             fadingcircle=new Circle();
         }
@@ -109,4 +116,11 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 }

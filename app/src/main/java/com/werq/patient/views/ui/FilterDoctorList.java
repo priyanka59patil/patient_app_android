@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityFilterDoctorListBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Doctor;
@@ -50,6 +51,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
     ActivityFilterDoctorListBinding doctorListBinding;
     BottomTabViewModel bottomTabViewModel;
     ArrayList<Doctor> doctorArrayList;
+    String[] receivedDoctors;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,10 +61,15 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         doctorListBinding = DataBindingUtil.setContentView(this,R.layout.activity_filter_doctor_list);
         ButterKnife.bind(this);
         inilializeVariables();
-        bottomTabViewModel= ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        bottomTabViewModel= ViewModelProviders.of(this,new BottomTabVmFactory(getAuthToken())).get(BottomTabViewModel.class);
         setBaseViewModel(bottomTabViewModel);
         doctorListBinding.setLifecycleOwner(this);
         doctorListBinding.setBottomTabViewModel(bottomTabViewModel);
+
+        receivedDoctors=getIntent().getStringArrayExtra("selectedDoctors");
+        for (int i = 0; i < receivedDoctors.length; i++) {
+            Helper.setLog("selectedDoctors-"+i,receivedDoctors[i]);
+        }
 
         setSupportActionBar(toolbar);
 
@@ -78,7 +85,7 @@ public class FilterDoctorList extends BaseActivity implements RecyclerViewClickL
         }
 
         doctorArrayList =new ArrayList<>();
-        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner,doctorArrayList,bottomTabViewModel,this,false);
+        adapter = new FilterDoctorAdapter(mContext, recyclerViewClickListerner,doctorArrayList,bottomTabViewModel,this,false,receivedDoctors);
         setDoctorTeams();
 
         cbAllDoctorFilter.setOnCheckedChangeListener(new CustomCheckBox.OnCheckedChangeListener() {

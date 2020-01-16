@@ -28,7 +28,7 @@ import com.werq.patient.service.model.AppointmentResponce;
 import com.werq.patient.viewmodel.TabAppoinmentViewModel;
 import com.werq.patient.R;
 import com.werq.patient.Utils.RecyclerViewHelper;
-import com.werq.patient.Factory.ViewModelProviderFactory;
+import com.werq.patient.Factory.TabApptVmProviderFactory;
 
 import java.util.ArrayList;
 
@@ -72,7 +72,7 @@ public class TabHistoryFragment extends BaseFragment implements RecyclerViewClic
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
         listAppointments = new ArrayList<>();
-        viewModel= ViewModelProviders.of(this,new ViewModelProviderFactory(false)).get(TabAppoinmentViewModel.class);
+        viewModel= ViewModelProviders.of(this,new TabApptVmProviderFactory(getAuthToken(),false)).get(TabAppoinmentViewModel.class);
         if(Helper.hasNetworkConnection(mContext)){
             viewModel.fetchHistoryAppointmentList(0);
         }else {

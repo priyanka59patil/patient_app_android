@@ -8,15 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.service.model.ResponcejsonPojo.HistoryOfProcedure;
-import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +31,7 @@ public class ProcedureHistoryAdapter extends RecyclerView.Adapter<ProcedureHisto
 
     public ProcedureHistoryAdapter(Context mContext,
                                    ArrayList<HistoryOfProcedure> procedureArrayList,
-                                   SummeryCareViewModel viewModel,
+                                   SummaryCareViewModel viewModel,
                                    LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;

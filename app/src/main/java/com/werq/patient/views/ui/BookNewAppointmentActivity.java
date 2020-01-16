@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.werq.patient.Factory.BookApptVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
@@ -97,7 +98,7 @@ public class BookNewAppointmentActivity extends BaseActivity {
         if (activityBinding == null) {
             activityBinding = DataBindingUtil.setContentView(this, R.layout.activity_book_new_appointment);
         }
-        viewModel = ViewModelProviders.of(this).get(BookAppointmentViewModel.class);
+        viewModel = ViewModelProviders.of(this,new BookApptVmFactory(getAuthToken())).get(BookAppointmentViewModel.class);
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
         activityBinding.setViewModel(viewModel);

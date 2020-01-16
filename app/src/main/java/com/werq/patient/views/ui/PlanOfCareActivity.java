@@ -1,6 +1,5 @@
 package com.werq.patient.views.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,16 +11,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.werq.patient.Factory.SummaryCareVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
-import com.werq.patient.databinding.ActivityInstructionBinding;
 import com.werq.patient.databinding.ActivityPlanOfCareBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
-import com.werq.patient.views.adapter.InstructionAdapter;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 import com.werq.patient.views.adapter.PlanOfCareAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class PlanOfCareActivity extends BaseActivity {
     ActivityPlanOfCareBinding activityBinding;
     ArrayList<PlanOfCare> planCareList;
     Context mContext;
-    SummeryCareViewModel viewModel;
+    SummaryCareViewModel viewModel;
     PlanOfCareAdapter planOfCareAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,10 +48,10 @@ public class PlanOfCareActivity extends BaseActivity {
 
         activityBinding = DataBindingUtil.setContentView(this,R.layout.activity_plan_of_care);
         ButterKnife.bind(this);
-        viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
+        viewModel= ViewModelProviders.of(this,new SummaryCareVmFactory(getAuthToken())).get(SummaryCareViewModel.class);
         activityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        activityBinding.setSummeryCareViewModel(viewModel);
+        activityBinding.setSummaryCareViewModel(viewModel);
         initializeVariables();
         planOfCareAdapter=new PlanOfCareAdapter(mContext,planCareList,viewModel,this);
         setRecyclerView();

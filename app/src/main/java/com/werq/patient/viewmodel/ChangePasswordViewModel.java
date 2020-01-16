@@ -35,8 +35,8 @@ public class ChangePasswordViewModel extends BaseViewModel {
     Context mContext;
 
 
-    public ChangePasswordViewModel() {
-        super();
+    public ChangePasswordViewModel(String authToken) {
+        super(authToken);
 
         patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
@@ -89,7 +89,7 @@ public class ChangePasswordViewModel extends BaseViewModel {
         changePassword.setNewPassword(newPassword.getValue());
 
         getLoading().setValue(true);
-        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiCallback,"ChangePassword");
+        patientRepository.setNewPassword(getAuthToken(),changePassword,getToast(),apiCallback,"ChangePassword");
     }
 
     public void updateOnClick(){

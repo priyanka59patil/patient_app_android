@@ -73,8 +73,8 @@ public class LoginViewModel extends BaseViewModel  {
     public LoginViewModel() {
     }
 
-    public LoginViewModel(Context context) {
-        super();
+    public LoginViewModel(Context context,String authToken) {
+        super(authToken);
 
         userName = new MutableLiveData<>();
         password = new MutableLiveData<>();

@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.werq.patient.BuildConfig;
+import com.werq.patient.Factory.VisitNoteVmFactory;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityViewVisitNoteBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
@@ -81,7 +82,7 @@ public class ViewVisitNoteActivity extends BaseActivity implements RecyclerViewC
         viewVisitNoteBinding = DataBindingUtil.setContentView(this,R.layout.activity_view_visit_note);
         mContext=this;
         viewVisitNoteBinding.setLifecycleOwner(this);
-        viewModel= ViewModelProviders.of(this).get(ViewVisitNoteViewModel.class);
+        viewModel= ViewModelProviders.of(this,new VisitNoteVmFactory(getAuthToken())).get(ViewVisitNoteViewModel.class);
         setBaseViewModel(viewModel);
         viewVisitNoteBinding.setViewVnViewModel(viewModel);
         appointmentId=getIntent().getIntExtra("appointmentId",0);

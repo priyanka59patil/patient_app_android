@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
 import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
-import com.werq.patient.service.model.ResponcejsonPojo.Insurance;
-import com.werq.patient.viewmodel.PatientProfileViewModel;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import java.util.ArrayList;
 
@@ -28,7 +26,7 @@ public class InstructionAdapter extends RecyclerView.Adapter<InstructionAdapter.
 
     public InstructionAdapter(Context mContext,
                               ArrayList<Instruction> instructionArrayList,
-                              SummeryCareViewModel viewModel,
+                              SummaryCareViewModel viewModel,
                               LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;

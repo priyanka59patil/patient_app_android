@@ -45,8 +45,8 @@ public class SetNewPasswordViewModel extends BaseViewModel {
     SessionManager sessionManager;
     Context mContext;
 
-    public SetNewPasswordViewModel() {
-        super();
+    public SetNewPasswordViewModel(String authToken) {
+        super(authToken);
 
         patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
@@ -133,7 +133,7 @@ public class SetNewPasswordViewModel extends BaseViewModel {
 
         Helper.setLog("changePassword req",changePassword.toString());
         getLoading().setValue(true);
-        patientRepository.setNewPassword(Helper.autoken,changePassword,getToast(),apiCallback,"SetNewPassword");
+        patientRepository.setNewPassword(getAuthToken(),changePassword,getToast(),apiCallback,"SetNewPassword");
     }
 
     public void updateOnClick(){

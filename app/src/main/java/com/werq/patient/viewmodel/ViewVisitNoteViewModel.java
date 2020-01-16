@@ -30,8 +30,8 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
     public MutableLiveData<String> profileUrl;
     public MutableLiveData<ArrayList<AttachmentResult>> visitNoteAttachments ;
 
-    public ViewVisitNoteViewModel() {
-        super();
+    public ViewVisitNoteViewModel(String authToken) {
+        super(authToken);
 
         patientRepository = new PatientRepository();
         disposable = new CompositeDisposable();
@@ -106,7 +106,7 @@ public class ViewVisitNoteViewModel extends BaseViewModel {
 
     public  void fetchVisitNoteDetails(int page,int appointmentId,int visitNoteId){
         getLoading().setValue(true);
-        patientRepository.getVisitNoteDetails(Helper.autoken,appointmentId,visitNoteId,
+        patientRepository.getVisitNoteDetails(getAuthToken(),appointmentId,visitNoteId,
                 10+"",page*10+"",getToast(),apiCallback,"VisitNoteDetails");
     }
 }

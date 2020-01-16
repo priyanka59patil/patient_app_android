@@ -51,8 +51,8 @@ public class ChatFragmentViewModel extends BaseViewModel  {
     String channelId;
     boolean isFirstMsgSent=false;
 
-    public ChatFragmentViewModel() {
-
+    public ChatFragmentViewModel(String authToken) {
+        super(authToken);
         database = FirebaseDatabase.getInstance();
         patientRepository = new PatientRepository();
         isNewChat = true;
@@ -118,7 +118,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
         addSentMsgToAdapter(message,utcDate);
 
-        patientRepository.sendMessageToServer(Helper.autoken, sendMessage, getToast(), apiCallback, "SendMessage");
+        patientRepository.sendMessageToServer(getAuthToken(), sendMessage, getToast(), apiCallback, "SendMessage");
         Helper.setLog("last msg timestamp msg sent",sendMessage.getTimeStamp()+"");
         lastMessageTimestamp.setValue(sendMessage.getTimeStamp());
     }
@@ -127,7 +127,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
 
         try {
             String currentUtcTimestamp=Helper.currentlocalDateToUtc().getTime() + "";
-            patientRepository.fetchHistoryChatList(Helper.autoken,
+            patientRepository.fetchHistoryChatList(getAuthToken(),
                     2, currentUtcTimestamp, 5 + "",
                     0 + "", getToast(), apiCallback, "ChatList");
 
@@ -139,13 +139,13 @@ public class ChatFragmentViewModel extends BaseViewModel  {
     }
 
     public void fetchAfterChat(long lastMsgtimestamp ) {
-        patientRepository.fetchChatList(Helper.autoken, channelId,
+        patientRepository.fetchChatList(getAuthToken(), channelId,
                 1, lastMsgtimestamp + "", 5 + "",
                 0 + "", getToast(), apiCallback, "ChatListAfter");
     }
 
     public void fetchBeforeChat(long firstMsgtimestamp ) {
-        patientRepository.fetchHistoryChatList(Helper.autoken,
+        patientRepository.fetchHistoryChatList(getAuthToken(),
                 2, firstMsgtimestamp + "", 5 + "",
                 1+ "", getToast(), apiCallback, "ChatListBefore");
     }
@@ -175,7 +175,7 @@ public class ChatFragmentViewModel extends BaseViewModel  {
                             setChannelObserver(channelId);
                         }
 
-                       // updateDataRef.child("IsMsgSendFromSupport").setValue(false);
+                       //updateDataRef.child("IsMsgSendFromSupport").setValue(false);
                     }
 
                     break;
@@ -378,7 +378,9 @@ public class ChatFragmentViewModel extends BaseViewModel  {
         }
 
         addSentMsgToAdapter(message,utcDate);
-        patientRepository.setNewChatRequest(Helper.autoken, newChat, getToast(), apiCallback, "NewChat");
+
+        Helper.setLog("NewChat",Helper.getGsonInstance().toJson(newChat));
+        patientRepository.setNewChatRequest(getAuthToken(), newChat, getToast(), apiCallback, "NewChat");
         lastMessageTimestamp.setValue(newChat.getTimestamp());
 
     }

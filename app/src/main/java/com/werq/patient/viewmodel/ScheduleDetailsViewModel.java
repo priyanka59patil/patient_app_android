@@ -65,7 +65,9 @@ public class ScheduleDetailsViewModel extends BaseViewModel {
 
     }
 
-    public ScheduleDetailsViewModel(boolean isFromUpcomming,AppointmentResult appointmentResult, AppointmentInterface controller) {
+    public ScheduleDetailsViewModel(boolean isFromUpcomming,
+                                    AppointmentResult appointmentResult,
+                                    AppointmentInterface controller) {
 
         //toolbar=new MutableLiveData<>();
         this.isFromUpcoming=isFromUpcomming;

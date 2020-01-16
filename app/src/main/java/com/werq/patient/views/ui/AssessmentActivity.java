@@ -1,10 +1,8 @@
 package com.werq.patient.views.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,16 +11,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.werq.patient.Factory.SummaryCareVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityAssessmentBinding;
-import com.werq.patient.databinding.ActivityEncounterBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
-import com.werq.patient.views.adapter.EncounterAdapter;
-
-import java.util.ArrayList;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +35,7 @@ public class AssessmentActivity extends BaseActivity {
     ProgressBar loadingView;
     ActivityAssessmentBinding assessmentBinding;
     Context mContext;
-    SummeryCareViewModel viewModel;
+    SummaryCareViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +48,10 @@ public class AssessmentActivity extends BaseActivity {
         ButterKnife.bind(this);
         getSupportActionBar().setTitle(getResources().getString(R.string.assesssment));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
+        viewModel= ViewModelProviders.of(this,new SummaryCareVmFactory(getAuthToken())).get(SummaryCareViewModel.class);
         assessmentBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        assessmentBinding.setSummeryCareViewModel(viewModel);
+        assessmentBinding.setSummaryCareViewModel(viewModel);
         loadingView.setIndeterminateDrawable(fadingCircle);
 
         viewModel.assessments.observe(this,s -> {

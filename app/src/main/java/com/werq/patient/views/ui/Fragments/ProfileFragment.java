@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
+import com.werq.patient.Factory.PatientProfileVmFactory;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseFragment;
 import com.werq.patient.databinding.FragmentProfileBinding;
@@ -74,7 +75,7 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
         super.onCreate(savedInstanceState);
         initializeVariables();
 
-        viewModel= ViewModelProviders.of(this).get(PatientProfileViewModel.class);
+        viewModel= ViewModelProviders.of(this,new PatientProfileVmFactory(getAuthToken())).get(PatientProfileViewModel.class);
         if(Helper.hasNetworkConnection(mContext)){
             Helper.setLog(TAG,"Call to api");
             viewModel.fetchPatientProfileData();

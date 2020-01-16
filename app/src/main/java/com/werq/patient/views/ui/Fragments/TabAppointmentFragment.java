@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.Controller.AppointmentController;
-import com.werq.patient.Factory.ViewModelProviderFactory;
+import com.werq.patient.Factory.TabApptVmProviderFactory;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
@@ -135,7 +135,7 @@ public class TabAppointmentFragment extends BaseFragment implements RecyclerView
         listener = this::onclick;
         basicActivities = this;
         controller = new AppointmentController(basicActivities);
-        viewModel = ViewModelProviders.of(this, new ViewModelProviderFactory(true)).get(TabAppoinmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, new TabApptVmProviderFactory(getAuthToken(),true)).get(TabAppoinmentViewModel.class);
 
         if (Helper.hasNetworkConnection(mContext)) {
 

@@ -46,7 +46,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Controller.AppointmentController;
-import com.werq.patient.Factory.ViewModelProviderFactory;
+import com.werq.patient.Factory.TabApptVmProviderFactory;
 import com.werq.patient.Interfaces.AppointmentInterface;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.Callback.DiologListner;
@@ -477,7 +477,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel = ViewModelProviders.of(this, new ViewModelProviderFactory(isFromUpcoming)).get(TabAppoinmentViewModel.class);
+        viewModel = ViewModelProviders.of(this, new TabApptVmProviderFactory(getAuthToken(),isFromUpcoming)).get(TabAppoinmentViewModel.class);
         setBaseViewModel(viewModel);
         detailsBinding.setTabAppoinmentViewModel(viewModel);
         recyclerViewClickListerner = this::onclick;

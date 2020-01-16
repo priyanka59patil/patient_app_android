@@ -15,13 +15,14 @@ import javax.inject.Singleton;
  * Created by jyotidubey on 22/02/19.
  */
 @Singleton
-public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFactory {
+public class TabApptVmProviderFactory extends ViewModelProvider.NewInstanceFactory {
+  private String authToken;
   private boolean isFromUpcoming;
-  private Context context;
 
   @Inject
-  public ViewModelProviderFactory(boolean isFromUpcoming) {
-    this.isFromUpcoming = isFromUpcoming;
+  public TabApptVmProviderFactory(String authToken,boolean isFromUpcoming) {
+    this.authToken = authToken;
+    this.isFromUpcoming=isFromUpcoming;
    // this.context=context;
   }
 
@@ -29,7 +30,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
   public <T extends ViewModel> T create(Class<T> modelClass) {
     if (modelClass.isAssignableFrom(TabAppoinmentViewModel.class)) {
       //noinspection unchecked
-      return (T) new TabAppoinmentViewModel(isFromUpcoming);
+      return (T) new TabAppoinmentViewModel(authToken,isFromUpcoming);
     }
     throw new IllegalArgumentException("Unknown ViewModel class: " + modelClass.getName());
   }

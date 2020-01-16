@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
@@ -20,6 +21,7 @@ import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.Circle;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
+import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.views.ui.BottomTabActivity;
 import com.werq.patient.views.ui.CreateAccountActivity;
 import com.werq.patient.views.ui.FingerPrintActivity;
@@ -33,6 +35,8 @@ public class BaseActivity extends AppCompatActivity {
     Context mContext;
     String TAG="BaseActivity";
     public Sprite fadingCircle;
+    private String authToken;
+
 
     public void setBaseViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
@@ -43,6 +47,11 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        if(TextUtils.isEmpty(authToken)){
+            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
+            authToken=sessionManager.getAuthToken();
+            Helper.setLog("BaseActivity",authToken);
+        }
         if(fadingCircle==null){
             fadingCircle= new Circle();
         }
@@ -118,6 +127,9 @@ public class BaseActivity extends AppCompatActivity {
 
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
 
     public void setToolbarTitle(Toolbar toolbar, String title) {
         setSupportActionBar(toolbar);

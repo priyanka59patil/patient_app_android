@@ -1,6 +1,5 @@
 package com.werq.patient.views.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,16 +11,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.werq.patient.Factory.SummaryCareVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
-import com.werq.patient.databinding.ActivityEncounterBinding;
 import com.werq.patient.databinding.ActivityInstructionBinding;
-import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
 import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
-import com.werq.patient.views.adapter.EncounterAdapter;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 import com.werq.patient.views.adapter.InstructionAdapter;
 
 import java.util.ArrayList;
@@ -40,7 +37,7 @@ public class InstructionActivity extends BaseActivity {
     ActivityInstructionBinding instructionActivityBinding;
     ArrayList<Instruction> instructionArrayList;
     Context mContext;
-    SummeryCareViewModel viewModel;
+    SummaryCareViewModel viewModel;
     InstructionAdapter instructionAdapter;
 
     @Override
@@ -52,10 +49,10 @@ public class InstructionActivity extends BaseActivity {
 
         instructionActivityBinding = DataBindingUtil.setContentView(this,R.layout.activity_instruction);
         ButterKnife.bind(this);
-        viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
+        viewModel= ViewModelProviders.of(this,new SummaryCareVmFactory(getAuthToken())).get(SummaryCareViewModel.class);
         instructionActivityBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        instructionActivityBinding.setSummeryCareViewModel(viewModel);
+        instructionActivityBinding.setSummaryCareViewModel(viewModel);
         initializeVariables();
         instructionAdapter=new InstructionAdapter(mContext,instructionArrayList,viewModel,this);
         setRecyclerView();

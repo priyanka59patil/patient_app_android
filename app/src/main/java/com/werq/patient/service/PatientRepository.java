@@ -41,7 +41,7 @@ public class PatientRepository {
                                   ApiCallback apiCallback, String url){
 
 
-        Call<ApiResponse<DoctorDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(Helper.autoken,doctorId,coworkerTake,coworkerSkip);
+        Call<ApiResponse<DoctorDetailsData>> appointmentDataCall= RetrofitClient.getRetrofit().getDoctorDetails(authToken,doctorId,coworkerTake,coworkerSkip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
 
@@ -50,7 +50,7 @@ public class PatientRepository {
     public void  getAttachments(String authToken,String doctor,String filter, String take, String skip , MutableLiveData<String> toast,
                                 ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<ApiResponse<AttachmentData>> appointmentDataCall= RetrofitClient.getRetrofit().getAttachments(authToken,doctor,filter,take,skip);
 
         RetrofitClient.dynamicApiCall(appointmentDataCall,url,apiCallback,toast);
@@ -70,7 +70,7 @@ public class PatientRepository {
 
     public void  getPatientProfile(String authToken, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-       Helper.setLog("authToken :- ",authToken+"");
+       //Helper.setLog("authToken :- ",authToken+"");
         Call<ApiResponse<PatientProfileData>> call= RetrofitClient.getRetrofit().getPatientProfileData(authToken);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -79,7 +79,7 @@ public class PatientRepository {
 
     public void  getMedicationList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken+"");
+        //Helper.setLog("authToken :- ",authToken+"");
         Call<ApiResponse<MedicationData>> call= RetrofitClient.getRetrofit().getMedicationList(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -87,7 +87,7 @@ public class PatientRepository {
     }
     public void  getEncounterList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken+"");
+        //Helper.setLog("authToken :- ",authToken+"");
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"encounters",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -96,7 +96,7 @@ public class PatientRepository {
 
     public void  getAssessmets(String authToken,MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken+"");
+        //Helper.setLog("authToken :- ",authToken+"");
         Call<ApiResponse<Assessment>> call= RetrofitClient.getRetrofit().getAssessments(authToken);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -105,7 +105,7 @@ public class PatientRepository {
 
     public void  getInstructionList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"instructions",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -114,7 +114,7 @@ public class PatientRepository {
 
     public void  getPlanOfCareList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"planofcare",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -123,7 +123,7 @@ public class PatientRepository {
 
     public void  getHistoryOfProcedureList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"historyofproc",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -132,7 +132,7 @@ public class PatientRepository {
 
     public void  getAllergyList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"allergies",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -141,7 +141,7 @@ public class PatientRepository {
 
     public void  getPastillnessHistoryList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"historyofpastillness",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -150,7 +150,7 @@ public class PatientRepository {
 
     public void  getSocialHistoryList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"socialhistory",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -159,7 +159,7 @@ public class PatientRepository {
 
     public void  getProblemList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<Object> call= RetrofitClient.getRetrofit().getMedicalInfoList(authToken,"problems",take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -169,7 +169,7 @@ public class PatientRepository {
 
     public void  getFilterDoctorList(String authToken, String take, String skip, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("authToken :- ",authToken);
+        //Helper.setLog("authToken :- ",authToken);
         Call<ApiResponse<DoctorListData>> call= RetrofitClient.getRetrofit().getDoctorList(authToken,take,skip);
 
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
@@ -185,7 +185,7 @@ public class PatientRepository {
 
     public void  setNewChatRequest(String authToken, NewChat newChat, MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("setNewChatRequest-authToken :- ",authToken);
+        //Helper.setLog("setNewChatRequest-authToken :- ",authToken);
         Call<ApiResponse<String>> call= RetrofitClient.getRetrofit().sendNewChatRequest(authToken,Helper.ContentType,newChat);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -201,7 +201,7 @@ public class PatientRepository {
     public void  fetchChatList(String authToken, String channelId, int flag, String timestamp, String take, String skip
             , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        //Helper.setLog("fetchChatList-authToken :- ",authToken);
         Call<ApiResponse<ChatMessageData>> call= RetrofitClient.getRetrofit().fetchChatList(authToken,channelId,flag,timestamp,take,skip);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -210,7 +210,7 @@ public class PatientRepository {
     public void  fetchHistoryChatList(String authToken, int flag, String timestamp, String take, String skip
             , MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        //Helper.setLog("fetchChatList-authToken :- ",authToken);
         Call<ApiResponse<ChatHistoryData>> call= RetrofitClient.getRetrofit().getChatHistory(authToken,flag,timestamp,take,skip);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 
@@ -219,7 +219,7 @@ public class PatientRepository {
     public void sendMessageToServer(String authToken, SendMessage sendMessage,
                                     MutableLiveData<String> toast, ApiCallback apiCallback, String url){
 
-        Helper.setLog("fetchChatList-authToken :- ",authToken);
+        //Helper.setLog("fetchChatList-authToken :- ",authToken);
         Call<ApiResponse<Boolean>> call= RetrofitClient.getRetrofit().sendMessageToServer(authToken,Helper.ContentType,sendMessage);
         RetrofitClient.dynamicApiCall(call,url,apiCallback,toast);
 

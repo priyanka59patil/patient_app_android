@@ -1,6 +1,5 @@
 package com.werq.patient.views.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,15 +11,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.werq.patient.Factory.SummaryCareVmFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.base.BaseActivity;
 import com.werq.patient.databinding.ActivityEncounterBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.Encounter;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 import com.werq.patient.views.adapter.EncounterAdapter;
-import com.werq.patient.views.adapter.MedicalInfoAdapter;
 
 import java.util.ArrayList;
 
@@ -38,7 +37,7 @@ public class EncounterActivity extends BaseActivity {
     ActivityEncounterBinding encounterBinding;
     ArrayList<Encounter> encounterArrayList;
     Context mContext;
-    SummeryCareViewModel viewModel;
+    SummaryCareViewModel viewModel;
     EncounterAdapter encounterAdapter;
 
 
@@ -51,10 +50,10 @@ public class EncounterActivity extends BaseActivity {
 
         encounterBinding = DataBindingUtil.setContentView(this,R.layout.activity_encounter);
         ButterKnife.bind(this);
-        viewModel= ViewModelProviders.of(this).get(SummeryCareViewModel.class);
+        viewModel= ViewModelProviders.of(this,new SummaryCareVmFactory(getAuthToken())).get(SummaryCareViewModel.class);
         encounterBinding.setLifecycleOwner(this);
         setBaseViewModel(viewModel);
-        encounterBinding.setSummeryCareViewModel(viewModel);
+        encounterBinding.setSummaryCareViewModel(viewModel);
         initializeVariables();
         encounterAdapter=new EncounterAdapter(mContext,encounterArrayList,viewModel,this);
         setRecyclerView();

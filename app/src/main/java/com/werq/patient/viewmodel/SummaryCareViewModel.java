@@ -39,7 +39,7 @@ import java.util.Date;
 
 import retrofit2.Response;
 
-public class SummeryCareViewModel extends BaseViewModel {
+public class SummaryCareViewModel extends BaseViewModel {
     private static final String TAG = "PatientProfileViewModel";
     private final PatientRepository patientRepository;
     ApiCallback apiCallback = this;
@@ -86,7 +86,8 @@ public class SummeryCareViewModel extends BaseViewModel {
     Context mContext;
 
 
-    public SummeryCareViewModel() {
+    public SummaryCareViewModel(String authToken) {
+        super(authToken);
         patientRepository = new PatientRepository();
         insuranceList=new MutableLiveData<>();
         rvInsuranceVisibility=new MutableLiveData<>();
@@ -121,7 +122,7 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public void fetchPatientProfileData(){
         getLoading().setValue(true);
-        patientRepository.getPatientProfile(Helper.autoken, getToast(), apiCallback, "PatientProfile");
+        patientRepository.getPatientProfile(getAuthToken(), getToast(), apiCallback, "PatientProfile");
 
         /*patientName.setValue("Priya Patil");
         patientDOB.setValue("31-07-1996");
@@ -132,60 +133,60 @@ public class SummeryCareViewModel extends BaseViewModel {
 
     public void fetchMedicationList(int page){
         getLoading().setValue(true);
-        patientRepository.getMedicationList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "MedicationList");
+        patientRepository.getMedicationList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "MedicationList");
         medicationPage=page;
     }
 
     public void fetchEncounterList(int page){
         getLoading().setValue(true);
-        patientRepository.getEncounterList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "EncountersList");
+        patientRepository.getEncounterList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "EncountersList");
         encounterPage=page;
     }
 
     public void fetchAssessments(){
         getLoading().setValue(true);
-        patientRepository.getAssessmets(Helper.autoken, getToast(), apiCallback, "Asssessments");
+        patientRepository.getAssessmets(getAuthToken(), getToast(), apiCallback, "Asssessments");
     }
 
     public void fetchInstruction(int page){
         getLoading().setValue(true);
-        patientRepository.getInstructionList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "Instructions");
+        patientRepository.getInstructionList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "Instructions");
         instructionPage=page;
     }
 
     public void fetchPlanOfCareList(int page){
         getLoading().setValue(true);
-        patientRepository.getPlanOfCareList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "PlanOfCare");
+        patientRepository.getPlanOfCareList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "PlanOfCare");
         planCarePage=page;
     }
 
     public void fetchHistoryOfProcedureList(int page){
         getLoading().setValue(true);
-        patientRepository.getHistoryOfProcedureList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "HistoryOfProcedure");
+        patientRepository.getHistoryOfProcedureList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "HistoryOfProcedure");
         historyProcedurePage=page;
     }
 
     public void fetchAllergyList(int page){
         getLoading().setValue(true);
-        patientRepository.getAllergyList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "AllergyList");
+        patientRepository.getAllergyList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "AllergyList");
         allergyPage=page;
     }
 
     public void fetchPastillnessHistoryList(int page){
         getLoading().setValue(true);
-        patientRepository.getPastillnessHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "PastillnessHistoryList");
+        patientRepository.getPastillnessHistoryList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "PastillnessHistoryList");
         allergyPage=page;
     }
 
     public void fetchSocialHistoryList(int page){
         getLoading().setValue(true);
-        patientRepository.getSocialHistoryList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "SocialHistoryList");
+        patientRepository.getSocialHistoryList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "SocialHistoryList");
         allergyPage=page;
     }
 
     public void fetchProblemList(int page){
         getLoading().setValue(true);
-        patientRepository.getProblemList(Helper.autoken,"10",page*10+"", getToast(), apiCallback, "ProblemList");
+        patientRepository.getProblemList(getAuthToken(),"10",page*10+"", getToast(), apiCallback, "ProblemList");
         allergyPage=page;
     }
 

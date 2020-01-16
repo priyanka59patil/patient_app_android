@@ -37,7 +37,7 @@ import retrofit2.Response;
 public class TabAppoinmentViewModel extends BaseViewModel {
 
     private static final String TAG = "TabAppoinmentViewModel";
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository= new AppointmentRepository();
     public MutableLiveData<ArrayList<AppointmentResult>> listUpcommingAppointments;
     public MutableLiveData<ArrayList<AppointmentResult>> listHistoryAppointments;
     public MutableLiveData<List<AttachmentResult>> attachmentList;
@@ -65,12 +65,10 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
 
     public TabAppoinmentViewModel() {
-        appointmentRepository = new AppointmentRepository();
     }
 
-    public TabAppoinmentViewModel(boolean isFromUpcoming) {
-
-        appointmentRepository = new AppointmentRepository();
+    public TabAppoinmentViewModel(String authToken,boolean isFromUpcoming) {
+        super(authToken);
         disposable = new CompositeDisposable();
         this.isFromUpcoming = isFromUpcoming;
         rvVisibility = new MutableLiveData<>();
@@ -468,7 +466,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
         getLoading().setValue(true);
         upcommingPageNo = page;
 
-            appointmentRepository.getUpcommingAppoitment(Helper.autoken, "10", "" + page * 10,
+            appointmentRepository.getUpcommingAppoitment(getAuthToken(), "10", "" + page * 10,
                     getToast(), apiCallback, "UpcomingAppointment");
 
     }
@@ -477,13 +475,13 @@ public class TabAppoinmentViewModel extends BaseViewModel {
 
         getLoading().setValue(true);
         historyPageNo = page;
-        appointmentRepository.getHistoryAppoitment(Helper.autoken, "10", "" + page * 10,
+        appointmentRepository.getHistoryAppoitment(getAuthToken(), "10", "" + page * 10,
                 getToast(), apiCallback, "HistoryAppointment");
     }
 
     public void getAppointmentData(int appointmentId) {
         getLoading().setValue(true);
-        appointmentRepository.getAppointmentDetails(Helper.autoken, appointmentId, getToast(), apiCallback, "GetAppointmentDetails");
+        appointmentRepository.getAppointmentDetails(getAuthToken(), appointmentId, getToast(), apiCallback, "GetAppointmentDetails");
     }
 
     public List<AttachmentResult> prepareAttachmentsList(ApptDetailsData apptDetailsData) {
@@ -533,7 +531,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             confirmAppointment.setID(appointmentResultData.getValue().getiD());
             confirmAppointment.setConfirmByPatient("true");
             getLoading().setValue(true);
-            appointmentRepository.setConfirmAppointment(Helper.autoken, confirmAppointment, getToast(), apiCallback, "ConfirmAppointment");
+            appointmentRepository.setConfirmAppointment(getAuthToken(), confirmAppointment, getToast(), apiCallback, "ConfirmAppointment");
         }
     }
 
@@ -545,7 +543,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
             //getLoading().setValue(true);
 
 
-            appointmentRepository.getTimeSlots(Helper.autoken, appointmentResultData.getValue().getLocation().getiD()
+            appointmentRepository.getTimeSlots(getAuthToken(), appointmentResultData.getValue().getLocation().getiD()
                     ,date, getToast(), apiCallback, "TimeSlots");
         }
     }
@@ -587,7 +585,7 @@ public class TabAppoinmentViewModel extends BaseViewModel {
                     Helper.setLog("rescheduleAppointment",rescheduleAppointment.toString());
                     getLoading().setValue(true);
 
-                    appointmentRepository.sendRescheduleRequest(Helper.autoken,rescheduleAppointment
+                    appointmentRepository.sendRescheduleRequest(getAuthToken(),rescheduleAppointment
                             ,getToast(),apiCallback,"RescheduleRequest");
 
                 } catch (ParseException e) {

@@ -1,7 +1,6 @@
 package com.werq.patient.views.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
 import com.werq.patient.service.model.ResponcejsonPojo.Allergy;
-import com.werq.patient.service.model.ResponcejsonPojo.HistoryOfProcedure;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +26,7 @@ public class AllergiesAdapter extends RecyclerView.Adapter<AllergiesAdapter.Proc
 
     public AllergiesAdapter(Context mContext,
                             ArrayList<Allergy> allergyList,
-                            SummeryCareViewModel viewModel,
+                            SummaryCareViewModel viewModel,
                             LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;

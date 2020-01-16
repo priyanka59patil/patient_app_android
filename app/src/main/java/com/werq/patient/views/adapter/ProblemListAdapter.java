@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
 import com.werq.patient.service.model.ResponcejsonPojo.Problem;
-import com.werq.patient.service.model.ResponcejsonPojo.SocialHistory;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class ProblemListAdapter extends RecyclerView.Adapter<ProblemListAdapter.
 
     public ProblemListAdapter(Context mContext,
                               ArrayList<Problem> problemList,
-                              SummeryCareViewModel viewModel,
+                              SummaryCareViewModel viewModel,
                               LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;

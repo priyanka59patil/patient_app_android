@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Controller.FilesController;
+import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.Interfaces.BasicActivities;
 import com.werq.patient.Interfaces.Callback.DiologListner;
 import com.werq.patient.Interfaces.FilesInteface;
@@ -41,6 +42,7 @@ import com.werq.patient.views.ui.ViewVisitNoteActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,7 +99,7 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
         attachmentList = new ArrayList<>();
         attachmentsAdapter = new AttachmentsAdapter(mContext, attachmentList, recyclerViewClickListerner, true);
         mBottomSheetDialog = DiologHelper.createDialogFromBottom(mContext, R.layout.filter_diolog_layout, diologListner);
-        viewModel = ViewModelProviders.of(getActivity()).get(BottomTabViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity(),new BottomTabVmFactory(getAuthToken())).get(BottomTabViewModel.class);
 
         refreshData();
 
@@ -266,6 +268,9 @@ public class FilesFragment extends BaseFragment implements View.OnClickListener,
             case R.id.tvFilterDoctors:
                 Intent intent = new Intent(mContext, FilterDoctorList.class);
 
+                Helper.setLog("selectedDoctors",selectedDoctors);
+                String[] doctors = selectedDoctors.split(",");
+                intent.putExtra("selectedDoctors",doctors);
                 startActivityForResult(intent, 2);
                 break;
             case R.id.tvFilterFiles:

@@ -12,9 +12,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
-import com.werq.patient.service.model.ResponcejsonPojo.Instruction;
 import com.werq.patient.service.model.ResponcejsonPojo.PlanOfCare;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class PlanOfCareAdapter extends RecyclerView.Adapter<PlanOfCareAdapter.Ap
 
     public PlanOfCareAdapter(Context mContext,
                              ArrayList<PlanOfCare> planOfCareArrayList,
-                             SummeryCareViewModel viewModel,
+                             SummaryCareViewModel viewModel,
                              LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;

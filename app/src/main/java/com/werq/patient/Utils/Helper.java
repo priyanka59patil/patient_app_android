@@ -46,7 +46,6 @@ import java.util.regex.PatternSyntaxException;
 public class Helper {
     public static Gson gson;
     public static String ContentType ="application/json";
-    public static String autoken ;
     public static String idToken ;
 
     public static String MMM_DD_YYYY="MMM dd, yyyy";
@@ -55,11 +54,6 @@ public class Helper {
     public static String HH_MM="hh:mm";
     public static String HH_MM_a="hh:mmaa";
     public static String YYYY_MM_DD_T_HH_MM_SS=YYYY_MM_DD+"'T'"+HH_MM_SS;
-
-
-    public static void setAutoken(String autoken) {
-        Helper.autoken = autoken;
-    }
 
     public static void setIdToken(String idToken) {
         Helper.idToken = idToken;

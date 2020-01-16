@@ -2,8 +2,8 @@
 <layout>
     <data>
         <variable
-            name="summeryCareViewModel"
-            type="com.werq.patient.viewmodel.SummeryCareViewModel" />
+            name="summaryCareViewModel"
+            type="com.werq.patient.viewmodel.SummaryCareViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +40,7 @@
             android:id="@+id/tvAssessments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@={summeryCareViewModel.assessments}"
+            android:text="@={summaryCareViewModel.assessments}"
             android:textColor="@color/color_text"
             android:layout_marginTop="@dimen/insurance_text_margin_top"
             app:layout_constraintLeft_toLeftOf="parent"

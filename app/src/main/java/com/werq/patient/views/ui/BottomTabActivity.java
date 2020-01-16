@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
@@ -69,7 +70,6 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     private MenuItem setting;
     private MenuItem add;
     private MenuItem search;
-    SessionManager sessionManager;
 
     private void VisibleMenuItem(boolean addValue, boolean settingValue, boolean searchValue) {
         if (add != null) {
@@ -139,7 +139,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         //setContentView(R.layout.activity_bottom_tab);
         ActivityBottomTabBinding bottomTabBinding = DataBindingUtil.setContentView(this, R.layout.activity_bottom_tab);
         bottomTabBinding.setLifecycleOwner(this);
-        tabViewModel = ViewModelProviders.of(this).get(BottomTabViewModel.class);
+        tabViewModel = ViewModelProviders.of(this,new BottomTabVmFactory(getAuthToken())).get(BottomTabViewModel.class);
         setBaseViewModel(tabViewModel);
         bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
@@ -154,13 +154,6 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(chatFragment).commit();
         fm.beginTransaction().add(R.id.mainLayout,appointmentFragment, "1").commit();*/
 
-       sessionManager=SessionManager.getSessionManager(mContext);
-       if(TextUtils.isEmpty(Helper.autoken)){
-           Helper.autoken= sessionManager.getAuthToken();
-       }
-        if(TextUtils.isEmpty(Helper.idToken)){
-            Helper.idToken= sessionManager.getRefreshTokenId();
-        }
 
         tabViewModel.getOpenFrag().observe(this, s -> {
             if (s != null) {

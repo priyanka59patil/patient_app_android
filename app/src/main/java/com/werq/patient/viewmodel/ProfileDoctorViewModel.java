@@ -43,8 +43,9 @@ public class ProfileDoctorViewModel extends BaseViewModel {
     private CompositeDisposable disposable;
     Context mContext;
 
-    public ProfileDoctorViewModel( Context mContext) {
+    public ProfileDoctorViewModel(Context mContext,String authToken) {
 
+        super(authToken);
         this.mContext=mContext;
 
         Log.e("ProfileDoctorViewModel", "init");
@@ -88,7 +89,7 @@ public class ProfileDoctorViewModel extends BaseViewModel {
                 coworkerLoading.setValue(true);
             } else
                 getLoading().setValue(true);
-            patientRepository.getDocterDetails(Helper.autoken, doctorId, getToast(), "10", page * 10 + "", apiCallback, "DoctorDetails");
+            patientRepository.getDocterDetails(getAuthToken(), doctorId, getToast(), "10", page * 10 + "", apiCallback, "DoctorDetails");
         }
     }
 

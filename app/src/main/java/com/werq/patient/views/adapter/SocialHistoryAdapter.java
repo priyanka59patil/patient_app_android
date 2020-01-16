@@ -12,9 +12,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.werq.patient.R;
-import com.werq.patient.service.model.ResponcejsonPojo.PastillnessHistory;
 import com.werq.patient.service.model.ResponcejsonPojo.SocialHistory;
-import com.werq.patient.viewmodel.SummeryCareViewModel;
+import com.werq.patient.viewmodel.SummaryCareViewModel;
 
 import java.util.ArrayList;
 
@@ -28,7 +27,7 @@ public class SocialHistoryAdapter extends RecyclerView.Adapter<SocialHistoryAdap
 
     public SocialHistoryAdapter(Context mContext,
                                 ArrayList<SocialHistory> socialHistoryList,
-                                SummeryCareViewModel viewModel,
+                                SummaryCareViewModel viewModel,
                                 LifecycleOwner lifecycleOwner)
     {
         this.mContext = mContext;
