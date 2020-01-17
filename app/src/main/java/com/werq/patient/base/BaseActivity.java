@@ -35,8 +35,9 @@ public class BaseActivity extends AppCompatActivity {
     Context mContext;
     String TAG="BaseActivity";
     public Sprite fadingCircle;
+    SessionManager sessionManager;
     private String authToken;
-
+    private String refreshTokenId;
 
     public void setBaseViewModel(BaseViewModel viewModel) {
         this.baseViewModel = viewModel;
@@ -47,11 +48,22 @@ public class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        if(TextUtils.isEmpty(authToken)){
-            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
-            authToken=sessionManager.getAuthToken();
-            Helper.setLog("BaseActivity",authToken);
+        if(sessionManager==null){
+            sessionManager=SessionManager.getSessionManager(mContext);
         }
+
+        if(TextUtils.isEmpty(authToken)){
+            authToken=sessionManager.getAuthToken();
+
+            Helper.setLog("BaseActivity-getAuthToken",authToken);
+        }
+
+        if(TextUtils.isEmpty(Helper.refreshTokenId)){
+            refreshTokenId=sessionManager.getRefreshTokenId();
+            Helper.refreshTokenId=refreshTokenId;
+            Helper.setLog("BaseActivity-refreshTokenId",refreshTokenId);
+        }
+
         if(fadingCircle==null){
             fadingCircle= new Circle();
         }
@@ -63,11 +75,9 @@ public class BaseActivity extends AppCompatActivity {
                 progressDialog.dismiss();
         });*/
 
-
-
-
-
     }
+
+
 
     @Override
     protected void onResume() {
@@ -125,6 +135,15 @@ public class BaseActivity extends AppCompatActivity {
 
         }
 
+
+    }
+
+    public void setRefreshTokenId(String refreshTokenId) {
+        this.refreshTokenId = refreshTokenId;
+    }
+
+    public String getRefreshTokenId() {
+        return refreshTokenId;
     }
 
     public String getAuthToken() {

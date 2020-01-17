@@ -44,8 +44,6 @@ public class SplashActivity extends AppCompatActivity {
                launchNextScreen();
             }
 
-
-
         }, 2000);
 
 

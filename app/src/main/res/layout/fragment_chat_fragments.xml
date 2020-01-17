@@ -126,7 +126,7 @@
                 app:inputMaxLines="3"
                 android:maxLength="5"
                 app:inputTextColor="@color/black"
-                app:showAttachmentButton="true" />
+                app:showAttachmentButton="false" />
 
 
         </RelativeLayout>

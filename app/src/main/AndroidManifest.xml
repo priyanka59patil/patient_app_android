@@ -26,6 +26,7 @@
         android:roundIcon="@drawable/ic_icon_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup"
         tools:node="merge">
         <activity android:name=".views.ui.BookNewAppointmentActivity"
             android:label="@string/new_appointment"
@@ -41,6 +42,9 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service android:name=".applicationServices.OnAppKillService"
+            android:stopWithTask="false"></service>
 
         <activity
             android:name="com.karumi.dexter.DexterActivity"
@@ -83,7 +87,7 @@
             android:label="@string/title_activity_chat_topics"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.ui.ChatRoomActivity"
+            android:name=".views.ui.SupportChatActivity"
             android:label="@string/title_activity_chat_room"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

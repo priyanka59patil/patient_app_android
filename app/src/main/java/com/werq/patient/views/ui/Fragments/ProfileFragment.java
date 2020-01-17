@@ -135,8 +135,8 @@ public class ProfileFragment extends BaseFragment implements BasicActivities, Di
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new PagerAdapter(getChildFragmentManager());
-        adapter.addFragment(/*new MedicalInfoFragment()*/medicalInfoFragment, getString(R.string.medical_info) );
-        adapter.addFragment(/*new InsuranceFragment()*/insuranceFragment, getString(R.string.insurance) );
+        adapter.addFragment(new MedicalInfoFragment(), getString(R.string.medical_info) );
+        adapter.addFragment(new InsuranceFragment(), getString(R.string.insurance) );
         adapter.addFragment(new MedicationsFragment(),getString(R.string.medications));
         viewpager.setAdapter(adapter);
 

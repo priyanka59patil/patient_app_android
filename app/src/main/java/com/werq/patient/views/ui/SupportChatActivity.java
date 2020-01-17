@@ -1,7 +1,6 @@
 package com.werq.patient.views.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,54 +8,58 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.base.BaseActivity;
-import com.werq.patient.databinding.ActivityChatRoomBinding;
+import com.werq.patient.base.CustomBaseActivity;
+import com.werq.patient.databinding.ActivitySupportChatBinding;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
+import com.werq.patient.views.ui.Fragments.ChatFragments;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class ChatRoomActivity extends BaseActivity implements View.OnClickListener {
+public class SupportChatActivity
+        extends /*CustomBaseActivity<ActivitySupportChatBinding,ChatFragmentViewModel>*/BaseActivity
+        implements View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.btStartConversation)
-    Button btStartConversation;
     BottomSheetDialog mBottomSheetDialog;
-    ChatFragmentViewModel viewModel;
+
     private Context mContext;
     private EditText chooseTopics;
+    FragmentManager fm = getSupportFragmentManager();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_chat_room);
-        ActivityChatRoomBinding activityChatRoomBinding =
-                DataBindingUtil.setContentView(this, R.layout.activity_chat_room);
-        viewModel = ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
+        setContentView(R.layout.activity_support_chat);
+        /*ActivitySupportChatBinding activityChatRoomBinding = DataBindingUtil.setContentView(this,R.layout.activity_support_chat);
         activityChatRoomBinding.setLifecycleOwner(this);
-        activityChatRoomBinding.setChatViewModel(viewModel);
+        viewModel = ViewModelProviders.of(this).get(ChatFragmentViewModel.class);
+        setBaseViewModel(viewModel);
+        activityChatRoomBinding.setChatViewModel(viewModel);*/
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         initializeVariables();
-        Helper.setToolbarwithBack(getSupportActionBar(), getResources().getString(R.string.value_doctor_name));
-        createDialog();
+        Helper.setToolbarwithBack(getSupportActionBar(), "Chats");
+        fm.beginTransaction().add(R.id.mainLayout, new ChatFragments(), "1").commit();
+       // createDialog();
 
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.chat_menu, menu);
+       // getMenuInflater().inflate(R.menu.chat_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -85,13 +88,13 @@ public class ChatRoomActivity extends BaseActivity implements View.OnClickListen
         chooseTopics.setOnClickListener(this::onClick);
     }
 
-    @OnClick(R.id.btStartConversation)
+    /*@OnClick(R.id.btStartConversation)
     public void onViewClicked() {
         mBottomSheetDialog.show();
     }
-
+*/
     @Override
     public void onClick(View view) {
-        startActivity(new Intent(mContext, ChatTopicsActivity.class));
+
     }
 }

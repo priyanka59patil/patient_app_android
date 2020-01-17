@@ -84,6 +84,11 @@ implements CustomBaseFragment.Callback{
             Helper.setLog("BaseActivity",authToken);
         }
 
+        if(TextUtils.isEmpty(Helper.refreshTokenId)){
+            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
+            Helper.refreshTokenId=sessionManager.getRefreshTokenId();
+        }
+
         if(fadingCircle==null){
             fadingCircle= new Circle();
         }

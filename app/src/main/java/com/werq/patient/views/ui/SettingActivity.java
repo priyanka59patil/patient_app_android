@@ -91,7 +91,7 @@ public class SettingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.tvPassword, R.id.tvChangePassword, R.id.tvLogOut})
+    @OnClick({R.id.tvPassword, R.id.tvChangePassword, R.id.tvLogOut, R.id.tvSupport})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tvPassword:
@@ -102,6 +102,10 @@ public class SettingActivity extends AppCompatActivity {
             case R.id.tvLogOut:
 
                 SessionManager.getSessionManager(mContext).logoutUser(mContext);
+                break;
+            case R.id.tvSupport:
+
+                startActivity(new Intent(mContext, SupportChatActivity.class));
                 break;
         }
     }

@@ -10,6 +10,7 @@
         android:id="@+id/messages"
         android:icon="@drawable/message"
         android:title=""
+        android:visible="false"
         />
 
     <item

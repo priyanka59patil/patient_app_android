@@ -31,7 +31,9 @@ public abstract class BaseFragment extends Fragment {
     BaseViewModel baseViewModel;
     Context mContext;
     public static Sprite fadingcircle;
+    SessionManager sessionManager;
     private String authToken;
+    private String refreshTokenId;
 
     public void setBaseViewModel(BaseViewModel viewModel){
         this.baseViewModel=viewModel;
@@ -42,11 +44,18 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mContext=getContext();
+        if(sessionManager==null){
+            sessionManager=SessionManager.getSessionManager(mContext);
+        }
         if(TextUtils.isEmpty(authToken)){
-            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
             authToken=sessionManager.getAuthToken();
            // Helper.setLog("BaseFragment",authToken);
         }
+        if(TextUtils.isEmpty(Helper.refreshTokenId)){
+            refreshTokenId=sessionManager.getRefreshTokenId();
+            Helper.refreshTokenId=refreshTokenId;
+        }
+
         if(fadingcircle==null){
             fadingcircle=new Circle();
         }
@@ -114,6 +123,14 @@ public abstract class BaseFragment extends Fragment {
         if(progressBar!=null){
             progressBar.setVisibility(View.GONE);
         }
+    }
+
+    public String getRefreshTokenId() {
+        return refreshTokenId;
+    }
+
+    public void setRefreshTokenId(String refreshTokenId) {
+        this.refreshTokenId = refreshTokenId;
     }
 
     public String getAuthToken() {

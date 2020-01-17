@@ -72,7 +72,8 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorLightGreyBackground"
         app:layout_constraintTop_toBottomOf="@+id/tvChangePassword"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/textView5"
@@ -82,7 +83,8 @@
         android:layout_marginTop="16dp"
         android:text="Appointment Reminders"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/textView6"
@@ -94,7 +96,8 @@
         android:textStyle="bold"
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2" />
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv24HoursBefore"
@@ -105,7 +108,8 @@
         android:text="24 Hours Before"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:visibility="gone"/>
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
@@ -113,7 +117,8 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorLightGreyBackground"
         app:layout_constraintTop_toBottomOf="@+id/tv24HoursBefore"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv1HourBefore"
@@ -124,7 +129,8 @@
         android:text="1 Hour Before"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        android:visibility="gone"/>
     <View
         android:id="@+id/view4"
         android:layout_width="match_parent"
@@ -134,6 +140,27 @@
         app:layout_constraintTop_toBottomOf="@+id/tv1HourBefore"
         tools:layout_editor_absoluteX="16dp" />
 
+
+    <TextView
+        android:id="@+id/tvSupport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginStart="@dimen/main_layout_padding"
+        android:text="Support"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGreyBackground"
+        app:layout_constraintTop_toBottomOf="@+id/tvSupport"
+        />
+
+
     <TextView
         android:id="@+id/lblAppVersion"
         android:layout_width="wrap_content"
@@ -142,7 +169,7 @@
         android:layout_marginTop="16dp"
         android:text="App Version"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view4" />
+        app:layout_constraintTop_toBottomOf="@+id/view5" />
 
 
     <TextView
@@ -165,6 +192,8 @@
         app:layout_constraintTop_toBottomOf="@+id/tvAppVersion"
         tools:layout_editor_absoluteX="16dp" />
 
+
+
     <TextView
         android:id="@+id/tvLogOut"
         android:layout_width="match_parent"
@@ -177,7 +206,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view6" />
     <View
-        android:id="@+id/view5"
+        android:id="@+id/view7"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorLightGreyBackground"

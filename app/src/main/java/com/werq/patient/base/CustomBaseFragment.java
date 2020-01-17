@@ -91,6 +91,11 @@ public abstract class CustomBaseFragment<T extends ViewDataBinding, V extends Ba
             authToken=sessionManager.getAuthToken();
            // Helper.setLog("BaseFragment",authToken);
         }
+
+        if(TextUtils.isEmpty(Helper.refreshTokenId)){
+            SessionManager sessionManager=SessionManager.getSessionManager(mContext);
+            Helper.refreshTokenId=sessionManager.getRefreshTokenId();
+        }
         if(fadingcircle==null){
             fadingcircle=new Circle();
         }

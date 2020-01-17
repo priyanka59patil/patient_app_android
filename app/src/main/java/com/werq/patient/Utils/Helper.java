@@ -46,7 +46,7 @@ import java.util.regex.PatternSyntaxException;
 public class Helper {
     public static Gson gson;
     public static String ContentType ="application/json";
-    public static String idToken ;
+    public static String refreshTokenId ;
 
     public static String MMM_DD_YYYY="MMM dd, yyyy";
     public static String YYYY_MM_DD="yyyy-MM-dd";
@@ -55,8 +55,8 @@ public class Helper {
     public static String HH_MM_a="hh:mmaa";
     public static String YYYY_MM_DD_T_HH_MM_SS=YYYY_MM_DD+"'T'"+HH_MM_SS;
 
-    public static void setIdToken(String idToken) {
-        Helper.idToken = idToken;
+    public static String getRefreshTokenId() {
+        return refreshTokenId;
     }
 
     public static Gson getGsonInstance(){
@@ -281,6 +281,12 @@ public class Helper {
             return false;
         }
 
+    }
+
+
+    public static boolean isNumeric(String s) {
+        String pattern = "^[0-9]*$";
+        return s.matches(pattern);
     }
 
 

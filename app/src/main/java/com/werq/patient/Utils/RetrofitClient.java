@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.werq.patient.Interfaces.Callback.ApiCallback;
 import com.werq.patient.Interfaces.ApiInterface;
+import com.werq.patient.service.model.ResponcejsonPojo.ApiResponse;
 import com.werq.patient.service.model.ResponeError.ErrorData;
 
 import java.io.IOException;
@@ -167,6 +168,95 @@ public class RetrofitClient {
 
     }
 
+
+    public void sendRefreshTokenCall(){
+        Call<Object> call=apiInterface.refreshAuthToken("");
+        call.enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, retrofit2.Response<Object> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+
+            }
+        });
+    }
+    public static <T> void refreshTokenCall(Call<T> call, String url, ApiCallback apiCallback,
+                                          MutableLiveData<String> mToast/*,String refreshTokenId,long timestamp*/) {
+
+        TAG="dynamicApiCall";
+        call.enqueue(new Callback<T>() {
+            @Override
+            public void onResponse(Call<T> call, retrofit2.Response<T> response) {
+                Helper.setLog(TAG, "Responce code :- " + response.code());
+                Helper.setLog(TAG, "Request Url :- " + call.request().url());
+                String json = Helper.getGsonInstance().toJson(response.body());
+                Helper.setLog(TAG, "json :- " + json);
+                Helper.setLog(TAG, "url :- " + url);
+                String errorMessage = null;
+                if (response.errorBody() != null) {
+
+                    Converter<ResponseBody, ErrorData> errorConvertor =
+                            RetrofitClient.getClientOnly().responseBodyConverter(ErrorData.class, new Annotation[0]);
+                    try {
+                        ErrorData errorData = errorConvertor.convert(response.errorBody());
+                        Log.e(TAG, "jObjError: " + errorData.toString());
+                        errorMessage = errorData.getError().getMessage();
+                    } catch (IOException e) {
+                        Helper.setExceptionLog(TAG + "-IOException: ", e);
+                    } catch (Exception e) {
+                        Helper.setExceptionLog(TAG + "-Exception: ", e);
+                    }
+
+
+                }
+
+                switch (response.code()) {
+
+                    case 200:
+                        apiCallback.onSuccess(url, response);
+                        break;
+
+                    case 400:
+                        if (response.errorBody() != null && errorMessage != null) {
+                            Helper.setLog(TAG, "json error :- " + errorMessage);
+                            mToast.setValue(errorMessage);
+                        }
+                        apiCallback.onError(url, "400", errorMessage);
+                        break;
+                    case 500:
+                        if (response.errorBody() != null && errorMessage != null) {
+                            Helper.setLog(TAG, "json error :- " + errorMessage);
+                            mToast.setValue(errorMessage);
+                        }
+                        apiCallback.onError(url, "500", errorMessage);
+                        break;
+
+                    case 404:
+                        mToast.setValue("Server Not Found");
+                        apiCallback.onError(url, "400", errorMessage);
+                        break;
+
+                    default:
+
+                        mToast.setValue("Something went wrong ");
+                        apiCallback.onError(url, "400", errorMessage);
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<T> call, Throwable t) {
+                Helper.setLog(TAG, "Retrofit onFailure Url :- " + call.request().url());
+                Helper.setLog(TAG, "Retrofit onFailure :- " + t.getMessage());
+            }
+        });
+
+    }
 
 
 }

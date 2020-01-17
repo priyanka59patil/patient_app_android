@@ -1,7 +1,10 @@
 package com.werq.patient.views.ui.Fragments;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,16 +14,24 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.FirebaseApp;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.stfalcon.chatkit.utils.DateFormatter;
+import com.werq.patient.BR;
 import com.werq.patient.Factory.ChatFragmentVmFactory;
 import com.werq.patient.Interfaces.Callback.RecyclerViewClickListerner;
 import com.werq.patient.R;
@@ -31,9 +42,12 @@ import com.werq.patient.Utils.SingleCustomIncomingTextMessageViewHolder;
 import com.werq.patient.Utils.SingleCustomOutcomingImageMessageViewHolder;
 import com.werq.patient.Utils.SingleCustomOutcomingTextMessageViewHolder;
 import com.werq.patient.base.BaseFragment;
+import com.werq.patient.base.CustomBaseFragment;
+import com.werq.patient.databinding.FragmentChatFragmentsBinding;
+import com.werq.patient.databinding.FragmentMedicalInfoBinding;
 import com.werq.patient.service.model.chat.Message;
 import com.werq.patient.viewmodel.ChatFragmentViewModel;
-import com.werq.patient.views.ui.ChatRoomActivity;
+import com.werq.patient.views.ui.SupportChatActivity;
 
 import java.util.Date;
 
@@ -41,7 +55,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ChatFragments extends BaseFragment implements RecyclerViewClickListerner, MessagesListAdapter.OnLoadMoreListener,
+public class ChatFragments extends BaseFragment
+        implements RecyclerViewClickListerner, MessagesListAdapter.OnLoadMoreListener,
         DateFormatter.Formatter{
 
 
@@ -63,7 +78,14 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
     int page =0;
     int prevItemCount =0;
     private boolean loading = true;
+    FragmentChatFragmentsBinding chatFragmentsBinding;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,49 +95,16 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         View view = inflater.inflate(R.layout.fragment_chat_fragments, container, false);
         mContext = getActivity();
         FirebaseApp.initializeApp(getActivity().getApplicationContext());
+        if(chatFragmentsBinding==null){
+            chatFragmentsBinding= FragmentChatFragmentsBinding.bind(view);
+        }
+        chatFragmentsBinding.setLifecycleOwner(this);
         viewModel = ViewModelProviders.of(this,new ChatFragmentVmFactory(getAuthToken())).get(ChatFragmentViewModel.class);
         setBaseViewModel(viewModel);
+        chatFragmentsBinding.setChatViewModel(viewModel);
         viewModel.setSessionManager(SessionManager.getSessionManager(mContext));
         ButterKnife.bind(this, view);
         inilizeVariables();
-
-
-        input.setInputListener(new MessageInput.InputListener() {
-            @Override
-            public boolean onSubmit(CharSequence inputString) {
-                if (Helper.hasNetworkConnection(mContext)) {
-
-                    if (!inputString.toString().trim().isEmpty()) {
-
-                        if(!viewModel.isFirstMsgSent()){
-
-                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
-                            viewModel.setNewChat(inputString.toString().trim());
-                            input.getInputEditText().setText("");
-
-                        }
-                        else {
-
-                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
-                            viewModel.sendMessageToServer(inputString.toString().trim());
-                            input.getInputEditText().setText("");
-                        }
-
-
-
-                    }
-
-
-
-                } else {
-                    Helper.showToast(mContext, getString(R.string.no_network_conection));
-                    return false;
-                }
-
-                return true;
-            }
-        });
-
 
         initImageLoader();
 
@@ -127,20 +116,20 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
 
             if(messages.size()>0){
 
-                    for (int i = 0; i < messages.size(); i++) {
-                        Helper.setLog("chat obj initial",messages.get(i).toString());
-                    }
+                for (int i = 0; i < messages.size(); i++) {
+                    Helper.setLog("chat obj initial",messages.get(i).toString());
+                }
 
-                    if(page==0){
-                        messagesAdapter.clear();
-                    }
+                if(page==0){
+                    messagesAdapter.clear();
+                }
 
-                    messagesAdapter.addToEnd(messages, true);
-                    messagesAdapter.notifyDataSetChanged();
+                messagesAdapter.addToEnd(messages, true);
+                messagesAdapter.notifyDataSetChanged();
 
-                    viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
-                    Helper.setLog("last msg timestamp",messages.get(0).getId()+"");
-                    viewModel.getFirstMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
+                viewModel.getLastMessageTimestamp().setValue(Long.valueOf(messages.get(0).getId()));
+                Helper.setLog("last msg timestamp",messages.get(0).getId()+"");
+                viewModel.getFirstMessageTimestamp().setValue(Long.valueOf(messages.get(messages.size()-1).getId()));
 
 
             }
@@ -184,6 +173,38 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
             }
         });
 
+        input.setInputListener(new MessageInput.InputListener() {
+            @Override
+            public boolean onSubmit(CharSequence inputString) {
+                if (Helper.hasNetworkConnection(mContext)) {
+
+                    if (!inputString.toString().trim().isEmpty()) {
+
+                        if(!viewModel.isFirstMsgSent()){
+
+                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
+                            viewModel.setNewChat(inputString.toString().trim());
+                            input.getInputEditText().setText("");
+
+                        }
+                        else {
+
+                            viewModel.getTypedMsg().setValue(inputString.toString().trim());
+                            viewModel.sendMessageToServer(inputString.toString().trim());
+                            input.getInputEditText().setText("");
+                        }
+
+                    }
+
+                } else {
+                    Helper.showToast(mContext, getString(R.string.no_network_conection));
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
         return view;
     }
 
@@ -205,7 +226,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
 
     @Override
     public void onclick(int position) {
-        startActivity(new Intent(mContext, ChatRoomActivity.class));
+        startActivity(new Intent(mContext, SupportChatActivity.class));
 
     }
 
@@ -234,7 +255,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
         messagesList.setAdapter(messagesAdapter);
 
 
-       /* messagesAdapter.setOnMessageClickListener(new MessagesListAdapter.OnMessageClickListener<Message>() {
+        messagesAdapter.setOnMessageClickListener(new MessagesListAdapter.OnMessageClickListener<Message>() {
             @Override
             public void onMessageClick(Message message) {
 
@@ -242,13 +263,13 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                 if (message.getMediaType() == null && message.getText() != null) {
                     String messageText = message.getText();
                     if (messageText.length() == 10 && Helper.isNumeric(messageText) && !messageText.startsWith("0")) {
-                        Log.e(TAG, "onMessageClick: this is contact no");
+                        Helper.setLog("ChatMsgClick","onMessageClick: this is contact no");
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                         callIntent.setData(Uri.parse("tel:" + messageText.trim()));
 
                         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
-                            Dexter.withActivity(activity).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
+                            Dexter.withActivity(getActivity()).withPermission(Manifest.permission.CALL_PHONE).withListener(new PermissionListener() {
                                 @Override
                                 public void onPermissionGranted(PermissionGrantedResponse response) {
                                     // permission is granted
@@ -260,7 +281,7 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                                     // check for permanent denial of permission
                                     if (response.isPermanentlyDenied()) {
 
-                                        Helper.setSnackbarWithMsg("Phone access is needed to make call", toolbar);
+                                        Helper.setSnackbarWithMsg("Phone access is needed to make call",input );
                                     }
                                 }
 
@@ -278,12 +299,10 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                             mContext.startActivity(callIntent);
                         }
 
-                    } else if (isValidLink(messageText)) {
-                           *//* if(!messageText.startsWith("http") )
+                    } else if (Helper.isValidUrl(messageText)) {
+                            if(!messageText.startsWith("http") )
                                messageText="http://"+messageText;
 
-                            if(isValid(messageText))
-                            {*//*
                         Uri uri;
                         if (messageText.contains("http://") || messageText.contains("https://")) {
                             uri = Uri.parse(messageText); // missing 'http://' will cause crashed
@@ -291,15 +310,14 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                             uri = Uri.parse("http://" + messageText); // missing 'http://' will cause crashed
 
                         }
-                        Log.e(TAG, "onMessageClick: " + uri.getPath());
+                        Helper.setLog("ChatMsgClick","onMessageClick:"+ uri.getPath());
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         mContext.startActivity(intent);
-                        //}
 
                     }
 
                 }
-                if (message.getImageUrl() != null) {
+                /*if (message.getImageUrl() != null) {
                     if (message.getMediaType().equals("Img")) {
                         messageIntent(ViewPhoto.class, message);
                     } else if (message.getMediaType().equals("unsup")) {
@@ -311,10 +329,10 @@ public class ChatFragments extends BaseFragment implements RecyclerViewClickList
                 } else {
                     if (message.getMediaType() != null)
                         Helper.makeToast(mContext, "Please wait, the Attachment is loading.");
-                }
+                }*/
 
             }
-        });*/
+        });
     }
 
     public void initImageLoader() {

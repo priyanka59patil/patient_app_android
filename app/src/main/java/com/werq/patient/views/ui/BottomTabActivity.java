@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.Utils.SessionManager;
+import com.werq.patient.applicationServices.OnAppKillService;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
@@ -57,7 +58,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
     BottomTabViewModel tabViewModel;
     ImageView iv_visitnote_check, iv_referral_check, iv_all_check;
     Fragment appointmentFragment;
-    Fragment chatFragment;
+    //Fragment chatFragment;
     Fragment doctorTeamFragment;
     Fragment filesFragment;
     Fragment profileFragment;
@@ -144,6 +145,7 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
         initializeVariables();
+        startService(new Intent(this, OnAppKillService.class));
         //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //navView.setSelectedItemId(R.id.calendar);
         Helper.setToolbar(getSupportActionBar(), "Appointments");
@@ -188,14 +190,9 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
                         if (fm == null) {
                             fm = this.getSupportFragmentManager();
                         }
-                        //if (chatFragment == null) {
-                            chatFragment = new ChatFragments();
+                         /*   chatFragment = new ChatFragments();
                             fm.beginTransaction().add(R.id.mainLayout, chatFragment, "2").hide(active).commit();
-                            active = chatFragment;
-                       /* } else {
-                            fm.beginTransaction().hide(active).show(chatFragment).commit();
-                            active = chatFragment;
-                        }*/
+                            active = chatFragment;*/
 
                         setToolbarForbottom(title, false, false);
                         VisibleMenuItem(false, false, false);
