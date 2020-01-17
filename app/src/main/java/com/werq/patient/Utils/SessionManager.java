@@ -131,13 +131,17 @@ public class SessionManager {
         return userPref.getBoolean(REMEMBER_PASSWORD, false);
     }
 
-
     public static String getRememberUsername() {
         return REMEMBER_USERNAME;
     }
 
     public static String getRememberPassword() {
         return REMEMBER_PASSWORD;
+    }
+
+
+    public boolean isLoggedIn() {
+        return pref.getBoolean(IS_LOGIN, false);
     }
 
     public void logoutUser(Context context) {

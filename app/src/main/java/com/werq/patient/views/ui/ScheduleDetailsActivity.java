@@ -44,6 +44,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.werq.patient.BR;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Controller.AppointmentController;
 import com.werq.patient.Factory.TabApptVmProviderFactory;
@@ -57,6 +58,7 @@ import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.RecyclerViewHelper;
 import com.werq.patient.Utils.SpacesItemDecoration;
 import com.werq.patient.base.BaseActivity;
+import com.werq.patient.base.CustomBaseActivity;
 import com.werq.patient.databinding.ActivityScheduleDetailsBinding;
 import com.werq.patient.service.model.ResponcejsonPojo.AppointmentResult;
 import com.werq.patient.service.model.ResponcejsonPojo.AttachmentResult;
@@ -76,7 +78,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ScheduleDetailsActivity extends BaseActivity implements RecyclerViewClickListerner, BasicActivities,
+public class ScheduleDetailsActivity
+        extends CustomBaseActivity<ActivityScheduleDetailsBinding,TabAppoinmentViewModel>
+        implements RecyclerViewClickListerner, BasicActivities,
         DiologListner {
 
     private static final int MY_PERMISSIONS_REQUEST = 3;
@@ -191,6 +195,22 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     private List<AvailableTimeSlot> timeSlotList;
     private EditText etReason;
 
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_schedule_details;
+    }
+
+    @Override
+    public TabAppoinmentViewModel getViewModel() {
+        viewModel = ViewModelProviders.of(this, new TabApptVmProviderFactory(getAuthToken(),isFromUpcoming)).get(TabAppoinmentViewModel.class);
+        return viewModel;
+    }
+
+    @Override
+    public int getBindingVariable() {
+        return BR.viewModel;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -466,7 +486,8 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
     @Override
     public void initializeVariables() {
         mContext = this;
-        detailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_schedule_details);
+       // detailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_schedule_details);
+        detailsBinding=getViewDataBinding();
         detailsBinding.setLifecycleOwner(this);
 
         intent = getIntent();
@@ -477,8 +498,7 @@ public class ScheduleDetailsActivity extends BaseActivity implements RecyclerVie
         setSupportActionBar(toolbar);
         getIntentData();
 
-        viewModel = ViewModelProviders.of(this, new TabApptVmProviderFactory(getAuthToken(),isFromUpcoming)).get(TabAppoinmentViewModel.class);
-        setBaseViewModel(viewModel);
+
         detailsBinding.setTabAppoinmentViewModel(viewModel);
         recyclerViewClickListerner = this::onclick;
         attachmentList = new ArrayList<>();

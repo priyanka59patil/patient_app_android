@@ -16,12 +16,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bugsee.library.Bugsee;
 import com.scottyab.aescrypt.AESCrypt;
+import com.werq.patient.BR;
 import com.werq.patient.BuildConfig;
 import com.werq.patient.Factory.LoginVmProviderFactory;
 import com.werq.patient.R;
 import com.werq.patient.Utils.Helper;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.base.BaseActivity;
+import com.werq.patient.base.CustomBaseActivity;
 import com.werq.patient.databinding.ActivityLoginBinding;
 import com.werq.patient.viewmodel.LoginViewModel;
 
@@ -34,7 +36,7 @@ import butterknife.OnClick;
 import vn.luongvo.widget.iosswitchview.SwitchView;
 
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends CustomBaseActivity<ActivityLoginBinding,LoginViewModel> {
 
 
     @BindView(R.id.toolbar)
@@ -62,6 +64,22 @@ public class LoginActivity extends BaseActivity {
     ProgressDialog progressDialog;
 
     @Override
+    public int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    public LoginViewModel getViewModel() {
+        loginViewModel = ViewModelProviders.of(this, new LoginVmProviderFactory(this,getAuthToken())).get(LoginViewModel.class);
+        return loginViewModel;
+    }
+
+    @Override
+    public int getBindingVariable() {
+        return BR.loginViewModel;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -71,29 +89,22 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initBinding() {
-        activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        //activityLoginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        activityLoginBinding=getViewDataBinding();
         activityLoginBinding.setLifecycleOwner(this);
         mContext = this;
-        loginViewModel = ViewModelProviders.of(this, new LoginVmProviderFactory(mContext,getAuthToken())).get(LoginViewModel.class);
-        setBaseViewModel(loginViewModel);
+        //setBaseViewModel(loginViewModel);
         activityLoginBinding.setLoginViewModel(loginViewModel);
         ButterKnife.bind(this);
         loadingView.setIndeterminateDrawable(fadingCircle);
         toolbar.setTitle("Log In");
         loginViewModel.setSessionManager(SessionManager.getSessionManager(mContext));
-
         swRememberMe.setChecked(SessionManager.getSessionManager(mContext).isRememberUsername());
         loginViewModel.getRememberMe().setValue(SessionManager.getSessionManager(mContext).isRememberUsername());
 
         tvAppVersion.setText("v - " + BuildConfig.VERSION_NAME);
         initBugsee();
 
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         swRememberMe.setOnCheckedChangeListener(new SwitchView.OnCheckedChangeListener() {
             @Override
@@ -161,6 +172,12 @@ public class LoginActivity extends BaseActivity {
             }
 
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
