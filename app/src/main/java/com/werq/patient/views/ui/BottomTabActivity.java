@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.werq.patient.Factory.BottomTabVmFactory;
 import com.werq.patient.Utils.SessionManager;
 import com.werq.patient.applicationServices.OnAppKillService;
+import com.werq.patient.applicationServices.TimerService;
 import com.werq.patient.views.ui.Fragments.AppointmentFragment;
 import com.werq.patient.views.ui.Fragments.ChatFragments;
 import com.werq.patient.views.ui.Fragments.DoctorTeamFragment;
@@ -144,10 +145,8 @@ public class BottomTabActivity extends BaseActivity implements View.OnClickListe
         setBaseViewModel(tabViewModel);
         bottomTabBinding.setBottomViewModel(tabViewModel);
         ButterKnife.bind(this);
-        initializeVariables();
         startService(new Intent(this, OnAppKillService.class));
-        //navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //navView.setSelectedItemId(R.id.calendar);
+        initializeVariables();
         Helper.setToolbar(getSupportActionBar(), "Appointments");
 
        /* fm.beginTransaction().add(R.id.mainLayout, profileFragment, "3").hide(profileFragment).commit();

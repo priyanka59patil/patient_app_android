@@ -200,7 +200,10 @@ public class LoginViewModel extends BaseViewModel  {
                     sessionManager.clear();
                     long timestamp = 0;
                     try {
+                        Helper.setLog("before token",signUpData.getAuthExpiryTime());
                         timestamp = Helper.parseUtcStringToDate(signUpData.getAuthExpiryTime()).getTime();
+                        Helper.setLog("after timestamp",timestamp+"");
+
                     } catch (ParseException e) {
                         Helper.setExceptionLog("ParseException",e);
                         e.printStackTrace();

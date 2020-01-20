@@ -100,7 +100,7 @@ public class SettingActivity extends AppCompatActivity {
                 startActivity(new Intent(mContext, ChangePasswordActivity.class));
                 break;
             case R.id.tvLogOut:
-
+                Helper.startLogin = true;
                 SessionManager.getSessionManager(mContext).logoutUser(mContext);
                 break;
             case R.id.tvSupport:

@@ -54,6 +54,7 @@ public class Helper {
     public static String HH_MM="hh:mm";
     public static String HH_MM_a="hh:mmaa";
     public static String YYYY_MM_DD_T_HH_MM_SS=YYYY_MM_DD+"'T'"+HH_MM_SS;
+    public static boolean startLogin = false;
 
     public static String getRefreshTokenId() {
         return refreshTokenId;
@@ -194,8 +195,9 @@ public class Helper {
 
     public static Date parseUtcStringToDate(String utcDate) throws ParseException {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Date sessionTimestamp= sdf.parse(utcDate);
-            return sessionTimestamp;
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date sessionTimestamp= sdf.parse(utcDate);
+        return sessionTimestamp;
     }
 
     public static Date convertUtcToLocale(String utcDate) throws ParseException {
@@ -219,11 +221,16 @@ public class Helper {
 
 
 
-    public static boolean isTimestampExpired(long timestamp){
+    public static boolean isTimestampExpired(long timestamp) throws ParseException {
 
-        if (((System.currentTimeMillis() - timestamp)/3600000)>=1 ) {
+        Date inputDate = new Date(timestamp);
+        Date currentDate=currentlocalDateToUtc();
+
+        if (inputDate.before(currentDate) || inputDate.equals(currentDate)) {
+
             return true;
         }
+
         return false;
     }
 

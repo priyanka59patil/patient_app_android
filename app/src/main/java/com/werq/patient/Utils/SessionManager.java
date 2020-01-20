@@ -148,12 +148,15 @@ public class SessionManager {
         editor.putBoolean(IS_LOGIN, false);
         editor.commit();
 
+        if (Helper.startLogin) {
             Intent i = new Intent(context, LoginActivity.class);
 
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
-           // Helper.startLogin = true;
+            Helper.startLogin = true;
+        }
+
 
     }
 

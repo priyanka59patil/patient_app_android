@@ -46,6 +46,9 @@
         <service android:name=".applicationServices.OnAppKillService"
             android:stopWithTask="false"></service>
 
+        <service android:name=".applicationServices.TimerService"
+            android:stopWithTask="true"></service>
+
         <activity
             android:name="com.karumi.dexter.DexterActivity"
             android:theme="@style/Dexter.Internal.Theme.Transparent" />
